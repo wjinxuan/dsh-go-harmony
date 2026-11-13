@@ -531,7 +531,10 @@ struct Index {
       if (version === this.connectionVersion && chatVersion === this.chatVersion) {
         this.pendingSessionModel = selected
         this.pendingModelSessionId = selected ? id : ''
-        await this.openSession(id, '新会话')
+        const opening = this.openSession(id, '新会话')
+        const openedVersion = this.chatVersion
+        await opening
+        if (openedVersion !== this.chatVersion) return false
         return await this.applyPendingModel(id, version)
       }
     } catch (error) {

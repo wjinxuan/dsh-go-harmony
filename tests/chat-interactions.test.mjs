@@ -7,6 +7,7 @@ import vm from 'node:vm';
 const source = readFileSync(new URL('../entry/src/main/ets/pages/Index.ets', import.meta.url), 'utf8');
 const methods = (start, end) => source.slice(source.indexOf(start), source.indexOf(end, source.indexOf(start)));
 const code = methods('  private async showModels(', '  private home(') +
+  methods('  private showSettings(', '  private async showModels(') +
   methods('  private async newSession(', '  private async stop(');
 const Owner = vm.runInNewContext(stripTypeScriptTypes(`(class Owner { ${code} })`), {
   object: value => value && typeof value === 'object' ? value : {},
@@ -136,6 +137,38 @@ test('switching away and back while model apply is pending cannot revive the old
   await sending;
   assert.equal(owner.currentModel.model, 'kept');
   assert.equal(calls.prompts.length, 0);
+});
+
+test('a delayed initial transcript cannot send after the user leaves and reopens the created session', async () => {
+  const { owner, calls } = fixture(); let release;
+  owner.openSession = async id => {
+    owner.sessionId = id; owner.chatVersion++;
+    await new Promise(resolve => { release = resolve; });
+  };
+  const sending = owner.send();
+  await new Promise(resolve => setImmediate(resolve));
+  owner.chatVersion += 2;
+  release(); await sending;
+  assert.equal(calls.prompts.length, 0);
+});
+
+test('a newer home draft survives creation and is not removed after the captured message is sent', async () => {
+  const { owner, calls } = fixture(); const drafts = new Map();
+  owner.composerDrafts = { read: id => drafts.get(id) || '', write: (id, text) => drafts.set(id, text) };
+  owner.openSession = async id => {
+    drafts.set('', 'newer home draft'); owner.sessionId = id; owner.chatVersion++; owner.draft = '';
+  };
+  await owner.send();
+  assert.equal(calls.prompts[0].text, 'keep my draft');
+  assert.equal(drafts.get(''), 'newer home draft');
+});
+
+test('model management returns to the picker only on its original connection and session', () => {
+  const { owner } = fixture(); owner.page = 'models'; owner.settingsRequestVersion = 0;
+  owner.showSettings('models'); owner.closeSettings();
+  assert.equal(owner.page, 'models');
+  owner.showSettings('models'); owner.connectionVersion++; owner.closeSettings();
+  assert.equal(owner.page, 'chat');
 });
 
 test('successful recovery cannot be duplicated while the transcript is catching up', async () => {
