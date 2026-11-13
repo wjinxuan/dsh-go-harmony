@@ -1,0 +1,8 @@
+{
+  "string": [
+    { "name": "markdown_copied", "value": "Copied" },
+    { "name": "markdown_copy_code", "value": "Copy code" },
+    { "name": "markdown_copy_failed", "value": "Could not copy" },
+    { "name": "markdown_link_failed", "value": "Can’t open this link" }
+  ]
+}

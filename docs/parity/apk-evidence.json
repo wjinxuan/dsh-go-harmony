@@ -1,0 +1,124 @@
+{
+  "evidence_id": "ev_7b526fdebcdf3fb376e98aaf9536ae6a7818b85a81cbbc0fac82483d3474db65",
+  "subject": {
+    "name": "dsh-go-1.0.15-arm64.apk",
+    "digest": {
+      "sha256": "231ac2a5155e5460466529b99790f111484378c3b1f579dc00cef0fe418928cb"
+    },
+    "local_path": "dsh-go-1.0.15-arm64.apk",
+    "format": "apk",
+    "architecture": null
+  },
+  "provider": {
+    "id": "rea-analysis-view",
+    "name": "REA analysis view projection",
+    "version": "1"
+  },
+  "analysis_profile": null,
+  "predicate_type": "rea.analysis-view",
+  "operation": "inspect_analysis_view",
+  "parameters": {
+    "parent_evidence_id": "ev_4219d3c7d1685e39147df21e5474ba6c5fcc3950d0333665961c9d3a4de62695",
+    "view": {
+      "kind": "summary"
+    }
+  },
+  "raw_result": null,
+  "normalized_result": {
+    "kind": "summary",
+    "view": {
+      "kind": "summary"
+    },
+    "parent_evidence_id": "ev_4219d3c7d1685e39147df21e5474ba6c5fcc3950d0333665961c9d3a4de62695",
+    "parent_operation": "inspect_android_package",
+    "parent_digest": "4219d3c7d1685e39147df21e5474ba6c5fcc3950d0333665961c9d3a4de62695",
+    "view_digest": "18001de4f366457fdeecbfd846fcc466c9bd145265ecc9316769e3a502ad10f4",
+    "artifact": {
+      "path": "dsh-go-1.0.15-arm64.apk",
+      "sha256": "231ac2a5155e5460466529b99790f111484378c3b1f579dc00cef0fe418928cb"
+    },
+    "coverage": {
+      "status": "complete-within-view",
+      "examined": 1,
+      "total": 1,
+      "next_offset": null,
+      "exhausted": true
+    },
+    "limitations": [
+      "Static decompiler observations do not establish runtime behavior; the APK is never executed.",
+      "Method signatures use provider display types; DEX prototypes come from frozen JADX metadata. Display names may be aliases, and overload indices are local to this engine and artifact.",
+      "Class inventories use parsed metadata before code generation, including synthetic members that may be omitted from decompiled source. Source positions remain unknown.",
+      "Incoming reference totals count JADX using nodes. Direct invoke entries within a using method report raw DEX code-unit offsets and method indexes, but coverage is limited to those nodes and directly matched invokes; it does not establish every possible dynamic or reflective call site.",
+      "Manifest summary fields are extracted by the upstream engine; decoded XML is retained for verification. APK signatures, split APKs, native libraries and Android runtime capture are not verified by this provider."
+    ],
+    "unknowns": [
+      "APK signatures were not verified; package declarations do not establish authenticity or runtime behavior."
+    ],
+    "summary": {
+      "engine": {
+        "name": "jadx-headless-mcp",
+        "version": "0.7.1",
+        "artifact_sha256": "6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75",
+        "source_revision": "5844800a486d2248fa949b74c9896285f5b54de2",
+        "worker_count": 1,
+        "heap_limit_mib": 8192
+      },
+      "package_name": "io.github.ccch1mneyyy.dsh_app",
+      "version_name": "1.0.15",
+      "version_code": "11101246",
+      "min_sdk": "26",
+      "target_sdk": "28",
+      "permissions": [
+        "android.permission.INTERNET",
+        "android.permission.RECEIVE_BOOT_COMPLETED",
+        "android.permission.ACCESS_NETWORK_STATE",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.FOREGROUND_SERVICE_SPECIAL_USE",
+        "android.permission.POST_NOTIFICATIONS",
+        "android.permission.POST_PROMOTED_NOTIFICATIONS",
+        "android.permission.WAKE_LOCK",
+        "android.permission.WRITE_SECURE_SETTINGS",
+        "android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.CAMERA",
+        "com.android.alarm.permission.SET_ALARM",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.MANAGE_EXTERNAL_STORAGE",
+        "moe.shizuku.manager.permission.API_V23",
+        "android.permission.SYSTEM_ALERT_WINDOW",
+        "android.permission.REQUEST_INSTALL_PACKAGES",
+        "io.github.ccch1mneyyy.dsh_app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+      ],
+      "manifest": {
+        "status": "complete",
+        "reported_total_bytes": null,
+        "text_code_units": 21709,
+        "text_included": false
+      },
+      "class_count": 10486,
+      "resource_count": 640,
+      "signature_verification": "not_performed"
+    }
+  },
+  "confidence": "derived",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "Static decompiler observations do not establish runtime behavior; the APK is never executed.",
+    "Method signatures use provider display types; DEX prototypes come from frozen JADX metadata. Display names may be aliases, and overload indices are local to this engine and artifact.",
+    "Class inventories use parsed metadata before code generation, including synthetic members that may be omitted from decompiled source. Source positions remain unknown.",
+    "Incoming reference totals count JADX using nodes. Direct invoke entries within a using method report raw DEX code-unit offsets and method indexes, but coverage is limited to those nodes and directly matched invokes; it does not establish every possible dynamic or reflective call site.",
+    "Manifest summary fields are extracted by the upstream engine; decoded XML is retained for verification. APK signatures, split APKs, native libraries and Android runtime capture are not verified by this provider."
+  ],
+  "relationship_coverage": null,
+  "locations": [
+    {
+      "kind": "artifact-path",
+      "path": "dsh-go-1.0.15-arm64.apk"
+    }
+  ],
+  "evidence_links": [
+    "ev_4219d3c7d1685e39147df21e5474ba6c5fcc3950d0333665961c9d3a4de62695"
+  ]
+}

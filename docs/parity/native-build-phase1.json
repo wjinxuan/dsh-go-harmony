@@ -1,0 +1,23 @@
+{
+  "source_reference": "dsh-Go v1.0.15 a9877420ab9aee121134faf01b6a92a39ce0b05b",
+  "hap_sha256": "ac780ceb4696af83a545cd9d3e0767d86506f99c9dc4ba81f54776c094df127d",
+  "runtime_sha256": "fb649ac7eace6e3719ab4edde4bdd792479e49e8bbccef98b4198ce82b185fa9",
+  "bundle": "com.dshgo.harmony",
+  "device": "Huawei Mate 60 Pro+",
+  "os": "HarmonyOS 7.0.0.111 API 26",
+  "build": "DevEco Studio 26.0.0.851 debug signed",
+  "date": "2026-11-13",
+  "scope": "First ArkTS/ArkUI expansion, incomplete upstream parity",
+  "checks": [
+    "signed HAP built and replacement installed",
+    "real DeepSeek reply in phone UI",
+    "write/read/edit/read and independently verified HARMONY_EDIT_OK",
+    "workspace read accepts inside path and refuses parent traversal",
+    "history and file preserved across replacement install",
+    "native preset resolution and immutable UI row refresh regressions",
+    "real subagent model call returns NATIVE_SUBAGENT_OK and settles in parent",
+    "child result visible in native agents page",
+    "API Key character validation and localized error guidance",
+    "temporary HDC forwards removed and screen timeout restored"
+  ]
+}

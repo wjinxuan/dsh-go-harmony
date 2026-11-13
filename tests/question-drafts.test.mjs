@@ -1,0 +1,58 @@
+import assert from 'node:assert/strict';
+import { QuestionDrafts, toggleQuestion, questionAnswers } from './QuestionDrafts.ts';
+import { ComposerDrafts } from './ComposerDrafts.ts';
+import { todoSummary, goalHeadline } from './ChatProgress.ts';
+
+const q = { id: 'q1', question: 'Choice?', options: [{label:'A'}, {label:'B'}], multiSelect: false };
+const request = { id: 'e1', sessionId: 's1', questions: [q] };
+const store = new QuestionDrafts();
+let drafts = store.read(request);
+assert.equal(questionAnswers(request, drafts), undefined);
+drafts[0] = toggleQuestion({...drafts[0], custom:'old', customOpen:true}, q, 'B');
+assert.deepEqual(questionAnswers(request, drafts), [{id:'q1', selected:['B'], custom:undefined}]);
+assert.equal(drafts[0].customOpen, false);
+assert.equal(toggleQuestion(drafts[0], q, 'unknown'), drafts[0]);
+store.save(request, drafts);
+drafts[0].selected.push('A');
+assert.deepEqual(store.read(request)[0].selected, ['B']);
+assert.deepEqual(store.read({...request, sessionId:'another'})[0].selected, []);
+assert.equal(questionAnswers(request, [{...drafts[0], selected:['A','B']}]), undefined);
+console.log('PASS single choice, invalid input and session-isolated immutable drafts');
+
+const multi = {...q, multiSelect:true};
+let draft = {id:'q1',selected:[],custom:'  details  ',customOpen:true};
+draft = toggleQuestion(draft, multi, 'B');
+draft = toggleQuestion(draft, multi, 'A');
+assert.deepEqual(questionAnswers({...request, questions:[multi]},[draft]),
+  [{id:'q1',selected:['A','B'],custom:'details'}]);
+draft = toggleQuestion(draft, multi, 'B');
+assert.deepEqual(draft.selected,['A']);
+const free = {...q, options:[]};
+assert.equal(store.read({...request, id:'free',questions:[free]})[0].customOpen,true);
+assert.equal(questionAnswers({...request,questions:[q,{...q,id:'q2'}]},[draft]),undefined);
+assert.equal(questionAnswers(request,[{...draft,selected:['obsolete'],custom:' '}]),undefined);
+store.remove(request);
+assert.deepEqual(store.read(request)[0].selected,[]);
+store.save(request,[draft]); store.clear();
+assert.equal(store.read(request)[0].custom,'');
+console.log('PASS multi-choice, freeform completeness and settled/host cleanup');
+
+const timed = {...request, id:'eventId',callId:'tool-call'};
+store.save(timed,[draft]);
+assert.deepEqual(store.read({...timed,id:'tool-call',continued:true})[0],draft);
+store.remove({...timed,id:'tool-call',continued:true});
+assert.equal(store.read(timed)[0].custom,'');
+const composer = new ComposerDrafts();
+composer.write('first','unfinished'); composer.write('second','other');
+assert.equal(composer.append('first','recovered'),'unfinished\n\nrecovered');
+assert.equal(composer.read('second'),'other');
+composer.write('first',''); assert.equal(composer.read('first'),'');
+composer.clear(); assert.equal(composer.read('second'),'');
+console.log('PASS timed-to-continued answer and cross-session composer recovery');
+const todos = [{content:'done',status:'completed'},{content:'queued',status:'pending'},{content:'active',status:'in_progress'}];
+assert.equal(todoSummary(todos,true),'1/3 · 正在：active');
+assert.equal(todoSummary(todos,false),'1/3 · 下一步：active');
+assert.equal(todoSummary(todos.slice(0,2),true),'1/2 · 下一步：queued');
+assert.equal(todoSummary(todos.slice(0,1),true),'1/1 · 全部完成');
+assert.equal(goalHeadline('\n \n first line \n second'),'first line');
+console.log('PASS live todo summary and goal headline');

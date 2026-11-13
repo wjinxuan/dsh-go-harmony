@@ -1,0 +1,14 @@
+Node.js v24.22.1 for OpenHarmony arm64
+https://github.com/fellow99/ohos-node-runtime/blob/main/runtime.lock.json
+https://github.com/nodejs/node/tree/v24.22.1
+
+The OpenHarmony runtime is distributed by @fellow99/node-runtime@24.22.1.
+DSH Go renames its ELF SONAME to libnode.so for HAP packaging. At ELF file
+offset 0x433e3e4, the call to io_uring_setup is replaced with its failure
+return value (-1), which makes libuv use its existing epoll fallback.
+The original call triggers SIGSYS under HarmonyOS phone seccomp.
+The SHA-256 of the prepared ELF is
+efd4a03096bde322d1c171361a8a1d7b208ea34ddc70ae907e660750c56e6acf.
+
+The runtime includes the C++ shared library built with the OpenHarmony
+LLVM 19 toolchain. LLVM libc++, libc++abi and libunwind notices accompany it.

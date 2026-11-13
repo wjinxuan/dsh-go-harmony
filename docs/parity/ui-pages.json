@@ -1,0 +1,771 @@
+{
+  "schemaVersion": 1,
+  "upstream": {
+    "repository": "https://github.com/ccch1mneyyy/dsh-Go",
+    "version": "v1.0.15",
+    "commitSha": "a9877420ab9aee121134faf01b6a92a39ce0b05b"
+  },
+  "scope": {
+    "directory": "app/lib/ui",
+    "selection": "Public Flutter widget class names ending in Page or Screen",
+    "classCount": 120,
+    "fileCount": 113,
+    "isRouteInventory": false,
+    "notes": "Includes nested or reusable page bodies and excludes navigation entries implemented as differently named widgets, sheets, dialogs, and dynamic routes."
+  },
+  "countsByGroup": {
+    "access": 3,
+    "account": 1,
+    "agents": 1,
+    "bots": 7,
+    "chat": 10,
+    "community": 1,
+    "companion": 4,
+    "cordis": 1,
+    "engine": 1,
+    "engine_settings": 7,
+    "features": 11,
+    "files": 1,
+    "forum": 4,
+    "launch": 1,
+    "onboarding": 7,
+    "pets": 1,
+    "phone": 7,
+    "plugins": 7,
+    "providers": 6,
+    "remote": 3,
+    "replay": 1,
+    "session": 3,
+    "settings": 17,
+    "share": 3,
+    "share_code": 1,
+    "share_hosted": 1,
+    "shell": 2,
+    "terminal": 2,
+    "wallpaper": 2,
+    "web": 2,
+    "workspace": 2
+  },
+  "pages": [
+    {
+      "group": "access",
+      "name": "AccessPickPage",
+      "path": "app/lib/ui/access/access_pick_page.dart",
+      "line": 43
+    },
+    {
+      "group": "access",
+      "name": "AccessSummaryPage",
+      "path": "app/lib/ui/access/access_summary_page.dart",
+      "line": 26
+    },
+    {
+      "group": "access",
+      "name": "AccessItemPage",
+      "path": "app/lib/ui/access/system_access_route.dart",
+      "line": 19
+    },
+    {
+      "group": "account",
+      "name": "AccountPage",
+      "path": "app/lib/ui/account/account_page.dart",
+      "line": 23
+    },
+    {
+      "group": "agents",
+      "name": "TeamPage",
+      "path": "app/lib/ui/agents/team_page.dart",
+      "line": 38
+    },
+    {
+      "group": "bots",
+      "name": "BotChatPage",
+      "path": "app/lib/ui/bots/bot_chat_page.dart",
+      "line": 34
+    },
+    {
+      "group": "bots",
+      "name": "BotDetailsPage",
+      "path": "app/lib/ui/bots/bot_details_page.dart",
+      "line": 29
+    },
+    {
+      "group": "bots",
+      "name": "BotRecordPage",
+      "path": "app/lib/ui/bots/bot_details_page.dart",
+      "line": 424
+    },
+    {
+      "group": "bots",
+      "name": "BotsPage",
+      "path": "app/lib/ui/bots/bots_page.dart",
+      "line": 27
+    },
+    {
+      "group": "bots",
+      "name": "NewBotPage",
+      "path": "app/lib/ui/bots/new_bot_page.dart",
+      "line": 26
+    },
+    {
+      "group": "bots",
+      "name": "RoomChatPage",
+      "path": "app/lib/ui/bots/room_chat_page.dart",
+      "line": 34
+    },
+    {
+      "group": "bots",
+      "name": "RoomDetailsPage",
+      "path": "app/lib/ui/bots/room_details_page.dart",
+      "line": 31
+    },
+    {
+      "group": "chat",
+      "name": "ArtifactPreviewPage",
+      "path": "app/lib/ui/chat/artifact_preview.dart",
+      "line": 233
+    },
+    {
+      "group": "chat",
+      "name": "ImageViewerPage",
+      "path": "app/lib/ui/chat/artifact_preview.dart",
+      "line": 1454
+    },
+    {
+      "group": "chat",
+      "name": "ChatScreen",
+      "path": "app/lib/ui/chat/chat_screen.dart",
+      "line": 110
+    },
+    {
+      "group": "chat",
+      "name": "ChangeDiffPage",
+      "path": "app/lib/ui/chat/diff_page.dart",
+      "line": 27
+    },
+    {
+      "group": "chat",
+      "name": "ScheduleTaskSheetPage",
+      "path": "app/lib/ui/chat/header_schedule.dart",
+      "line": 342
+    },
+    {
+      "group": "chat",
+      "name": "MediaVideoViewerPage",
+      "path": "app/lib/ui/chat/media/media_video_viewer.dart",
+      "line": 38
+    },
+    {
+      "group": "chat",
+      "name": "MediaViewerPage",
+      "path": "app/lib/ui/chat/media/media_viewer.dart",
+      "line": 101
+    },
+    {
+      "group": "chat",
+      "name": "MermaidPreviewPage",
+      "path": "app/lib/ui/chat/render/mermaid_preview.dart",
+      "line": 74
+    },
+    {
+      "group": "chat",
+      "name": "StepDetailPage",
+      "path": "app/lib/ui/chat/step_detail_page.dart",
+      "line": 34
+    },
+    {
+      "group": "chat",
+      "name": "SessionPermissionPage",
+      "path": "app/lib/ui/chat/widgets/plus_panel.dart",
+      "line": 324
+    },
+    {
+      "group": "community",
+      "name": "CommunityPage",
+      "path": "app/lib/ui/community/community_page.dart",
+      "line": 30
+    },
+    {
+      "group": "companion",
+      "name": "CompanionMemoryPage",
+      "path": "app/lib/ui/companion/companion_memory_page.dart",
+      "line": 40
+    },
+    {
+      "group": "companion",
+      "name": "CompanionPage",
+      "path": "app/lib/ui/companion/companion_page.dart",
+      "line": 79
+    },
+    {
+      "group": "companion",
+      "name": "CompanionPersonaPage",
+      "path": "app/lib/ui/companion/companion_persona_page.dart",
+      "line": 17
+    },
+    {
+      "group": "companion",
+      "name": "CompanionVoicePage",
+      "path": "app/lib/ui/companion/companion_voice_page.dart",
+      "line": 22
+    },
+    {
+      "group": "cordis",
+      "name": "CordisPage",
+      "path": "app/lib/ui/cordis/cordis_page.dart",
+      "line": 33
+    },
+    {
+      "group": "engine",
+      "name": "EngineScreen",
+      "path": "app/lib/ui/engine/engine_screen.dart",
+      "line": 70
+    },
+    {
+      "group": "engine_settings",
+      "name": "EngineSettingsHubPage",
+      "path": "app/lib/ui/engine_settings/engine_settings_hub.dart",
+      "line": 28
+    },
+    {
+      "group": "engine_settings",
+      "name": "EngineSettingsPage",
+      "path": "app/lib/ui/engine_settings/engine_settings_page.dart",
+      "line": 25
+    },
+    {
+      "group": "engine_settings",
+      "name": "GeneralSettingsPage",
+      "path": "app/lib/ui/engine_settings/general_settings_page.dart",
+      "line": 16
+    },
+    {
+      "group": "engine_settings",
+      "name": "AgentLoopSettingsPage",
+      "path": "app/lib/ui/engine_settings/runtime_settings_pages.dart",
+      "line": 13
+    },
+    {
+      "group": "engine_settings",
+      "name": "ShellSettingsPage",
+      "path": "app/lib/ui/engine_settings/runtime_settings_pages.dart",
+      "line": 31
+    },
+    {
+      "group": "engine_settings",
+      "name": "SubagentSettingsPage",
+      "path": "app/lib/ui/engine_settings/subagent_settings_page.dart",
+      "line": 80
+    },
+    {
+      "group": "engine_settings",
+      "name": "WebSearchSettingsPage",
+      "path": "app/lib/ui/engine_settings/web_search_page.dart",
+      "line": 35
+    },
+    {
+      "group": "features",
+      "name": "AgentPresetsPage",
+      "path": "app/lib/ui/features/agent_presets_page.dart",
+      "line": 31
+    },
+    {
+      "group": "features",
+      "name": "AllFeaturesPage",
+      "path": "app/lib/ui/features/all_features_page.dart",
+      "line": 47
+    },
+    {
+      "group": "features",
+      "name": "JobsPage",
+      "path": "app/lib/ui/features/jobs_page.dart",
+      "line": 34
+    },
+    {
+      "group": "features",
+      "name": "JobOutputPage",
+      "path": "app/lib/ui/features/jobs_page.dart",
+      "line": 116
+    },
+    {
+      "group": "features",
+      "name": "PermissionPage",
+      "path": "app/lib/ui/features/permission_page.dart",
+      "line": 65
+    },
+    {
+      "group": "features",
+      "name": "PresetEditorPage",
+      "path": "app/lib/ui/features/preset_editor/preset_editor_page.dart",
+      "line": 39
+    },
+    {
+      "group": "features",
+      "name": "ScheduleEditorPage",
+      "path": "app/lib/ui/features/schedule_editor/schedule_editor_page.dart",
+      "line": 47
+    },
+    {
+      "group": "features",
+      "name": "SchedulesPage",
+      "path": "app/lib/ui/features/schedules_page.dart",
+      "line": 38
+    },
+    {
+      "group": "features",
+      "name": "ScheduleDetailPage",
+      "path": "app/lib/ui/features/schedules_page.dart",
+      "line": 217
+    },
+    {
+      "group": "features",
+      "name": "SessionExportPage",
+      "path": "app/lib/ui/features/session_export_page.dart",
+      "line": 19
+    },
+    {
+      "group": "features",
+      "name": "SkillsPage",
+      "path": "app/lib/ui/features/skills_page.dart",
+      "line": 23
+    },
+    {
+      "group": "files",
+      "name": "WorkspaceFilesPage",
+      "path": "app/lib/ui/files/files_page.dart",
+      "line": 27
+    },
+    {
+      "group": "forum",
+      "name": "ForumHomePage",
+      "path": "app/lib/ui/forum/forum_home_page.dart",
+      "line": 30
+    },
+    {
+      "group": "forum",
+      "name": "ForumNotificationsPage",
+      "path": "app/lib/ui/forum/forum_notifications_page.dart",
+      "line": 23
+    },
+    {
+      "group": "forum",
+      "name": "ForumSearchPage",
+      "path": "app/lib/ui/forum/forum_search_page.dart",
+      "line": 21
+    },
+    {
+      "group": "forum",
+      "name": "ForumTopicPage",
+      "path": "app/lib/ui/forum/forum_topic_page.dart",
+      "line": 29
+    },
+    {
+      "group": "launch",
+      "name": "LaunchPreviewPage",
+      "path": "app/lib/ui/launch/launch_preview_page.dart",
+      "line": 57
+    },
+    {
+      "group": "onboarding",
+      "name": "AccessStepPage",
+      "path": "app/lib/ui/onboarding/access_step.dart",
+      "line": 20
+    },
+    {
+      "group": "onboarding",
+      "name": "ApiKeyPage",
+      "path": "app/lib/ui/onboarding/api_key_page.dart",
+      "line": 39
+    },
+    {
+      "group": "onboarding",
+      "name": "AppearanceStepPage",
+      "path": "app/lib/ui/onboarding/appearance_step.dart",
+      "line": 34
+    },
+    {
+      "group": "onboarding",
+      "name": "ConnectPage",
+      "path": "app/lib/ui/onboarding/connect_page.dart",
+      "line": 30
+    },
+    {
+      "group": "onboarding",
+      "name": "LocalInstallPage",
+      "path": "app/lib/ui/onboarding/local_install.dart",
+      "line": 36
+    },
+    {
+      "group": "onboarding",
+      "name": "RuntimeSetupPage",
+      "path": "app/lib/ui/onboarding/runtime_setup_page.dart",
+      "line": 39
+    },
+    {
+      "group": "onboarding",
+      "name": "WelcomePage",
+      "path": "app/lib/ui/onboarding/welcome_page.dart",
+      "line": 15
+    },
+    {
+      "group": "pets",
+      "name": "PetSettingsPage",
+      "path": "app/lib/ui/pets/pet_settings_page.dart",
+      "line": 47
+    },
+    {
+      "group": "phone",
+      "name": "PhoneActionLogPage",
+      "path": "app/lib/ui/phone/action_log_page.dart",
+      "line": 97
+    },
+    {
+      "group": "phone",
+      "name": "PhoneAppRulesPage",
+      "path": "app/lib/ui/phone/app_rules_page.dart",
+      "line": 56
+    },
+    {
+      "group": "phone",
+      "name": "PhoneDndPage",
+      "path": "app/lib/ui/phone/dnd_mode_page.dart",
+      "line": 64
+    },
+    {
+      "group": "phone",
+      "name": "PhoneControlScreen",
+      "path": "app/lib/ui/phone/phone_control_screen.dart",
+      "line": 68
+    },
+    {
+      "group": "phone",
+      "name": "PhoneUnlockPage",
+      "path": "app/lib/ui/phone/phone_unlock_page.dart",
+      "line": 104
+    },
+    {
+      "group": "phone",
+      "name": "PhoneUnlockConfirmPage",
+      "path": "app/lib/ui/phone/phone_unlock_page.dart",
+      "line": 238
+    },
+    {
+      "group": "phone",
+      "name": "RestrictedSettingsGuidePage",
+      "path": "app/lib/ui/phone/restricted_settings_guide.dart",
+      "line": 116
+    },
+    {
+      "group": "plugins",
+      "name": "PluginConfigPage",
+      "path": "app/lib/ui/plugins/config/plugin_config_page.dart",
+      "line": 158
+    },
+    {
+      "group": "plugins",
+      "name": "NativePanelPage",
+      "path": "app/lib/ui/plugins/native/native_panel.dart",
+      "line": 155
+    },
+    {
+      "group": "plugins",
+      "name": "NativePluginIssuesPage",
+      "path": "app/lib/ui/plugins/native/native_plugin_section.dart",
+      "line": 167
+    },
+    {
+      "group": "plugins",
+      "name": "PluginInventoryPage",
+      "path": "app/lib/ui/plugins/plugin_inventory_page.dart",
+      "line": 85
+    },
+    {
+      "group": "plugins",
+      "name": "PluginsScreen",
+      "path": "app/lib/ui/plugins/plugins_screen.dart",
+      "line": 26
+    },
+    {
+      "group": "plugins",
+      "name": "PluginSeatPage",
+      "path": "app/lib/ui/plugins/seats/plugin_seat_page.dart",
+      "line": 14
+    },
+    {
+      "group": "plugins",
+      "name": "VoiceScribeSettingsPage",
+      "path": "app/lib/ui/plugins/voice_scribe_settings_page.dart",
+      "line": 23
+    },
+    {
+      "group": "providers",
+      "name": "ModelContextPage",
+      "path": "app/lib/ui/providers/model_context_page.dart",
+      "line": 27
+    },
+    {
+      "group": "providers",
+      "name": "ProviderDetailPage",
+      "path": "app/lib/ui/providers/provider_detail_page.dart",
+      "line": 31
+    },
+    {
+      "group": "providers",
+      "name": "ProviderFormPage",
+      "path": "app/lib/ui/providers/provider_form_page.dart",
+      "line": 35
+    },
+    {
+      "group": "providers",
+      "name": "ProviderModelPage",
+      "path": "app/lib/ui/providers/provider_model_page.dart",
+      "line": 45
+    },
+    {
+      "group": "providers",
+      "name": "ProvidersPage",
+      "path": "app/lib/ui/providers/providers_page.dart",
+      "line": 37
+    },
+    {
+      "group": "providers",
+      "name": "SubscriptionPage",
+      "path": "app/lib/ui/providers/subscription_page.dart",
+      "line": 29
+    },
+    {
+      "group": "remote",
+      "name": "RemotePairingPage",
+      "path": "app/lib/ui/remote/pairing_page.dart",
+      "line": 46
+    },
+    {
+      "group": "remote",
+      "name": "RemoteScreen",
+      "path": "app/lib/ui/remote/remote_screen.dart",
+      "line": 39
+    },
+    {
+      "group": "remote",
+      "name": "SshHostFormPage",
+      "path": "app/lib/ui/remote/ssh_host_form.dart",
+      "line": 27
+    },
+    {
+      "group": "replay",
+      "name": "ReplayPage",
+      "path": "app/lib/ui/replay/replay_page.dart",
+      "line": 51
+    },
+    {
+      "group": "session",
+      "name": "SessionArtifactsPage",
+      "path": "app/lib/ui/session/session_artifacts.dart",
+      "line": 100
+    },
+    {
+      "group": "session",
+      "name": "SessionDetailPage",
+      "path": "app/lib/ui/session/session_detail_page.dart",
+      "line": 80
+    },
+    {
+      "group": "session",
+      "name": "FilePreviewPage",
+      "path": "app/lib/ui/session/workspace_files.dart",
+      "line": 67
+    },
+    {
+      "group": "settings",
+      "name": "AboutPage",
+      "path": "app/lib/ui/settings/about_page.dart",
+      "line": 29
+    },
+    {
+      "group": "settings",
+      "name": "AppearancePage",
+      "path": "app/lib/ui/settings/appearance/appearance_page.dart",
+      "line": 68
+    },
+    {
+      "group": "settings",
+      "name": "BackgroundGuidePage",
+      "path": "app/lib/ui/settings/background_guide_page.dart",
+      "line": 24
+    },
+    {
+      "group": "settings",
+      "name": "DiagnosticsPage",
+      "path": "app/lib/ui/settings/diagnostics_page.dart",
+      "line": 31
+    },
+    {
+      "group": "settings",
+      "name": "InterfacePage",
+      "path": "app/lib/ui/settings/interface_page.dart",
+      "line": 29
+    },
+    {
+      "group": "settings",
+      "name": "MediaServiceDetailPage",
+      "path": "app/lib/ui/settings/media/media_service_detail_page.dart",
+      "line": 33
+    },
+    {
+      "group": "settings",
+      "name": "MediaSettingsHomePage",
+      "path": "app/lib/ui/settings/media/media_settings_home.dart",
+      "line": 31
+    },
+    {
+      "group": "settings",
+      "name": "MediaSettingsPage",
+      "path": "app/lib/ui/settings/media_settings_page.dart",
+      "line": 30
+    },
+    {
+      "group": "settings",
+      "name": "NotificationSettingsPage",
+      "path": "app/lib/ui/settings/notification_settings.dart",
+      "line": 81
+    },
+    {
+      "group": "settings",
+      "name": "PerformancePage",
+      "path": "app/lib/ui/settings/performance_page.dart",
+      "line": 33
+    },
+    {
+      "group": "settings",
+      "name": "PersonalizationPage",
+      "path": "app/lib/ui/settings/personalization_page.dart",
+      "line": 33
+    },
+    {
+      "group": "settings",
+      "name": "PrivacyPage",
+      "path": "app/lib/ui/settings/privacy_page.dart",
+      "line": 21
+    },
+    {
+      "group": "settings",
+      "name": "ReplyPrefsPage",
+      "path": "app/lib/ui/settings/reply_prefs_page.dart",
+      "line": 23
+    },
+    {
+      "group": "settings",
+      "name": "SettingsSearchPage",
+      "path": "app/lib/ui/settings/search/settings_search_page.dart",
+      "line": 82
+    },
+    {
+      "group": "settings",
+      "name": "SettingsScreen",
+      "path": "app/lib/ui/settings/settings_screen.dart",
+      "line": 81
+    },
+    {
+      "group": "settings",
+      "name": "SystemAccessPage",
+      "path": "app/lib/ui/settings/system_access_page.dart",
+      "line": 30
+    },
+    {
+      "group": "settings",
+      "name": "VoiceSettingsPage",
+      "path": "app/lib/ui/settings/voice_settings_page.dart",
+      "line": 83
+    },
+    {
+      "group": "share",
+      "name": "ShareImagePage",
+      "path": "app/lib/ui/share/share_image_page.dart",
+      "line": 80
+    },
+    {
+      "group": "share",
+      "name": "ShareLinkPage",
+      "path": "app/lib/ui/share/share_panel_pages.dart",
+      "line": 319
+    },
+    {
+      "group": "share",
+      "name": "ShareFilePage",
+      "path": "app/lib/ui/share/share_panel_pages.dart",
+      "line": 533
+    },
+    {
+      "group": "share_code",
+      "name": "ShareQrPage",
+      "path": "app/lib/ui/share_code/share_code_panel.dart",
+      "line": 429
+    },
+    {
+      "group": "share_hosted",
+      "name": "HostedLinksPage",
+      "path": "app/lib/ui/share_hosted/hosted_links_page.dart",
+      "line": 43
+    },
+    {
+      "group": "shell",
+      "name": "AppPage",
+      "path": "app/lib/ui/shell/page_frame.dart",
+      "line": 28
+    },
+    {
+      "group": "shell",
+      "name": "SessionSearchPage",
+      "path": "app/lib/ui/shell/session_search_page.dart",
+      "line": 104
+    },
+    {
+      "group": "terminal",
+      "name": "TerminalPage",
+      "path": "app/lib/ui/terminal/terminal_page.dart",
+      "line": 35
+    },
+    {
+      "group": "terminal",
+      "name": "TerminalScreen",
+      "path": "app/lib/ui/terminal/terminal_screen.dart",
+      "line": 81
+    },
+    {
+      "group": "wallpaper",
+      "name": "WallpaperEditorPage",
+      "path": "app/lib/ui/wallpaper/wallpaper_editor_page.dart",
+      "line": 35
+    },
+    {
+      "group": "wallpaper",
+      "name": "WallpaperPreviewPage",
+      "path": "app/lib/ui/wallpaper/wallpaper_preview_page.dart",
+      "line": 24
+    },
+    {
+      "group": "web",
+      "name": "LocalWebScreen",
+      "path": "app/lib/ui/web/local_web_screen.dart",
+      "line": 29
+    },
+    {
+      "group": "web",
+      "name": "WebViewPage",
+      "path": "app/lib/ui/web/web_view_page.dart",
+      "line": 33
+    },
+    {
+      "group": "workspace",
+      "name": "DirectoryBrowserPage",
+      "path": "app/lib/ui/workspace/directory_picker.dart",
+      "line": 251
+    },
+    {
+      "group": "workspace",
+      "name": "WorkspacesPage",
+      "path": "app/lib/ui/workspace/workspaces_page.dart",
+      "line": 21
+    }
+  ]
+}

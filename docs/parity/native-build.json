@@ -1,0 +1,39 @@
+{
+  "source_reference": "dsh-Go v1.0.15 a9877420ab9aee121134faf01b6a92a39ce0b05b",
+  "hap_sha256": "56354874e1b5a93d2caa79aec3a98be4ca904e383424f2645982daae441bca19",
+  "runtime_sha256": "fe0cd55a1b3fbe9357d705e1cf58cca778aa81ea4d6ffb34b2fcd48ed8ced641",
+  "bundle": "com.dshgo.harmony",
+  "device": "Huawei Mate 60 Pro+",
+  "os": "HarmonyOS 7.0.0.111 API 26",
+  "build": "DevEco Studio 26.0.0.851 debug signed",
+  "date": "2026-11-13",
+  "scope": "Remote DSH direct HTTPS/WSS host management and computer file/command/job operations; incomplete upstream parity",
+  "previous_verified_phone_build": "native-build-phase2.json",
+  "checks": [
+    "final signed HAP built and replacement installed without uninstall",
+    "73 native DshClient integration assertions against embedded DSH runtime",
+    "5 host storage and failure-recovery tests; 9 actual owner lifecycle tests",
+    "wire tests including actual command/code approval matching and fail-closed behavior",
+    "4 generated ArkUI dependency checks; new host form observers inspected",
+    "official Mac DSH rejects bad token, missing-port Origin and unauthenticated websocket",
+    "actual DshClient against official Mac DSH: file write/read/error, bash, job stdout/status, rejected approval",
+    "phone created secure remote profile and connected to Mac DSH through temporary USB reverse forwarding",
+    "phone file write/read, bash command and background job completed on Mac; files match expected contents",
+    "phone native job detail displayed real stdout mac-job-fixture and completed state",
+    "final HAP replacement retained Asset credentials; saved remote host reconnected without entering credentials",
+    "final HAP phone approval displayed real command and rejected it; no approval-proof.txt side effect",
+    "test remote host and protected credential deleted through native UI",
+    "phone returned to local engine and home using previously saved Key without reentry",
+    "final cleanup: temporary Mac fixture, private credentials and reverse forwarding removed; no port listener remains",
+    "pre-update settings bodyText crash diagnosed from 15:51 fault record, default callback fixed; generated regression fails old artifact and passes new",
+    "final HAP local engine started using saved Key; system screen timeout restored",
+    "final HAP phone engine parameters page rendered and loaded, returned to local home; no new fault since 16:00"
+  ],
+  "acceptance_limits": [
+    "Mac provider was a deterministic loopback test model; DSH file/shell/job execution was real",
+    "USB reverse forwarding was a development-only transport; production Wi-Fi/public TLS endpoint was not tested",
+    "SSH, account pairing/E2EE relay and interactive terminal remain unimplemented"
+  ],
+  "phone_status": "Final HAP installed; local engine started using saved Key, engine parameters page loaded without crash and phone returned to local chat home. Remote control verified on identical transport code before the final one-line settings callback fix. All temporary forwarding and timeout changes restored.",
+  "remote_control_phone_build_sha256": "5f487dcdbf2bfab831507d7bf29324ae64f03a5f482ab3bc3fab95bf2c6da5b4"
+}
