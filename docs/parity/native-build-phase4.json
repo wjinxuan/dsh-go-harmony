@@ -1,0 +1,30 @@
+{
+  "source_reference": "dsh-Go v1.0.15 a9877420ab9aee121134faf01b6a92a39ce0b05b",
+  "built_at": "2026-11-13T19:24:52+08:00",
+  "build": "DevEco Studio 26.0.0.851 debug signed, HarmonyOS API 26",
+  "bundle": "com.dshgo.harmony",
+  "hap": "entry/build/default/outputs/default/entry-default-signed.hap",
+  "hap_sha256": "00562275946fc32c0105f0d0e179073aad45614006adbc1857d8dd17524c3021",
+  "runtime_sha256": "bd591e79240c5c7ab6aa4d1f48932d0cf6d2e62a6f1ce710d5c0742efdf446d9",
+  "scope": "Session command palette and durable results, embedded and remote context compaction, local browser account sign-in and sign-out, durable local account grants",
+  "checks": {
+    "signed_hap_build": true,
+    "hap_signature_verification": true,
+    "embedded_runtime_digest_matches_pack": true,
+    "dsh_client_live_assertions": 97,
+    "chat_and_remote_owner_tests": 32,
+    "arkui_generated_reactivity_tests": 5,
+    "onboarding_tests": 3,
+    "settings_tests": 5,
+    "model_picker_tests": 7,
+    "wire_tests": "passed",
+    "local_compaction_deepseek_and_openai_compatible": "passed with persisted summaries",
+    "official_mac_remote_compaction_files_shell_jobs_approval": "passed with persisted summary",
+    "embedded_oauth_pkce_cancel_callback_restart_and_revocation": "passed against isolated synthetic Platform"
+  },
+  "acceptance_limits": [
+    "Debug HAP was built and verified. No device connected, so this version was not installed or accepted on a phone.",
+    "OAuth and model providers were isolated test services. A real HarmonyOS browser round trip and authenticated DeepSeek response on this build remain to be checked.",
+    "Remote account changes are handled by the desktop host. SSH, encrypted relay, terminal and media attachments remain incomplete."
+  ]
+}

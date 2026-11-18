@@ -1,0 +1,393 @@
+{
+  "phase": 16,
+  "recorded_at": "2026-11-17T08:46:26.950172+00:00",
+  "status": "installed_phone_chat_terminal_keyboard_fix_pass_remaining_acceptance_open_snapshot",
+  "all_acceptance_complete": false,
+  "snapshot": {
+    "through": "447-plugins-entry",
+    "scope": "Artifactd677:43 focused tests/build/signature/CRC/install and actual chat visible-keyboard send pass. New owned terminal resizes13x42/28x42 with visible keys, closes, and returning chat retains full composer above keyboard. Non-managed form UI remains untested.",
+    "productionFrozen": true
+  },
+  "previous_record": {
+    "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/docs/parity/native-build-phase15.json",
+    "sha256": "4af60f109cbb5db56732e0b7d8e530280ed2c95013af38f38ebc1f09a1cc34ec",
+    "bytes": 25850
+  },
+  "baseline": {
+    "version": "dsh-Go1.0.15",
+    "commit": "a9877420ab9aee121134faf01b6a92a39ce0b05b",
+    "previousInstalledHapSha256": "9db8e6d9f17a711568592b66bb35de72e1a10d0e39f984aa9cb83f1f00515c3f",
+    "runtimeSha256": "93bd20716200d852353999568f4898f9fca2f69846fac5bfc4d0ce85d0ebcf27"
+  },
+  "problem": {
+    "status": "REPRODUCED_ON_PHASE15_PHONE",
+    "evidence": {
+      "path": "/tmp/dsh-device-20261117/chat-keyboard-diagnosis.json",
+      "sha256": "5ac61339454c1b3b45222e851046aad38aab52a68aeab5ea850b7d25d07c6160",
+      "bytes": 8035
+    },
+    "summary": "DefaultOFFSET exposes the focused RichEditor but leaves its lower send/voice/attachment row behind the keyboard.389 is not a chat keyboard pass. Terminal restoring the baseline mode was correct under its previous contract; chat needed a complete-composer resizing policy.",
+    "upstream": "Fixed original chat_screen.dart uses resizeToAvoidBottomInset:true and composer.dart retains multiline/newline, with a separately visible send button."
+  },
+  "change": {
+    "owner": "Index",
+    "routes": [
+      "chat",
+      "terminal"
+    ],
+    "behavior": "Capture the current UIContext mode once when entering either managed route; retainRESIZE across both routes; clear ownership and restore the prior mode when leaving only if the current mode is stillRESIZE. Clear context on disposal so late callbacks cannot reacquire. TerminalPanel no longer reads or writes keyboard mode.",
+    "unchanged": "Other routes retain their captured prior policy; RichEditor IME newline, send/queue logic, terminal Web bridge, shell and resource cleanup are unchanged.",
+    "implementationEvidence": {
+      "path": "/tmp/dsh-device-20261117/chat-keyboard-policy-verification.json",
+      "sha256": "bb89a64691228916e2f58b74031d5ef7a2031ec00d94e79dfc0b2de3283d2b7f",
+      "bytes": 8181
+    },
+    "sourceSnapshot": [
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/ets/pages/Index.ets",
+        "sha256": "1fd0a5680b210f862baedfec3fbe3cb041d270b765e350b59de498017df41c1b",
+        "bytes": 176136
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/ets/ui/TerminalPanel.ets",
+        "sha256": "b0bee9095145ca918909e979189cc0fb376f290315ca8cbc9248a240589bcfa0",
+        "bytes": 21713
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/page-keyboard-layout.test.mjs",
+        "sha256": "334205d4d8a545253c443a5cbc4b44789264e3a54d327a0bf170235557b1afa7",
+        "bytes": 7059
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/terminal-keyboard-layout.test.mjs",
+        "sha256": "7a153dc11f1a8ab7460f94006df52430b37358eb8df798aedf5eb106efbe2eaf",
+        "bytes": 3895
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/voice-index.test.mjs",
+        "sha256": "94f1ddade241838cfe29dfe01ea47efd95fae8d4e9fb1180ae12005be5a6e0f6",
+        "bytes": 11516
+      }
+    ]
+  },
+  "build": {
+    "at": "2026-11-17T08:36:09.085053+00:00",
+    "command": [
+      "/Applications/DevEco-Studio.app/Contents/tools/hvigor/bin/hvigorw",
+      "--mode",
+      "module",
+      "-p",
+      "module=entry@default",
+      "-p",
+      "product=default",
+      "-p",
+      "buildMode=debug",
+      "assembleHap",
+      "--no-daemon"
+    ],
+    "exitCode": 0,
+    "durationSeconds": 10.827,
+    "log": {
+      "path": "/tmp/dsh-device-20261117/419-chat-keyboard-build.log",
+      "sha256": "1b7abf873b24c3a5dfdf45c368f8bf22ba37425eeb250e0c995d7f9633431ce5",
+      "bytes": 92594
+    },
+    "record": {
+      "path": "/tmp/dsh-device-20261117/419-chat-keyboard-build-result.json",
+      "sha256": "bac0e80f978a8571a6d0ff22be5275f83ce54514bf1b5547b8d51f37c9165287",
+      "bytes": 420
+    }
+  },
+  "focused_tests": {
+    "structuredEvidence": {
+      "path": "/tmp/dsh-device-20261117/420-focused-test-results.json",
+      "sha256": "60f9a5232d49b0879f702c5836e54a31fede3f1366a9f9a69b7e3a22d99d53e3",
+      "bytes": 2619
+    },
+    "tests": 43,
+    "pass": 43,
+    "fail": 0,
+    "skipped": 0,
+    "runs": [
+      {
+        "test": "page-keyboard-layout",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/page-keyboard-layout.test.mjs",
+          "entry/build/default/cache/default/default@CompileArkTS/esmodule/debug/entry/src/main/ets/pages/Index.ts"
+        ],
+        "exitCode": 0,
+        "counts": {
+          "tests": 14,
+          "pass": 14,
+          "fail": 0,
+          "skipped": 0,
+          "cancelled": 0
+        },
+        "log": {
+          "path": "/tmp/dsh-device-20261117/420-page-keyboard-layout.log",
+          "sha256": "b464af5cf4c22e6f5a8b290c040953a33325be34b4147ac9b0d17687020efb7a",
+          "bytes": 1944
+        }
+      },
+      {
+        "test": "terminal-keyboard-layout",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/terminal-keyboard-layout.test.mjs",
+          "entry/build/default/cache/default/default@CompileArkTS/esmodule/debug/entry/src/main/ets/ui/TerminalPanel.ts"
+        ],
+        "exitCode": 0,
+        "counts": {
+          "tests": 6,
+          "pass": 6,
+          "fail": 0,
+          "skipped": 0,
+          "cancelled": 0
+        },
+        "log": {
+          "path": "/tmp/dsh-device-20261117/420-terminal-keyboard-layout.log",
+          "sha256": "ed101428094316db89012b5d6cabe5bb4a9ccc70c451423b2330e41fd94653a6",
+          "bytes": 966
+        }
+      },
+      {
+        "test": "index-overlay-placement",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/index-overlay-placement.test.mjs",
+          "entry/build/default/cache/default/default@CompileArkTS/esmodule/debug/entry/src/main/ets/pages/Index.ts"
+        ],
+        "exitCode": 0,
+        "counts": {
+          "tests": 4,
+          "pass": 4,
+          "fail": 0,
+          "skipped": 0,
+          "cancelled": 0
+        },
+        "log": {
+          "path": "/tmp/dsh-device-20261117/420-index-overlay-placement.log",
+          "sha256": "2c0fafb5aa191aec0eec5d1dbf58d0b956995d87cd55066411847975a3ef5b5b",
+          "bytes": 524
+        }
+      },
+      {
+        "test": "conversation-replay-load",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/conversation-replay-load.test.mjs",
+          "entry/build/default/cache/default/default@CompileArkTS/esmodule/debug/entry/src/main/ets/ui/ConversationReplay.ts"
+        ],
+        "exitCode": 0,
+        "counts": {
+          "tests": 8,
+          "pass": 8,
+          "fail": 0,
+          "skipped": 0,
+          "cancelled": 0
+        },
+        "log": {
+          "path": "/tmp/dsh-device-20261117/420-conversation-replay-load.log",
+          "sha256": "258cf84dfd04384b7d5e9b5d116f42b1855d5516f3bd9c634e5fc407acc1fe66",
+          "bytes": 1103
+        }
+      },
+      {
+        "test": "conversation-import-paste",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/conversation-import-paste.test.mjs",
+          "entry/build/default/cache/default/default@CompileArkTS/esmodule/debug/entry/src/main/ets/ui/ConversationImportPanel.ts"
+        ],
+        "exitCode": 0,
+        "counts": {
+          "tests": 4,
+          "pass": 4,
+          "fail": 0,
+          "skipped": 0,
+          "cancelled": 0
+        },
+        "log": {
+          "path": "/tmp/dsh-device-20261117/420-conversation-import-paste.log",
+          "sha256": "a338fc1537d1f4c0260650e005d0e65fd22f6149912dd8fdd4f1cbdfbabbbf11",
+          "bytes": 791
+        }
+      },
+      {
+        "test": "voice-index",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/voice-index.test.mjs"
+        ],
+        "exitCode": 0,
+        "counts": {
+          "tests": 7,
+          "pass": 7,
+          "fail": 0,
+          "skipped": 0,
+          "cancelled": 0
+        },
+        "log": {
+          "path": "/tmp/dsh-device-20261117/420-voice-index.log",
+          "sha256": "98523c11ada09785842084b8addf09b5e0bb13db6f86fb34cafa0150cba08f8c",
+          "bytes": 1026
+        }
+      }
+    ],
+    "boundary": "page14, terminal6, overlay4, replay8 and paste4 each include source plus actual CompileArkTS callbacks/attributes; voice7 executes source callbacks. This43 is one combined invocation-set total, not43 independent end-user features."
+  },
+  "signature": {
+    "command": [
+      "/Applications/DevEco-Studio.app/Contents/jbr/Contents/Home/bin/java",
+      "-jar",
+      "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/toolchains/lib/hap-sign-tool.jar",
+      "verify-app",
+      "-inFile",
+      "entry/build/default/outputs/default/entry-default-signed.hap",
+      "-outCertChain",
+      "/tmp/dsh-device-20261117/421-chat-keyboard.cer",
+      "-outProfile",
+      "/tmp/dsh-device-20261117/421-chat-keyboard.p7b"
+    ],
+    "exitCode": 0,
+    "log": {
+      "path": "/tmp/dsh-device-20261117/421-signature.log",
+      "sha256": "e7153275b386060c8a0e5805d40fe6ead41bd3be78f49ca538f3e4f65e043e75",
+      "bytes": 3285
+    },
+    "record": {
+      "path": "/tmp/dsh-device-20261117/421-signature-result.json",
+      "sha256": "096e787521d7482bfe93e6420d6bc3c16f5da0d68746045103e358b57a1e38a7",
+      "bytes": 535
+    }
+  },
+  "artifact": {
+    "hap": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/build/default/outputs/default/entry-default-signed.hap",
+    "sha256": "d677c58ef79eef4f9580c820667a50e30ce9df2123c8f73bf8146a59c4a9cda4",
+    "bytes": 197404663,
+    "zipCRC": "pass",
+    "runtimeSha256": "93bd20716200d852353999568f4898f9fca2f69846fac5bfc4d0ce85d0ebcf27",
+    "nativeLibraries": {
+      "libs/arm64-v8a/libc++_shared.so": "60bce7be77b6dbb7be3151a14e5b0f83f04ee29d641dba025b8c1b7207e93d34",
+      "libs/arm64-v8a/libdshlocal.so": "68f7933cb36f2ab6dc7303913efb4aa58ba52268cc002642464dec7b6cb39819",
+      "libs/arm64-v8a/libnode.so": "efd4a03096bde322d1c171361a8a1d7b208ea34ddc70ae907e660750c56e6acf",
+      "libs/arm64-v8a/libonnxruntime.so": "f9fd9080a10f2b93323d597225fbaa63d06f93b384bdfdd7285db9a9115fcc2b",
+      "libs/arm64-v8a/libsherpa-onnx-c-api.so": "75b38a525e7178bee052ec99a77175a934daa71ab6983deabbe948a96ae84221"
+    },
+    "nativeLibrariesUnchanged": true,
+    "archiveEntrySetUnchanged": true,
+    "changedArchiveEntries": [
+      "ets/modules.abc",
+      ".pages.info",
+      "ets/sourceMaps.map"
+    ],
+    "evidence": {
+      "path": "/tmp/dsh-device-20261117/422-artifact-verification.json",
+      "sha256": "5bac5d0b334ff4eeaf173bcbb5d81eba23c080b8c940415c1cb3470da2198fba",
+      "bytes": 1381
+    },
+    "comparison": {
+      "initialStatus": "FAILED_EXPECTED_ENTRY_LIST_ASSERTION",
+      "initialExitCode": null,
+      "initialExitCodeProvenance": "ROOT reported the failed initial assertion; numeric exit code is not separately recorded here.",
+      "initialExpectation": [
+        "ets/modules.abc",
+        "ets/sourceMaps.map"
+      ],
+      "actualChangedEntries": [
+        "ets/modules.abc",
+        ".pages.info",
+        "ets/sourceMaps.map"
+      ],
+      "resolution": "Additional.pages.info is generated binary metadata,17128bytes in both artifacts. ROOT reviewed and recorded its distinct hashes; entry names, runtime, five native libraries and every other entry remain unchanged. The initial failure is retained, not relabeled as an original pass.",
+      "pagesInfo": {
+        "oldBytes": 17128,
+        "newBytes": 17128,
+        "oldSha256": "a9086748533f914a760e160c64066d61df1340f02f923b6006450e914436b0b6",
+        "newSha256": "4d432d14092b7ee347586089d0b92372f4475cd15e7585d78ad713830eea784d"
+      },
+      "diagnosticLog": {
+        "path": "/tmp/dsh-device-20261117/422-pages-info-diff.log",
+        "sha256": "08f63e97126e687acd8f717657f407fe414d7600d73292e1e6e9230ce8abf2e3",
+        "bytes": 34280
+      },
+      "note": "This artifact does not support a claim that onlyABC/maps changed."
+    }
+  },
+  "installation": {
+    "status": "PASS",
+    "command": "hdc -t <device> install -r entry-default-signed.hap",
+    "commandProvenance": "Actual structured command has device identifier redacted here; original private local record retained.",
+    "exitCode": 0,
+    "record": {
+      "path": "/tmp/dsh-device-20261117/423-install-result.json",
+      "sha256": "5dd35ea4926c12d2fb58a7fe593c7de82a0bbd3676d02db4ec0cc22dab01991e",
+      "bytes": 490
+    },
+    "log": {
+      "path": "/tmp/dsh-device-20261117/423-install.log",
+      "sha256": "9ed9b6d76b5a09c3b3c13dbf265f3febc86fce9d44419041234e67e7b07cafce",
+      "bytes": 175
+    },
+    "installedHapSha256": "d677c58ef79eef4f9580c820667a50e30ce9df2123c8f73bf8146a59c4a9cda4"
+  },
+  "phone_recheck": {
+    "status": "MANAGED_CHAT_TERMINAL_KEYBOARD_FIX_PASS",
+    "chatEvidence": {
+      "path": "/tmp/dsh-device-20261117/chat-keyboard-device-verification.json",
+      "sha256": "cc313bbbb2c9c7263109eb347fc383960eef1ea30651d2ba2b843c6401e04862",
+      "bytes": 7010
+    },
+    "terminalRouteEvidence": {
+      "path": "/tmp/dsh-device-20261117/phase16-terminal-route-verification.json",
+      "sha256": "a58533b2e0fa0c3a6282f8eabb84d48f21a799fa3ebeb576fbfdfa6f8e165239",
+      "bytes": 8790
+    },
+    "passed": [
+      "Chat header/editor/action row above keyboard",
+      "Tap Send while keyboard remains visible completes exactly once",
+      "New owned terminal native keys above keyboard and actual stty13x42",
+      "Hide keyboard restores actual stty28x42 and full-height keybar",
+      "Confirm terminal close; settled tab and controls disappear",
+      "Returning chat and opening keyboard retains complete composer"
+    ],
+    "notVerified": [
+      "Non-managed page form keyboard behavior; source/generated restoration tests pass but UI form was not tested",
+      "Native terminal PasteButton",
+      "Physical microphone recognition remains user-deferred"
+    ],
+    "boundary": "This passes the managed chat/terminal fix. It does not claim every other page, terminal paste or microphone recognition was tested.",
+    "nonPassingAttempts": "426 early input and429–432 mistaken navigation remain recorded;443 is transient closure,444 settled supplies the close pass."
+  },
+  "peer_review": {
+    "reviewer": "media_parity",
+    "status": "NO_SOURCE_BLOCKER",
+    "method": "Read-only source and test review; no edits or repeated test execution.",
+    "findings": "Single Index owner captures baseline once across chat/terminal; clear-before-restore handlesOFFSET0, external mode changes remain intact, new interval recaptures, disposal clears context so late route callbacks do nothing, and Terminal child disposal cannot write page policy."
+  },
+  "historical_evidence": {
+    "phase15": "9db remains the artifact for imported/direct replay, terminal13x42/28x42 andCtrl+C/close/return evidence. Those phone results are not automatically counted as a newd677 phone recheck.",
+    "redGreenRuns": {
+      "path": "/tmp/dsh-device-20261117/chat-keyboard-policy-verification.json",
+      "sha256": "bb89a64691228916e2f58b74031d5ef7a2031ec00d94e79dfc0b2de3283d2b7f",
+      "bytes": 8181
+    }
+  },
+  "limits": [
+    "New-artifact phone chat and terminal managed-route keyboard fix passes the recorded flow. Non-managed form keyboard behavior, terminal paste and unrelated pending acceptance items are not counted as passed.",
+    "Red/source/generated/repeated runs must not be summed as independent feature cases.",
+    "Runtime93bd and five native libraries are unchanged; no repack/native change is claimed.",
+    "Physical microphone recognition remains user-deferred.",
+    "Other pending UI or platform checks retain their prior status.",
+    "No private ready/auth/clipboard payload/account material is copied."
+  ],
+  "authoring": {
+    "agent": "sensevoice_native",
+    "mode": "Read-only final source audit and evidence authoring",
+    "repoWriteScope": "docs/parity/native-build-phase15.json and docs/parity/native-build-phase16.json only during this task",
+    "productionChangesDuringThisTask": false,
+    "hdcOperations": 0,
+    "buildOperations": 0
+  }
+}

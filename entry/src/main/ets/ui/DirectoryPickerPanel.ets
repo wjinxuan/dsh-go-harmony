@@ -1,3 +1,4 @@
+import { localizedSettingsText, localizedSettingsFormat } from './SettingsLocale'
 import { DshClient } from '../dsh/DshClient'
 import { string, WireObject } from '../dsh/DshWire'
 import { DshGlyphs, ThemeColors, themeColors } from './DshTheme'
@@ -6,10 +7,14 @@ import { absoluteHostPath, directoryLevel, directoryNameProblem, HostDirectoryEn
 
 @Component
 export struct DirectoryPickerPanel {
+  @StorageProp('dshLanguage') private localeLanguage: string = 'system'
+  private t(value: string): string { return localizedSettingsText(value, this.localeLanguage) }
+  private f(value: string, args: (string | number | boolean | null | undefined)[]): string { return localizedSettingsFormat(value, args, this.localeLanguage) }
+
   @Prop colors: ThemeColors = themeColors()
   @Prop workingDir: string = ''
-  @Prop titleText: string = '选择文件夹'
-  @Prop confirmLabel: string = '选择'
+  @Prop titleText: string = this.t("选择文件夹")
+  @Prop confirmLabel: string = this.t("选择")
   @Prop recentPaths: string[] = []
   @Prop submitting: boolean = false
   @Prop submitError: string = ''
@@ -61,7 +66,7 @@ export struct DirectoryPickerPanel {
       if (!this.active || generation !== this.generation || connection !== this.client.connectionIdentity()) return
       const message = sessionActionError(reason, '')
       this.noBrowser = /directory-picker\/unavailable|gateway\/(method|service|lookup)-unavailable|HTTP (404|405|501)/.test(message)
-      this.error = this.noBrowser ? '这台主机不能在这里浏览文件夹' : `打不开这个文件夹${message ? `（${message}）` : ''}`
+      this.error = this.noBrowser ? this.t("这台主机不能在这里浏览文件夹") : this.f("打不开这个文件夹{0}", [message ? `（${message}）` : ''])
     } finally {
       if (this.active && generation === this.generation) this.busy = false
     }
@@ -82,7 +87,7 @@ export struct DirectoryPickerPanel {
 
   private enterPath(): void {
     const path = this.pathInput.trim()
-    if (!absoluteHostPath(path)) { this.error = '请输入主机上的绝对路径'; return }
+    if (!absoluteHostPath(path)) { this.error = this.t("请输入主机上的绝对路径"); return }
     if (this.noBrowser) this.onPick(path)
     else void this.open(path)
   }
@@ -99,12 +104,12 @@ export struct DirectoryPickerPanel {
     let created = ''
     try {
       created = string(await this.client.request('directoryPicker/createDirectory', args))
-      if (!created) throw new Error('主机没有确认新文件夹的路径')
+      if (!created) throw new Error(this.t("主机没有确认新文件夹的路径"))
     } catch (reason) {
       if (!this.active || generation !== this.generation || connection !== this.client.connectionIdentity()) return
-      const message = sessionActionError(reason, '没能新建文件夹')
+      const message = sessionActionError(reason, this.t("没能新建文件夹"))
       this.canCreate = !/directory-picker\/unavailable|gateway\/(method|service|lookup)-unavailable|HTTP (404|405|501)/.test(message)
-      this.error = /directory-picker\/exists/.test(message) ? '已经有同名的文件夹' : message
+      this.error = /directory-picker\/exists/.test(message) ? this.t("已经有同名的文件夹") : message
     } finally {
       if (this.active && generation === this.generation) this.busy = false
     }
@@ -144,18 +149,18 @@ export struct DirectoryPickerPanel {
   @Builder
   private places() {
     Column({ space: 8 }) {
-      Text('位置').fontSize(13).fontColor(this.colors.muted).width('100%')
+      Text(this.t("位置")).fontSize(13).fontColor(this.colors.muted).width('100%')
       if (!this.noBrowser) {
-        this.row('主目录', () => '~', () => { void this.open() })
-        if (this.workingDir) this.row('默认工作目录', () => this.workingDir, () => { void this.open(this.workingDir) })
-        if (this.recentPaths.length > 0) Text('最近').fontSize(13).fontColor(this.colors.muted).width('100%')
+        this.row(this.t("主目录"), () => '~', () => { void this.open() })
+        if (this.workingDir) this.row(this.t("默认工作目录"), () => this.workingDir, () => { void this.open(this.workingDir) })
+        if (this.recentPaths.length > 0) Text(this.t("最近")).fontSize(13).fontColor(this.colors.muted).width('100%')
         ForEach(this.recentPaths, (path: string) => {
           this.row(path, () => '', () => { void this.open(path) })
         }, (path: string) => path)
       } else {
-        this.row('重试浏览主目录', () => '', () => { void this.open() })
+        this.row(this.t("重试浏览主目录"), () => '', () => { void this.open() })
       }
-      this.row('输入路径', () => '', () => { this.editor = 'path'; this.error = '' })
+      this.row(this.t("输入路径"), () => '', () => { this.editor = 'path'; this.error = '' })
     }.width('100%')
   }
 
@@ -163,15 +168,15 @@ export struct DirectoryPickerPanel {
   private input() {
     Column({ space: 8 }) {
       if (this.editor === 'path') {
-        TextInput({ text: this.pathInput, placeholder: '输入主机上的绝对路径' }).fontColor(this.colors.text)
+        TextInput({ text: this.pathInput, placeholder: this.t("输入主机上的绝对路径") }).fontColor(this.colors.text)
           .backgroundColor(this.colors.surface).onChange((value: string) => { this.pathInput = value })
-        Button(this.noBrowser ? this.confirmLabel : '前往').width('100%').fontColor(this.colors.onPrimary).backgroundColor(this.colors.primary)
+        Button(this.noBrowser ? this.confirmLabel : this.t("前往")).width('100%').fontColor(this.colors.onPrimary).backgroundColor(this.colors.primary)
           .enabled(!this.busy && !this.submitting && !!this.pathInput.trim()).onClick(() => this.enterPath())
       } else {
-        Text(`在「${this.title()}」里`).fontColor(this.colors.muted).fontSize(13).width('100%')
-        TextInput({ text: this.folderName, placeholder: '文件夹名称' }).maxLength(120).fontColor(this.colors.text)
+        Text(this.f("在「{0}」里", [this.title()])).fontColor(this.colors.muted).fontSize(13).width('100%')
+        TextInput({ text: this.folderName, placeholder: this.t("文件夹名称") }).maxLength(120).fontColor(this.colors.text)
           .backgroundColor(this.colors.surface).onChange((value: string) => { this.folderName = value })
-        Button('创建').width('100%').fontColor(this.colors.onPrimary).backgroundColor(this.colors.primary)
+        Button(this.t("创建")).width('100%').fontColor(this.colors.onPrimary).backgroundColor(this.colors.primary)
           .enabled(!this.busy && !!this.folderName.trim()).onClick(() => { void this.createFolder() })
       }
     }.width('100%')
@@ -182,14 +187,14 @@ export struct DirectoryPickerPanel {
       Row({ space: 8 }) {
         Button({ type: ButtonType.Circle }) {
           Text(DshGlyphs.back).fontFamily(DshGlyphs.family).fontSize(20).fontColor(this.colors.text)
-        }.width(44).height(44).backgroundColor(this.colors.surface).accessibilityText('返回')
+        }.width(44).height(44).backgroundColor(this.colors.surface).accessibilityText(this.t("返回"))
           .enabled(!this.busy && !this.submitting).onClick(() => { if (!this.back()) this.onClose() })
-        Text(this.editor === 'folder' ? '新建文件夹' : this.editor === 'path' ? '输入路径' : this.title())
+        Text(this.editor === 'folder' ? this.t("新建文件夹") : this.editor === 'path' ? this.t("输入路径") : this.title())
           .fontColor(this.colors.text).fontSize(21).layoutWeight(1).maxLines(1)
         if (!this.showingPlaces && !this.editor && this.canCreate) {
           Button({ type: ButtonType.Circle }) {
             Text(DshGlyphs.add).fontFamily(DshGlyphs.family).fontSize(20).fontColor(this.colors.text)
-          }.width(44).height(44).backgroundColor(this.colors.surface).accessibilityText('新建文件夹').enabled(!this.busy && !this.submitting)
+          }.width(44).height(44).backgroundColor(this.colors.surface).accessibilityText(this.t("新建文件夹")).enabled(!this.busy && !this.submitting)
             .onClick(() => { this.editor = 'folder'; this.folderName = ''; this.error = '' })
         }
       }.width('100%')
@@ -201,7 +206,7 @@ export struct DirectoryPickerPanel {
         Scroll() {
           Row({ space: 5 }) {
             ForEach(this.level.crumbs, (crumb: HostDirectoryEntry) => {
-              Button(crumb.path === this.level?.home ? '主目录' : crumb.name).height(34).fontSize(13)
+              Button(crumb.path === this.level?.home ? this.t("主目录") : crumb.name).height(34).fontSize(13)
                 .fontColor(this.colors.text).backgroundColor(this.colors.surfaceAlt)
                 .enabled(!this.busy && !this.submitting && crumb.path !== this.level?.path)
                 .onClick(() => { void this.open(crumb.path) })
@@ -213,16 +218,16 @@ export struct DirectoryPickerPanel {
             ListItem() { this.row(entry.name, () => '', () => { void this.open(entry.path) }) }
           }, (entry: HostDirectoryEntry) => `${entry.path}|${entry.name}`)
           if (this.folders().length === 0) {
-            ListItem() { Text('这里没有子文件夹').fontSize(14).fontColor(this.colors.muted).padding(12) }
+            ListItem() { Text(this.t("这里没有子文件夹")).fontSize(14).fontColor(this.colors.muted).padding(12) }
           }
           if (this.hiddenCount() > 0) {
             ListItem() {
-              Button(this.showHidden ? '收起隐藏文件夹' : `显示 ${this.hiddenCount()} 个隐藏文件夹`)
+              Button(this.showHidden ? this.t("收起隐藏文件夹") : this.f("显示 {0} 个隐藏文件夹", [this.hiddenCount()]))
                 .fontColor(this.colors.primary).backgroundColor(this.colors.surface).onClick(() => { this.showHidden = !this.showHidden })
             }
           }
           if (this.level.truncated) {
-            ListItem() { Text('文件夹太多，只列出了前面一部分').fontSize(13).fontColor(this.colors.muted).padding(8) }
+            ListItem() { Text(this.t("文件夹太多，只列出了前面一部分")).fontSize(13).fontColor(this.colors.muted).padding(8) }
           }
         }.layoutWeight(1).width('100%')
         Button(`${this.confirmLabel}「${this.title()}」`).height(46).width('100%').fontColor(this.colors.onPrimary).backgroundColor(this.colors.primary)

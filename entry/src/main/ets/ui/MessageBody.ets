@@ -1,3 +1,8 @@
+import { localizedSettingsText } from './SettingsLocale'
+import { MessageRender } from './MessageRender'
+import { MermaidPanel } from './MermaidPanel'
+import { NativePluginView } from './NativePluginView'
+import { CodeRun, FencedDiffLine, fencedCodeLanguage, fencedCodeRuns, fencedDiffLines, fencedDiffStyle } from './CodeHighlight'
 import { common } from '@kit.AbilityKit'
 import { pasteboard } from '@kit.BasicServicesKit'
 import { DshGlyphs, DshSpace, DshType, ThemeColors, themeColors } from './DshTheme'
@@ -5,20 +10,41 @@ import {
   BlockKind, InlineKind, InlineRun, MarkdownBlock, isMessageLink, isWebLink, parseInline, parseMarkdown
 } from './MarkdownBlocks'
 
+const checkedTaskGlyph: string = '\uE055'
+const uncheckedTaskGlyph: string = '\uE056'
+
 @Component
 export struct MessageBody {
+  @StorageProp('dshLanguage') private localeLanguage: string = 'system'
+  private t(value: string): string { return localizedSettingsText(value, this.localeLanguage) }
+
   @Prop @Watch('updateBlocks') text: string = ''
+  @Prop @Watch('updateBlocks') streaming: boolean = false
+  @State private showDiagram: boolean = false
+  @State private diagramText: string = ''
   @Prop colors: ThemeColors = themeColors()
   @Prop fontSize: number = 15
+  @Prop visualReplies: boolean = true
+  @Prop replyState: string = 'readonly'
+  @Prop replyText: string = ''
+  onReply?: (text: string) => Promise<boolean>
   onOpenLink?: (url: string) => void
   @State private blocks: MarkdownBlock[] = []
+  @State private codeViewportWidth: number = 0
 
   aboutToAppear(): void {
     this.updateBlocks()
   }
 
   private updateBlocks(): void {
-    this.blocks = parseMarkdown(this.text)
+    this.blocks = parseMarkdown(this.text, this.streaming)
+  }
+
+  private codeWidth(block: MarkdownBlock): number {
+    const context = this.getUIContext()
+    const pixels = context.getMeasureUtils().measureText({ textContent: block.text,
+      fontSize: DshType.mono, fontFamily: DshType.monoFamily })
+    return Math.max(this.codeViewportWidth, context.px2vp(pixels) + 2 * DshSpace.md + 2)
   }
 
   private showStatus(message: Resource): void {
@@ -60,6 +86,10 @@ export struct MessageBody {
 
   @Builder
   private inlineText(value: string, size: () => number, color: () => string, bold: boolean) {
+    if (parseInline(value).some((run: InlineRun) => run.kind === InlineKind.Math)) {
+      MessageRender({ text: value, colors: this.colors, fontSize: size(), textColor: color(), bold: bold,
+        onOpenLink: (url: string) => { void this.openLink(url) } })
+    } else {
     Text() {
       ForEach(parseInline(value), (run: InlineRun) => {
         if (run.kind === InlineKind.Link) {
@@ -88,6 +118,7 @@ export struct MessageBody {
     .lineHeight(size() * (bold ? 1.35 : DshType.bodyHeight))
     .wordBreak(WordBreak.BREAK_WORD)
     .copyOption(CopyOptions.LocalDevice)
+    }
   }
 
   @Builder
@@ -101,6 +132,10 @@ export struct MessageBody {
           .maxLines(1)
           .textOverflow({ overflow: TextOverflow.Ellipsis })
           .layoutWeight(1)
+        if (block.label.toLowerCase() === 'mermaid') {
+          Button(this.t("预览")).height(38).fontSize(13).fontColor(this.colors.primary).backgroundColor(Color.Transparent)
+            .onClick(() => { this.diagramText = block.text; this.showDiagram = true })
+        }
         Button({ type: ButtonType.Normal }) {
           Text(DshGlyphs.copy)
             .fontFamily(DshGlyphs.family)
@@ -118,17 +153,43 @@ export struct MessageBody {
       .backgroundColor(this.colors.codeHeader)
       Divider().color(this.colors.codeBorder)
       Scroll() {
-        Text(block.text)
+        if (fencedCodeLanguage(block.label) === 'diff') {
+          Column({ space: 0 }) {
+            ForEach(fencedDiffLines(block.text), (line: FencedDiffLine) => {
+              Text(line.text || ' ')
+                .fontFamily(DshType.monoFamily)
+                .fontSize(DshType.mono)
+                .lineHeight(DshType.mono * DshType.monoHeight)
+                .fontColor(fencedDiffStyle(line.kind, this.colors).color)
+                .backgroundColor(fencedDiffStyle(line.kind, this.colors).background)
+                .padding({ left: DshSpace.md, right: DshSpace.md })
+                .width('100%')
+                .copyOption(CopyOptions.LocalDevice)
+            }, (line: FencedDiffLine, index: number) => `${index}/${line.kind}/${line.text}`)
+          }.width(this.codeWidth(block)).padding({ top: DshSpace.md, bottom: DshSpace.md })
+        } else {
+        Text() {
+          ForEach(fencedCodeRuns(block.text, block.label, this.colors), (run: CodeRun) => {
+            Span(run.text).fontColor(run.style.color)
+              .fontStyle(run.style.italic ? FontStyle.Italic : FontStyle.Normal)
+              .fontWeight(run.style.weight)
+              .decoration({ type: run.style.underline ? TextDecorationType.Underline : TextDecorationType.None })
+              .textBackgroundStyle({ color: run.style.background })
+          }, (run: CodeRun, index: number) => `${index}/${JSON.stringify(run)}`)
+        }
           .fontFamily(DshType.monoFamily)
           .fontSize(DshType.mono)
           .lineHeight(DshType.mono * DshType.monoHeight)
           .fontColor(this.colors.text)
           .padding(DshSpace.md)
+          .width(this.codeWidth(block))
           .copyOption(CopyOptions.LocalDevice)
+        }
       }
       .scrollable(ScrollDirection.Horizontal)
       .scrollBar(BarState.Auto)
       .width('100%')
+      .onAreaChange((_old: Area, area: Area) => { this.codeViewportWidth = Number(area.width) })
     }
     .width('100%')
     .backgroundColor(this.colors.codeSurface)
@@ -171,7 +232,15 @@ export struct MessageBody {
   @Builder
   private renderBlock(block: MarkdownBlock) {
     if (block.kind === BlockKind.Code) {
-      this.codeBlock(block)
+      if (block.label.toLowerCase() === 'dsh-ui' && this.visualReplies && !this.streaming) {
+        NativePluginView({ colors: this.colors, view: block.text, budget: 'model', onReply: this.onReply,
+          replyState: this.replyState, replyText: this.replyText })
+      } else if (block.label === 'dsh-math') {
+        MessageRender({ text: block.text, colors: this.colors, fontSize: this.fontSize, display: true })
+      } else if (block.label === 'dsh-math-pending') {
+        Text(block.text).fontFamily(DshType.monoFamily).fontColor(this.colors.muted).fontSize(this.fontSize * 0.875)
+          .copyOption(CopyOptions.LocalDevice).width('100%')
+      } else this.codeBlock(block)
     } else if (block.kind === BlockKind.Table) {
       this.tableBlock(block)
     } else if (block.kind === BlockKind.Heading) {
@@ -185,14 +254,29 @@ export struct MessageBody {
       .border({ width: { left: 2 }, color: this.colors.border })
     } else if (block.kind === BlockKind.ListItem) {
       Row({ space: DshSpace.sm }) {
-        Text(block.label)
-          .fontColor(this.colors.muted)
-          .fontSize(this.fontSize)
-          .lineHeight(this.fontSize * DshType.bodyHeight)
-          .constraintSize({ minWidth: 15 })
-        Column() {
-          this.inlineText(block.text, () => this.fontSize, () => this.colors.text, false)
+        if (block.label) {
+          Text(block.label)
+            .fontColor(this.colors.muted)
+            .fontSize(this.fontSize)
+            .lineHeight(this.fontSize * DshType.bodyHeight)
+            .constraintSize({ minWidth: 15 })
         }
+        Row({ space: DshSpace.xs }) {
+          if (block.checked !== undefined) {
+            Text(block.checked ? checkedTaskGlyph : uncheckedTaskGlyph)
+              .fontFamily(DshGlyphs.family)
+              .fontColor(block.checked ? this.colors.primary : this.colors.muted)
+              .fontSize(18)
+              .lineHeight(this.fontSize * DshType.bodyHeight)
+              .accessibilityText(block.checked ? $r('app.string.markdown_task_checked') :
+                $r('app.string.markdown_task_unchecked'))
+          }
+          Column() {
+            this.inlineText(block.text, () => this.fontSize, () => this.colors.text, false)
+          }
+          .layoutWeight(1)
+        }
+        .alignItems(VerticalAlign.Top)
         .layoutWeight(1)
       }
       .alignItems(VerticalAlign.Top)
@@ -205,6 +289,11 @@ export struct MessageBody {
     }
   }
 
+  @Builder
+  private diagramPreview() {
+    MermaidPanel({ text: this.diagramText, colors: this.colors, onClose: () => { this.showDiagram = false } })
+  }
+
   build() {
     Column({ space: DshSpace.sm }) {
       ForEach(this.blocks, (block: MarkdownBlock) => {
@@ -213,5 +302,6 @@ export struct MessageBody {
     }
     .width('100%')
     .alignItems(HorizontalAlign.Start)
+    .bindContentCover($$this.showDiagram, this.diagramPreview)
   }
 }

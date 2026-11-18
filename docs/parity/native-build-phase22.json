@@ -1,0 +1,320 @@
+{
+  "phase": 22,
+  "recordedAt": "2026-11-18T03:40:47.629216+00:00",
+  "status": "installed-verified-short-background-positive-and-done-off-restored",
+  "allAcceptanceComplete": false,
+  "scope": "Bounded OS transient task for already-started completion and notification publishing; no permanent background guarantee or new permission.",
+  "build": {
+    "exitCode": 0,
+    "seconds": 9.056,
+    "hapSha256": "a0ee4a6557a5ee353336cc14ca71ae19ead41ff7ce2bde4479d351e0a6414fe8",
+    "hapBytes": 197452348
+  },
+  "buildEvidence": {
+    "path": "/tmp/dsh-device-20261118/877-phase22-build.json",
+    "bytes": 147,
+    "sha256": "254a50d5da6bfe54847d986e96f154d353b560795b032496b14457419d764700"
+  },
+  "buildLog": {
+    "path": "/tmp/dsh-device-20261118/877-phase22-build.log",
+    "bytes": 92857,
+    "sha256": "4f6db4be66edc64a0572239d6282f8e25c63055e49307b06fdc439bc9743a0b0"
+  },
+  "tests": {
+    "sourceCases": 14,
+    "actualGeneratedCases": 14,
+    "distinctNotificationCases": 14,
+    "compiledFail": 0,
+    "compiledSkip": 0,
+    "localePass": 4,
+    "localeFail": 0,
+    "localeSkip": 0,
+    "counting": "Same 14 notification cases run against source and actual generated code; do not count as 28 distinct cases. Locale4 is separate.",
+    "sourceEvidence": {
+      "path": "/tmp/dsh-device-20261118/notification-background-fix/verification.json",
+      "bytes": 8136,
+      "sha256": "0400f048b777e4652ea8d7cc099ddcb0e0ff155526b472050296d6de0d5bc5ad"
+    },
+    "compiledEvidence": {
+      "path": "/tmp/dsh-device-20261118/notification-background-fix/compiled-877-verification.json",
+      "bytes": 2888,
+      "sha256": "3b9ddf39ec96def8c990d09e0e0fce16d266a3776239340522edcdd6767bdcff"
+    }
+  },
+  "production": [
+    {
+      "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/ets/ui/BackgroundCompletion.ets",
+      "bytes": 2955,
+      "sha256": "1c92bb0da08313887641f56f3b82960929e6aac3b90b195b5d474041c7304255"
+    },
+    {
+      "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/ets/ui/ChatNotifications.ets",
+      "bytes": 7538,
+      "sha256": "d38dce2cdc16315ee97c9c07f71ee5b89eb05d94cd913bcaf1938680c968a111"
+    },
+    {
+      "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/ets/entryability/EntryAbility.ets",
+      "bytes": 2338,
+      "sha256": "ee2fd3d0b7a0f3faec0b15ed86d5fddf3a1099297f5fefc4e6823939a844cbf0"
+    }
+  ],
+  "testSources": [
+    {
+      "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/notification-background.test.mjs",
+      "bytes": 9720,
+      "sha256": "3e8e96ce2807186f55895a000bf371de1b37efd7eff7889a6f04d433310043a7"
+    },
+    {
+      "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/notification-fixture.mjs",
+      "bytes": 2126,
+      "sha256": "184eac23afd951fa129eb6ceb41718fd0956d0957090d89886c640673cdf0503"
+    },
+    {
+      "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/check-notifications.sh",
+      "bytes": 1986,
+      "sha256": "399905d1b3988ffa6547e826353f324afbb6c945542c0299c54672d3ba507f3a"
+    }
+  ],
+  "platformContract": {
+    "api": "@kit.BackgroundTasksKit backgroundTaskManager.requestSuspendDelay / cancelSuspendDelay",
+    "since": 9,
+    "capability": "SystemCapability.ResourceSchedule.BackgroundTaskManager.TransientTask",
+    "permissionAdded": false,
+    "duration": "Only returned actualDelayTime is a grant; normally up to 180000ms, low battery 60000ms, system daily quota can limit/deny.",
+    "expiry": "Callback usually 6s before deadline; cancel own lease and do not renew, mutate the model or report fake completion.",
+    "reference": "https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/transient-task/",
+    "sdk": {
+      "path": "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.resourceschedule.backgroundTaskManager.d.ts",
+      "bytes": 97517,
+      "sha256": "846b061552680ebf976ecd69b3fbe716768e9c64760676f166c717ab6455b708"
+    }
+  },
+  "integrity": {
+    "signatureExitCode": 0,
+    "crc": "PASS",
+    "nativeLibrariesUnchanged": 5,
+    "runtimeSha256": "e87517f2c5326458eecbe2907db5ed7ceb2765738a1292e6ef5acf6b3a2d09e3",
+    "hapSha256": "a0ee4a6557a5ee353336cc14ca71ae19ead41ff7ce2bde4479d351e0a6414fe8",
+    "changedHapEntries": [
+      ".pages.info",
+      "ets/modules.abc",
+      "ets/sourceMaps.map"
+    ]
+  },
+  "integrityEvidence": {
+    "path": "/tmp/dsh-device-20261118/879-phase22-integrity.json",
+    "bytes": 345,
+    "sha256": "5b0f1fc4687015e38d13328a054bab419e13dcea7f7768392c07deb105b3a08f"
+  },
+  "signatureLog": {
+    "path": "/tmp/dsh-device-20261118/879-phase22-signature.log",
+    "bytes": 3285,
+    "sha256": "d3ba10cb026e82171bcba3a5538b1ba69f11d4093c3492222c320194eb9eb2a5"
+  },
+  "installation": {
+    "installed": true,
+    "result": {
+      "exitCode": 0,
+      "seconds": 10.26,
+      "output": "[Info]App install path:/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/build/default/outputs/default/entry-default-signed.hap msg:install bundle successfully. \nAppMod finish\n"
+    },
+    "evidence": {
+      "path": "/tmp/dsh-device-20261118/883-phase22-install.json",
+      "bytes": 232,
+      "sha256": "d1edd01b27bf3aec8be3688ea4e14b7cd1247f2144e7a2df7d19585aebca758a"
+    },
+    "normalStopState": {
+      "phase": "stopped",
+      "strikes": 0,
+      "startedAt": 1794970773670,
+      "healthyAt": 1794970897156,
+      "failurePresent": false
+    },
+    "normalStopEvidence": {
+      "path": "/tmp/dsh-device-20261118/882-preinstall-state.json",
+      "bytes": 127,
+      "sha256": "cad7c7872bd7823c5805ab7c83795deae3e558e9256b840c4e137f10c65f5366"
+    },
+    "newProcess": {
+      "pid": "38437",
+      "port": 43233,
+      "runtimeVersion": "e87517f2c5326458eecbe2907db5ed7ceb2765738a1292e6ef5acf6b3a2d09e3"
+    },
+    "newProcessEvidence": {
+      "path": "/tmp/dsh-device-20261118/886-phase22-process.json",
+      "bytes": 125,
+      "sha256": "eebef8eeff08f58d462d759eebc0c60533e257c2a98a4126da3d5d3baa3545d4"
+    }
+  },
+  "externalInterruption": {
+    "steps": [
+      887,
+      888,
+      889
+    ],
+    "status": "UNKNOWN_EXTERNAL_FOREGROUND_NOT_PRODUCT_RESULT",
+    "imagesRetained": false,
+    "evidence": {
+      "path": "/tmp/dsh-device-20261118/889-external-foreground-omitted.json",
+      "bytes": 577,
+      "sha256": "0dd7c22fd06024ad17ec08325dd72d20179491f3d017ea1464d2c0681059d4c0"
+    }
+  },
+  "phonePositive": {
+    "status": "PASS_ACTUAL_20S_BACKGROUND_SYSTEM_NOTIFICATION_AND_TAP",
+    "steps": [
+      890,
+      891,
+      892,
+      893,
+      894,
+      895
+    ],
+    "providerRequest": 29,
+    "userSeq": 57,
+    "endSeq": 61,
+    "reason": "completed",
+    "observedTurnDurationMs": 20366,
+    "completedUtc": "2026-11-18T03:31:00.165Z",
+    "notificationCenterObservedUtc": "2026-11-18T03:31:22.358Z",
+    "tapObservedUtc": "2026-11-18T03:31:44.476Z",
+    "samePid": "38437",
+    "backgroundRunningState": "Thawed/background",
+    "afterCompletionState": "Frozen/background",
+    "afterTapState": "Thawed/top-app",
+    "tapDestination": "Exact owned BUSY local conversation and unique request29 result",
+    "lateBackgroundApiTimeout": "Observed after completion and lease release; does not negate actual OS delivery/tap.",
+    "evidence": {
+      "path": "/tmp/dsh-device-20261118/synthetic-openai-24gorhxs/phase22-background-notification-phone-verification.json",
+      "bytes": 8314,
+      "sha256": "82793a9dba93ea396a7b3d3100a14cb437da34ce8537b5adac04c1232c74fa18"
+    },
+    "notificationEvidence": {
+      "path": "/tmp/dsh-device-20261118/894-phase22-notification-center-redacted.json",
+      "bytes": 560,
+      "sha256": "0ae8068d7f7e7df8d3efe91fc5e44a4f2b0f43d22a3a9f8e676deab60348fd7e"
+    },
+    "privacy": "Only redacted notification metadata; private raw notification tree/screens are not copied or read by documentation agent."
+  },
+  "phoneNegative": {
+    "status": "PASS_ACTUAL_PHONE_DONE_OFF_SUPPRESSION_AND_BASELINE_RESTORATION",
+    "steps": [
+      896,
+      897,
+      898,
+      899,
+      900,
+      901,
+      902,
+      903,
+      904,
+      905,
+      906,
+      907,
+      908,
+      909,
+      910
+    ],
+    "providerRequest": 30,
+    "counts": {
+      "checks": 7,
+      "pass": 7,
+      "fail": 0,
+      "skip": 0
+    },
+    "checks": [
+      {
+        "id": "only_done_disabled_while_system_notifications_enabled",
+        "status": "PASS",
+        "summary": "Before sending, receive=true and all other event toggles=true, only done=false; system notifications are enabled."
+      },
+      {
+        "id": "old_notifications_cleared_before_new_request",
+        "status": "PASS",
+        "summary": "A separate pre-request notification-center snapshot contains no old DSH notification."
+      },
+      {
+        "id": "exact_new_short_turn_completes_in_background_before_observation",
+        "status": "PASS",
+        "summary": "Unique request30 completes in20054ms at03:33:22.596UTC, before the post20-second center snapshot and official foreground reopen."
+      },
+      {
+        "id": "done_off_suppresses_actual_os_notification",
+        "status": "PASS",
+        "summary": "After actual completion the real notification-center snapshot remains empty for DSH; this is paired with a clean baseline and positive completed-turn evidence."
+      },
+      {
+        "id": "foreground_reopen_keeps_done_off_without_banner",
+        "status": "PASS",
+        "summary": "Fresh foreground settings snapshot still has only done disabled and no completion banner; readback confirms idle."
+      },
+      {
+        "id": "restore_app_preferences",
+        "status": "PASS",
+        "summary": "All five app notification toggles are restored to true."
+      },
+      {
+        "id": "restore_system_permission_and_reopen_readback",
+        "status": "PASS",
+        "summary": "After ROOT disables system notification permission through official settings and reopens the page, system status is off and all five app toggles remain true, matching the initial baseline."
+      }
+    ],
+    "timeline": {
+      "userTime": "2026-11-18T03:33:02.542Z",
+      "endTime": "2026-11-18T03:33:22.596Z",
+      "turnDurationMs": 20054,
+      "postCompletionCenterArtifactTime": "2026-11-18T03:33:53.505Z",
+      "officialForegroundOpenWrapperArtifactTime": "2026-11-18T03:33:54.141Z",
+      "passiveReadStarted": "2026-11-18T03:34:32.520Z"
+    },
+    "evidence": {
+      "path": "/tmp/dsh-device-20261118/synthetic-openai-24gorhxs/phase22-done-off-notification-phone-verification.json",
+      "bytes": 9367,
+      "sha256": "31b488dcce0690f74631564787dee1fb8bcac16e77322c3e9acbdca0aea2c34b"
+    },
+    "preservedHarnessFailure": {
+      "path": "/tmp/dsh-device-20261118/904-evidence-wrapper-error.json",
+      "kind": "Missing contextlib import after the actual aa-open action; fresh905 snapshot supersedes capture only.",
+      "productFailure": false
+    },
+    "restoration": {
+      "systemNotificationsEnabled": false,
+      "app": {
+        "enabled": true,
+        "done": true,
+        "error": true,
+        "approval": true,
+        "question": true
+      },
+      "readbackStep": 910
+    },
+    "limits": [
+      "The negative case tests only completion/done filtering. It does not claim all other event types were emitted.",
+      "The20-second bounded background task and its completion are real; no permanent background guarantee is inferred.",
+      "907/908 private settings images and private notification-center trees are not copied into this aggregate; only scoped redacted summaries are used."
+    ]
+  },
+  "remaining": [
+    "Release SCREEN lock/timeout override and confirm cleanup",
+    "Continue wallpaper/desktop card and other remaining seventeen-row acceptance actions"
+  ],
+  "limits": [
+    "Only the observed 20-second positive case passed; no permanent background claim",
+    "Only actual OS granted duration/remaining quota applies; request may be denied or shortened",
+    "No automatic background lease renewal; expiry stops the lease without faking model completion",
+    "Original phase21 request28 failure remains historical"
+  ],
+  "negativePendingSnapshot": {
+    "steps": [
+      896,
+      897,
+      898,
+      899,
+      900,
+      901,
+      902
+    ],
+    "status": "IN_PROGRESS_NOT_ASSIGNED",
+    "doneNotificationPreference": false
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "source_reference": "dsh-Go v1.0.15 a9877420ab9aee121134faf01b6a92a39ce0b05b",
+  "relay_reference": "ds-harness-remote 04edf424e08909f2929f74c23abaa8ad86670a7d",
+  "built_at": "2026-11-13T23:56:32+08:00",
+  "build": "DevEco Studio 26.0.0.851 debug signed, HarmonyOS API 26, ARM64",
+  "bundle": "com.dshgo.harmony",
+  "version_name": "1.0.1",
+  "version_code": 1000001,
+  "hap": "entry/build/default/outputs/default/entry-default-signed.hap",
+  "hap_sha256": "cfc80614ecab4cc4866b044fe2918999990d1f9b6aad30db143b7e6c543e3838",
+  "hap_size_bytes": 167015053,
+  "runtime_sha256": "5e4221efe9cfc40aa84f808ad3ff167c48e02ec0f6019367534e69d1e87020ca",
+  "checks": {
+    "signed_hap_build_and_verification": true,
+    "embedded_runtime_digest_and_direct_transport_sources_match": true,
+    "dsh_client_live_assertions": 107,
+    "chat_remote_and_gallery_tests": 35,
+    "arkui_generated_reactivity_tests": 5,
+    "wire_tests": "passed",
+    "ssh_isolated_openssh_and_password_fixture": "passed with encrypted key, fingerprint checks, DSH HTTP and WebSocket, process reuse and cleanup",
+    "terminal_stock_mac_pty_and_chromium_tests": 5,
+    "pinned_dsh_remote": "passed with original gateway login, registration, and LAN WebRTC signaling; original responder and Noise IK; encrypted ArkTS RPC and mux; fragmented follow; replay refusal; identity mismatch and corrupt handshake rejection; fresh fallback attempts and assigned and legacy relay",
+    "packaged_rtc_jitless_no_addons": "four tests each against coturn 4.8.0 UDP and TCP, including a real direct DataChannel, selected TURN relay candidate and 50 KB binary round trip",
+    "attachment_gallery": "passed source dimension and bounded decode queue tests; live embedded runtime verified image download, request cancellation and cross-session denial",
+    "local_shell_probe": "ARM64 SDK links posix_spawn and openpty; Huawei public native child API reports unsupported on phones; OpenHarmony public SELinux sh_exec policy was checked"
+  },
+  "acceptance_limits": [
+    "No HarmonyOS device was connected. Installation, gallery rendering and gestures, album saves, share sheet, and direct networking on the device remain unverified.",
+    "Public NAT traversal, production DSHarness Remote service, and TURN/TLS remain unverified. Werift uses one TURN URL for a given attempt.",
+    "The phone build does not enable a local system Shell or PTY. The platform probe did not execute a system Shell from a signed phone HAP."
+  ]
+}

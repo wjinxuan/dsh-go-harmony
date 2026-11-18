@@ -1,0 +1,219 @@
+{
+  "recordedAt": "2026-11-17T09:02:32.254183+00:00",
+  "phase": 16,
+  "snapshotThrough": 487,
+  "status": "PASS_LISTED_IN_APP_PET_ACTIONS",
+  "allAcceptanceComplete": false,
+  "hapSha256": "d677c58ef79eef4f9580c820667a50e30ce9df2123c8f73bf8146a59c4a9cda4",
+  "runtimeSha256": "93bd20716200d852353999568f4898f9fca2f69846fac5bfc4d0ce85d0ebcf27",
+  "observer": "ROOT operated the phone and confirmed the listed visual results. scribe_translation independently read the UI trees and isolated fixture events; it did not operate HDC, change models or invoke phone actions.",
+  "scope": "Actual in-app pet drag, context menu, reopen persistence, hide and redisplay. No Live2D or out-of-app floating window.",
+  "newFixBuildPassed": false,
+  "newFixPhoneRecheckPassed": false,
+  "baseline": {
+    "step": 478,
+    "pet": "Deepy",
+    "size": "medium",
+    "quiet": false
+  },
+  "checks": [
+    {
+      "id": "drag-and-position-persistence",
+      "steps": [
+        479,
+        480,
+        481,
+        482
+      ],
+      "status": "PASS",
+      "originalX": [
+        203,
+        411
+      ],
+      "draggedX": [
+        761,
+        969
+      ],
+      "reopenedX": [
+        762,
+        970
+      ],
+      "actual": "Drag changes position; long-press menu opens; pet settings is clickable; position remains after returning."
+    },
+    {
+      "id": "hide-and-redisplay",
+      "steps": [
+        483,
+        484,
+        485,
+        486
+      ],
+      "status": "PASS",
+      "actual": "Long press then Hide removes the sprite; 立即显示 in settings restores it."
+    },
+    {
+      "id": "return-near-original",
+      "steps": [
+        487
+      ],
+      "status": "PASS_APPROXIMATE_RETURN",
+      "originalX": [
+        203,
+        411
+      ],
+      "finalX": [
+        209,
+        417
+      ],
+      "offsetPx": 6,
+      "actual": "Swiped back near its original position; not an exact coordinate restoration."
+    }
+  ],
+  "limits": [
+    "Does not cover pet pack import, all motions, input/scroll suppression, background stopping or desktop Form cards.",
+    "App-external floating window remains a separately documented platform boundary.",
+    "New plugin/appearance/image fixes are not implied by these pet passes."
+  ],
+  "evidence": [
+    {
+      "path": "/tmp/dsh-device-20261117/478-pets-settings.json",
+      "bytes": 29921,
+      "sha256": "eaf1010ca60aec551b955411be2f1e38041b02c0a15ff2a1923cc6a313e5023b"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/478-pets-settings.log",
+      "bytes": 3488,
+      "sha256": "036de2df162d541933381fc650cb431c519381f0fc3f5fd65ce85aa431935e73"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/478-pets-settings.png",
+      "bytes": 3345251,
+      "sha256": "fce80bfd66e8e8393725b90c8438a7e355b16049fec44d79cf04201d0d4913ce"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/479-pet-before-drag.json",
+      "bytes": 52020,
+      "sha256": "7dc92703917ac9b3d15659a8d8e737f9227e2fbdb1c87c98a605adc24900cfea"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/479-pet-before-drag.log",
+      "bytes": 4869,
+      "sha256": "4cf7db20d8daa17aed6ae806f3078a4490dfda55c4d641ac445b2fce552dad46"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/479-pet-before-drag.png",
+      "bytes": 3345251,
+      "sha256": "e8452c00272b4261162cca643cd3ad31d3fd958c92cc37476aac5443a2014af3"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/480-pet-dragged.json",
+      "bytes": 56665,
+      "sha256": "63ea5e97e2e8ddfbfdea60f06983fec0bfcd563e1623409ba949d54f4f04206d"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/480-pet-dragged.log",
+      "bytes": 5691,
+      "sha256": "9cab11f414780a42870c4f4eeea8e497c462bc2bd823e69f9825e10abafbf425"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/480-pet-dragged.png",
+      "bytes": 3345251,
+      "sha256": "3f437ce361aaef77b4a844bd4c507e8f213a091e6345b4712afeebdc9f743f74"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/481-pet-menu-settings.json",
+      "bytes": 29921,
+      "sha256": "ea9dca8c5662f35a0b23d3659d0c6976e4816ec1016825bae85250c2caf77eb7"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/481-pet-menu-settings.log",
+      "bytes": 3469,
+      "sha256": "7bc485a71075f450407e67e2b34ed7e193bebfb3dbe13aedf428b0fae27054a6"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/481-pet-menu-settings.png",
+      "bytes": 3345251,
+      "sha256": "a494b7c2120367486c983fc477c67312bc261c56becca85133337159c3fed30b"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/482-pet-position-persisted.json",
+      "bytes": 52020,
+      "sha256": "f750f6f5590e9a02395399f696f0156e870e6c7414308f7585566368245d1521"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/482-pet-position-persisted.log",
+      "bytes": 10560,
+      "sha256": "49b8a5da754f90136e2f034ba21c8a3bb1ee0b038d2a3fd6e11c8b41b392091a"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/482-pet-position-persisted.png",
+      "bytes": 3345251,
+      "sha256": "69ade54c923ca41c67e9944f8edd661d5088615b14dbfe9e62a07b0f5d93df63"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/483-pet-menu.json",
+      "bytes": 56665,
+      "sha256": "79bc4cb3106cfdf881e1f44c4a594aa158561acb0894e4d0ab5f8a197d027bc9"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/483-pet-menu.png",
+      "bytes": 3345251,
+      "sha256": "529c55597328e523740e848ea93cd510dd97f8549dfd6fd505a6473761d9b9b8"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/484-pet-hidden.json",
+      "bytes": 50089,
+      "sha256": "bea43478c5b7464dcdd79362a83059f6ed8e2ae1a756d652b2ac4bebfbb3be5a"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/484-pet-hidden.log",
+      "bytes": 8374,
+      "sha256": "f2ca161555ae1843204351ec0cbaef3400a83114d657608e9b01b38268d12c80"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/484-pet-hidden.png",
+      "bytes": 3345251,
+      "sha256": "d186d8172a19617f446d1a9ab22851ce37d781ac1b0c32d91efe8eb630df5876"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/485-pet-unhide-setting.json",
+      "bytes": 30585,
+      "sha256": "1482bbcf5e83535013445843750651cdeed71165b00e038782866109f6ee97e0"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/485-pet-unhide-setting.png",
+      "bytes": 3345251,
+      "sha256": "e7f68381f080a409ae16ddf834c1f474ac7dda0e4bee8740e34cdaf3ed3232b8"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/486-pet-unhidden.json",
+      "bytes": 52020,
+      "sha256": "97c4d6e59b3b6941fb662054493c215f53be8ed26e5a31b270668f07c6b79ac1"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/486-pet-unhidden.log",
+      "bytes": 4878,
+      "sha256": "98217c4019d9054fae091846409c2e2040f768a5b659c3ff84f0dbc6870b53c0"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/486-pet-unhidden.png",
+      "bytes": 3345251,
+      "sha256": "0afa8b87dbf2dea8a7ed43d90676cf6def3576e447f3c7c402a0876ae72e8c76"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/487-pet-position-restored.json",
+      "bytes": 52020,
+      "sha256": "3fa8a909bae50f7fd7f58abd435187fa8597c581134f01b734b8ae7c46e8eed4"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/487-pet-position-restored.log",
+      "bytes": 4869,
+      "sha256": "a859673377f1efc9a96b8017bf8bc9dbeb10dd7551d613915559f4a851b9c82f"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/487-pet-position-restored.png",
+      "bytes": 3345251,
+      "sha256": "f966b2218db32682ae47bd472ae0ca21e21c26e2cbcd99e4a22e67fed9f54040"
+    }
+  ]
+}

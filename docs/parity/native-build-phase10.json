@@ -1,0 +1,2946 @@
+{
+  "phase": 10,
+  "recorded_at": "2026-11-17T12:09:43.950688+08:00",
+  "status": "development_fixes_verified_device_acceptance_incomplete",
+  "baseline": {
+    "product": "dsh-Go",
+    "version": "1.0.15",
+    "commit": "a9877420ab9aee121134faf01b6a92a39ce0b05b"
+  },
+  "previous_full_development_validation": "native-build-phase9.json",
+  "scope": "Incremental fixes discovered during physical-device acceptance; this record does not claim a fresh rerun of every phase9 command or completion of the 17 device checklist items.",
+  "artifact": {
+    "hap": "entry/build/default/outputs/default/entry-default-signed.hap",
+    "hapSha256": "e10338aca1ee633c994baa90143c301fbf2f2008093850b8332a7b5f0feb2331",
+    "hapBytes": 197371923,
+    "runtimeSha256": "1e395cfcd7bf9c5847450ed3fb4354b8673ac74991d8557ebff40034d7511bce",
+    "zipCrc": true,
+    "runtimeManifestMatches": true,
+    "embeddedTimeoutSourceMatches": true,
+    "arm64Libraries": [
+      "libs/arm64-v8a/libc++_shared.so",
+      "libs/arm64-v8a/libdshlocal.so",
+      "libs/arm64-v8a/libnode.so",
+      "libs/arm64-v8a/libonnxruntime.so",
+      "libs/arm64-v8a/libsherpa-onnx-c-api.so"
+    ],
+    "version_name": "1.0.1",
+    "version_code": 1000001,
+    "installed_on_device": false,
+    "build": {
+      "status": "passed",
+      "exit_code": 0,
+      "duration_seconds": 15.818,
+      "path": "/tmp/dsh-device-20261117/117-runtime-fixes-build.log",
+      "sha256": "3ba5fbdfdbc765275cbbfb2faec49993140b6bbb5c0261970b732cd62e2abef7"
+    },
+    "signature": {
+      "status": "passed",
+      "exit_code": 0,
+      "code_signing": true,
+      "permission_signature": true,
+      "digest": true,
+      "path": "/tmp/dsh-device-20261117/120-signature-verification.log",
+      "sha256": "47d67646ac68a047798a21faf55e58db557eec319643b4f9c8a2a225ff177bbe"
+    }
+  },
+  "runtime_archive_verification": {
+    "old_sha256": "751480d93025e54d1bac6ad71a18d4fa21654fcd6284ec5d03d4e843763cd451",
+    "new_sha256": "1e395cfcd7bf9c5847450ed3fb4354b8673ac74991d8557ebff40034d7511bce",
+    "archive_bytes": 46609895,
+    "extracted": "/tmp/dsh-device-20261117/runtime-timeout-fixed",
+    "files_verified": 15537,
+    "changed_files": [
+      {
+        "path": "sensevoice-models.mjs",
+        "before": "82c093866aa9af4678988bc20a23c601a733b21993b5da6fb5d62e446fa2a550",
+        "after": "0b3bd6a055c40f6b5d1dd2d79582a9a8bde5cd1127060fae716470809a5a986c"
+      }
+    ],
+    "zip_crc_pass": true,
+    "source_equal": true,
+    "all_extracted_sha256_pass": true,
+    "dependency_versions_unchanged": true
+  },
+  "runtime_commands": {
+    "runtime": "/tmp/dsh-device-20261117/runtime-timeout-fixed",
+    "node": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+    "results": [
+      {
+        "name": "packaged-speech-live",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/speech-live.mjs",
+          "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/ets/dsh/DshClient.ets",
+          "/tmp/dsh-device-20261117/runtime-timeout-fixed",
+          "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/local-flock-fixture.cjs"
+        ],
+        "exit_code": 0,
+        "duration_seconds": 3.092,
+        "log": "/tmp/dsh-device-20261117/runtime-timeout-packaged-speech-live.log",
+        "log_sha256": "0899e0a3ef1ca948c0548e64f16017762ec6e2a2d21e28c599f7277a61281b89"
+      },
+      {
+        "name": "timeout-model-regressions",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--test",
+          "/tmp/dsh-device-20261117/runtime-timeout-tests/sensevoice-network.test.mjs",
+          "/tmp/dsh-device-20261117/runtime-timeout-tests/sensevoice.test.mjs"
+        ],
+        "exit_code": 0,
+        "duration_seconds": 5.573,
+        "log": "/tmp/dsh-device-20261117/runtime-timeout-timeout-model-regressions.log",
+        "log_sha256": "4a22e15927010fce073ee7c66d94e7e533fd26c296ed287c3b7c9a5d0f7481d3"
+      },
+      {
+        "name": "sensevoice-native",
+        "command": [
+          "sh",
+          "tests/check-sensevoice-native.sh",
+          "/tmp/sensevoice-models",
+          "/tmp/sensevoice-zh.wav",
+          "/tmp/sherpa-onnx-v1.13.8-osx-arm64-shared-no-tts-lib/lib"
+        ],
+        "exit_code": 0,
+        "duration_seconds": 7.268,
+        "log": "/tmp/dsh-device-20261117/runtime-timeout-sensevoice-native.log",
+        "log_sha256": "96f269e8f91ec63c477847401391f5c9a2353fe591a3ca94f8de795275199158"
+      },
+      {
+        "name": "native-publication-engine-smoke",
+        "command": [
+          "docker",
+          "run",
+          "--rm",
+          "--cpus=2",
+          "--memory=2g",
+          "--name",
+          "dsh-native-timeout-fix-20261117",
+          "-v",
+          "/Users/wangzhaojin/work/dsh/dsh-go-harmony:/work:ro",
+          "-v",
+          "/tmp/dsh-device-20261117/runtime-timeout-fixed:/tmp/runtime:ro",
+          "-w",
+          "/work",
+          "-e",
+          "DSH_NATIVE_TEST_RUNTIME=/tmp/runtime",
+          "codex/dsh-native-tests:20261117",
+          "sh",
+          "-c",
+          "node --version && dpkg-query -W libnode137 libnode-dev libuv1-dev && sh tests/check-native-publish.sh /usr/include/node /usr/lib/aarch64-linux-gnu/libnode.so.137"
+        ],
+        "exit_code": 0,
+        "duration_seconds": 13.644,
+        "log": "/tmp/dsh-device-20261117/runtime-timeout-native-publication-engine-smoke.log",
+        "log_sha256": "326917ab704eaad2033367e7b6a26a6f4b0ad43c6a740222ee5982b99848f8dc"
+      }
+    ]
+  },
+  "fixes": [
+    {
+      "id": "startup-language-initialization",
+      "description": "Initialize the storage-backed language before translated state fields; generated constructor regression and actual phone startup passed.",
+      "primary_file": "entry/src/main/ets/pages/Index.ets",
+      "development_status": "passed",
+      "new_final_hap_device_retest": "pending_usb_connection"
+    },
+    {
+      "id": "pet-atlas-density",
+      "description": "Use physical pixels consistently when sampling and drawing sprite frames on the Canvas.",
+      "primary_file": "entry/src/main/ets/pets/PetSprite.ets",
+      "development_status": "passed",
+      "new_final_hap_device_retest": "pending_usb_connection"
+    },
+    {
+      "id": "private-directory-idempotence",
+      "description": "Accept Harmony EEXIST only after lstat confirms an ordinary directory; keep file, symlink and permission failures. Shared by pets, companion storage and phone controls.",
+      "primary_file": "entry/src/main/ets/local/PrivateDirectory.ets",
+      "development_status": "passed",
+      "new_final_hap_device_retest": "pending_usb_connection"
+    },
+    {
+      "id": "formula-height",
+      "description": "Contain display-math margins so reported height includes the bottom of the rendered formula.",
+      "primary_file": "entry/src/main/resources/rawfile/render/render.css",
+      "development_status": "passed",
+      "new_final_hap_device_retest": "pending_usb_connection"
+    },
+    {
+      "id": "mermaid-safe-area",
+      "description": "Apply system, cutout and navigation insets and update them on window changes.",
+      "primary_file": "entry/src/main/ets/ui/MermaidPanel.ets",
+      "development_status": "passed",
+      "new_final_hap_device_retest": "pending_usb_connection"
+    },
+    {
+      "id": "fenced-code-parity",
+      "description": "Use the fixed original language/alias set and themes, native styled spans and complete horizontally scrollable code/diff content.",
+      "primary_file": "entry/src/main/ets/ui/CodeHighlight.ets",
+      "development_status": "passed",
+      "new_final_hap_device_retest": "pending_usb_connection"
+    },
+    {
+      "id": "session-record-reset",
+      "description": "Clear persistent records and stale title at connection/session boundaries; guard local engine stop independently of the UI language.",
+      "primary_file": "entry/src/main/ets/pages/Index.ets",
+      "development_status": "passed",
+      "new_final_hap_device_retest": "pending_usb_connection"
+    },
+    {
+      "id": "phone-retained-rows",
+      "description": "Replace retained check rows when their values change and scope node identities to each screen snapshot.",
+      "primary_file": "entry/src/main/ets/ui/PhoneControlPanel.ets",
+      "development_status": "passed",
+      "new_final_hap_device_retest": "pending_usb_connection"
+    },
+    {
+      "id": "foreground-overlay-position",
+      "description": "Position notification and bottom controls using parent Stack alignment and allow hits through unused overlay space.",
+      "primary_file": "entry/src/main/ets/pages/Index.ets",
+      "development_status": "passed",
+      "new_final_hap_device_retest": "pending_usb_connection"
+    },
+    {
+      "id": "sensevoice-connection-deadline",
+      "description": "Set socket timeout before Agent creation and independently bound DNS/TLS/header establishment; preserve cancellation, pinning and body timeout.",
+      "primary_file": "runtime/sensevoice-models.mjs",
+      "development_status": "passed",
+      "new_final_hap_device_retest": "pending_usb_connection"
+    }
+  ],
+  "source_sha256": {
+    "entry/src/main/ets/companion/CompanionPack.ets": "ebb63e530134d8165cfaee862e8fff5b22a62da699a8077efc59d2a4552f0045",
+    "entry/src/main/ets/companion/CompanionStore.ets": "6c934676714073772a32b487da0851a8f1ad1795f6d6a49f6a081df1f6030b4a",
+    "entry/src/main/ets/companion/CompanionVoice.ets": "17110168007c7f79223118f57943905a3391cc1d0271a7cf8e10f74dee1e3978",
+    "entry/src/main/ets/local/PrivateDirectory.ets": "0a51c3c5170ff574ecaaf0557a846b01b0ff84d90641d7196004540e9c84c348",
+    "entry/src/main/ets/pages/Index.ets": "cae0ddae61512a6deef54fd4579b2ad35ece54f6a755a9ac84f186e3f4318fd8",
+    "entry/src/main/ets/pets/PetSprite.ets": "6533735e9846da210b47e1bcccb58c6c88c590242cfe04a74a316ca8b41df562",
+    "entry/src/main/ets/pets/PetStore.ets": "fffe2bc0117a8ae194b9f87ae134387cf3bc3158e9f3428deee7b904bfc012b5",
+    "entry/src/main/ets/phone/PhoneAccessibilityAbility.ets": "0290685d59b89645269c11280abecbeedc5978be665f6d88009cd32fb412eda6",
+    "entry/src/main/ets/phone/PhoneAccessibilityClient.ets": "81a0d5f49d0c385276b3e7c9c641d21d6040bb77aee9f5db4b1778cf01906637",
+    "entry/src/main/ets/phone/PhoneControl.ets": "34b9a6295008ea644cc5d76fb636e9bb1ff0ab545ef5cdb2c05f09be7c522f5c",
+    "entry/src/main/ets/ui/CodeHighlight.ets": "bc3e2ca06053758042fdc3da196116c5f3a90a4d9a223001e6b0157b2a50844b",
+    "entry/src/main/ets/ui/MermaidPanel.ets": "aa3e511f23ae416ddd09c0cfaf398c174d71f8512364128171f545627f59fb0e",
+    "entry/src/main/ets/ui/MessageBody.ets": "5ed6bd5b9fb2f8a3e5861f87879bc09492e9329c5203b541733c09b144c7e1ac",
+    "entry/src/main/ets/ui/PhoneControlPanel.ets": "344cce182305498c93ac68a5ced2749060700fd4e346e54636e6c803b4086e3a",
+    "entry/src/main/ets/ui/highlight/FencedHighlight.d.ts": "dfc3c4b19083ff44872733ac8d225ed3797c468b469a932c69c539c07b7d7d6f",
+    "entry/src/main/ets/ui/highlight/FencedHighlight.js": "c525cf1a9d104a1e8b05059c730a395b712051ebd1b9b3e36c4ca8c823599b92",
+    "entry/src/main/ets/ui/highlight/LICENSE.dsh-Go": "0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0",
+    "entry/src/main/ets/ui/highlight/LICENSE.highlight.js": "6c081431591d9df696c82dc598fe1423765b8a299b200ed00b281afd0f64c490",
+    "entry/src/main/ets/ui/highlight/LICENSE.vue": "e02de3f1cb136ad72488c7661392e88c5e8c3b7150297cf6fe8eb7851db54fc8",
+    "entry/src/main/ets/ui/highlight/SOURCE.json": "457a9038dcbf9ccccf3863d73baaf1de4525ae0d9946a4935aec54aa31d156b4",
+    "entry/src/main/ets/ui/highlight/bash.js": "b4b6d8c9da1946cf50627e9ad8caa691e10f7ed24754d17201ef998ff73ae7ea",
+    "entry/src/main/ets/ui/highlight/c.js": "d52e2fbd4ee836c3fbae1889ccd104a5aed7c60ca4ec108e0ad86b9f79b5dac9",
+    "entry/src/main/ets/ui/highlight/clojure.js": "7b23fd6011ef764203aa7a84bcdcc1daaa192c3258f668e8df00b6b7a7d346d9",
+    "entry/src/main/ets/ui/highlight/cmake.js": "bafaecfb7a1d5fe429900451cca3c6f209af0541f9785a5ce4568b88ffc64821",
+    "entry/src/main/ets/ui/highlight/core.js": "46137762fe6174bee845577248bddbcd7dd654a1a8cc01c8c53231bd5c2f0375",
+    "entry/src/main/ets/ui/highlight/cpp.js": "99bf253b057bfa6909dbacab2194b8a19faa66bc12d1ffc6b876dd9f4bb98612",
+    "entry/src/main/ets/ui/highlight/csharp.js": "0f741e12ddaa59b93c8f6a40106aa27bf0ca725e00989b5ea753d1946942061b",
+    "entry/src/main/ets/ui/highlight/css.js": "ae916d0625eb5cce77879bd5e2e4a32b5e735f6a06d3325a7ce59ab41d544f15",
+    "entry/src/main/ets/ui/highlight/dart.js": "708b2b6cdc3c44cdc906aa8c902f017fc7566841e77a962331e695df698cd339",
+    "entry/src/main/ets/ui/highlight/diff.js": "de88e962204d77e2c0e380414679f6ead7a7db5e22b95cf2b6e07ad9d62d1ada",
+    "entry/src/main/ets/ui/highlight/dockerfile.js": "6408db2161448d6e7d9cb19c8c3c41426ef6a6fd7bb014b1735b6776fc800fcc",
+    "entry/src/main/ets/ui/highlight/dos.js": "87a5080d256eae6292c0710cc0a0709008f2e4e595598f6085793707874d6796",
+    "entry/src/main/ets/ui/highlight/elixir.js": "60a52033080761382aa817671446d6b6fd81f31bc6f54fb316ceb1ce02875313",
+    "entry/src/main/ets/ui/highlight/erlang.js": "e2fc06311249f69a31c60f52caa98e7ed68318454ee2e858438b738dcdf6b73c",
+    "entry/src/main/ets/ui/highlight/fsharp.js": "72bfd08602d349019ee3ef329721b67f2331f7af2dd311f32ef93772f366c732",
+    "entry/src/main/ets/ui/highlight/go.js": "15e5ac58fe61a875a5451acde38510eb3045e2660579167311b0abea7086f5d2",
+    "entry/src/main/ets/ui/highlight/gradle.js": "f472ffb6d996861931f9fcf46fdacbe0e52ae96367dc3143a2044b7e35b887e3",
+    "entry/src/main/ets/ui/highlight/graphql.js": "2843ced97ca7c0c65b4d600440f5dfa2d412a6ed37bf8b8450f25ba239019d86",
+    "entry/src/main/ets/ui/highlight/groovy.js": "bdd931eafb83404997459b73c6d08a2a9123828597ae855a4dc828a75dd77688",
+    "entry/src/main/ets/ui/highlight/haskell.js": "b7ca3bc65484de9b549d443df628bfc150df06fc54a2bcae82fbdca786e0b155",
+    "entry/src/main/ets/ui/highlight/http.js": "4673718ead2818ddd0d214306fa766cba90709bc1a4480da265040a6ec78e3e0",
+    "entry/src/main/ets/ui/highlight/ini.js": "b01f2f7c70173605b5b70aa564de245d0f77b4f40d942eb526258e68ce8ef7ab",
+    "entry/src/main/ets/ui/highlight/java.js": "12f12630e1cb9a74910af4030241a54d47efd75c15b470df3e891914714062aa",
+    "entry/src/main/ets/ui/highlight/javascript.js": "1d3289d5c11b2295ad4dfc428baef31d6874fda5dc3b4cc7c132f38627849427",
+    "entry/src/main/ets/ui/highlight/json.js": "956764a89028c8d53b34b0c0b9a41d501f2e4aa934ee5d06c6270586974d78c1",
+    "entry/src/main/ets/ui/highlight/julia.js": "69d3f9533bffeace8cd2559b2d74279cd8b554a839bff0f0dbc5a85ca10f9255",
+    "entry/src/main/ets/ui/highlight/kotlin.js": "2faa665a5d04ce58611d29aa8355c8c1184543f38309ca52df500316c478bff9",
+    "entry/src/main/ets/ui/highlight/latex.js": "ac8ebb3f5020a3d730c1550eff57b24c08264d95edf4ece0c627e0a58168f7fa",
+    "entry/src/main/ets/ui/highlight/less.js": "8d43f0ff4edb6926fa666de913a03bcddd009721217976af4d6337828d217de8",
+    "entry/src/main/ets/ui/highlight/lua.js": "6cada327e81b8c3d1b29061e63d4278ea7fff95d4a764ba22224c153e7ca3729",
+    "entry/src/main/ets/ui/highlight/makefile.js": "4d7caabc92e4f6cc40e9bfc895c38d6ca274f208bd375687c2c4876f8933427e",
+    "entry/src/main/ets/ui/highlight/markdown.js": "5c4ffae363748bfc93c40c47387545a8d99ff208154bbf2be4c3dc8cde55b86f",
+    "entry/src/main/ets/ui/highlight/matlab.js": "ed286a615bd08fd5fb36e5acf7b30b966b4bcfb25a056348830900a1c7c6e822",
+    "entry/src/main/ets/ui/highlight/nginx.js": "a87c6d8f74644a71c8d787c6d206e13b7df957ccdd5181eba00070233cd56df4",
+    "entry/src/main/ets/ui/highlight/nix.js": "42b5565426a0b3767b788f5eb82c33b6a3215ef45d8a8aa52f180f1c66cd1821",
+    "entry/src/main/ets/ui/highlight/objectivec.js": "03340d47bc71f4dbc420257c4cb5e63635cae55def137c9e1d7bd536cc3ea3dd",
+    "entry/src/main/ets/ui/highlight/ocaml.js": "038d65a19a7ea580828b9570f75270f80500d37dd80593b6ead0a6e0de6ff03d",
+    "entry/src/main/ets/ui/highlight/perl.js": "b18ba32f9027e163c3c1e3118719b599d4fde3f5290e16cef48d0f5f9ad2001f",
+    "entry/src/main/ets/ui/highlight/php.js": "7c0f83c366cc879da40a53c721c5551684a6cda70d4242baa8059553430d318e",
+    "entry/src/main/ets/ui/highlight/powershell.js": "c7263c0d55a5f6a7fef93b2201de99bb45d0e6dff5e523f9e7710e1ab4879ba3",
+    "entry/src/main/ets/ui/highlight/properties.js": "ea4b98ba8974e86c1d95501548bc4502da46477c440040fec07b24201c51c384",
+    "entry/src/main/ets/ui/highlight/protobuf.js": "b48b69f60ea4e53b55f891aa1786496e22992468a8398f0266aa8afe0488b7ae",
+    "entry/src/main/ets/ui/highlight/python.js": "6130943b9a18eebeb362728b2e119bcd48fc52e6af4acb4d4934029039e664f6",
+    "entry/src/main/ets/ui/highlight/r.js": "08155a5b6b400432d5c6df45d06f41d5194dd582433d04e094b38118a8f8a358",
+    "entry/src/main/ets/ui/highlight/registry.json": "d11fcf99863451e9abe8bd526c7045d1a0c5de9e0d26e36d5574c6d8a85664da",
+    "entry/src/main/ets/ui/highlight/ruby.js": "4ef072c176963a4ead2eb43badee86e70ace2456ec924b048a41264835c4fdff",
+    "entry/src/main/ets/ui/highlight/rust.js": "40b17a0cee3200e92a50bb21d200ec465ac4a2578dfe60377c81080139aeaa7b",
+    "entry/src/main/ets/ui/highlight/scala.js": "8c847b3240931a36a87cc593c90b717747e022b3ea5649fddb5125b249e74c2e",
+    "entry/src/main/ets/ui/highlight/scss.js": "2b68d0b18227ce77d18094e358e3c5c21b5e88d098d6f1f55aa4d2e53fb9eb09",
+    "entry/src/main/ets/ui/highlight/shell.js": "3d2dc631071a18a96a51d16a7e85d68d42f811b4d950f3158a1b32d2bd624343",
+    "entry/src/main/ets/ui/highlight/sql.js": "b2895e027c7445aabdcf60456dff2ddc5529e385cc80635e15907511d6b41ee1",
+    "entry/src/main/ets/ui/highlight/swift.js": "9b9502af059aae20d16122595faa745d9eef499b15423d34375e73722371694c",
+    "entry/src/main/ets/ui/highlight/typescript.js": "e48124e6cdcc41f620f8c940df08df786f57646b5054d5b7465ccf3884719ed9",
+    "entry/src/main/ets/ui/highlight/verilog.js": "ed2646ba8ae2c4a8a5dafb09a18456b4565aef61510bafc78870d4d7b1e981d1",
+    "entry/src/main/ets/ui/highlight/vim.js": "2f53a938619364954bffcf35733ddb0f435884cb13820f0296c85b18952a79d8",
+    "entry/src/main/ets/ui/highlight/vue.js": "8fe7599e5339885f77394843e143c67e078cd2d8a912937062c96cc25a7e698e",
+    "entry/src/main/ets/ui/highlight/xml.js": "6c04e48590d177f27f1a8274b4963b676eb49b6dcb005d68279ce80be086ebdc",
+    "entry/src/main/ets/ui/highlight/yaml.js": "33f98af180938f1b517792d9b47cd177aaa3b81ee50f2ef2e9eb566ae93b6fbf",
+    "entry/src/main/resources/rawfile/render/render.css": "46194fe3729d9b1aacdc23d4438ee1839af0627a0b72c0cc0d2391f8ee077b74",
+    "runtime/sensevoice-models.mjs": "0b3bd6a055c40f6b5d1dd2d79582a9a8bde5cd1127060fae716470809a5a986c"
+  },
+  "device": {
+    "model": "ALN-AL10",
+    "api": 26,
+    "connection_status": "disconnected",
+    "last_hdc_result": "[Empty]",
+    "last_installed_build": "015-pet-fix-build.log (startup and sprite fixes); later fixes are not yet installed",
+    "preserved_user_data": true,
+    "uninstall_or_data_clear_performed": false,
+    "acceptance_status": "partial; 17-item checklist not complete",
+    "record": "device-acceptance-20261117.md",
+    "protocol": [
+      {
+        "name": "local-engine-core",
+        "actions": [
+          {
+            "name": "phone-auth-http-and-websocket",
+            "status": "PASS"
+          },
+          {
+            "name": "capture-and-verify-default-restoration-before-fixture",
+            "status": "PASS"
+          },
+          {
+            "name": "register-isolated-model-and-synthetic-credential",
+            "status": "PASS"
+          },
+          {
+            "name": "create-only-owned-directory-and-session",
+            "status": "PASS"
+          },
+          {
+            "name": "real-model-write-tool",
+            "status": "PASS"
+          },
+          {
+            "name": "real-model-read-tool",
+            "status": "PASS"
+          },
+          {
+            "name": "real-model-edit-tool",
+            "status": "PASS"
+          },
+          {
+            "name": "missing-file-structured-error",
+            "status": "PASS"
+          },
+          {
+            "name": "outside-workspace-refused-without-reading-user-files",
+            "status": "PASS"
+          },
+          {
+            "name": "actual-stream-cancel",
+            "status": "PASS"
+          },
+          {
+            "name": "actual-render-stream",
+            "status": "PASS"
+          },
+          {
+            "name": "reconnect-and-reopen-only-owned-history",
+            "status": "PASS"
+          },
+          {
+            "name": "phone-offline-share-prepare-and-decode",
+            "status": "PASS"
+          },
+          {
+            "name": "owned-session-permanent-deletion-and-readmission-fence",
+            "status": "PASS"
+          }
+        ],
+        "default_restored": true,
+        "path": "/tmp/dsh-device-20261117/phone-local-core-result.json",
+        "sha256": "90ae444dd09c362cb678f4ad7cbdace50e727e18dec6d838f5941625dd5d1d5f"
+      },
+      {
+        "name": "schedule-authorization",
+        "actions": [
+          {
+            "name": "reject-cannot-be-bypassed-by-full-access",
+            "status": "PASS"
+          },
+          {
+            "name": "cancel-blocking-authorization",
+            "status": "PASS"
+          },
+          {
+            "name": "custom-answer-cannot-authorize",
+            "status": "PASS"
+          },
+          {
+            "name": "allow-one-future-task-then-delete-before-execution",
+            "status": "PASS"
+          },
+          {
+            "name": "real-original-120-second-timeout",
+            "status": "PASS"
+          }
+        ],
+        "real_timeout_ms": 120475,
+        "future_task_deleted_before_execution": true,
+        "default_restored": true,
+        "path": "/tmp/dsh-device-20261117/phone-local-schedules-result.json",
+        "sha256": "56c0dfb13c98f4509ae94a33fd56b520932bbd69e9522d56513d3b22b809b897"
+      },
+      {
+        "name": "fulltext-search-and-real-html-artifact",
+        "actions": [
+          "Unique marker matched only the owned phone session",
+          "Successful real write produced HTML artifact metadata"
+        ],
+        "ui_not_verified": true,
+        "path": "/tmp/dsh-device-20261117/phone-search-artifact-asr-result.json",
+        "sha256": "4c24de359840a08ffaa1abb8d3f5af9756bcacf0a5ff609996b225f8bd0538b9"
+      },
+      {
+        "name": "native-sensevoice-file-inference",
+        "source": "USB-preseeded pinned official models",
+        "network_download_passed": false,
+        "preparation_ms": 10206,
+        "wav": {
+          "bytes": 178988,
+          "sha256": "b77f1794fe374a0ba1ee1dc458bfaf9349496cbbfc32780c50ba3c5a7ad8e373"
+        },
+        "transcription": {
+          "text": "开饭时间早上9点至下午5点。",
+          "audioSeconds": 5.592
+        },
+        "transcription_wall_ms": 898,
+        "path": "/tmp/dsh-device-20261117/phone-sensevoice-usb-inference-result.json",
+        "sha256": "7dcefa3e0bb6e85dad34dc926a2faaded78c88f9a08ea98abe6ccfe34bc50257"
+      }
+    ],
+    "observed_ui": [
+      {
+        "name": "Startup and retained old history",
+        "evidence_files": [
+          {
+            "path": "/tmp/dsh-device-20261117/007-start-fixed.json",
+            "sha256": "8e40dd69c80e7ba4bde0f217f5680b0181ba85eff6a58a4507a251cc8f4136ee"
+          },
+          {
+            "path": "/tmp/dsh-device-20261117/007-start-fixed.png",
+            "sha256": "10df3ee3c5bf57f07ccc3ab68a75d916273d03e90437d7ff2ece2bd5319e490f"
+          },
+          {
+            "path": "/tmp/dsh-device-20261117/010-old-session.json",
+            "sha256": "2b4ae81633984736ccaa2578382cda35d63e3a3dce9e7ecec148898211925720"
+          },
+          {
+            "path": "/tmp/dsh-device-20261117/010-old-session.png",
+            "sha256": "022fdf28bc50519bb44f77438f4faeb4908c973ebaa5760020cff44f2c87bcbf"
+          }
+        ]
+      },
+      {
+        "name": "Reference picker and chip; clipboard menu only",
+        "limit": "Clipboard content was not verified.",
+        "evidence_files": [
+          {
+            "path": "/tmp/dsh-device-20261117/035-mention.json",
+            "sha256": "81d4d7f04b1fd8a441c0d21032369af0308814461e5873538870e6de9d017b3d"
+          },
+          {
+            "path": "/tmp/dsh-device-20261117/035-mention.png",
+            "sha256": "d0e6ea401ae7f70c037989893bc64efbfdbad77c1a954d451c723f9578fb0bc6"
+          },
+          {
+            "path": "/tmp/dsh-device-20261117/036-mention-chip.json",
+            "sha256": "b89239010b308aaf8b54751b78e87fe9a79ad713b2acd37c11b0b8ade761bc58"
+          },
+          {
+            "path": "/tmp/dsh-device-20261117/036-mention-chip.png",
+            "sha256": "8d3ef705bd6b291e30fa68f4711a832708b1ce712ebc9b13267e6dcda6f2ada8"
+          },
+          {
+            "path": "/tmp/dsh-device-20261117/037-reference-copy.json",
+            "sha256": "aee46233190f58220f058f035f776685ccc18e4f60b150edbc493ad84839cd5f"
+          },
+          {
+            "path": "/tmp/dsh-device-20261117/037-reference-copy.png",
+            "sha256": "8c30812a09f8c76273d677f341ba068e58ae4b1941176da6f36bb589eb9958e7"
+          }
+        ]
+      },
+      {
+        "name": "Four-color image gallery, share sheet cancellation, system-authorized album save",
+        "limit": "No external recipient or multi-image gesture verification.",
+        "evidence_files": [
+          {
+            "path": "/tmp/dsh-device-20261117/049-gallery.json",
+            "sha256": "9a6291f4cb0469b30fa01dd9266c2a34797b59e6c7202d9d088ad622fc2f3395"
+          },
+          {
+            "path": "/tmp/dsh-device-20261117/049-gallery.png",
+            "sha256": "072360e92580557c17288716ec6132478ab7cf45611582ee6c6543de1d74f481"
+          },
+          {
+            "path": "/tmp/dsh-device-20261117/050-gallery-share.json",
+            "sha256": "6acbe0f995b2f4057eff47904696dae5482b373f3adc239c56db99ddb9a288fb"
+          },
+          {
+            "path": "/tmp/dsh-device-20261117/050-gallery-share.png",
+            "sha256": "802cc5c7201613c3f1e967186be55950a4f8d6ff6261dfe0c12e13d3b110fd06"
+          },
+          {
+            "path": "/tmp/dsh-device-20261117/051-gallery-save.json",
+            "sha256": "9ad22a5091385039c2ee50910267674b603e84b73bd859f3b897a00c9d90186a"
+          },
+          {
+            "path": "/tmp/dsh-device-20261117/051-gallery-save.png",
+            "sha256": "d86ec79bf4166aa4557858a674d8560beeb8e94f05d49dbf1d127d30778ae258"
+          },
+          {
+            "path": "/tmp/dsh-device-20261117/052-gallery-saved.json",
+            "sha256": "c690584aa2478f8e841dcf87f57381cf51b1b7fd6e0e6bcee96ede5c54f87f00"
+          },
+          {
+            "path": "/tmp/dsh-device-20261117/052-gallery-saved.png",
+            "sha256": "635558b0f462e3e5305d967faee023e4f9273b1bc5c68b30f84803ca20fc0eb7"
+          }
+        ]
+      },
+      {
+        "name": "System speech captured physical speaker audio into unsent draft",
+        "recognized": "语音输入测试。今天的天气很好。",
+        "limit": "Not a SenseVoice microphone test; computer audio restored.",
+        "evidence_files": [
+          {
+            "path": "/tmp/dsh-device-20261117/084-listening.json",
+            "sha256": "c3fcfba09ade7326f80fb169f6ef6708b8143e02c1adbdd7f4bf2da6c62d6aa4"
+          },
+          {
+            "path": "/tmp/dsh-device-20261117/085-voice-acoustic-result.json",
+            "sha256": "429a8602598102631a82c6e90bd74069472a6022e48225ec7569aeeedf69ad93"
+          },
+          {
+            "path": "/tmp/dsh-device-20261117/085-voice-acoustic-result.png",
+            "sha256": "974b3145b79f0b9a6f2cf7f7ddb18c1768d4a2d6ec77125960994ed9c24a7138"
+          }
+        ]
+      },
+      {
+        "name": "Wi-Fi and authenticated local connection diagnostics",
+        "evidence_files": [
+          {
+            "path": "/tmp/dsh-device-20261117/090-net-check.json",
+            "sha256": "5b9e5ef0b7944ef68a9f7253cd9b57c39ea170613441a822136b792d46bc47e7"
+          },
+          {
+            "path": "/tmp/dsh-device-20261117/090-net-check.png",
+            "sha256": "66031a6f564fb860d56f4546c091dbd0b059919d71a81aeaac66d65717bdd33c"
+          }
+        ]
+      },
+      {
+        "name": "System-authorized screenshot, local OCR, explicit append to unsent draft",
+        "limit": "Accessibility service not enabled; refreshed status rows require new HAP.",
+        "evidence_files": [
+          {
+            "path": "/tmp/dsh-device-20261117/098-capture-permission.json",
+            "sha256": "3903f846601b88dfc395b5ffdf9a88d3bae49b032acf4c857363d8c9a7dadebe"
+          },
+          {
+            "path": "/tmp/dsh-device-20261117/098-capture-permission.png",
+            "sha256": "f6e327b644bfd0f458080d13d60a5951dbed51c18b9fb1be8bb95bc043f8ed81"
+          },
+          {
+            "path": "/tmp/dsh-device-20261117/101-capture-bottom.json",
+            "sha256": "7732489067aa0580259a74a8dda9f2647958f51c016edf774654706a66e5b970"
+          },
+          {
+            "path": "/tmp/dsh-device-20261117/101-capture-bottom.png",
+            "sha256": "558e09574cfab73aacd7c86836d2fd2148022db47fee7f27b43382820a808a6f"
+          },
+          {
+            "path": "/tmp/dsh-device-20261117/104-ocr-draft.json",
+            "sha256": "16324f4f072dccc8d7e6ed4fb185035a60303d8175eeefdfe30dca72e08f4865"
+          },
+          {
+            "path": "/tmp/dsh-device-20261117/104-ocr-draft.png",
+            "sha256": "a76fdf331548c12d080f61be02631992fc9a58466687a7e9d99eea7f39eb8f7b"
+          }
+        ]
+      }
+    ],
+    "open_items": [
+      "Install final HAP and repeat startup, data preservation and all fixed UI paths.",
+      "Finish all remaining operations in the 17-item phone checklist; existing protocol tests are not UI evidence.",
+      "Verify real network SenseVoice download with new runtime and physical microphone SenseVoice flow; old phone download timed out.",
+      "Enable accessibility only through a supported system UI and test actual nodes/actions; service entry was not located.",
+      "Run prepared synthetic image/video generation and playback/save/cancel flows on the phone.",
+      "Production OAuth, forum, paid media and external Bot services remain separate from local synthetic fixtures."
+    ],
+    "explicit_user_deferral": "Live2D authorized complete character package is unavailable; user requested testing the other items first.",
+    "waiting_for": "USB reconnection, unlock and debugging authorization. Async clarification already sent; no additional permission is required for authorized testing.",
+    "retained_test_resources": "Owned local test hosts/providers/sessions and isolated fixture services retained for continuation; production default model restored; owned future schedule removed before execution. System speech mode was selected for microphone testing; previous automatic mode should be restored when device testing finishes. Owned test drafts, image and model files remain available for continuation."
+  },
+  "resolved_setup_issues": [
+    "118 signature verification rejected .pem output filename; 120 used supported .cer, exited 0, and verified the same final HAP.",
+    "Earlier browser command used an unavailable Chromium revision; the installed Playwright/Chromium path succeeded in 097.",
+    "Earlier phone fixture invocation missed wrapper-generated modules and the new directory helper; correct fixture/wrapper then passed.",
+    "First directory-helper build rejected unknown throw typing; narrowed BusinessError/Error form compiled in subsequent successful builds.",
+    "Isolated Mac fixture changed its default model and then removed that provider; restored original default and reran successfully."
+  ],
+  "limits": [
+    "The final HAP has not been installed or run on the device; source and host verification cannot certify physical layout, gestures or permissions.",
+    "TURN evidence remains phase9 real UDP-only/TCP-only relay, 50000 bytes each direction; no carrier NAT, public server or TURN TLS claim.",
+    "Do not sum repeated command-level TAP counts as unique test cases.",
+    "No user-account secrets, private auth URLs, keys, certificates or debug profiles are embedded in this record.",
+    "Ordinary Harmony HAP retains documented platform differences for local arbitrary Shell/PTY/npm scripts, privileged Android APIs and outside-app floating windows."
+  ],
+  "independent_source_review": {
+    "status": "no_new_blocking_findings",
+    "scope": [
+      "CodeHighlight/FencedHighlight",
+      "MessageBody",
+      "PetSprite",
+      "MermaidPanel",
+      "render.css"
+    ],
+    "notes": [
+      "Checked actual SDK units and longest-line measurement; no additional dependencies or edits.",
+      "Pixel density, safe-area listener cleanup and formula margin containment reviewed.",
+      "Device gestures and final rendering still require final HAP installation."
+    ]
+  },
+  "final_review": {
+    "git_diff_check": "passed",
+    "documentation_links": "no_missing_targets",
+    "checklist_rows": 17,
+    "evidence_rows": 17,
+    "artifact_matches_record": true
+  },
+  "incremental_test_evidence": {
+    "schema_version": 1,
+    "phase": "10",
+    "audit_kind": "read-only evidence review; no tests/build/HDC rerun",
+    "created_at": "2026-11-17T04:10:53.279558+00:00",
+    "repository": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+    "node_host": {
+      "path": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+      "reported_version": "v24.14.1"
+    },
+    "privacy": {
+      "authentication_material_copied": false,
+      "ready_or_private_credentials_files_read_for_this_audit": false,
+      "user_history_read": false,
+      "result_records_whitelisted": true
+    },
+    "counting_policy": {
+      "unique_test_case_total": null,
+      "reason": "Repeated, overlapping source/generated/browser/packed runs are not independent cases. Do not sum across run records. TAP counts apply only within their own log; protocol action counts and native contract groups use different units.",
+      "only_status_passed_is_final_success": true,
+      "historical_red_and_intermediate_green_excluded_from_pass_total": true,
+      "unknown_exit_codes_remain_null": true,
+      "inferred_commands_are_reproduction_candidates_not_original_invocation_claims": true,
+      "final_success_scope": "Latest retained successful result for the named check; does not imply every check reran against the final HAP."
+    },
+    "acceptance_limits": {
+      "phone_connected_at_audit": false,
+      "final_hap_installed_and_ui_retested": false,
+      "final_public_model_download_passed": false,
+      "usb_preseeded_actual_phone_sensevoice_inference_passed": true,
+      "final_artifact_ready_for_later_install": true,
+      "new_hap_ui_retests_pending": [
+        "display formula clipping",
+        "Mermaid fullscreen safe area",
+        "PhoneControl retained capture/tree rows",
+        "foreground overlay placement and touch behavior",
+        "SenseVoice official-source network preparation after timeout fix"
+      ],
+      "historical_phase9_evidence_unchanged": true
+    },
+    "package": {
+      "old_sha256": "751480d93025e54d1bac6ad71a18d4fa21654fcd6284ec5d03d4e843763cd451",
+      "new_sha256": "1e395cfcd7bf9c5847450ed3fb4354b8673ac74991d8557ebff40034d7511bce",
+      "archive_bytes": 46609895,
+      "extracted": "/tmp/dsh-device-20261117/runtime-timeout-fixed",
+      "files_verified": 15537,
+      "changed_files": [
+        {
+          "path": "sensevoice-models.mjs",
+          "before": "82c093866aa9af4678988bc20a23c601a733b21993b5da6fb5d62e446fa2a550",
+          "after": "0b3bd6a055c40f6b5d1dd2d79582a9a8bde5cd1127060fae716470809a5a986c"
+        }
+      ],
+      "zip_crc_pass": true,
+      "source_equal": true,
+      "all_extracted_sha256_pass": true,
+      "dependency_versions_unchanged": true,
+      "verification_manifest": {
+        "path": "/tmp/dsh-device-20261117/runtime-timeout-package-verification.json",
+        "sha256": "c6a15e73c169e198845625734ec73da1b478e3237a7344e262d104403ed9da67",
+        "bytes": 661
+      },
+      "pack_log": {
+        "path": "/tmp/dsh-device-20261117/runtime-timeout-pack.log",
+        "sha256": "52778f6167846c6b49107dd095ba34ccd4cfe9351ac24b410e9ef0e7b7b08ba6",
+        "bytes": 815
+      },
+      "command": [
+        "bash",
+        "runtime/pack-dsh.sh"
+      ],
+      "command_provenance": "executor_reported_original_command",
+      "exit_code": null,
+      "exit_code_provenance": "original_pack_session_exit_not_retained; completion established by pack log and independent all-file comparison"
+    },
+    "final_artifact": {
+      "hap": "entry/build/default/outputs/default/entry-default-signed.hap",
+      "hapSha256": "e10338aca1ee633c994baa90143c301fbf2f2008093850b8332a7b5f0feb2331",
+      "hapBytes": 197371923,
+      "runtimeSha256": "1e395cfcd7bf9c5847450ed3fb4354b8673ac74991d8557ebff40034d7511bce",
+      "zipCrc": true,
+      "runtimeManifestMatches": true,
+      "embeddedTimeoutSourceMatches": true,
+      "arm64Libraries": [
+        "libs/arm64-v8a/libc++_shared.so",
+        "libs/arm64-v8a/libdshlocal.so",
+        "libs/arm64-v8a/libnode.so",
+        "libs/arm64-v8a/libonnxruntime.so",
+        "libs/arm64-v8a/libsherpa-onnx-c-api.so"
+      ],
+      "verification_manifest": {
+        "path": "/tmp/dsh-device-20261117/119-final-artifact.json",
+        "sha256": "5279ca7ddab530dda5a73dde7f766aaef439ead9ba5cd4cbd25df745a75a8bb0",
+        "bytes": 583
+      },
+      "independently_rehashed_during_audit": true
+    },
+    "runs": [
+      {
+        "id": "003-constructor-before",
+        "status": "resolved_failure",
+        "selected_final_success": false,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/003-constructor-before.log",
+          "sha256": "255c1c56121889a93595dca3a33d3932a8e00bf71d0f945bc954058bbdeb3768",
+          "bytes": 2933
+        },
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/arkui-reactivity.test.mjs",
+          "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/build/default/cache/default/default@CompileArkTS/esmodule/debug/entry/src/main/ets/ui"
+        ],
+        "command_provenance": "inferred_from_test_titles_and_current_entrypoints",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [
+          {
+            "tests": 11,
+            "suites": 0,
+            "pass": 10,
+            "fail": 1,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0,
+            "duration_ms": 54.619792
+          }
+        ],
+        "notes": [],
+        "test_count_within_log_only": {
+          "tests": 11,
+          "pass": 10,
+          "fail": 1,
+          "cancelled": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "id": "005-locale-regression",
+        "status": "passed",
+        "selected_final_success": true,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/005-locale-regression.log",
+          "sha256": "f6cbd21d20c96e5a69f2f4414528debc4e9cc9a66a614e351f76b70145e71a72",
+          "bytes": 553
+        },
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--test",
+          "tests/locale.test.mjs"
+        ],
+        "command_provenance": "inferred_from_test_titles_and_current_entrypoints",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [
+          {
+            "tests": 4,
+            "suites": 0,
+            "pass": 4,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0,
+            "duration_ms": 1090.905
+          }
+        ],
+        "notes": [],
+        "test_count_within_log_only": {
+          "tests": 4,
+          "pass": 4,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "id": "006-constructor-after",
+        "status": "superseded_success",
+        "selected_final_success": false,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/006-constructor-after.log",
+          "sha256": "23a144afe40fe8b8f0c34eb3b0430d6cf081694e74692a2316af346e88523e54",
+          "bytes": 1144
+        },
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/arkui-reactivity.test.mjs",
+          "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/build/default/cache/default/default@CompileArkTS/esmodule/debug/entry/src/main/ets/ui"
+        ],
+        "command_provenance": "inferred_from_test_titles_and_current_entrypoints",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [
+          {
+            "tests": 11,
+            "suites": 0,
+            "pass": 11,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0,
+            "duration_ms": 37.272458
+          }
+        ],
+        "notes": [],
+        "test_count_within_log_only": {
+          "tests": 11,
+          "pass": 11,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "id": "017-pet-root-regression",
+        "status": "passed",
+        "selected_final_success": true,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/017-pet-root-regression.log",
+          "sha256": "095d067ede6d7bcb5e67ac701f06886e527e078563ff69b3b50e3c7fabf21ca0",
+          "bytes": 2052
+        },
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--test",
+          "tests/pet-sprite.test.mjs",
+          "tests/pets.test.mjs"
+        ],
+        "command_provenance": "inferred_from_test_titles_and_current_entrypoints",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [
+          {
+            "tests": 14,
+            "suites": 0,
+            "pass": 14,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0,
+            "duration_ms": 705.486666
+          }
+        ],
+        "notes": [],
+        "test_count_within_log_only": {
+          "tests": 14,
+          "pass": 14,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "id": "022-pet-build-arkui",
+        "status": "superseded_success",
+        "selected_final_success": false,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/022-pet-build-arkui.log",
+          "sha256": "bb161002ae5267340b871102b1d9b9495bacafc35239ae5a0caf8d4cfccc1039",
+          "bytes": 1144
+        },
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/arkui-reactivity.test.mjs",
+          "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/build/default/cache/default/default@CompileArkTS/esmodule/debug/entry/src/main/ets/ui"
+        ],
+        "command_provenance": "inferred_from_test_titles_and_current_entrypoints",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [
+          {
+            "tests": 11,
+            "suites": 0,
+            "pass": 11,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0,
+            "duration_ms": 46.286833
+          }
+        ],
+        "notes": [],
+        "test_count_within_log_only": {
+          "tests": 11,
+          "pass": 11,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "id": "056-directory-before",
+        "status": "resolved_failure",
+        "selected_final_success": false,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/056-directory-before.log",
+          "sha256": "d2703963b3e7ffabfee4f0edcfb01ccdf45daa0a268b8bb2dea4a0408a49c9d8",
+          "bytes": 1185
+        },
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--test",
+          "tests/private-directory.test.mjs"
+        ],
+        "command_provenance": "inferred_from_test_titles_and_current_entrypoints",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [
+          {
+            "tests": 3,
+            "suites": 0,
+            "pass": 1,
+            "fail": 2,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0,
+            "duration_ms": 209.984875
+          }
+        ],
+        "notes": [],
+        "test_count_within_log_only": {
+          "tests": 3,
+          "pass": 1,
+          "fail": 2,
+          "cancelled": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "id": "057-directory-after",
+        "status": "resolved_failure",
+        "selected_final_success": false,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/057-directory-after.log",
+          "sha256": "85b2d42820d313687e57640a394440aba885ccf48cb0d0f07a6fea71021ac05b",
+          "bytes": 8602
+        },
+        "command": null,
+        "command_provenance": "inferred_from_test_titles_and_current_entrypoints",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [
+          {
+            "tests": 26,
+            "suites": 0,
+            "pass": 22,
+            "fail": 4,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0,
+            "duration_ms": 571.387791
+          }
+        ],
+        "notes": [
+          "26 reported tests, 4 fixture import failures; not a successful run. Follow-up 065 and 070 resolved the invocation/import problems. Exact combined original invocation not retained."
+        ],
+        "test_count_within_log_only": {
+          "tests": 26,
+          "pass": 22,
+          "fail": 4,
+          "cancelled": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "id": "060-phone-regression",
+        "status": "resolved_failure",
+        "selected_final_success": false,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/060-phone-regression.log",
+          "sha256": "e5db623c144974601e43cc142a887d5d75dcdb44262d8b90ce27534a43d91097",
+          "bytes": 1179
+        },
+        "command": [
+          "sh",
+          "tests/check-phone.sh"
+        ],
+        "command_provenance": "inferred_from_test_titles_and_current_entrypoints",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [],
+        "notes": []
+      },
+      {
+        "id": "065-phone-regression",
+        "status": "passed",
+        "selected_final_success": true,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/065-phone-regression.log",
+          "sha256": "1a5f42a9789c133660b937f1796b92374a6a168fef2292051a1482428acfd01a",
+          "bytes": 1707
+        },
+        "command": [
+          "sh",
+          "tests/check-phone.sh"
+        ],
+        "command_provenance": "inferred_from_test_titles_and_current_entrypoints",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [
+          {
+            "tests": 7,
+            "suites": 0,
+            "pass": 7,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0,
+            "duration_ms": 513.487791
+          },
+          {
+            "tests": 1,
+            "suites": 0,
+            "pass": 1,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0,
+            "duration_ms": 3128.251792
+          },
+          {
+            "tests": 1,
+            "suites": 0,
+            "pass": 1,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0,
+            "duration_ms": 13.64075
+          },
+          {
+            "tests": 1,
+            "suites": 0,
+            "pass": 1,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0,
+            "duration_ms": 9012.895125
+          }
+        ],
+        "notes": [
+          "Four sequential test processes in check-phone.sh: 7 + 1 + 1 + 1. Native SDK and extension boundary fixtures on host; this is not phone UI or actual user-enabled accessibility execution."
+        ],
+        "test_count_within_log_only": {
+          "tests": 10,
+          "pass": 10,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "id": "070-storage-regression",
+        "status": "passed",
+        "selected_final_success": true,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/070-storage-regression.log",
+          "sha256": "773ad9b8d6e0738110e46ba384b2aa3078bbd26dca31d6e4771ca8dfb6e797ed",
+          "bytes": 3167
+        },
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--test",
+          "tests/private-directory.test.mjs",
+          "tests/companion.test.mjs",
+          "tests/companion-voice.test.mjs",
+          "tests/pets.test.mjs"
+        ],
+        "command_provenance": "inferred_from_test_titles_and_current_entrypoints",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [
+          {
+            "tests": 20,
+            "suites": 0,
+            "pass": 20,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0,
+            "duration_ms": 537.32875
+          }
+        ],
+        "notes": [],
+        "test_count_within_log_only": {
+          "tests": 20,
+          "pass": 20,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "id": "092-ui-fixes-regression",
+        "status": "superseded_success",
+        "selected_final_success": false,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/092-ui-fixes-regression.log",
+          "sha256": "dde3dff779866582c065136980704d6412b2a31bdefdb5d457578c088f4c9065",
+          "bytes": 1990
+        },
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--test",
+          "tests/fenced-code.test.mjs",
+          "tests/mermaid-safe-area.test.mjs",
+          "tests/pet-sprite.test.mjs"
+        ],
+        "command_provenance": "inferred_from_test_titles_and_current_entrypoints",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [
+          {
+            "tests": 14,
+            "suites": 0,
+            "pass": 14,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0,
+            "duration_ms": 588.788
+          }
+        ],
+        "notes": [],
+        "test_count_within_log_only": {
+          "tests": 14,
+          "pass": 14,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "id": "094-browser-render-regression",
+        "status": "resolved_environment_failure",
+        "selected_final_success": false,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/094-browser-render-regression.log",
+          "sha256": "e2464e4ffe308341a0d0a13fc7be5876d469676d4dd8db4248e40ad319153fa5",
+          "bytes": 1482
+        },
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--test",
+          "tests/render-browser.test.mjs"
+        ],
+        "command_provenance": "inferred_from_test_titles_and_current_entrypoints",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [
+          {
+            "tests": 1,
+            "suites": 0,
+            "pass": 0,
+            "fail": 1,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0,
+            "duration_ms": 489.328417
+          }
+        ],
+        "notes": [],
+        "test_count_within_log_only": {
+          "tests": 1,
+          "pass": 0,
+          "fail": 1,
+          "cancelled": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "id": "097-browser-render-regression",
+        "status": "passed",
+        "selected_final_success": true,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/097-browser-render-regression.log",
+          "sha256": "fd46733cab49c093e23005909a261c8c0a4ff51da8436319736e4b5deb7231e9",
+          "bytes": 208
+        },
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--test",
+          "tests/render-browser.test.mjs"
+        ],
+        "command_provenance": "root_executor_reported_original_command",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": 0,
+        "exit_code_provenance": "root_executor_reported_tool_exit_zero",
+        "reported_test_blocks": [
+          {
+            "tests": 1,
+            "suites": 0,
+            "pass": 1,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0,
+            "duration_ms": 2077.452917
+          }
+        ],
+        "notes": [],
+        "test_count_within_log_only": {
+          "tests": 1,
+          "pass": 1,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0
+        },
+        "environment": {
+          "DSH_RENDER_PLAYWRIGHT": "/Users/wangzhaojin/work/dsh/ai-ppt-generator/node_modules/playwright",
+          "DSH_RENDER_BROWSER": "/Users/wangzhaojin/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell"
+        }
+      },
+      {
+        "id": "111-markdown-regression",
+        "status": "passed",
+        "selected_final_success": true,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/111-markdown-regression.log",
+          "sha256": "9dc8a23d6819c949bae135ee66f0fcf913e93936d786fdce419fb79ab5c7ea27",
+          "bytes": 814
+        },
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--test",
+          "tests/markdown.test.mjs"
+        ],
+        "command_provenance": "inferred_from_test_titles_and_current_entrypoints",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [
+          {
+            "tests": 8,
+            "suites": 0,
+            "pass": 8,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0,
+            "duration_ms": 44.690125
+          }
+        ],
+        "notes": [],
+        "test_count_within_log_only": {
+          "tests": 8,
+          "pass": 8,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "id": "112-voice-regression",
+        "status": "passed",
+        "selected_final_success": true,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/112-voice-regression.log",
+          "sha256": "83fb6afe8eeebbd4a09ee63e76ae2451a30cc5a2751c8f922e35923f522ad858",
+          "bytes": 1622
+        },
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--test",
+          "tests/voice.test.mjs"
+        ],
+        "command_provenance": "inferred_from_test_titles_and_current_entrypoints",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [
+          {
+            "tests": 14,
+            "suites": 0,
+            "pass": 14,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0,
+            "duration_ms": 87.099875
+          }
+        ],
+        "notes": [],
+        "test_count_within_log_only": {
+          "tests": 14,
+          "pass": 14,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "id": "113-storage-session-regression",
+        "status": "passed",
+        "selected_final_success": true,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/113-storage-session-regression.log",
+          "sha256": "1183aaad7a64f2668096cc7eeaa5e30986c10eaa2c343d5507d8d34738be4d81",
+          "bytes": 1463
+        },
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--test",
+          "tests/private-directory.test.mjs",
+          "tests/session-record-reset.test.mjs"
+        ],
+        "command_provenance": "inferred_from_test_titles_and_current_entrypoints",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [
+          {
+            "tests": 9,
+            "suites": 0,
+            "pass": 9,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0,
+            "duration_ms": 303.334542
+          }
+        ],
+        "notes": [],
+        "test_count_within_log_only": {
+          "tests": 9,
+          "pass": 9,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "id": "115-generated-arkui-regression",
+        "status": "passed",
+        "selected_final_success": true,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/115-generated-arkui-regression.log",
+          "sha256": "d62a7a878b20a883e1bfcaaf81f08959c52c4a8f249a7a94b670f802869cdc24",
+          "bytes": 1144
+        },
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/arkui-reactivity.test.mjs",
+          "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/build/default/cache/default/default@CompileArkTS/esmodule/debug/entry/src/main/ets/ui"
+        ],
+        "command_provenance": "inferred_from_test_titles_and_current_entrypoints",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [
+          {
+            "tests": 11,
+            "suites": 0,
+            "pass": 11,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0,
+            "duration_ms": 44.347625
+          }
+        ],
+        "notes": [
+          "Evaluates actual generated ArkUI observers/builders with a small host boundary; does not emulate device layout, permissions or renderer."
+        ],
+        "test_count_within_log_only": {
+          "tests": 11,
+          "pass": 11,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "id": "116-current-ui-regression",
+        "status": "passed",
+        "selected_final_success": true,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/116-current-ui-regression.log",
+          "sha256": "1784c0fbe05fd97aa6ed05ea165c889909b45c43272c31625ba99e6eaabd86ab",
+          "bytes": 1994
+        },
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--test",
+          "tests/fenced-code.test.mjs",
+          "tests/mermaid-safe-area.test.mjs",
+          "tests/pet-sprite.test.mjs"
+        ],
+        "command_provenance": "inferred_from_test_titles_and_current_entrypoints",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [
+          {
+            "tests": 14,
+            "suites": 0,
+            "pass": 14,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0,
+            "duration_ms": 630.958375
+          }
+        ],
+        "notes": [
+          "14 reported tests = fenced-code 8, Mermaid safe-area 1, PetSprite 5 (DPR loop produces three individual cases)."
+        ],
+        "test_count_within_log_only": {
+          "tests": 14,
+          "pass": 14,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "id": "phone-control-reactivity-before",
+        "status": "resolved_failure",
+        "selected_final_success": false,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/phone-control-reactivity-before.log",
+          "sha256": "f7a1ac5a0512ca339265c84bac2de808e368819876c8476519493fe0b5628df7",
+          "bytes": 4548
+        },
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/phone-control-reactivity.test.mjs",
+          "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/build/default/cache/default/default@CompileArkTS/esmodule/debug/entry/src/main/ets/ui"
+        ],
+        "command_provenance": "inferred_from_test_titles_and_current_entrypoints",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [
+          {
+            "tests": 4,
+            "suites": 0,
+            "pass": 0,
+            "fail": 4,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0,
+            "duration_ms": 81.39975
+          }
+        ],
+        "notes": [],
+        "test_count_within_log_only": {
+          "tests": 4,
+          "pass": 0,
+          "fail": 4,
+          "cancelled": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "id": "phone-control-reactivity-source-after",
+        "status": "superseded_success",
+        "selected_final_success": false,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/phone-control-reactivity-source-after.log",
+          "sha256": "d04e9a0d319d6e8c80e01cbc442378e7d463e74da8f0b96ecea00b88fcc4ff04",
+          "bytes": 3973
+        },
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--test",
+          "tests/phone-control-reactivity.test.mjs",
+          "tests/session-record-reset.test.mjs",
+          "tests/private-directory.test.mjs",
+          "tests/remote-switch.test.mjs",
+          "tests/chat-artifacts.test.mjs"
+        ],
+        "command_provenance": "inferred_from_test_titles_and_current_entrypoints",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [
+          {
+            "tests": 28,
+            "suites": 0,
+            "pass": 28,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0,
+            "duration_ms": 305.694708
+          }
+        ],
+        "notes": [],
+        "test_count_within_log_only": {
+          "tests": 28,
+          "pass": 28,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "id": "phone-control-reactivity-generated-after",
+        "status": "passed",
+        "selected_final_success": true,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/phone-control-reactivity-generated-after.log",
+          "sha256": "15e3eaef74e010cced134ff03a67d7ef3eb14909e12eedea84857a1cc062afa2",
+          "bytes": 749
+        },
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/phone-control-reactivity.test.mjs",
+          "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/build/default/cache/default/default@CompileArkTS/esmodule/debug/entry/src/main/ets/ui"
+        ],
+        "command_provenance": "scribe_translation_executor_reported_original_command",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": 0,
+        "exit_code_provenance": "scribe_translation_confirmed_actual_exec_command_tool_exit_code_zero",
+        "reported_test_blocks": [
+          {
+            "tests": 4,
+            "suites": 0,
+            "pass": 4,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0,
+            "duration_ms": 74.573833
+          }
+        ],
+        "notes": [
+          "Evaluates actual generated ArkUI observers/builders with a small host boundary; does not emulate device layout, permissions or renderer."
+        ],
+        "test_count_within_log_only": {
+          "tests": 4,
+          "pass": 4,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "id": "index-overlay-placement-before",
+        "status": "resolved_failure",
+        "selected_final_success": false,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/index-overlay-placement-before.log",
+          "sha256": "b03cdcf45faa4b5bd9b3a0df7b426afe078661b045aa156c1661625de8560473",
+          "bytes": 4129
+        },
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/index-overlay-placement.test.mjs",
+          "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/build/default/cache/default/default@CompileArkTS/esmodule/debug/entry/src/main/ets/ui"
+        ],
+        "command_provenance": "inferred_from_test_titles_and_current_entrypoints",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [
+          {
+            "tests": 2,
+            "suites": 0,
+            "pass": 0,
+            "fail": 2,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0,
+            "duration_ms": 10.420583
+          }
+        ],
+        "notes": [],
+        "test_count_within_log_only": {
+          "tests": 2,
+          "pass": 0,
+          "fail": 2,
+          "cancelled": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "id": "index-overlay-placement-generated-after",
+        "status": "passed",
+        "selected_final_success": true,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/index-overlay-placement-generated-after.log",
+          "sha256": "77674e2c3d07ce30b28683f0553aaa08f3677940e4627881e586c59733915aa6",
+          "bytes": 330
+        },
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/index-overlay-placement.test.mjs",
+          "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/build/default/cache/default/default@CompileArkTS/esmodule/debug/entry/src/main/ets/ui"
+        ],
+        "command_provenance": "scribe_translation_executor_reported_original_command",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": 0,
+        "exit_code_provenance": "scribe_translation_confirmed_actual_exec_command_tool_exit_code_zero",
+        "reported_test_blocks": [
+          {
+            "tests": 2,
+            "suites": 0,
+            "pass": 2,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0,
+            "duration_ms": 8.443167
+          }
+        ],
+        "notes": [
+          "Evaluates actual generated ArkUI observers/builders with a small host boundary; does not emulate device layout, permissions or renderer."
+        ],
+        "test_count_within_log_only": {
+          "tests": 2,
+          "pass": 2,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "id": "device-ui-regressions-source-after",
+        "status": "passed",
+        "selected_final_success": true,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/device-ui-regressions-source-after.log",
+          "sha256": "0594619bdc43cd34291ef2d3f6b9e3bf4f9ae97fefb244d779e3f8e87056c04f",
+          "bytes": 4063
+        },
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--test",
+          "tests/index-overlay-placement.test.mjs",
+          "tests/phone-control-reactivity.test.mjs",
+          "tests/session-record-reset.test.mjs",
+          "tests/private-directory.test.mjs",
+          "tests/remote-switch.test.mjs",
+          "tests/chat-artifacts.test.mjs"
+        ],
+        "command_provenance": "scribe_translation_executor_reported_original_command",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": 0,
+        "exit_code_provenance": "scribe_translation_confirmed_actual_exec_command_tool_exit_code_zero",
+        "reported_test_blocks": [
+          {
+            "tests": 29,
+            "suites": 0,
+            "pass": 29,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0,
+            "duration_ms": 308.129
+          }
+        ],
+        "notes": [],
+        "test_count_within_log_only": {
+          "tests": 29,
+          "pass": 29,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "id": "session-record-reset-before",
+        "status": "resolved_failure",
+        "selected_final_success": false,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/session-record-reset-before.log",
+          "sha256": "6ec9dc936f1b0ceb6249b60aeeba420fc3456931af510ebce86adccc61f69910",
+          "bytes": 6325
+        },
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--test",
+          "tests/session-record-reset.test.mjs"
+        ],
+        "command_provenance": "inferred_from_test_titles_and_current_entrypoints",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [
+          {
+            "tests": 4,
+            "suites": 0,
+            "pass": 0,
+            "fail": 4,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0,
+            "duration_ms": 167.722042
+          }
+        ],
+        "notes": [],
+        "test_count_within_log_only": {
+          "tests": 4,
+          "pass": 0,
+          "fail": 4,
+          "cancelled": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "id": "session-record-reset-after",
+        "status": "superseded_success",
+        "selected_final_success": false,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/session-record-reset-after.log",
+          "sha256": "e36cac8a3e800b99f436ccfd5cba2c4439966f1673e733edc66b1dfe8e8bb412",
+          "bytes": 3552
+        },
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--test",
+          "tests/session-record-reset.test.mjs",
+          "tests/private-directory.test.mjs",
+          "tests/remote-switch.test.mjs",
+          "tests/chat-artifacts.test.mjs"
+        ],
+        "command_provenance": "inferred_from_test_titles_and_current_entrypoints",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [
+          {
+            "tests": 26,
+            "suites": 0,
+            "pass": 26,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0,
+            "duration_ms": 295.265791
+          }
+        ],
+        "notes": [],
+        "test_count_within_log_only": {
+          "tests": 26,
+          "pass": 26,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "id": "private-directory-review",
+        "status": "superseded_success",
+        "selected_final_success": false,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/private-directory-review.log",
+          "sha256": "8bcd9a3cc8bca02e1aa058333e3eb5111ce22d5a1e8e0f59f09a7dc28d5df9ab",
+          "bytes": 839
+        },
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--test",
+          "tests/private-directory.test.mjs"
+        ],
+        "command_provenance": "inferred_from_test_titles_and_current_entrypoints",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [
+          {
+            "tests": 5,
+            "suites": 0,
+            "pass": 5,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0,
+            "duration_ms": 209.206625
+          }
+        ],
+        "notes": [],
+        "test_count_within_log_only": {
+          "tests": 5,
+          "pass": 5,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "id": "math-render-red",
+        "status": "resolved_failure",
+        "selected_final_success": false,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/math-render-red.log",
+          "sha256": "f6ef4771dd02f569711ca92bf44bc97df26e77e6de1f21643c77624d3f91bfb5",
+          "bytes": 916
+        },
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--test",
+          "tests/render-browser.test.mjs"
+        ],
+        "command_provenance": "inferred_from_test_titles_and_current_entrypoints",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [
+          {
+            "tests": 1,
+            "suites": 0,
+            "pass": 0,
+            "fail": 1,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0,
+            "duration_ms": 1914.190083
+          }
+        ],
+        "notes": [],
+        "test_count_within_log_only": {
+          "tests": 1,
+          "pass": 0,
+          "fail": 1,
+          "cancelled": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "id": "math-render-green",
+        "status": "superseded_success",
+        "selected_final_success": false,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/math-render-green.log",
+          "sha256": "9ef871fd3f13c566d5876fef9a431a3c56f82d5c592bfdbbc77dc10fce43a6cf",
+          "bytes": 208
+        },
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--test",
+          "tests/render-browser.test.mjs"
+        ],
+        "command_provenance": "inferred_from_test_titles_and_current_entrypoints",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [
+          {
+            "tests": 1,
+            "suites": 0,
+            "pass": 1,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0,
+            "duration_ms": 1922.026125
+          }
+        ],
+        "notes": [],
+        "test_count_within_log_only": {
+          "tests": 1,
+          "pass": 1,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "id": "mermaid-safe-area-red",
+        "status": "resolved_failure",
+        "selected_final_success": false,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/mermaid-safe-area-red.log",
+          "sha256": "e7de00cad5cc8f1939239591d366440ad6c6e20c6f2097449fe1513123439d8a",
+          "bytes": 1198
+        },
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--test",
+          "tests/mermaid-safe-area.test.mjs"
+        ],
+        "command_provenance": "inferred_from_test_titles_and_current_entrypoints",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [
+          {
+            "tests": 1,
+            "suites": 0,
+            "pass": 0,
+            "fail": 1,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0,
+            "duration_ms": 124.189292
+          }
+        ],
+        "notes": [],
+        "test_count_within_log_only": {
+          "tests": 1,
+          "pass": 0,
+          "fail": 1,
+          "cancelled": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "id": "mermaid-safe-area-green",
+        "status": "superseded_success",
+        "selected_final_success": false,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/mermaid-safe-area-green.log",
+          "sha256": "523f129cf6f5644fec0933ab50f73db7826a64b23c710d5b92e597db8be22a2f",
+          "bytes": 402
+        },
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--test",
+          "tests/mermaid-safe-area.test.mjs"
+        ],
+        "command_provenance": "inferred_from_test_titles_and_current_entrypoints",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [
+          {
+            "tests": 1,
+            "suites": 0,
+            "pass": 1,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0,
+            "duration_ms": 141.76525
+          }
+        ],
+        "notes": [],
+        "test_count_within_log_only": {
+          "tests": 1,
+          "pass": 1,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "id": "sensevoice-network-red",
+        "status": "resolved_failure",
+        "selected_final_success": false,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/sensevoice-network-red.log",
+          "sha256": "2b25dbe5e444c89bede40462969b4c3ecbb725c7c1bca72043d792492dd9cd02",
+          "bytes": 3234
+        },
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--test",
+          "tests/sensevoice-network.test.mjs"
+        ],
+        "command_provenance": "inferred_from_test_titles_and_current_entrypoints",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [
+          {
+            "tests": 2,
+            "suites": 0,
+            "pass": 0,
+            "fail": 2,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0,
+            "duration_ms": 5507.526292
+          }
+        ],
+        "notes": [],
+        "test_count_within_log_only": {
+          "tests": 2,
+          "pass": 0,
+          "fail": 2,
+          "cancelled": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "id": "sensevoice-network-green",
+        "status": "superseded_success",
+        "selected_final_success": false,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/sensevoice-network-green.log",
+          "sha256": "3731c7c3889e44f253cbbb1ad6c7f0cd03482e4c39799e0085df0c45f29c6f6f",
+          "bytes": 1451
+        },
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--test",
+          "tests/sensevoice-network.test.mjs",
+          "tests/sensevoice.test.mjs"
+        ],
+        "command_provenance": "inferred_from_test_titles_and_current_entrypoints",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [
+          {
+            "tests": 17,
+            "suites": 0,
+            "pass": 17,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0,
+            "duration_ms": 5512.5415
+          }
+        ],
+        "notes": [],
+        "test_count_within_log_only": {
+          "tests": 17,
+          "pass": 17,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "id": "004-startup-fix-build",
+        "status": "superseded_success",
+        "selected_final_success": false,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/004-startup-fix-build.log",
+          "sha256": "29294801b5b83328fc9ca53baf0269a7ab8e2e4271c333bdbb0d990982149d63",
+          "bytes": 93111
+        },
+        "command": [
+          "hvigor",
+          "assembleHap",
+          "--no-daemon"
+        ],
+        "command_provenance": "root_reported_command_family_no_full_shell_environment_retained",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [],
+        "notes": [],
+        "build_result": "BUILD SUCCESSFUL",
+        "build_tasks": {
+          "total": 33,
+          "executed": 17,
+          "up_to_date": 16,
+          "not_test_cases": true
+        },
+        "duration_seconds": 23.357
+      },
+      {
+        "id": "015-pet-fix-build",
+        "status": "superseded_success",
+        "selected_final_success": false,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/015-pet-fix-build.log",
+          "sha256": "3c0cd33d8742c4e1ddb8ef36b5c347669e8257e8672351854b3ea04123b60bf1",
+          "bytes": 93112
+        },
+        "command": [
+          "hvigor",
+          "assembleHap",
+          "--no-daemon"
+        ],
+        "command_provenance": "root_reported_command_family_no_full_shell_environment_retained",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [],
+        "notes": [],
+        "build_result": "BUILD SUCCESSFUL",
+        "build_tasks": {
+          "total": 33,
+          "executed": 17,
+          "up_to_date": 16,
+          "not_test_cases": true
+        },
+        "duration_seconds": 20.472
+      },
+      {
+        "id": "086-device-fixes-build",
+        "status": "resolved_failure",
+        "selected_final_success": false,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/086-device-fixes-build.log",
+          "sha256": "0b1bdd74b1035da0e1e889cc78f4d29c4c823c5dc1901e0ec4d7ea6e30e12641",
+          "bytes": 95048
+        },
+        "command": [
+          "hvigor",
+          "assembleHap",
+          "--no-daemon"
+        ],
+        "command_provenance": "root_reported_command_family_no_full_shell_environment_retained",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [],
+        "notes": [],
+        "build_result": "BUILD FAILED",
+        "build_tasks": {
+          "total": 25,
+          "executed": 11,
+          "up_to_date": 14,
+          "not_test_cases": true
+        },
+        "duration_seconds": 27.088
+      },
+      {
+        "id": "088-device-fixes-build",
+        "status": "superseded_success",
+        "selected_final_success": false,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/088-device-fixes-build.log",
+          "sha256": "dfbdfe498658403d9d8d9b23d3d1274bf510ee08be6f460fb0f1370d87c93566",
+          "bytes": 92612
+        },
+        "command": [
+          "hvigor",
+          "assembleHap",
+          "--no-daemon"
+        ],
+        "command_provenance": "root_reported_command_family_no_full_shell_environment_retained",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [],
+        "notes": [],
+        "build_result": "BUILD SUCCESSFUL",
+        "build_tasks": {
+          "total": 33,
+          "executed": 18,
+          "up_to_date": 15,
+          "not_test_cases": true
+        },
+        "duration_seconds": 24.014
+      },
+      {
+        "id": "103-reviewed-fixes-build",
+        "status": "superseded_success",
+        "selected_final_success": false,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/103-reviewed-fixes-build.log",
+          "sha256": "2508ce327b1473e0024d0fffd4222a9f3937434e4127ab7fbf366a29a3ac6567",
+          "bytes": 92604
+        },
+        "command": [
+          "hvigor",
+          "assembleHap",
+          "--no-daemon"
+        ],
+        "command_provenance": "root_reported_command_family_no_full_shell_environment_retained",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [],
+        "notes": [],
+        "build_result": "BUILD SUCCESSFUL",
+        "build_tasks": {
+          "total": 33,
+          "executed": 17,
+          "up_to_date": 16,
+          "not_test_cases": true
+        },
+        "duration_seconds": 22.384
+      },
+      {
+        "id": "114-overlay-fixes-build",
+        "status": "superseded_success",
+        "selected_final_success": false,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/114-overlay-fixes-build.log",
+          "sha256": "30bb43da6b1c534137c42ba5a800786bac4726d88065c84ddd055ca4299c6126",
+          "bytes": 92605
+        },
+        "command": [
+          "hvigor",
+          "assembleHap",
+          "--no-daemon"
+        ],
+        "command_provenance": "root_reported_command_family_no_full_shell_environment_retained",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": 0,
+        "exit_code_provenance": "root_executor_reported_tool_exit_zero",
+        "reported_test_blocks": [],
+        "notes": [],
+        "build_result": "BUILD SUCCESSFUL",
+        "build_tasks": {
+          "total": 33,
+          "executed": 17,
+          "up_to_date": 16,
+          "not_test_cases": true
+        },
+        "duration_seconds": 24.257
+      },
+      {
+        "id": "117-runtime-fixes-build",
+        "status": "passed",
+        "selected_final_success": true,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/117-runtime-fixes-build.log",
+          "sha256": "3ba5fbdfdbc765275cbbfb2faec49993140b6bbb5c0261970b732cd62e2abef7",
+          "bytes": 92613
+        },
+        "command": [
+          "hvigor",
+          "assembleHap",
+          "--no-daemon"
+        ],
+        "command_provenance": "root_reported_command_family_no_full_shell_environment_retained",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": 0,
+        "exit_code_provenance": "root_executor_reported_tool_exit_zero",
+        "reported_test_blocks": [],
+        "notes": [],
+        "build_result": "BUILD SUCCESSFUL",
+        "build_tasks": {
+          "total": 33,
+          "executed": 19,
+          "up_to_date": 14,
+          "not_test_cases": true
+        },
+        "duration_seconds": 15.818
+      },
+      {
+        "id": "118-signature-verification",
+        "status": "resolved_invocation_failure",
+        "selected_final_success": false,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/118-signature-verification.log",
+          "sha256": "24656c0cb8da0bf02b8e29d0dbe85da9f338867b09b2749f3668f945abb3fc04",
+          "bytes": 186
+        },
+        "command": null,
+        "command_provenance": "inferred_from_test_titles_and_current_entrypoints",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [],
+        "notes": [
+          "Unsupported output certificate suffix .pem; this was an invocation error, not evidence of a bad application signature. Resolved by 120 with .cer."
+        ]
+      },
+      {
+        "id": "120-signature-verification",
+        "status": "passed",
+        "selected_final_success": true,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/120-signature-verification.log",
+          "sha256": "47d67646ac68a047798a21faf55e58db557eec319643b4f9c8a2a225ff177bbe",
+          "bytes": 3285
+        },
+        "command": [
+          "java",
+          "-jar",
+          "<SDK hap-sign-tool.jar>",
+          "verify-app",
+          "<root arguments; outCertChain uses .cer>"
+        ],
+        "command_provenance": "root_reported_command_family_full_shell_arguments_not_retained",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": 0,
+        "exit_code_provenance": "root_executor_reported_tool_exit_zero",
+        "reported_test_blocks": [],
+        "notes": [
+          "Existing log confirms SHA-256 digest, permission signature, all five native library code signatures and verify-app success. Public certificate details are not copied into this summary."
+        ],
+        "tool_result": "verify-app success"
+      },
+      {
+        "id": "runtime-timeout-packaged-speech-live",
+        "status": "passed",
+        "selected_final_success": true,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/runtime-timeout-packaged-speech-live.log",
+          "sha256": "0899e0a3ef1ca948c0548e64f16017762ec6e2a2d21e28c599f7277a61281b89",
+          "bytes": 217
+        },
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/speech-live.mjs",
+          "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/ets/dsh/DshClient.ets",
+          "/tmp/dsh-device-20261117/runtime-timeout-fixed",
+          "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/local-flock-fixture.cjs"
+        ],
+        "command_provenance": "recorded_in_runtime_timeout_verification_results_json",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": 0,
+        "exit_code_provenance": "subprocess_returncode_recorded",
+        "reported_test_blocks": [],
+        "notes": [
+          "Real packed HTTP/service protocol; recognition service and host file locks are synthetic fixtures. Separate native harness and phone USB-preseeded run provide actual inference evidence."
+        ],
+        "duration_seconds": 3.092,
+        "result_manifest": {
+          "path": "/tmp/dsh-device-20261117/runtime-timeout-verification-results.json",
+          "sha256": "370a821d7565839d77aad99878a71a57437abb065dde82a38432042507b40b7f",
+          "bytes": 2483
+        }
+      },
+      {
+        "id": "runtime-timeout-timeout-model-regressions",
+        "status": "passed",
+        "selected_final_success": true,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/runtime-timeout-timeout-model-regressions.log",
+          "sha256": "4a22e15927010fce073ee7c66d94e7e533fd26c296ed287c3b7c9a5d0f7481d3",
+          "bytes": 1457
+        },
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--test",
+          "/tmp/dsh-device-20261117/runtime-timeout-tests/sensevoice-network.test.mjs",
+          "/tmp/dsh-device-20261117/runtime-timeout-tests/sensevoice.test.mjs"
+        ],
+        "command_provenance": "recorded_in_runtime_timeout_verification_results_json",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": 0,
+        "exit_code_provenance": "subprocess_returncode_recorded",
+        "reported_test_blocks": [
+          {
+            "tests": 17,
+            "suites": 0,
+            "pass": 17,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0,
+            "duration_ms": 5510.955291
+          }
+        ],
+        "notes": [],
+        "test_count_within_log_only": {
+          "tests": 17,
+          "pass": 17,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0
+        },
+        "duration_seconds": 5.573,
+        "result_manifest": {
+          "path": "/tmp/dsh-device-20261117/runtime-timeout-verification-results.json",
+          "sha256": "370a821d7565839d77aad99878a71a57437abb065dde82a38432042507b40b7f",
+          "bytes": 2483
+        }
+      },
+      {
+        "id": "runtime-timeout-sensevoice-native",
+        "status": "passed",
+        "selected_final_success": true,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/runtime-timeout-sensevoice-native.log",
+          "sha256": "96f269e8f91ec63c477847401391f5c9a2353fe591a3ca94f8de795275199158",
+          "bytes": 72
+        },
+        "command": [
+          "sh",
+          "tests/check-sensevoice-native.sh",
+          "/tmp/sensevoice-models",
+          "/tmp/sensevoice-zh.wav",
+          "/tmp/sherpa-onnx-v1.13.8-osx-arm64-shared-no-tts-lib/lib"
+        ],
+        "command_provenance": "recorded_in_runtime_timeout_verification_results_json",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": 0,
+        "exit_code_provenance": "subprocess_returncode_recorded",
+        "reported_test_blocks": [],
+        "notes": [
+          "Real C++/sherpa/ONNX inference on macOS using vetted Chinese WAV, not a synthetic recognizer and not phone execution."
+        ],
+        "duration_seconds": 7.268,
+        "result_manifest": {
+          "path": "/tmp/dsh-device-20261117/runtime-timeout-verification-results.json",
+          "sha256": "370a821d7565839d77aad99878a71a57437abb065dde82a38432042507b40b7f",
+          "bytes": 2483
+        }
+      },
+      {
+        "id": "runtime-timeout-native-publication-engine-smoke",
+        "status": "passed",
+        "selected_final_success": true,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/runtime-timeout-native-publication-engine-smoke.log",
+          "sha256": "326917ab704eaad2033367e7b6a26a6f4b0ad43c6a740222ee5982b99848f8dc",
+          "bytes": 789
+        },
+        "command": [
+          "docker",
+          "run",
+          "--rm",
+          "--cpus=2",
+          "--memory=2g",
+          "--name",
+          "dsh-native-timeout-fix-20261117",
+          "-v",
+          "/Users/wangzhaojin/work/dsh/dsh-go-harmony:/work:ro",
+          "-v",
+          "/tmp/dsh-device-20261117/runtime-timeout-fixed:/tmp/runtime:ro",
+          "-w",
+          "/work",
+          "-e",
+          "DSH_NATIVE_TEST_RUNTIME=/tmp/runtime",
+          "codex/dsh-native-tests:20261117",
+          "sh",
+          "-c",
+          "node --version && dpkg-query -W libnode137 libnode-dev libuv1-dev && sh tests/check-native-publish.sh /usr/include/node /usr/lib/aarch64-linux-gnu/libnode.so.137"
+        ],
+        "command_provenance": "recorded_in_runtime_timeout_verification_results_json",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": 0,
+        "exit_code_provenance": "subprocess_returncode_recorded",
+        "reported_test_blocks": [],
+        "notes": [
+          "No TAP case count emitted; five contract groups must not be described as five individual assertions. Matching Linux Node/libnode/headers 24.22.2, libuv 1.53.0, disposable Docker host; not Harmony phone runtime execution."
+        ],
+        "duration_seconds": 13.644,
+        "result_manifest": {
+          "path": "/tmp/dsh-device-20261117/runtime-timeout-verification-results.json",
+          "sha256": "370a821d7565839d77aad99878a71a57437abb065dde82a38432042507b40b7f",
+          "bytes": 2483
+        },
+        "reported_contract_groups": [
+          "native workspace publication",
+          "native session publication",
+          "native attachment publication",
+          "real POSIX file lock contention/release",
+          "full engine smoke using production C++ embedder"
+        ]
+      },
+      {
+        "id": "phone-local-core",
+        "status": "passed",
+        "selected_final_success": true,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/phone-local-core.log",
+          "sha256": "6e51d9466614b445ce96da66921d9b4b5eeed7e5c934c0ba31c7eea15d7405de",
+          "bytes": 2439
+        },
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "/tmp/dsh-device-20261117/phone-local-core.mjs"
+        ],
+        "command_provenance": "known_entrypoint_and_read_only_script_audit_original_tool_exit_not_retained",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [],
+        "notes": [
+          "No original shell exit code stored in this standalone log; PASS is established from the terminal result record and matching action log. No secret arguments are included.",
+          "14 recorded protocol actions. Synthetic local fixture provider; real phone engine streaming, scoped read/write/edit, cancellation, reconnect, offline sharing and owned-session permanent deletion. No old sessions listed, no user account keys read.",
+          "Fixture model selection updates the global default; baseline default was explicitly restored and verified. Provider and one synthetic UI session intentionally retained pending ROOT UI completion."
+        ],
+        "result_manifest": {
+          "path": "/tmp/dsh-device-20261117/phone-local-core-result.json",
+          "sha256": "90ae444dd09c362cb678f4ad7cbdace50e727e18dec6d838f5941625dd5d1d5f",
+          "bytes": 4298
+        },
+        "script": {
+          "path": "/tmp/dsh-device-20261117/phone-local-core.mjs",
+          "sha256": "71f658c62079dd0921cd87d4ce458a2a1534e65a750c47ef436cf78947e1ad3e",
+          "bytes": 9564
+        },
+        "execution_target": "actual Harmony phone local engine over ROOT-owned USB forwarding before final rebuilt HAP",
+        "new_hap_retested": false,
+        "reported_actions": [
+          {
+            "name": "phone-auth-http-and-websocket",
+            "status": "PASS",
+            "ms": 151
+          },
+          {
+            "name": "capture-and-verify-default-restoration-before-fixture",
+            "status": "PASS",
+            "ms": 962
+          },
+          {
+            "name": "register-isolated-model-and-synthetic-credential",
+            "status": "PASS",
+            "ms": 686
+          },
+          {
+            "name": "create-only-owned-directory-and-session",
+            "status": "PASS",
+            "ms": 610
+          },
+          {
+            "name": "real-model-write-tool",
+            "status": "PASS",
+            "ms": 1125
+          },
+          {
+            "name": "real-model-read-tool",
+            "status": "PASS",
+            "ms": 500
+          },
+          {
+            "name": "real-model-edit-tool",
+            "status": "PASS",
+            "ms": 582
+          },
+          {
+            "name": "missing-file-structured-error",
+            "status": "PASS",
+            "ms": 438
+          },
+          {
+            "name": "outside-workspace-refused-without-reading-user-files",
+            "status": "PASS",
+            "ms": 40
+          },
+          {
+            "name": "actual-stream-cancel",
+            "status": "PASS",
+            "ms": 246
+          },
+          {
+            "name": "actual-render-stream",
+            "status": "PASS",
+            "ms": 847
+          },
+          {
+            "name": "reconnect-and-reopen-only-owned-history",
+            "status": "PASS",
+            "ms": 144
+          },
+          {
+            "name": "phone-offline-share-prepare-and-decode",
+            "status": "PASS",
+            "ms": 93
+          },
+          {
+            "name": "owned-session-permanent-deletion-and-readmission-fence",
+            "status": "PASS",
+            "ms": 497
+          }
+        ],
+        "reported_action_count": 14
+      },
+      {
+        "id": "phone-local-schedules",
+        "status": "passed",
+        "selected_final_success": true,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/phone-local-schedules.log",
+          "sha256": "184b5492248750e70e4874d22cda83658fcf6a780081d159e9c9f63c7757f6b6",
+          "bytes": 1215
+        },
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "/tmp/dsh-device-20261117/phone-local-schedules.mjs"
+        ],
+        "command_provenance": "known_entrypoint_and_read_only_script_audit_original_tool_exit_not_retained",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [],
+        "notes": [
+          "No original shell exit code stored in this standalone log; PASS is established from the terminal result record and matching action log. No secret arguments are included.",
+          "5 recorded actions; timeout elapsed 120475 ms using unchanged production deadline. Explicit allow created one future-only task and deleted it before execution. No host-wide schedule catalog read."
+        ],
+        "result_manifest": {
+          "path": "/tmp/dsh-device-20261117/phone-local-schedules-result.json",
+          "sha256": "56c0dfb13c98f4509ae94a33fd56b520932bbd69e9522d56513d3b22b809b897",
+          "bytes": 1955
+        },
+        "script": {
+          "path": "/tmp/dsh-device-20261117/phone-local-schedules.mjs",
+          "sha256": "4479f3fab86df45ff436168ddd709c35c32b2e4d5c7b21b53a7cb16e445afcca",
+          "bytes": 7239
+        },
+        "execution_target": "actual Harmony phone local engine over ROOT-owned USB forwarding before final rebuilt HAP",
+        "new_hap_retested": false,
+        "reported_actions": [
+          {
+            "name": "reject-cannot-be-bypassed-by-full-access",
+            "status": "PASS",
+            "ms": 1976
+          },
+          {
+            "name": "cancel-blocking-authorization",
+            "status": "PASS",
+            "ms": 1404
+          },
+          {
+            "name": "custom-answer-cannot-authorize",
+            "status": "PASS",
+            "ms": 1341
+          },
+          {
+            "name": "allow-one-future-task-then-delete-before-execution",
+            "status": "PASS",
+            "ms": 1665
+          },
+          {
+            "name": "real-original-120-second-timeout",
+            "status": "PASS",
+            "ms": 121561,
+            "elapsedMs": 120475
+          }
+        ],
+        "reported_action_count": 5
+      },
+      {
+        "id": "phone-sensevoice-usb-inference",
+        "status": "passed",
+        "selected_final_success": true,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/phone-sensevoice-usb-inference.log",
+          "sha256": "9bfb40e07e5910e01e71e2ee77eb9b8f193069b49cfd403c8e6ea69709d84673",
+          "bytes": 992
+        },
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "/tmp/dsh-device-20261117/phone-sensevoice-usb-inference.mjs"
+        ],
+        "command_provenance": "known_entrypoint_and_read_only_script_audit_original_tool_exit_not_retained",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [],
+        "notes": [
+          "No original shell exit code stored in this standalone log; PASS is established from the terminal result record and matching action log. No secret arguments are included.",
+          "USB-preseeded 241357257 bytes; production SHA validation and actual phone native load/inference passed. This does not pass or bypass public network download acceptance."
+        ],
+        "result_manifest": {
+          "path": "/tmp/dsh-device-20261117/phone-sensevoice-usb-inference-result.json",
+          "sha256": "7dcefa3e0bb6e85dad34dc926a2faaded78c88f9a08ea98abe6ccfe34bc50257",
+          "bytes": 2222
+        },
+        "script": {
+          "path": "/tmp/dsh-device-20261117/phone-sensevoice-usb-inference.mjs",
+          "sha256": "c4c0c0d0edd44bfdf9dba1b714c0033aeacd7cd92959bbf9b5274fb1890affd0",
+          "bytes": 3051
+        },
+        "execution_target": "actual Harmony phone local engine over ROOT-owned USB forwarding before final rebuilt HAP",
+        "new_hap_retested": false,
+        "evidence": {
+          "source": "USB-preseeded pinned official models",
+          "networkDownloadPassed": false,
+          "preparationMs": 10206,
+          "wav": {
+            "bytes": 178988,
+            "sha256": "b77f1794fe374a0ba1ee1dc458bfaf9349496cbbfc32780c50ba3c5a7ad8e373"
+          },
+          "transcription": {
+            "text": "开饭时间早上9点至下午5点。",
+            "audioSeconds": 5.592
+          },
+          "transcriptionWallMs": 898
+        },
+        "state_sequence": [
+          "checking",
+          "checking",
+          "checking",
+          "loading",
+          "ready"
+        ]
+      },
+      {
+        "id": "phone-search-artifact-asr",
+        "status": "passed",
+        "selected_final_success": true,
+        "log": {
+          "path": "/tmp/dsh-device-20261117/phone-search-artifact-asr.log",
+          "sha256": "719d54ba0309b487b23accf0bf690506900f9f91f7c61dcec792baa77d872871",
+          "bytes": 998
+        },
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "/tmp/dsh-device-20261117/phone-search-artifact-asr.mjs"
+        ],
+        "command_provenance": "known_entrypoint_and_read_only_script_audit_original_tool_exit_not_retained",
+        "working_directory": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exit_code": null,
+        "exit_code_provenance": "not_retained_in_log",
+        "reported_test_blocks": [],
+        "notes": [
+          "No original shell exit code stored in this standalone log; PASS is established from the terminal result record and matching action log. No secret arguments are included.",
+          "3 successful diagnostic actions, but first merely reads the FAILED SenseVoice state; it is not ASR/download success. Fulltext query used only a unique own-session marker; HTML artifact was produced by actual write and parsed by production artifact logic."
+        ],
+        "result_manifest": {
+          "path": "/tmp/dsh-device-20261117/phone-search-artifact-asr-result.json",
+          "sha256": "4c24de359840a08ffaa1abb8d3f5af9756bcacf0a5ff609996b225f8bd0538b9",
+          "bytes": 1813
+        },
+        "script": {
+          "path": "/tmp/dsh-device-20261117/phone-search-artifact-asr.mjs",
+          "sha256": "f2879c46186963520de243bb01fdfdc4e0024ec446cbd1a78d5f579f549fe2fc",
+          "bytes": 4527
+        },
+        "execution_target": "actual Harmony phone local engine over ROOT-owned USB forwarding before final rebuilt HAP",
+        "new_hap_retested": false,
+        "reported_actions": [
+          {
+            "name": "phone-sensevoice-readonly-state",
+            "status": "PASS"
+          },
+          {
+            "name": "real-phone-message-fulltext-search",
+            "status": "PASS"
+          },
+          {
+            "name": "real-write-tool-produces-native-html-artifact-card",
+            "status": "PASS"
+          }
+        ],
+        "reported_action_count": 3
+      }
+    ],
+    "red_green_chains": [
+      {
+        "issue": "generated page constructor storage order",
+        "before": [
+          "003-constructor-before"
+        ],
+        "resolved_by": [
+          "115-generated-arkui-regression"
+        ]
+      },
+      {
+        "issue": "private recursive directory creation and fixture imports",
+        "before": [
+          "056-directory-before",
+          "057-directory-after",
+          "060-phone-regression"
+        ],
+        "resolved_by": [
+          "065-phone-regression",
+          "070-storage-regression",
+          "113-storage-session-regression"
+        ]
+      },
+      {
+        "issue": "ArkTS compilation errors",
+        "before": [
+          "086-device-fixes-build"
+        ],
+        "resolved_by": [
+          "088-device-fixes-build",
+          "117-runtime-fixes-build"
+        ]
+      },
+      {
+        "issue": "missing Playwright browser binary",
+        "before": [
+          "094-browser-render-regression"
+        ],
+        "resolved_by": [
+          "097-browser-render-regression"
+        ]
+      },
+      {
+        "issue": "display formula height clipping",
+        "before": [
+          "math-render-red"
+        ],
+        "resolved_by": [
+          "097-browser-render-regression"
+        ],
+        "phone_ui_retest_pending": true
+      },
+      {
+        "issue": "fullscreen diagram safe area",
+        "before": [
+          "mermaid-safe-area-red"
+        ],
+        "resolved_by": [
+          "116-current-ui-regression"
+        ],
+        "phone_ui_retest_pending": true
+      },
+      {
+        "issue": "retired session records and duplicate local stop",
+        "before": [
+          "session-record-reset-before"
+        ],
+        "resolved_by": [
+          "113-storage-session-regression",
+          "device-ui-regressions-source-after"
+        ]
+      },
+      {
+        "issue": "retained PhoneControl capture/node row identity",
+        "before": [
+          "phone-control-reactivity-before"
+        ],
+        "resolved_by": [
+          "phone-control-reactivity-generated-after"
+        ],
+        "phone_ui_retest_pending": true
+      },
+      {
+        "issue": "foreground overlay parent alignment/hit testing",
+        "before": [
+          "index-overlay-placement-before"
+        ],
+        "resolved_by": [
+          "index-overlay-placement-generated-after"
+        ],
+        "phone_ui_retest_pending": true
+      },
+      {
+        "issue": "HTTPS inherited five-second connect budget and stalled TLS deadline",
+        "before": [
+          "sensevoice-network-red"
+        ],
+        "resolved_by": [
+          "runtime-timeout-timeout-model-regressions"
+        ],
+        "public_phone_download_retest_pending": true
+      },
+      {
+        "issue": "signature verifier output extension",
+        "before": [
+          "118-signature-verification"
+        ],
+        "resolved_by": [
+          "120-signature-verification"
+        ]
+      }
+    ],
+    "additional_evidence": [
+      {
+        "type": "diagnosis_not_final_test",
+        "file": {
+          "path": "/tmp/dsh-device-20261117/index-reset-review-result.json",
+          "sha256": "c3951c7bd96da73af71219668b3f80a7af2c63c98d884c7f758cd7a685f89286",
+          "bytes": 285
+        }
+      },
+      {
+        "type": "diagnosis_not_final_test",
+        "file": {
+          "path": "/tmp/dsh-device-20261117/sensevoice-connect-deadline-probe-result.json",
+          "sha256": "63b311d20f66e733a621124156d2775c060b2e57ee9d78a341cd7bd8d0098015",
+          "bytes": 422
+        }
+      },
+      {
+        "type": "diagnosis_not_final_test",
+        "file": {
+          "path": "/tmp/dsh-device-20261117/sensevoice-timeout-probe-result.json",
+          "sha256": "13e5379dd0c1d59340a02940cb918e6f723ac508d02c6439e141845db2fba4f1",
+          "bytes": 416
+        }
+      },
+      {
+        "type": "phone_observation_only_not_new_hap_acceptance",
+        "file": {
+          "path": "/tmp/dsh-device-20261117/085-voice-acoustic-result.png",
+          "sha256": "974b3145b79f0b9a6f2cf7f7ddb18c1768d4a2d6ec77125960994ed9c24a7138",
+          "bytes": 3345251
+        }
+      },
+      {
+        "type": "phone_observation_only_not_new_hap_acceptance",
+        "file": {
+          "path": "/tmp/dsh-device-20261117/091-sensevoice-usb-copy.json",
+          "sha256": "95de34a1b5aa115dc289591a485a55defee395cd849345c1e12962efceaafdbf",
+          "bytes": 956
+        }
+      },
+      {
+        "type": "phone_observation_only_not_new_hap_acceptance",
+        "file": {
+          "path": "/tmp/dsh-device-20261117/110-sense-ready.png",
+          "sha256": "cac2aef8fccb4070edfa2b9fee925e4f48c8aac6cfa15ccfbd53339b7393798c",
+          "bytes": 3345251
+        },
+        "limit": "Failed locked-screen navigation; stale screenshot is not evidence of SenseVoice readiness or a successful UI operation."
+      }
+    ]
+  },
+  "knowledge_sync": {
+    "exit_code": 0,
+    "log": "/tmp/dsh-device-20261117/121-knowledge-sync.json",
+    "log_sha256": "cec7b80c2b4ea97d43044ef1ec5c37d08a0cc3a4fba3f020658f8b6ace7d2e9e",
+    "result": {
+      "projects": [
+        "dsh-go-harmony"
+      ],
+      "updated": [
+        "20-项目/dsh-go-harmony-46e65bbb-46e6-33/项目概览.md",
+        "20-项目/dsh-go-harmony-46e65bbb-46e6-33/方案.md",
+        "20-项目/dsh-go-harmony-46e65bbb-46e6-33/架构.md",
+        "20-项目/dsh-go-harmony-46e65bbb-46e6-33/设计模式.md",
+        "20-项目/dsh-go-harmony-46e65bbb-46e6-33/技术栈.md",
+        "20-项目/dsh-go-harmony-46e65bbb-46e6-33/资料索引.md",
+        "00-首页/首页.md",
+        "00-首页/项目总览.md",
+        "00-首页/技术栈总览.md",
+        "00-首页/设计模式总览.md",
+        "10-个人/个人信息.md",
+        "10-个人/兴趣爱好.md",
+        "10-个人/工作习惯.md",
+        "10-个人/账号密码.md",
+        "99-系统/数据来源.md",
+        "90-模板/项目概览模板.md",
+        "90-模板/项目方案模板.md",
+        "90-模板/项目架构模板.md",
+        "90-模板/项目设计模式模板.md",
+        "90-模板/项目技术栈模板.md",
+        "90-模板/项目资料索引模板.md",
+        "90-模板/账号模板.md",
+        "99-系统/同步状态.md",
+        "99-系统/同步错误.md"
+      ],
+      "errors": []
+    }
+  }
+}

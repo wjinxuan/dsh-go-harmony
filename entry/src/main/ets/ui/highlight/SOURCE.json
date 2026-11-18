@@ -1,0 +1,258 @@
+{
+  "upstream": "https://github.com/ccch1mneyyy/dsh-Go",
+  "commit": "a9877420ab9aee121134faf01b6a92a39ce0b05b",
+  "reHighlight": {
+    "version": "0.0.3",
+    "url": "https://pub.dev/api/archives/re_highlight-0.0.3.tar.gz",
+    "sha256": "6c4ac3f76f939fb7ca9df013df98526634e17d8f7460e028bd23a035870024f2",
+    "mapping": "README and vendor/highlight.js/package.json both identify 11.9.0"
+  },
+  "highlightJs": {
+    "version": "11.9.0",
+    "url": "https://registry.npmjs.org/highlight.js/-/highlight.js-11.9.0.tgz",
+    "sha256": "db2a70542f61a7ee55c82d7fa13a5a4ec3df690fb1c9476c0d7b8500d4bfab30"
+  },
+  "transform": "core.js replaces only module.exports = highlight with export default highlight; 55 official ESM grammars unchanged; vue.js from pinned re_highlight archive replaces CommonJS wrapper with export default hljsDefineVue. Registry/aliases from fixed code_block.dart; no dependency installation or runtime download.",
+  "files": {
+    "core.js": {
+      "sha256": "46137762fe6174bee845577248bddbcd7dd654a1a8cc01c8c53231bd5c2f0375",
+      "sourceSha256": "1dd2b677c59d018817cd2c9043e645e644eec40fc72df385a7d60318d5f89265"
+    },
+    "bash.js": {
+      "sha256": "b4b6d8c9da1946cf50627e9ad8caa691e10f7ed24754d17201ef998ff73ae7ea",
+      "sourceSha256": "b4b6d8c9da1946cf50627e9ad8caa691e10f7ed24754d17201ef998ff73ae7ea"
+    },
+    "c.js": {
+      "sha256": "d52e2fbd4ee836c3fbae1889ccd104a5aed7c60ca4ec108e0ad86b9f79b5dac9",
+      "sourceSha256": "d52e2fbd4ee836c3fbae1889ccd104a5aed7c60ca4ec108e0ad86b9f79b5dac9"
+    },
+    "clojure.js": {
+      "sha256": "7b23fd6011ef764203aa7a84bcdcc1daaa192c3258f668e8df00b6b7a7d346d9",
+      "sourceSha256": "7b23fd6011ef764203aa7a84bcdcc1daaa192c3258f668e8df00b6b7a7d346d9"
+    },
+    "cmake.js": {
+      "sha256": "bafaecfb7a1d5fe429900451cca3c6f209af0541f9785a5ce4568b88ffc64821",
+      "sourceSha256": "bafaecfb7a1d5fe429900451cca3c6f209af0541f9785a5ce4568b88ffc64821"
+    },
+    "cpp.js": {
+      "sha256": "99bf253b057bfa6909dbacab2194b8a19faa66bc12d1ffc6b876dd9f4bb98612",
+      "sourceSha256": "99bf253b057bfa6909dbacab2194b8a19faa66bc12d1ffc6b876dd9f4bb98612"
+    },
+    "csharp.js": {
+      "sha256": "0f741e12ddaa59b93c8f6a40106aa27bf0ca725e00989b5ea753d1946942061b",
+      "sourceSha256": "0f741e12ddaa59b93c8f6a40106aa27bf0ca725e00989b5ea753d1946942061b"
+    },
+    "css.js": {
+      "sha256": "ae916d0625eb5cce77879bd5e2e4a32b5e735f6a06d3325a7ce59ab41d544f15",
+      "sourceSha256": "ae916d0625eb5cce77879bd5e2e4a32b5e735f6a06d3325a7ce59ab41d544f15"
+    },
+    "dart.js": {
+      "sha256": "708b2b6cdc3c44cdc906aa8c902f017fc7566841e77a962331e695df698cd339",
+      "sourceSha256": "708b2b6cdc3c44cdc906aa8c902f017fc7566841e77a962331e695df698cd339"
+    },
+    "diff.js": {
+      "sha256": "de88e962204d77e2c0e380414679f6ead7a7db5e22b95cf2b6e07ad9d62d1ada",
+      "sourceSha256": "de88e962204d77e2c0e380414679f6ead7a7db5e22b95cf2b6e07ad9d62d1ada"
+    },
+    "dockerfile.js": {
+      "sha256": "6408db2161448d6e7d9cb19c8c3c41426ef6a6fd7bb014b1735b6776fc800fcc",
+      "sourceSha256": "6408db2161448d6e7d9cb19c8c3c41426ef6a6fd7bb014b1735b6776fc800fcc"
+    },
+    "dos.js": {
+      "sha256": "87a5080d256eae6292c0710cc0a0709008f2e4e595598f6085793707874d6796",
+      "sourceSha256": "87a5080d256eae6292c0710cc0a0709008f2e4e595598f6085793707874d6796"
+    },
+    "elixir.js": {
+      "sha256": "60a52033080761382aa817671446d6b6fd81f31bc6f54fb316ceb1ce02875313",
+      "sourceSha256": "60a52033080761382aa817671446d6b6fd81f31bc6f54fb316ceb1ce02875313"
+    },
+    "erlang.js": {
+      "sha256": "e2fc06311249f69a31c60f52caa98e7ed68318454ee2e858438b738dcdf6b73c",
+      "sourceSha256": "e2fc06311249f69a31c60f52caa98e7ed68318454ee2e858438b738dcdf6b73c"
+    },
+    "fsharp.js": {
+      "sha256": "72bfd08602d349019ee3ef329721b67f2331f7af2dd311f32ef93772f366c732",
+      "sourceSha256": "72bfd08602d349019ee3ef329721b67f2331f7af2dd311f32ef93772f366c732"
+    },
+    "go.js": {
+      "sha256": "15e5ac58fe61a875a5451acde38510eb3045e2660579167311b0abea7086f5d2",
+      "sourceSha256": "15e5ac58fe61a875a5451acde38510eb3045e2660579167311b0abea7086f5d2"
+    },
+    "gradle.js": {
+      "sha256": "f472ffb6d996861931f9fcf46fdacbe0e52ae96367dc3143a2044b7e35b887e3",
+      "sourceSha256": "f472ffb6d996861931f9fcf46fdacbe0e52ae96367dc3143a2044b7e35b887e3"
+    },
+    "graphql.js": {
+      "sha256": "2843ced97ca7c0c65b4d600440f5dfa2d412a6ed37bf8b8450f25ba239019d86",
+      "sourceSha256": "2843ced97ca7c0c65b4d600440f5dfa2d412a6ed37bf8b8450f25ba239019d86"
+    },
+    "groovy.js": {
+      "sha256": "bdd931eafb83404997459b73c6d08a2a9123828597ae855a4dc828a75dd77688",
+      "sourceSha256": "bdd931eafb83404997459b73c6d08a2a9123828597ae855a4dc828a75dd77688"
+    },
+    "haskell.js": {
+      "sha256": "b7ca3bc65484de9b549d443df628bfc150df06fc54a2bcae82fbdca786e0b155",
+      "sourceSha256": "b7ca3bc65484de9b549d443df628bfc150df06fc54a2bcae82fbdca786e0b155"
+    },
+    "http.js": {
+      "sha256": "4673718ead2818ddd0d214306fa766cba90709bc1a4480da265040a6ec78e3e0",
+      "sourceSha256": "4673718ead2818ddd0d214306fa766cba90709bc1a4480da265040a6ec78e3e0"
+    },
+    "ini.js": {
+      "sha256": "b01f2f7c70173605b5b70aa564de245d0f77b4f40d942eb526258e68ce8ef7ab",
+      "sourceSha256": "b01f2f7c70173605b5b70aa564de245d0f77b4f40d942eb526258e68ce8ef7ab"
+    },
+    "java.js": {
+      "sha256": "12f12630e1cb9a74910af4030241a54d47efd75c15b470df3e891914714062aa",
+      "sourceSha256": "12f12630e1cb9a74910af4030241a54d47efd75c15b470df3e891914714062aa"
+    },
+    "javascript.js": {
+      "sha256": "1d3289d5c11b2295ad4dfc428baef31d6874fda5dc3b4cc7c132f38627849427",
+      "sourceSha256": "1d3289d5c11b2295ad4dfc428baef31d6874fda5dc3b4cc7c132f38627849427"
+    },
+    "json.js": {
+      "sha256": "956764a89028c8d53b34b0c0b9a41d501f2e4aa934ee5d06c6270586974d78c1",
+      "sourceSha256": "956764a89028c8d53b34b0c0b9a41d501f2e4aa934ee5d06c6270586974d78c1"
+    },
+    "julia.js": {
+      "sha256": "69d3f9533bffeace8cd2559b2d74279cd8b554a839bff0f0dbc5a85ca10f9255",
+      "sourceSha256": "69d3f9533bffeace8cd2559b2d74279cd8b554a839bff0f0dbc5a85ca10f9255"
+    },
+    "kotlin.js": {
+      "sha256": "2faa665a5d04ce58611d29aa8355c8c1184543f38309ca52df500316c478bff9",
+      "sourceSha256": "2faa665a5d04ce58611d29aa8355c8c1184543f38309ca52df500316c478bff9"
+    },
+    "latex.js": {
+      "sha256": "ac8ebb3f5020a3d730c1550eff57b24c08264d95edf4ece0c627e0a58168f7fa",
+      "sourceSha256": "ac8ebb3f5020a3d730c1550eff57b24c08264d95edf4ece0c627e0a58168f7fa"
+    },
+    "less.js": {
+      "sha256": "8d43f0ff4edb6926fa666de913a03bcddd009721217976af4d6337828d217de8",
+      "sourceSha256": "8d43f0ff4edb6926fa666de913a03bcddd009721217976af4d6337828d217de8"
+    },
+    "lua.js": {
+      "sha256": "6cada327e81b8c3d1b29061e63d4278ea7fff95d4a764ba22224c153e7ca3729",
+      "sourceSha256": "6cada327e81b8c3d1b29061e63d4278ea7fff95d4a764ba22224c153e7ca3729"
+    },
+    "makefile.js": {
+      "sha256": "4d7caabc92e4f6cc40e9bfc895c38d6ca274f208bd375687c2c4876f8933427e",
+      "sourceSha256": "4d7caabc92e4f6cc40e9bfc895c38d6ca274f208bd375687c2c4876f8933427e"
+    },
+    "markdown.js": {
+      "sha256": "5c4ffae363748bfc93c40c47387545a8d99ff208154bbf2be4c3dc8cde55b86f",
+      "sourceSha256": "5c4ffae363748bfc93c40c47387545a8d99ff208154bbf2be4c3dc8cde55b86f"
+    },
+    "matlab.js": {
+      "sha256": "ed286a615bd08fd5fb36e5acf7b30b966b4bcfb25a056348830900a1c7c6e822",
+      "sourceSha256": "ed286a615bd08fd5fb36e5acf7b30b966b4bcfb25a056348830900a1c7c6e822"
+    },
+    "nginx.js": {
+      "sha256": "a87c6d8f74644a71c8d787c6d206e13b7df957ccdd5181eba00070233cd56df4",
+      "sourceSha256": "a87c6d8f74644a71c8d787c6d206e13b7df957ccdd5181eba00070233cd56df4"
+    },
+    "nix.js": {
+      "sha256": "42b5565426a0b3767b788f5eb82c33b6a3215ef45d8a8aa52f180f1c66cd1821",
+      "sourceSha256": "42b5565426a0b3767b788f5eb82c33b6a3215ef45d8a8aa52f180f1c66cd1821"
+    },
+    "objectivec.js": {
+      "sha256": "03340d47bc71f4dbc420257c4cb5e63635cae55def137c9e1d7bd536cc3ea3dd",
+      "sourceSha256": "03340d47bc71f4dbc420257c4cb5e63635cae55def137c9e1d7bd536cc3ea3dd"
+    },
+    "ocaml.js": {
+      "sha256": "038d65a19a7ea580828b9570f75270f80500d37dd80593b6ead0a6e0de6ff03d",
+      "sourceSha256": "038d65a19a7ea580828b9570f75270f80500d37dd80593b6ead0a6e0de6ff03d"
+    },
+    "perl.js": {
+      "sha256": "b18ba32f9027e163c3c1e3118719b599d4fde3f5290e16cef48d0f5f9ad2001f",
+      "sourceSha256": "b18ba32f9027e163c3c1e3118719b599d4fde3f5290e16cef48d0f5f9ad2001f"
+    },
+    "php.js": {
+      "sha256": "7c0f83c366cc879da40a53c721c5551684a6cda70d4242baa8059553430d318e",
+      "sourceSha256": "7c0f83c366cc879da40a53c721c5551684a6cda70d4242baa8059553430d318e"
+    },
+    "powershell.js": {
+      "sha256": "c7263c0d55a5f6a7fef93b2201de99bb45d0e6dff5e523f9e7710e1ab4879ba3",
+      "sourceSha256": "c7263c0d55a5f6a7fef93b2201de99bb45d0e6dff5e523f9e7710e1ab4879ba3"
+    },
+    "properties.js": {
+      "sha256": "ea4b98ba8974e86c1d95501548bc4502da46477c440040fec07b24201c51c384",
+      "sourceSha256": "ea4b98ba8974e86c1d95501548bc4502da46477c440040fec07b24201c51c384"
+    },
+    "protobuf.js": {
+      "sha256": "b48b69f60ea4e53b55f891aa1786496e22992468a8398f0266aa8afe0488b7ae",
+      "sourceSha256": "b48b69f60ea4e53b55f891aa1786496e22992468a8398f0266aa8afe0488b7ae"
+    },
+    "python.js": {
+      "sha256": "6130943b9a18eebeb362728b2e119bcd48fc52e6af4acb4d4934029039e664f6",
+      "sourceSha256": "6130943b9a18eebeb362728b2e119bcd48fc52e6af4acb4d4934029039e664f6"
+    },
+    "r.js": {
+      "sha256": "08155a5b6b400432d5c6df45d06f41d5194dd582433d04e094b38118a8f8a358",
+      "sourceSha256": "08155a5b6b400432d5c6df45d06f41d5194dd582433d04e094b38118a8f8a358"
+    },
+    "ruby.js": {
+      "sha256": "4ef072c176963a4ead2eb43badee86e70ace2456ec924b048a41264835c4fdff",
+      "sourceSha256": "4ef072c176963a4ead2eb43badee86e70ace2456ec924b048a41264835c4fdff"
+    },
+    "rust.js": {
+      "sha256": "40b17a0cee3200e92a50bb21d200ec465ac4a2578dfe60377c81080139aeaa7b",
+      "sourceSha256": "40b17a0cee3200e92a50bb21d200ec465ac4a2578dfe60377c81080139aeaa7b"
+    },
+    "scala.js": {
+      "sha256": "8c847b3240931a36a87cc593c90b717747e022b3ea5649fddb5125b249e74c2e",
+      "sourceSha256": "8c847b3240931a36a87cc593c90b717747e022b3ea5649fddb5125b249e74c2e"
+    },
+    "scss.js": {
+      "sha256": "2b68d0b18227ce77d18094e358e3c5c21b5e88d098d6f1f55aa4d2e53fb9eb09",
+      "sourceSha256": "2b68d0b18227ce77d18094e358e3c5c21b5e88d098d6f1f55aa4d2e53fb9eb09"
+    },
+    "shell.js": {
+      "sha256": "3d2dc631071a18a96a51d16a7e85d68d42f811b4d950f3158a1b32d2bd624343",
+      "sourceSha256": "3d2dc631071a18a96a51d16a7e85d68d42f811b4d950f3158a1b32d2bd624343"
+    },
+    "sql.js": {
+      "sha256": "b2895e027c7445aabdcf60456dff2ddc5529e385cc80635e15907511d6b41ee1",
+      "sourceSha256": "b2895e027c7445aabdcf60456dff2ddc5529e385cc80635e15907511d6b41ee1"
+    },
+    "swift.js": {
+      "sha256": "9b9502af059aae20d16122595faa745d9eef499b15423d34375e73722371694c",
+      "sourceSha256": "9b9502af059aae20d16122595faa745d9eef499b15423d34375e73722371694c"
+    },
+    "typescript.js": {
+      "sha256": "e48124e6cdcc41f620f8c940df08df786f57646b5054d5b7465ccf3884719ed9",
+      "sourceSha256": "e48124e6cdcc41f620f8c940df08df786f57646b5054d5b7465ccf3884719ed9"
+    },
+    "verilog.js": {
+      "sha256": "ed2646ba8ae2c4a8a5dafb09a18456b4565aef61510bafc78870d4d7b1e981d1",
+      "sourceSha256": "ed2646ba8ae2c4a8a5dafb09a18456b4565aef61510bafc78870d4d7b1e981d1"
+    },
+    "vim.js": {
+      "sha256": "2f53a938619364954bffcf35733ddb0f435884cb13820f0296c85b18952a79d8",
+      "sourceSha256": "2f53a938619364954bffcf35733ddb0f435884cb13820f0296c85b18952a79d8"
+    },
+    "vue.js": {
+      "sha256": "8fe7599e5339885f77394843e143c67e078cd2d8a912937062c96cc25a7e698e",
+      "sourceSha256": "0098082fbbc34d207f43935263d0583b153009121ba99cfb1c78f3b16e24817e"
+    },
+    "xml.js": {
+      "sha256": "6c04e48590d177f27f1a8274b4963b676eb49b6dcb005d68279ce80be086ebdc",
+      "sourceSha256": "6c04e48590d177f27f1a8274b4963b676eb49b6dcb005d68279ce80be086ebdc"
+    },
+    "yaml.js": {
+      "sha256": "33f98af180938f1b517792d9b47cd177aaa3b81ee50f2ef2e9eb566ae93b6fbf",
+      "sourceSha256": "33f98af180938f1b517792d9b47cd177aaa3b81ee50f2ef2e9eb566ae93b6fbf"
+    },
+    "LICENSE.highlight.js": {
+      "sha256": "6c081431591d9df696c82dc598fe1423765b8a299b200ed00b281afd0f64c490",
+      "sourceSha256": "6c081431591d9df696c82dc598fe1423765b8a299b200ed00b281afd0f64c490"
+    },
+    "LICENSE.vue": {
+      "sha256": "e02de3f1cb136ad72488c7661392e88c5e8c3b7150297cf6fe8eb7851db54fc8",
+      "sourceSha256": "e02de3f1cb136ad72488c7661392e88c5e8c3b7150297cf6fe8eb7851db54fc8"
+    },
+    "LICENSE.dsh-Go": {
+      "sha256": "0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0",
+      "sourceSha256": "0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0"
+    }
+  }
+}

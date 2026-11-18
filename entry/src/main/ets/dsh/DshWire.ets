@@ -12,6 +12,8 @@ export interface DshSession {
   title: string;
   cwd: string;
   updatedAt: number;
+  origin?: string;
+  parentSessionId?: string;
   archived?: boolean;
   pinned?: boolean;
   model?: DshModelSelection;
@@ -21,10 +23,35 @@ export interface DshMessage {
   id: string;
   role: string;
   text: string;
+  requestId?: string;
   reasoning?: string;
   usage?: DshTokenUsage;
   content?: WireObject[];
   seq?: number;
+}
+
+export interface DshAttachmentRef {
+  kind: string;
+  id: string;
+  name: string;
+  bytes: number;
+  reference: WireObject;
+  offloaded: boolean;
+}
+
+export function messageAttachments(content: WireObject[]): DshAttachmentRef[] {
+  const items: DshAttachmentRef[] = [];
+  for (const part of content) {
+    const kind = string(part['type']);
+    const reference = object(part['attachment']);
+    const id = string(reference['attachmentId']);
+    const bytes = number(reference['bytes'], 0);
+    if ((kind !== 'image' && kind !== 'file') || !/^sha256:[a-f0-9]{64}$/.test(id) || bytes < 0) continue;
+    const name = string(reference['name']).replace(/[\x00-\x1f\x7f/\\]/g, '').slice(0, 255);
+    items.push({ kind: kind, id: id, name: name || (kind === 'image' ? '图片' : '附件'), bytes: bytes,
+      reference: reference, offloaded: part['offloaded'] === true });
+  }
+  return items;
 }
 
 export interface DshTokenUsage {
@@ -142,6 +169,7 @@ export interface DshQueuedPrompt {
   target: DshQueueTarget;
   automatic: boolean;
   resendable: boolean;
+  hasAttachments?: boolean;
 }
 
 export interface DshQueueMoveResult {
@@ -308,15 +336,42 @@ export interface DshTurnNotice {
   retryText?: string;
 }
 
+export interface DshCommand {
+  name: string;
+  definitionId?: string;
+  label: string;
+  description: string;
+  hint?: string;
+}
+
+export interface DshCommandResult {
+  id?: string;
+  success: boolean;
+  text?: string;
+}
+
+export interface DshCommandNotice {
+  id: string;
+  name: string;
+  args?: string;
+  seq?: number;
+  done: boolean;
+  success?: boolean;
+  text?: string;
+}
+
 export interface DshChatUpdate {
   sessionId: string;
   messages: DshMessage[];
+  records?: DshSessionRecord[];
   running: boolean;
   approval?: DshApproval;
   error?: string;
   sessionError?: string;
   tools?: DshTool[];
   notices: DshTurnNotice[];
+  commands?: DshCommandNotice[];
+  compacting?: boolean;
   turnFailureCode?: string;
   queue?: DshQueuedPrompt[];
   questions?: DshQuestionRequest[];
@@ -339,6 +394,94 @@ export function array(value: Object | null | undefined): Object[] {
 
 export function string(value: Object | null | undefined): string {
   return typeof value === 'string' ? value : '';
+}
+
+function commandText(value: Object | null | undefined, limit: number): string {
+  return string(value).slice(0, limit).replace(/[\x00-\x09\x0B-\x1F\x7F-\x9F\u202A-\u202E\u2066-\u2069]/g, '').trim();
+}
+
+export function commandCatalog(value: Object | null | undefined): DshCommand[] {
+  if (!Array.isArray(value)) {
+    throw new Error('DSH 返回的命令列表无效');
+  }
+  const commands: DshCommand[] = [];
+  for (const item of array(value)) {
+    const row = object(item);
+    const name = string(row['name']);
+    if (!/^[a-z][a-z0-9_-]*$/.test(name) || commands.some((command: DshCommand) => command.name === name)) {
+      continue;
+    }
+    const input = object(row['input']);
+    const definitionId = string(row['definitionId']);
+    const command: DshCommand = { name: name, definitionId: definitionId || undefined, label: name,
+      description: commandText(row['description'], 240),
+      hint: row['input'] && typeof row['input'] === 'object' && !Array.isArray(row['input']) ?
+        commandText(input['hint'], 120) : undefined };
+    if (name === 'compact' && (!definitionId || definitionId === '@deepseek-ai/dsh-command-compact')) {
+      command.label = '压缩';
+      command.description = '压缩以上对话内容，腾出上下文';
+    } else if (name === 'permission' && (!definitionId || definitionId === '@deepseek-ai/dsh-permission-presets')) {
+      command.label = '权限';
+      command.description = '切换权限预设（沙箱模式与审批策略）';
+      if (command.hint !== undefined) command.hint = '<预设名>';
+    } else if (name === 'plan' && (!definitionId || definitionId === '@deepseek-ai/dsh-plan-mode')) {
+      command.label = '计划';
+      command.description = '进入或退出计划模式';
+      if (command.hint !== undefined) command.hint = '[off | 要求]';
+    } else if (name === 'goal' && (!definitionId || definitionId === '@deepseek-ai/dsh-command-goal')) {
+      command.label = '目标';
+      command.description = '设置或查看长期任务目标';
+      if (command.hint !== undefined) command.hint = '[目标 | clear | pause | resume]';
+    } else if (name === 'feedback' && (!definitionId || definitionId === '@deepseek-ai/dsh-command-feedback')) {
+      command.label = '反馈';
+      command.description = '发送关于当前对话的反馈';
+      if (command.hint !== undefined) command.hint = '<内容>';
+    }
+    commands.push(command);
+  }
+  return commands;
+}
+
+function commandOutcome(name: string, success: boolean, value: Object | null | undefined): string | undefined {
+  const text = commandText(value, 2000);
+  if (name === 'compact') {
+    if (text === 'No compactable history yet.') return '暂无可压缩的对话内容';
+    const compacted = /^Compacted (\d+) history items \(~(\d+) tokens\)\.$/.exec(text);
+    if (compacted) return `已压缩 ${compacted[1]} 条历史记录（约 ${compacted[2]} token）`;
+    switch (text) {
+      case 'Usage: /compact (no arguments)': return '/compact 无需参数';
+      case 'Compaction is unavailable because this process has an active compaction, or the agent is not idle.':
+        return '当前会话或主机正在处理任务，请稍后压缩';
+      case 'Compaction cancelled.': return '已取消压缩';
+      case 'The history selected for compaction changed before it could be replaced. The attempt is recorded in the session log.':
+        return '压缩期间对话内容发生变化，请检查会话后再试';
+      case 'Compaction could not produce a useful summary. The attempt is recorded in the session log.':
+        return '未能生成可用的上下文摘要';
+      case 'Compaction did not finish cleanly; some session history may have changed. Inspect the current session state before retrying.':
+        return '压缩未能完成，对话内容可能已变化，请检查后再试';
+      case 'Compaction finished, but the session could not be saved.': return '压缩完成，但主机未能保存会话';
+    }
+  }
+  if (name === 'feedback') {
+    if (text === 'Feedback text is required. Usage: /feedback <text>') return '请输入反馈内容';
+    if (/^Feedback recorded for session [^\n]+\nAnonymous user: [^\n]+\.$/.test(text)) return '反馈已提交';
+  }
+  // A failed durable result can be a thrown host exception containing private data.
+  return success ? text || undefined : '命令执行失败，请在主机上查看详情';
+}
+
+export function commandResult(name: string, value: Object | null | undefined): DshCommandResult {
+  if (value === undefined || value === null) {
+    return { success: false, text: '这台主机没有这条命令' };
+  }
+  const row = object(value);
+  const id = string(row['commandId']);
+  const result = object(row['result']);
+  const kind = result['kind'];
+  if (!id || (kind !== 'success' && kind !== 'error')) {
+    throw new Error('DSH 返回的命令结果无效');
+  }
+  return { id: id, success: kind === 'success', text: commandOutcome(name, kind === 'success', result['text']) };
 }
 
 export function strings(value: Object | null | undefined): string[] {
@@ -495,10 +638,10 @@ function turnFailureText(code: string): string {
     case 'INVALID_CREDENTIAL': return 'API Key 无效或已过期';
     case 'QUOTA': return '余额不足';
     case 'ACCOUNT_QUOTA': return '账号额度已用完';
-    case 'ACCOUNT_SIGN_IN_REQUIRED': return '请在主机上登录 DeepSeek 账号';
-    case 'ACCOUNT_TOKEN_INVALID': return 'DeepSeek 账号登录已失效，请在主机上重新登录';
+    case 'ACCOUNT_SIGN_IN_REQUIRED': return '请登录当前引擎的 DeepSeek 账号';
+    case 'ACCOUNT_TOKEN_INVALID': return 'DeepSeek 账号登录已失效，请重新登录';
     case 'RATE_LIMIT': return '请求太频繁，稍后再试';
-    case 'CONTEXT_WINDOW_EXCEEDED': return '对话太长，发送 /compact 压缩后再试';
+    case 'CONTEXT_WINDOW_EXCEEDED': return '对话太长，请压缩上下文后重试，或新建对话';
     case 'SERVER': return '模型服务暂时不可用';
     case 'TIMEOUT': return '模型响应超时';
     case 'TRANSPORT': return '没能连上模型服务';
@@ -872,17 +1015,20 @@ function queuedPrompt(value: Object, target: DshQueueTarget): DshQueuedPrompt {
     'agent-message', 'team-message', 'goal', 'schedule', 'user-question-reply', 'tool-goal', 'ptc-mode'].includes(kind);
   const parts = array(row['content']).map(object);
   const text = parts.filter((part: WireObject) => part['type'] === 'text').map((part: WireObject) => string(part['text'])).join('');
-  return { id: hidden ? '' : string(row['id']), requestId: string(source['rpcId']) || undefined, text: text,
+  return { id: hidden ? '' : string(row['id']), requestId: kind === 'user' ? string(source['rpcId']) || undefined : undefined, text: text,
     target: target, automatic: kind === 'tool-jobs',
+    hasAttachments: kind === 'user' && parts.some((part: WireObject) => part['type'] === 'image' || part['type'] === 'file'),
     resendable: kind === 'user' && !!text.trim() && parts.every((part: WireObject) => part['type'] === 'text') };
 }
 
 export class DshRpcError extends Error {
   readonly code: string;
+  readonly reason?: string;
 
-  constructor(code: string, message: string) {
+  constructor(code: string, message: string, reason?: string) {
     super(message);
     this.code = code;
+    this.reason = reason;
   }
 }
 
@@ -906,10 +1052,13 @@ export function parseRpcResponse(text: string, rpcId: string, method?: string): 
       }
       if (['gateway/definition-unavailable', 'gateway/invocation-unavailable', 'gateway/service-unavailable',
         'gateway/method-unavailable'].includes(code) &&
-        (method?.startsWith('goals/') || method?.startsWith('permissionPresets/') || method?.startsWith('userQuestions/'))) {
+        (method?.startsWith('goals/') || method?.startsWith('permissionPresets/') || method?.startsWith('userQuestions/') ||
+          method?.startsWith('commands/'))) {
         throw new DshRpcError(code, '这台主机不支持此功能');
       }
-      throw new DshRpcError(code, wireError(error));
+      const reason = object(error['details'])['reason'] === 'MODEL_DOES_NOT_SUPPORT_IMAGES' ?
+        'MODEL_DOES_NOT_SUPPORT_IMAGES' : undefined;
+      throw new DshRpcError(code, wireError(error), reason);
     }
     if (result['ok'] === true) {
       return result['value'];
@@ -962,12 +1111,14 @@ function completeApprovalInput(toolName: string, args: WireObject): boolean {
 export class DshTranscript {
   readonly sessionId: string;
   running: boolean = false;
+  compacting: boolean = false;
   turnFailureCode?: string;
   sessionError?: string;
   private readonly local: boolean;
   private hostStatusRunning?: boolean;
   private terminalErrorSeen: boolean = false;
   private notices: DshTurnNotice[] = [];
+  private commands: Map<string, DshCommandNotice> = new Map();
   private noticeTurn?: DshNoticeTurn;
   private latestEndNotice?: DshTurnNotice;
   private noticeRecovery?: DshNoticeRecovery;
@@ -975,6 +1126,7 @@ export class DshTranscript {
   private retryingId: string = '';
   private lastTimelineSeq: number = -1;
   private committed: DshMessage[] = [];
+  private records: DshSessionRecord[] = [];
   private cursor: number = -1;
   private attemptId: string = '';
   private draft: Map<number, string> = new Map();
@@ -1006,6 +1158,20 @@ export class DshTranscript {
   applySessionError(message: string): void {
     if (!this.terminalErrorSeen) {
       this.sessionError = this.local ? localSessionError(message) : 'DSH 主机报告错误，请在主机上查看详情';
+    }
+  }
+
+  commandNotices(): DshCommandNotice[] {
+    return Array.from(this.commands.values()).sort((a: DshCommandNotice, b: DshCommandNotice) =>
+      (a.seq ?? Number.MAX_SAFE_INTEGER) - (b.seq ?? Number.MAX_SAFE_INTEGER));
+  }
+
+  applyCommandResult(localId: string, name: string, result: DshCommandResult): void {
+    const id = result.id ?? localId;
+    const previous = this.commands.get(id);
+    if (!previous?.done) {
+      this.commands.set(id, { id: id, name: previous?.name ?? name, args: previous?.args, seq: previous?.seq,
+        done: true, success: result.success, text: result.text });
     }
   }
 
@@ -1076,6 +1242,47 @@ export class DshTranscript {
         reasoning: reasoning || undefined, usage: this.draftUsage });
     }
     return messages;
+  }
+
+  sessionRecords(): DshSessionRecord[] {
+    return this.records.map((record: DshSessionRecord): DshSessionRecord => {
+      let data: WireObject = {};
+      if (record.type === 'user/message' || record.type === 'assistant/message') data = record.data;
+      else if (record.type === 'turn/start') data = { 'turn': record.data['turn'] };
+      else if (record.type === 'step/start') data = { 'step': record.data['step'], 'turn': record.data['turn'] };
+      else if (record.type === 'todo/write') data = { 'todos': array(record.data['todos']).map((raw: Object): WireObject => {
+        const todo = object(raw); return { 'content': todo['content'], 'status': todo['status'] };
+      }) };
+      else if (record.type === 'goal/change') {
+        const goal = object(record.data['goal']);
+        const view: WireObject = { 'objective': goal['objective'], 'phase': goal['phase'] };
+        data = { 'operation': record.data['operation'], 'goal': view };
+      }
+      else if (record.type === 'tool/call') {
+        data = { 'step': record.data['step'], 'turn': record.data['turn'], 'callId': record.data['callId'], 'name': record.data['name'],
+          'arguments': record.data['arguments'] };
+      } else if (record.type === 'tool/result') {
+        const result = object(record.data['message']);
+        const message: WireObject = { 'toolCallId': result['toolCallId'], 'isError': result['isError'] === true };
+        const rawMeta = object(record.data['meta']);
+        const meta: WireObject = {};
+        for (const key of ['path', 'operation', 'diffs']) if (rawMeta[key] !== undefined) meta[key] = rawMeta[key];
+        data = { 'step': record.data['step'], 'turn': record.data['turn'], 'message': message, 'meta': meta,
+          'error': !!record.data['error'], 'failure': !!record.data['failure'] };
+      } else if (record.type === 'deliverables/presented') {
+        const files: WireObject[] = array(record.data['files']).map((raw: Object): WireObject => {
+          const item = object(raw);
+          return { 'path': item['path'], 'description': item['description'] };
+        });
+        data = { 'turn': record.data['turn'], 'callId': record.data['callId'], 'files': files };
+      }
+      else if (record.type === 'turn/end') {
+        const reason = object(record.data['reason']);
+        const safeReason: WireObject = { 'kind': reason['kind'] };
+        data = { 'turn': record.data['turn'], 'reason': safeReason };
+      }
+      return { seq: record.seq, type: record.type, time: record.time, data: data };
+    });
   }
 
   tools(): DshTool[] {
@@ -1214,9 +1421,14 @@ export class DshTranscript {
       case 'snapshot': {
         const relayBeforeSnapshot = this.sessionError;
         this.committed = [];
+        this.records = [];
         this.toolCalls.clear();
         this.cursor = -1;
         this.running = false;
+        this.compacting = false;
+        for (const command of this.commands.values()) {
+          if (command.seq !== undefined) this.commands.delete(command.id);
+        }
         this.turnFailureCode = undefined;
         this.sessionError = undefined;
         this.terminalErrorSeen = false;
@@ -1277,7 +1489,28 @@ export class DshTranscript {
     this.cursor = seq;
     const type = string(event['type']);
     const data = object(event['data']);
+    this.records.push({ seq: seq, type: type, time: number(event['time'], 0), data: data });
     this.applyProjectedEvent(type, data, seq);
+    if (type === 'command/run' || type === 'command/done') {
+      const id = string(data['commandId']);
+      const previous = this.commands.get(id);
+      if (id && type === 'command/run') {
+        const name = string(data['name']);
+        if (/^[a-z][a-z0-9_-]*$/.test(name)) {
+          this.commands.set(id, { id: id, name: name, args: commandText(data['args'], 1000) || undefined,
+            seq: seq, done: previous?.done ?? false, success: previous?.success, text: previous?.text });
+        }
+      } else if (id && previous && (data['kind'] === 'success' || data['kind'] === 'error')) {
+        const success = data['kind'] === 'success';
+        this.commands.set(id, { id: id, name: previous.name, args: previous.args, seq: previous.seq,
+          done: true, success: success, text: commandOutcome(previous.name, success, data['text']) });
+      }
+      return;
+    }
+    if (type === 'compaction/start' || type === 'compaction/end') {
+      this.compacting = type === 'compaction/start';
+      return;
+    }
     if (type === 'turn/start') {
       this.running = true;
       this.turnFailureCode = undefined;
@@ -1293,6 +1526,7 @@ export class DshTranscript {
     }
     if (type === 'turn/end') {
       this.running = false;
+      this.compacting = false;
       this.clearDraft();
       this.finishNoticeTurn(seq, data);
       return;
@@ -1351,6 +1585,7 @@ export class DshTranscript {
     const usage = tokenUsage(data['usage']);
     if (content.length > 0 || usage) {
       const row: DshMessage = { id: string(message['id']) || `event-${seq}`, role: role,
+        requestId: role === 'user' ? string(object(message['source'])['rpcId']) || undefined : undefined,
         text: this.partText(content, 'text'), reasoning: this.partText(content, 'reasoning') || undefined,
         usage: usage, content: content, seq: seq };
       this.committed.push(row);

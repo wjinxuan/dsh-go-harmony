@@ -1,0 +1,893 @@
+{
+  "phase": 11,
+  "recorded_at": "2026-11-17T13:46:14.675040+08:00",
+  "status": "phase11_hap_launched_network_progress_observed_recall_tag_unavailable_device_disconnected",
+  "previous_record": "native-build-phase10.json",
+  "baseline": {
+    "version": "dsh-Go 1.0.15",
+    "commit": "a9877420ab9aee121134faf01b6a92a39ce0b05b"
+  },
+  "artifact": {
+    "hap": "entry/build/default/outputs/default/entry-default-signed.hap",
+    "hapSha256": "a4d82fb025dc78483f33982a0fb13da1f10ddcd672e7caef0a5f860816bf62cf",
+    "hapBytes": 197371642,
+    "runtimeSha256": "b6fb84990d6fd9de64702453c4a76be79f29b45661269749f6c2029726dd46a0",
+    "zipCrc": true,
+    "runtimeManifestMatches": true,
+    "embeddedUserAgentSourceMatches": true,
+    "arm64Libraries": [
+      "libs/arm64-v8a/libc++_shared.so",
+      "libs/arm64-v8a/libdshlocal.so",
+      "libs/arm64-v8a/libnode.so",
+      "libs/arm64-v8a/libonnxruntime.so",
+      "libs/arm64-v8a/libsherpa-onnx-c-api.so"
+    ],
+    "installed": true,
+    "version": "1.0.1",
+    "versionCode": 1000001,
+    "launched_after_install": true,
+    "preserved_copy": "/tmp/dsh-device-20261117/phase11-installed-a4d82f.hap"
+  },
+  "build": {
+    "exit_code": 0,
+    "duration_seconds": 15.947,
+    "path": "/tmp/dsh-device-20261117/154-final-build.log",
+    "sha256": "9cadc48412c4ee729fe741ce14c0becd3f52000e5bc57469e5b10ca7b48b4027"
+  },
+  "signature": {
+    "exit_code": 0,
+    "codesign": true,
+    "permission_signature": true,
+    "digest": true,
+    "path": "/tmp/dsh-device-20261117/155-signature-verification.log",
+    "sha256": "c54081dd1cb084da5c4a4a8726768d72d021d123b891d8b838d96db2daeb9098"
+  },
+  "runtime_package": {
+    "old_sha256": "1e395cfcd7bf9c5847450ed3fb4354b8673ac74991d8557ebff40034d7511bce",
+    "new_sha256": "b6fb84990d6fd9de64702453c4a76be79f29b45661269749f6c2029726dd46a0",
+    "archive_bytes": 46609957,
+    "files_verified": 15537,
+    "changed_files": [
+      {
+        "path": "sensevoice-models.mjs",
+        "before": "0b3bd6a055c40f6b5d1dd2d79582a9a8bde5cd1127060fae716470809a5a986c",
+        "after": "2c479061c809d2fe66f9cf3ae84d1b9ab419b13cb2b60687ceabe223f218f8b6"
+      }
+    ],
+    "extracted": "/tmp/dsh-device-20261117/runtime-useragent-fixed",
+    "all_extracted_sha256_pass": true,
+    "source_equal": true,
+    "zip_crc_pass": true,
+    "dependencies_unchanged": true,
+    "pack_exit_code": 0
+  },
+  "runtime_verification": {
+    "runtime": "/tmp/dsh-device-20261117/runtime-useragent-fixed",
+    "node": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+    "results": [
+      {
+        "name": "packaged-speech-live",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/speech-live.mjs",
+          "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/ets/dsh/DshClient.ets",
+          "/tmp/dsh-device-20261117/runtime-useragent-fixed",
+          "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/local-flock-fixture.cjs"
+        ],
+        "exit_code": 0,
+        "duration_seconds": 2.336,
+        "log": "/tmp/dsh-device-20261117/runtime-useragent-packaged-speech-live.log",
+        "log_sha256": "0899e0a3ef1ca948c0548e64f16017762ec6e2a2d21e28c599f7277a61281b89",
+        "status": "PASS",
+        "counted_as_pass": true
+      },
+      {
+        "name": "timeout-model-regressions",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--test",
+          "/tmp/dsh-device-20261117/runtime-useragent-tests/sensevoice-network.test.mjs",
+          "/tmp/dsh-device-20261117/runtime-useragent-tests/sensevoice.test.mjs"
+        ],
+        "exit_code": 0,
+        "duration_seconds": 5.648,
+        "log": "/tmp/dsh-device-20261117/runtime-useragent-timeout-model-regressions.log",
+        "log_sha256": "908f42ce20272ab11e748216497e34fc5acac84e93a27a5e71d4db4ec75a7ba9",
+        "status": "PASS",
+        "counted_as_pass": true
+      },
+      {
+        "name": "sensevoice-native",
+        "command": [
+          "sh",
+          "tests/check-sensevoice-native.sh",
+          "/tmp/sensevoice-models",
+          "/tmp/sensevoice-zh.wav",
+          "/tmp/sherpa-onnx-v1.13.8-osx-arm64-shared-no-tts-lib/lib"
+        ],
+        "exit_code": 0,
+        "duration_seconds": 5.9,
+        "log": "/tmp/dsh-device-20261117/runtime-useragent-sensevoice-native.log",
+        "log_sha256": "96f269e8f91ec63c477847401391f5c9a2353fe591a3ca94f8de795275199158",
+        "status": "PASS",
+        "counted_as_pass": true
+      },
+      {
+        "name": "native-publication-engine-smoke",
+        "command": [
+          "docker",
+          "run",
+          "--rm",
+          "--cpus=2",
+          "--memory=2g",
+          "--name",
+          "dsh-native-useragent-fix-20261117",
+          "-v",
+          "/Users/wangzhaojin/work/dsh/dsh-go-harmony:/work:ro",
+          "-v",
+          "/tmp/dsh-device-20261117/runtime-useragent-fixed:/tmp/runtime:ro",
+          "-w",
+          "/work",
+          "-e",
+          "DSH_NATIVE_TEST_RUNTIME=/tmp/runtime",
+          "codex/dsh-native-tests:20261117",
+          "sh",
+          "-c",
+          "node --version && dpkg-query -W libnode137 libnode-dev libuv1-dev && sh tests/check-native-publish.sh /usr/include/node /usr/lib/aarch64-linux-gnu/libnode.so.137"
+        ],
+        "exit_code": -9,
+        "duration_seconds": 141.569,
+        "log": "/tmp/dsh-device-20261117/runtime-useragent-native-publication-engine-smoke.log",
+        "log_sha256": "5850aeddd4fdbc0ca6c87e1f9827456642e3f8bed7f6688b9c9879bd770a2e8f",
+        "status": "ENVIRONMENT_NOT_STARTED",
+        "counted_as_pass": false,
+        "tests_executed": 0,
+        "notes": [
+          "Terminated only our waiting docker run after ROOT instruction (TERM did not exit, KILL ended CLI; subprocess returncode -9). Docker inspect returned no such object for dsh-native-useragent-fix-20261117; no test output. User daemon was not restarted or repaired. Prior timeout-fixed runtime native smoke remains separately passed; native sources/dependencies unchanged."
+        ]
+      }
+    ]
+  },
+  "companion_generated_regression": {
+    "exit_code": 0,
+    "tests": 5,
+    "passed": 5,
+    "failed": 0,
+    "skipped": 0,
+    "log": "/tmp/dsh-device-20261117/150-companion-generated.log",
+    "sha256": "35a638528283e041407acbd9f67a7c756b19ecbd0473d4419b7db7f150b06afd"
+  },
+  "incremental_sources": {
+    "runtime/sensevoice-models.mjs": "2c479061c809d2fe66f9cf3ae84d1b9ab419b13cb2b60687ceabe223f218f8b6",
+    "tests/sensevoice-network.test.mjs": "07cdf921968467f284d80348a6d0d5762a836f59b0a55aed3cff5c9eeece3945",
+    "entry/src/main/ets/companion/CompanionPanel.ets": "c3a38637b2a3ff37b193d19dbf0a8ebba353f9fe03b93eae7c539afc4382892d",
+    "tests/companion-row-reactivity.test.mjs": "646053e0b917e790eaa41d8b6e84c9c82e93e26d3002a726ad7faecdec922241",
+    "entry/src/main/ets/phone/PhoneAccessibilityClient.ets": "1adb550df84881d0a4d550617f7a3060cb170e4b088cacafbe79e68dbbeceeb6",
+    "entry/src/main/ets/ui/SettingsLocaleData.ets": "1dcd8f806d5db080c1114a8e376c66ccd5092409da9453e3ca43fb59cb0b0f91"
+  },
+  "fixes": [
+    {
+      "issue": "Companion memory shows old value after successful edit; full-mode streamed line can retain its first fragment",
+      "phone_reproduction": [
+        "129-memory-created",
+        "130-memory-edited",
+        "132-memory-reopened"
+      ],
+      "root_cause": "ForEach key retained the previous immutable record at the same id/index",
+      "change": "Key memory by serialized current value; key streamed line by index, role and current text",
+      "phone_retest": "pending"
+    },
+    {
+      "issue": "Actual phone model download fails at zero bytes despite connection-deadline fix",
+      "phone_elapsed_ms": 62503,
+      "phone_runtime": "1e395cfcd7bf9c5847450ed3fb4354b8673ac74991d8557ebff40034d7511bce",
+      "root_cause": "ModelScope CDN explicitly denies missing User-Agent; fixed original downloader sets dsh-go",
+      "change": "Preserve original User-Agent dsh-go on every HTTPS request and redirect",
+      "boundaries_unchanged": [
+        "TLS validation",
+        "HTTPS-only redirects",
+        "credential refusal",
+        "fixed hashes and sizes",
+        "Range resume",
+        "cancellation and timeout"
+      ],
+      "host_official_three_resources": "HTTP200; pinned Content-Length matched for every asset",
+      "phone_new_runtime_download": "pending"
+    },
+    {
+      "issue": "Disabled accessibility message assumed a system activation entry exists",
+      "change": "Conditional Chinese/English guidance and public-platform documentation; no permission or capability change",
+      "device_nodes_gestures": "not_verified; system entry not established"
+    }
+  ],
+  "device": {
+    "connection": "USB offline; phone absent from macOS USB enumeration at observation 166",
+    "screen": "165 fingerprint lock; user reconnection requested after 166 USB disconnect",
+    "current_installed_hap": "a4d82fb025dc78483f33982a0fb13da1f10ddcd672e7caef0a5f860816bf62cf",
+    "install": {
+      "exit_code": 0,
+      "mode": "hdc install -r",
+      "preserve_data": true,
+      "path": "/tmp/dsh-device-20261117/157-final-install.log",
+      "sha256": "9ed9b6d76b5a09c3b3c13dbf265f3febc86fce9d44419041234e67e7b07cafce"
+    },
+    "observations": {
+      "finalHapInstalled": "e10338aca1ee633c994baa90143c301fbf2f2008093850b8332a7b5f0feb2331",
+      "passed": [
+        "pet list and single-frame visual rendering",
+        "pet selection/size/quiet-mode persists after reopening",
+        "companion page no existing-directory error",
+        "full display formula visible",
+        "Mermaid safe-area header and five nodes visible",
+        "native long diff reaches line 090 and final reply marker",
+        "JavaScript syntax colors/Chinese/emoji visible",
+        "code copied and pasted exactly through system clipboard into unsent draft",
+        "saved remote credentials and session list preserved after cover installation"
+      ],
+      "newBugs": [
+        {
+          "name": "Companion memory retained rows",
+          "reproduced": true,
+          "sourceFixed": true,
+          "deviceRetestPending": true
+        }
+      ],
+      "download": {
+        "emptyCache": true,
+        "networkPassed": false,
+        "rootCause": "Missing upstream User-Agent caused ModelScope CDN 403; HF fallback timed out",
+        "sourceFixed": "dsh-go UA restored; new package pending device test"
+      },
+      "mediaUi": "not yet tested; screen locked before action",
+      "device": "USB connected, fingerprint screen locked; async unlock requested",
+      "testMaterial": "Only owned fixture resources; no external human messages or paid model calls"
+    },
+    "model_test_preparation": {
+      "only_test_models": true,
+      "pinned_sha256_verified": true,
+      "inventory": {
+        "log": "/tmp/dsh-device-20261117/133-model-inventory.log",
+        "sha256": "bb90beb6f521e466c62145d03679ccb72b386b6abe4c5209dfd4462055f203fb"
+      },
+      "shell_move": "permission denied; no model moved",
+      "production_delete_api": "unloaded then cleared only fixed models/staging after verifying they contained our three USB fixtures and no other files",
+      "mac_backup": "/tmp/sensevoice-models",
+      "current_model_state": "Partial real network transfer observed (164264733 bytes); process/control disconnected; final state unverified; no USB restore."
+    },
+    "acceptance_record": "device-acceptance-20261117.md",
+    "screen_timeout": {
+      "temporary_override_ms": 7200000,
+      "command": "hdc -t 23F0224326021832 shell power-shell timeout -o 7200000",
+      "result": "Override screen off time to 7200000",
+      "current_lock_not_bypassed": true,
+      "restore_when_testing_finishes": "hdc -t 23F0224326021832 shell power-shell timeout -r",
+      "path": "/tmp/dsh-device-20261117/153-test-screen-timeout.log",
+      "sha256": "08bed81f6bea68073f55c8ef98812e4cfb4811bb334feae9b5f09427a1e3c0bf",
+      "official_documentation": "https://github.com/openharmony/docs/blob/master/en/application-dev/tools/power-shell.md"
+    },
+    "background_attempts": [
+      {
+        "name": "phone TURN/TCP",
+        "status": "blocked_at_transport_control_entry",
+        "exit_code": 1,
+        "phone_endpoint": "/relay/hosts",
+        "timeout_seconds": 45,
+        "pairing_started": false,
+        "rtc_or_turn_started": false,
+        "not_a_rtc_result": true,
+        "temporary_signaling_and_coturn_stopped": true,
+        "temporary_reverse_ports_removed": [
+          63738,
+          63739
+        ],
+        "active_test_requests": 0,
+        "path": "/tmp/dsh-device-20261117/phone-turn-1.log",
+        "sha256": "66ce9d092b464e71e32acc0495783a8d33e574e85bbddf2ae98e075f71db95fa"
+      },
+      {
+        "name": "phone Companion Recall baseline",
+        "status": "blocked_at_engine_connection",
+        "store_read": false,
+        "new_sessions": 0,
+        "model_changes": 0,
+        "active_requests": 0,
+        "path": "/tmp/dsh-device-20261117/phone-recall-baseline-result.json",
+        "sha256": "d10ab07cf5767cc532c453747edd233defdd75450c0c29ebcd30db88d282371d",
+        "historical_result_file_note": "Original result path subsequently replaced by successful later read; historical hash retained, new read archived independently as 167-recall-empty-baseline.json."
+      }
+    ],
+    "phone_turn_resume": {
+      "command": "PATH=/Applications/DevEco-Studio.app/Contents/tools/node/bin:$PATH DSH_PHONE_TURN=1 DSH_PHONE_READY=/tmp/dsh-device-20261117/local-ready.json DSH_PHONE_TURN_DIR=/tmp/dsh-device-20261117/phone-turn-2 DSH_TURN_SERVER=/tmp/dsh-coturn-native/coturn-4.19.0/bin/turnserver sh tests/check-dsh-remote.sh /tmp/dsh-remote-final-reference",
+      "prerequisite": "Fresh current device ready.json mode0600, same-port transportControl forward, unique marker directory; apply signaled reverse ports then dynamic bridge forward. Do not reuse expired token/ports.",
+      "scope": "actual phone TURN/TCP only; no phone UDP claim"
+    },
+    "previous_ui_evidence_hap": "e10338aca1ee633c994baa90143c301fbf2f2008093850b8332a7b5f0feb2331",
+    "previous_install": {
+      "exit_code": 0,
+      "preserve_data": true,
+      "log": "/tmp/dsh-device-20261117/122-final-install.log",
+      "sha256": "9ed9b6d76b5a09c3b3c13dbf265f3febc86fce9d44419041234e67e7b07cafce"
+    },
+    "previous_launch_attempt": {
+      "status": "blocked_by_locked_screen",
+      "error_code": 10106102,
+      "not_bypassed": true,
+      "path": "/tmp/dsh-device-20261117/158-launch-state.log",
+      "sha256": "215d4d98fe9e1c3208898b8cb1bd6d6e2b2fc553466bd07bb5bd7eb4878b369b"
+    },
+    "launch": {
+      "status": "launched_by_user_then_latest_local_engine_started",
+      "ui_evidence": [
+        "162-opened.png",
+        "163-local-start.png",
+        "164-local-starting.png"
+      ],
+      "runtimeVersion": "b6fb84990d6fd9de64702453c4a76be79f29b45661269749f6c2029726dd46a0"
+    },
+    "latest_phone_progress": {
+      "runtime_confirmed": "b6fb84990d6fd9de64702453c4a76be79f29b45661269749f6c2029726dd46a0",
+      "download": {
+        "started_from_empty_cache": true,
+        "observed_bytes": 164264733,
+        "expected_bytes": 241357257,
+        "network_download_passed": false,
+        "outcome": "observation interrupted; GET timed out then ECONNREFUSED; not a production download failed state",
+        "no_repeat_prepare_or_delete": true,
+        "evidence": {
+          "path": "/tmp/dsh-device-20261117/phone-sensevoice-network-useragent-result.json",
+          "sha256": "42998d9c74a7f71b2d21e8a7c9e5bc1364736a8ce562d1361f57c421585c07ed"
+        }
+      },
+      "recall": {
+        "baseline": {
+          "status": "STOPPED_NONEMPTY_OR_UNAVAILABLE",
+          "checkedAt": "2026-11-17T05:38:04.998Z",
+          "purpose": "Read only counts and recall capability; no memory contents in output",
+          "mutations": 0,
+          "resourcesCreated": 0,
+          "modelSelections": 0,
+          "memoryCount": 0,
+          "activeBinding": false,
+          "busy": false,
+          "supported": false,
+          "reason": "tag-unavailable",
+          "emptyBaseline": true
+        },
+        "evidence": {
+          "path": "/tmp/dsh-device-20261117/167-recall-empty-baseline.json",
+          "sha256": "3045ca431f4bffd91cb7927163a203eff9d6c695817365f2b175db94a64d46e1"
+        },
+        "diagnosis": "Hypothesis, not yet phone-confirmed: direct io.link plus previously observed same-device hard-link policy may cause tag-unavailable. No raw link errno was captured for this Recall probe; phase12 native fallback awaits phone retest."
+      },
+      "turn": "TURN2 reached pairing but fixture offer TTL exceeded production maximum; corrected to 90s at resolve. TURN3 timed out waiting for reverse-ready before any phone RPC, cleaned coturn/signaling, exit1; not a RTC/TURN result.",
+      "connection": {
+        "path": "/tmp/dsh-device-20261117/166-device-connection.json",
+        "sha256": "f52bc6a0e5ce514f838be891f5f1cb4769ac8e782735e21840bd4379c3205579"
+      }
+    }
+  },
+  "limits": [
+    "17-item physical-device acceptance remains incomplete.",
+    "Phase11 HAP launched and runtime confirmed; download transferred 164 MB but final checksum/load unverified; Companion UI fix pending; Recall tag-unavailable observed, link-policy cause inferred pending retest.",
+    "Live2D complete authorized model package deferred by the user.",
+    "New Docker native repeat did not start due host Docker environment; it is not counted as passed. Previous native-source/runtime validation is separately retained; no native sources/dependencies changed.",
+    "Synthetic local models and media services are not commercial-service acceptance."
+  ],
+  "test_entrypoints": {
+    "tests/phone-turn-fixture.mjs": {
+      "sha256": "6960e161361225f356c6c62b5a2dfc67f32a0d80c34052f82b8fc75128683f17",
+      "default_regression_exit_code": 0,
+      "actual_phone_test_result": "entry timeout while locked; not passed"
+    },
+    "tests/dsh-remote-relay.test.mjs": {
+      "sha256": "bcdc3df4b377c1ed2a4f1842d4979b69016d3b2619135ad078e443ba41d4cc2b",
+      "default_regression_exit_code": 0,
+      "actual_phone_test_result": "entry timeout while locked; not passed"
+    }
+  },
+  "phone_turn_fixture_checks": [
+    {
+      "name": "failure_cleanup",
+      "tests": 5,
+      "passed": 5,
+      "exit_code": 0,
+      "path": "/tmp/dsh-device-20261117/phone-turn-cleanup-regression.log",
+      "sha256": "720d6f6328f30aa234c5c6f202553b0a9581d0ead3ddf2a2725f59d5b8e41093"
+    },
+    {
+      "name": "unchanged_default_relay_entrypoint",
+      "exit_code": 0,
+      "command": "PATH=/Applications/DevEco-Studio.app/Contents/tools/node/bin:$PATH sh tests/check-dsh-remote.sh /tmp/dsh-remote-final-reference",
+      "scope": "2 wire tests and full original relay/self-hosted integration; not phone RTC",
+      "path": "/tmp/dsh-device-20261117/phone-turn-default-regression.log",
+      "sha256": "1f70606d6003e7bba412b60e77bc6c527e4daec9d27925896137011fd782bda3"
+    }
+  ],
+  "intermediate_artifact": {
+    "artifact": {
+      "hap": "entry/build/default/outputs/default/entry-default-signed.hap",
+      "hapSha256": "446020086e1803718f255c5edece15780ca191f9a8b7266556d7bb6bf00b6a9b",
+      "hapBytes": 197371809,
+      "runtimeSha256": "b6fb84990d6fd9de64702453c4a76be79f29b45661269749f6c2029726dd46a0",
+      "zipCrc": true,
+      "runtimeManifestMatches": true,
+      "embeddedUserAgentSourceMatches": true,
+      "arm64Libraries": [
+        "libs/arm64-v8a/libc++_shared.so",
+        "libs/arm64-v8a/libdshlocal.so",
+        "libs/arm64-v8a/libnode.so",
+        "libs/arm64-v8a/libonnxruntime.so",
+        "libs/arm64-v8a/libsherpa-onnx-c-api.so"
+      ],
+      "installed": false,
+      "version": "1.0.1",
+      "versionCode": 1000001
+    },
+    "build": {
+      "exit_code": 0,
+      "duration_seconds": 15.855,
+      "log": "/tmp/dsh-device-20261117/149-useragent-companion-build.log",
+      "sha256": "6622f00964796e587f5fd3af672a6bd3f19913af7b0595d46cf27e3736e05d60"
+    },
+    "signature": {
+      "exit_code": 0,
+      "codesign": true,
+      "permission_signature": true,
+      "digest": true,
+      "log": "/tmp/dsh-device-20261117/151-signature-verification.log",
+      "sha256": "9b18238b223b7fe7c727c55c8b823722bbedd3cecfb41bec32e4eb5dd8c41030"
+    },
+    "reason_superseded": "Conditional accessibility wording and matching English translation compiled into final package; runtime unchanged."
+  },
+  "accessibility_wording_verification": {
+    "createdAt": "2026-11-17T05:05:12.505272+00:00",
+    "scope": "Only one conditional status string, matching English dictionary key, and platform documentation. No conditions/permissions/error handling/runtime changed. No device or build performed.",
+    "runs": [
+      {
+        "command": "PATH=/Applications/DevEco-Studio.app/Contents/tools/node/bin:$PATH sh tests/check-phone.sh",
+        "cwd": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exitCode": 0,
+        "exitCodeSource": "actual exec_command/write_stdin completion",
+        "log": "/tmp/dsh-device-20261117/phase11-accessibility-wording-phone.log",
+        "logSha256": "fec1927121a94ab56b687b7dfc9b1e60ddc440f8836970953dbbd63574145107",
+        "tapGroups": [
+          7,
+          1,
+          1,
+          1
+        ],
+        "tests": 10,
+        "pass": 10,
+        "fail": 0,
+        "skipped": 0
+      },
+      {
+        "command": "PATH=/Applications/DevEco-Studio.app/Contents/tools/node/bin:$PATH sh tests/check-locale.sh",
+        "cwd": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exitCode": 0,
+        "exitCodeSource": "actual exec_command/write_stdin completion",
+        "log": "/tmp/dsh-device-20261117/phase11-accessibility-wording-locale.log",
+        "logSha256": "a5457c96b8fd35bbc73b6f7422ead4c7666ad66b27ee6121d8d7ec017239c25e",
+        "tapGroups": [
+          4
+        ],
+        "tests": 4,
+        "pass": 4,
+        "fail": 0,
+        "skipped": 0
+      }
+    ],
+    "etsStatus": "FROZEN for ROOT unified build"
+  },
+  "accessibility_platform_audit": {
+    "schema": 1,
+    "createdAt": "2026-11-17T05:02:50.939306+00:00",
+    "scope": "Read-only source, bundled public SDK and official documentation audit. No HDC, no device calls, no production edits.",
+    "conclusion": "No supported ordinary debug-HAP activation path was confirmed for this API 26 commercial HarmonyOS phone. Evidence supports a public-platform capability boundary; exact OEM filtering of this installed extension remains unobserved.",
+    "status": "SUPPORTED_ACTIVATION_NOT_ESTABLISHED; device enable and cross-app-control acceptance NOT_PASSED",
+    "localFiles": [
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/module.json5",
+        "sha256": "9d806946a8990d71c4c036b1c2eb65c2c6504da74e262a098c6a481f438e7356"
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/resources/base/profile/phone_accessibility.json",
+        "sha256": "7a2e4cc54fd67cce92c6478479aca783f9565aec5b726a50ee92e06166e50429"
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/ets/phone/PhoneAccessibilityAbility.ets",
+        "sha256": "0290685d59b89645269c11280abecbeedc5978be665f6d88009cd32fb412eda6"
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/ets/phone/PhoneAccessibilityClient.ets",
+        "sha256": "81a0d5f49d0c385276b3e7c9c641d21d6040bb77aee9f5db4b1778cf01906637"
+      },
+      {
+        "path": "/Applications/DevEco-Studio.app/Contents/sdk/default/sdk-pkg.json",
+        "sha256": "285eded3340dc45d56395792eea52cbc60cfb62cfcb7abed923a0505fac05724"
+      },
+      {
+        "path": "/Applications/DevEco-Studio.app/Contents/sdk/default/hms/ets/api/device-define/api-version/AccessibilityKit.json",
+        "sha256": "22a679cb8af3d7ec2348f86bc504f9b1285310f6eecd34fbb04c451d68d53a79"
+      },
+      {
+        "path": "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.application.AccessibilityExtensionAbility.d.ts",
+        "sha256": "9d0abf8e764875ab7dd6448daae16a62a08927a54e6717433cb6a599fcc6eaa7"
+      },
+      {
+        "path": "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.accessibility.d.ts",
+        "sha256": "fa235ec02ace350d32fa1253f0f79886af5ad9173c83d558b0ac4f8ef61d6955"
+      },
+      {
+        "path": "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/toolchains/lib/PermissionDefinitions.json",
+        "sha256": "443e73fbabd97c3129fea9b446211f06cea4957ed0702793dc0ef009fe269ae1"
+      }
+    ],
+    "sdkPackage": {
+      "meta": {
+        "version": "1.0.0"
+      },
+      "data": {
+        "apiVersion": "26",
+        "displayName": "HarmonyOS 26.0.0",
+        "path": "HarmonyOS-26.0.0",
+        "platformVersion": "26.0.0",
+        "releaseType": "Release",
+        "version": "26.0.0.105",
+        "stage": "Release"
+      }
+    },
+    "sdkMetadataExcerpt": [
+      {
+        "apiText": "@ohos.application.AccessibilityExtensionAbility.d.ts",
+        "apiType": "file",
+        "file": "api/@ohos.application.AccessibilityExtensionAbility.d.ts",
+        "className": "uname",
+        "isSystemApi": "false",
+        "syscap": "SystemCapability.BarrierFree.Accessibility.Core",
+        "OS": "HarmonyOS",
+        "kit": "AccessibilityKit",
+        "kitEnName": "Accessibility Kit",
+        "deviceTypes": [
+          {
+            "deviceType": "phone",
+            "since": "12"
+          },
+          {
+            "deviceType": "tablet",
+            "since": "12"
+          },
+          {
+            "deviceType": "2in1",
+            "since": "13"
+          },
+          {
+            "deviceType": "car",
+            "since": "23"
+          },
+          {
+            "deviceType": "wearable",
+            "since": "18"
+          }
+        ],
+        "since": "9"
+      },
+      {
+        "apiText": "getWindowRootElement(callback: AsyncCallback<AccessibilityElement>): void",
+        "apiType": "method",
+        "publicApi": "",
+        "OS": "OpenHarmony",
+        "className": "AccessibilityExtensionContext",
+        "kit": "AccessibilityKit",
+        "kitEnName": "Accessibility Kit",
+        "isSystemApi": "false",
+        "syscap": "SystemCapability.BarrierFree.Accessibility.Core",
+        "since": "9",
+        "deviceTypes": [
+          {
+            "deviceType": "phone",
+            "since": "12",
+            "deprecated": "12"
+          },
+          {
+            "deviceType": "tablet",
+            "since": "12",
+            "deprecated": "12"
+          },
+          {
+            "deviceType": "2in1",
+            "since": "13",
+            "deprecated": "13"
+          },
+          {
+            "deviceType": "car",
+            "since": "23",
+            "deprecated": "23"
+          },
+          {
+            "deviceType": "wearable",
+            "since": "18",
+            "deprecated": "18"
+          }
+        ],
+        "file": "api/application/AccessibilityExtensionContext.d.ts"
+      },
+      {
+        "apiText": "getWindowRootElement(windowId: number, callback: AsyncCallback<AccessibilityElement>): void",
+        "apiType": "method",
+        "publicApi": "",
+        "OS": "OpenHarmony",
+        "className": "AccessibilityExtensionContext",
+        "kit": "AccessibilityKit",
+        "kitEnName": "Accessibility Kit",
+        "isSystemApi": "false",
+        "syscap": "SystemCapability.BarrierFree.Accessibility.Core",
+        "since": "9",
+        "deviceTypes": [
+          {
+            "deviceType": "phone",
+            "since": "12",
+            "deprecated": "12"
+          },
+          {
+            "deviceType": "tablet",
+            "since": "12",
+            "deprecated": "12"
+          },
+          {
+            "deviceType": "2in1",
+            "since": "13",
+            "deprecated": "13"
+          },
+          {
+            "deviceType": "car",
+            "since": "23",
+            "deprecated": "23"
+          },
+          {
+            "deviceType": "wearable",
+            "since": "18",
+            "deprecated": "18"
+          }
+        ],
+        "file": "api/application/AccessibilityExtensionContext.d.ts"
+      },
+      {
+        "apiText": "getWindowRootElement(windowId?: number): Promise<AccessibilityElement>",
+        "apiType": "method",
+        "publicApi": "",
+        "OS": "OpenHarmony",
+        "className": "AccessibilityExtensionContext",
+        "kit": "AccessibilityKit",
+        "kitEnName": "Accessibility Kit",
+        "isSystemApi": "false",
+        "syscap": "SystemCapability.BarrierFree.Accessibility.Core",
+        "since": "9",
+        "deviceTypes": [
+          {
+            "deviceType": "phone",
+            "since": "12",
+            "deprecated": "12"
+          },
+          {
+            "deviceType": "tablet",
+            "since": "12",
+            "deprecated": "12"
+          },
+          {
+            "deviceType": "2in1",
+            "since": "13",
+            "deprecated": "13"
+          },
+          {
+            "deviceType": "car",
+            "since": "23",
+            "deprecated": "23"
+          },
+          {
+            "deviceType": "wearable",
+            "since": "18",
+            "deprecated": "18"
+          }
+        ],
+        "file": "api/application/AccessibilityExtensionContext.d.ts"
+      },
+      {
+        "apiText": "injectGestureSync(gesturePath: GesturePath): void",
+        "apiType": "method",
+        "publicApi": "",
+        "OS": "OpenHarmony",
+        "className": "AccessibilityExtensionContext",
+        "kit": "AccessibilityKit",
+        "kitEnName": "Accessibility Kit",
+        "isSystemApi": "false",
+        "syscap": "SystemCapability.BarrierFree.Accessibility.Core",
+        "since": "10",
+        "deviceTypes": [
+          {
+            "deviceType": "phone",
+            "since": "12",
+            "deprecated": "12"
+          },
+          {
+            "deviceType": "tablet",
+            "since": "12",
+            "deprecated": "12"
+          },
+          {
+            "deviceType": "2in1",
+            "since": "13",
+            "deprecated": "13"
+          },
+          {
+            "deviceType": "car",
+            "since": "23",
+            "deprecated": "23"
+          },
+          {
+            "deviceType": "wearable",
+            "since": "18",
+            "deprecated": "18"
+          }
+        ],
+        "file": "api/application/AccessibilityExtensionContext.d.ts"
+      },
+      {
+        "apiText": "onConnect(): void",
+        "apiType": "method",
+        "publicApi": "",
+        "OS": "OpenHarmony",
+        "className": "AccessibilityExtensionAbility",
+        "kit": "AccessibilityKit",
+        "kitEnName": "Accessibility Kit",
+        "isSystemApi": "false",
+        "syscap": "SystemCapability.BarrierFree.Accessibility.Core",
+        "since": "9",
+        "deviceTypes": [
+          {
+            "deviceType": "phone",
+            "since": "12",
+            "deprecated": "12"
+          },
+          {
+            "deviceType": "tablet",
+            "since": "12",
+            "deprecated": "12"
+          },
+          {
+            "deviceType": "2in1",
+            "since": "13",
+            "deprecated": "13"
+          },
+          {
+            "deviceType": "car",
+            "since": "23",
+            "deprecated": "23"
+          },
+          {
+            "deviceType": "wearable",
+            "since": "18",
+            "deprecated": "18"
+          }
+        ],
+        "file": "api/@ohos.application.AccessibilityExtensionAbility.d.ts"
+      }
+    ],
+    "systemPermissionExcerpt": [
+      {
+        "name": "ohos.permission.READ_ACCESSIBILITY_CONFIG",
+        "grantMode": "system_grant",
+        "availableLevel": "system_basic",
+        "availableType": "SYSTEM",
+        "since": 9,
+        "deprecated": "",
+        "provisionEnable": true,
+        "distributedSceneEnable": false
+      },
+      {
+        "name": "ohos.permission.WRITE_ACCESSIBILITY_CONFIG",
+        "grantMode": "system_grant",
+        "availableLevel": "system_basic",
+        "availableType": "SYSTEM",
+        "since": 9,
+        "deprecated": "",
+        "provisionEnable": true,
+        "distributedSceneEnable": false
+      },
+      {
+        "name": "ohos.permission.QUERY_ACCESSIBILITY_ELEMENT",
+        "grantMode": "system_grant",
+        "availableLevel": "system_core",
+        "availableType": "SYSTEM",
+        "since": 11,
+        "deprecated": "",
+        "provisionEnable": true,
+        "distributedSceneEnable": false
+      },
+      {
+        "name": "ohos.permission.ACCESSIBILITY_EXTENSION_ABILITY",
+        "grantMode": "system_grant",
+        "availableLevel": "system_basic",
+        "availableType": "SYSTEM",
+        "since": 20,
+        "deprecated": "",
+        "provisionEnable": true,
+        "distributedSceneEnable": false,
+        "deviceTypes": [
+          "general"
+        ]
+      }
+    ],
+    "officialSources": [
+      {
+        "id": "huawei-ability-en",
+        "url": "https://developer.huawei.com/consumer/en/doc/harmonyos-references/js-apis-application-accessibilityextensionability/",
+        "fact": "onConnect/onDisconnect/onAccessibilityEvent/onKeyEvent deprecated since API 12; explicitly states related capabilities no longer available in the system."
+      },
+      {
+        "id": "huawei-context-en",
+        "url": "https://developer.huawei.com/consumer/en/doc/harmonyos-references/js-apis-inner-application-accessibilityextensioncontext/",
+        "fact": "Window-root and action/context APIs carry API 12 deprecation and no-longer-available notice."
+      },
+      {
+        "id": "huawei-ability-cn",
+        "url": "https://developer.huawei.com/consumer/cn/doc/harmonyos-references/js-apis-application-accessibilityextensionability/",
+        "fact": "Chinese version marks deprecation; does not contain the same explicit English removal sentence. Documentation-language difference retained."
+      },
+      {
+        "id": "huawei-old-ui",
+        "url": "https://consumer.huawei.com/cn/support/content/zh-cn00410039/",
+        "fact": "Installed/downloaded-services UI instructions explicitly apply only to HarmonyOS 4.X and earlier."
+      },
+      {
+        "id": "ohos-extension-overview",
+        "url": "https://github.com/openharmony/docs/blob/master/zh-cn/application-dev/application-models/extensionability-overview.md",
+        "fact": "OpenHarmony permits third-party AccessibilityExtensionAbility implementation; ExtensionAbilities are started by their system service rather than directly by an app. This is not proof of commercial HarmonyOS phone availability."
+      },
+      {
+        "id": "huawei-query",
+        "url": "https://developer.huawei.com/consumer/cn/doc/harmonyos-references/js-apis-accessibility/",
+        "fact": "Public extension-list query remains available; needHide is readonly returned metadata, not evidence of an app-controlled activation switch."
+      }
+    ],
+    "observedDeviceEvidence": {
+      "provenance": "ROOT recorded screenshot and acceptance document; not a new device inspection",
+      "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/docs/parity/device-acceptance-20261117.md",
+      "finding": "Screenshot 109 reached the bottom of the system accessibility page without a third-party/installed-services entry. No own extension enable callback or successful cross-app node/gesture operation is established."
+    },
+    "notEstablished": [
+      "Exact cause of OEM UI service filtering for this bundle",
+      "Actual runtime SysCap availability on this phone",
+      "Whether own extension is registered but hidden versus excluded from system service list"
+    ],
+    "nonMutatingOptionalFollowup": "After unlock, query only own bundle extension metadata and filter getAccessibilityExtensionList immediately to own bundle/name, recording registered/listed/needHide/enabled. This does not enable service or demonstrate control.",
+    "uiWordingRisk": {
+      "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/ets/phone/PhoneAccessibilityClient.ets",
+      "line": 12,
+      "fact": "Fallback currently tells user to enable the service in Settings without qualifying that this system may not provide an activation entry."
+    },
+    "prohibitedInference": [
+      "Compilation proves service activation",
+      "OpenHarmony documentation proves commercial HarmonyOS phone activation",
+      "Old HarmonyOS 4.X UI path exists on API 26",
+      "Adding SYSTEM-only permission is ordinary runtime consent",
+      "Missing visible UI alone proves permanent impossibility on every device"
+    ]
+  },
+  "knowledge_sync": {
+    "exit_code": 0,
+    "projects": [
+      "dsh-go-harmony"
+    ],
+    "errors": [],
+    "log": "/tmp/dsh-device-20261117/159-knowledge-sync.json",
+    "log_sha256": "cec7b80c2b4ea97d43044ef1ec5c37d08a0cc3a4fba3f020658f8b6ace7d2e9e"
+  },
+  "final_review": {
+    "git_diff_check": "passed",
+    "documentation_links": "verified by root and documentation agent",
+    "latest_hap_installed": true,
+    "latest_hap_launched": false,
+    "remaining_blocker": "user unlock; current system lock must not be bypassed"
+  }
+}

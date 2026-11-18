@@ -13,7 +13,10 @@ awk '/^  @Builder/ { print "}"; exit } { print }' "$project_dir/entry/src/main/e
     -e '/^import {$/,/from .*DshWire/d' -e "s|from './DshTheme'|from '../model-panel-fixture.mjs'|" \
     -e 's|ThemeColors, themeColors, DshGlyphs|themeColors|' \
     -e "s|'./ModelSelectionData'|'./ModelSelectionData.ts'|" \
+    -e "s|'./SettingsLocale'|'../settings-locale-fixture.mjs'|" \
+    -e "s/@StorageProp('dshLanguage') //" \
     -e '/^@Component/d' -e 's/^export struct /export class /' \
     -e "s/@Prop @Watch('sessionChanged') //; s/@Prop //; s/@State //" > "$test_dir/ui/ModelPanel.ts"
+cp "$project_dir/tests/settings-locale-fixture.mjs" "$test_dir/"
 cp "$project_dir/tests/model-panel.test.mjs" "$project_dir/tests/model-panel-fixture.mjs" "$test_dir/"
 node --disable-warning=ExperimentalWarning --experimental-strip-types "$test_dir/model-panel.test.mjs" "$@"

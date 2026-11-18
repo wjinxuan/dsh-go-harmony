@@ -1,3 +1,4 @@
+import { localizedSettingsText as t, localizedSettingsFormat as f } from './settings-locale-fixture.mjs';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { stripTypeScriptTypes } from 'node:module';
@@ -12,17 +13,27 @@ const methods = method('  private async connect(', '  private async refreshSessi
   method('  private switchHost(', '  @Builder\n  private iconButton(');
 const Owner = vm.runInNewContext(stripTypeScriptTypes(`(class Owner { ${methods} })`), {
   object: value => value && typeof value === 'object' ? value : {},
-  removeLocalApiKey: async () => {}
+  removeLocalApiKey: async () => {},
+  loadWorkspaceView: async () => ({ selected: '' }), rememberStartupHost: async () => {},
+  resolveNewChatModes: async () => ({ preset: '', permission: '' }),
+  saveNewChatSetup: async () => {},
+  ChatNotifications: class { async start() {} stop() {} }
 });
 function fixture() {
   const state = new Owner();
   const calls = { stop: 0, close: 0, connect: 0 };
   Object.assign(state, {
+    t, f,
     mode: 'local', connected: true, page: 'chat', engineReady: true, localConfigured: true,
     localWorkspace: '/phone/workspace', localStage: '', busy: false, connectionVersion: 1, chatVersion: 1,
     remoteHostId: '', remoteHostScope: '', modelKey: '', hasSavedKey: false, errorText: '',
-    recoveryRequestIds: new Map(), submittedRecoveries: [],
-    client: { close() { calls.close++; } }, localEngine: { async stop() { calls.stop++; } },
+    visualReplyRequests: new Map(), recoveryRequestIds: new Map(), submittedRecoveries: [], newPreset: '', newPermission: '', owedNewChatModes: new Map(),
+    mentions: { reset() {} }, cotTranslations: { clear() {} }, hostScope: () => state.mode === 'local' ? 'local' : state.remoteHostScope,
+    errorMessage: (error, fallback) => error?.message || fallback, applyPendingModes: async () => {},
+    getUIContext: () => ({ getHostContext: () => ({}) }),
+    attachmentDrafts: new Map(), attachmentRequestIds: new Map(), attachmentPreviewVersion: 0,
+    clearAttachments() {},
+    client: { close() { calls.close++; }, onHostEvent() {} }, localEngine: { async stop() { calls.stop++; } },
     questionDrafts: new Map([['q', 'secret draft']]), composerDrafts: new Map([['s', 'old host draft']]),
     sessions: [{ id: 'old' }], workspaces: [{ id: 'old' }], sessionId: 'old', draft: 'old host draft',
     async connect() { calls.connect++; state.connected = true; state.page = 'chat'; return true; }
@@ -160,6 +171,22 @@ test('disconnect during post-login workspace loading cannot report a successful 
   state.refreshSessions = async () => { throw new Error('stale connection must not refresh'); };
   assert.equal(await Owner.prototype.connect.call(state), false);
   assert.equal(state.page, 'remoteHosts');
+});
+
+test('the account entry can start the local engine without accessing API key storage', async () => {
+  const { state } = fixture();
+  state.connected = false; state.localConfigured = false; state.engineReady = false;
+  state.hasSavedKey = true; state.rememberKey = true;
+  state.getUIContext = () => ({ getHostContext: () => ({}) });
+  state.localEngine.start = async () => ({ url: 'http://127.0.0.1:1234/?token=fixture', workspaceDir: '/phone/workspace' });
+  state.client.connect = async (_url, _authorization, local) => assert.equal(local, true);
+  state.client.watchWorkspaces = async () => {};
+  state.finishOnboarding = async () => {};
+  state.refreshSessions = async () => {};
+  assert.equal(await Owner.prototype.connect.call(state, undefined, undefined, false, true), true);
+  assert.equal(state.connected, true);
+  assert.equal(state.localConfigured, false);
+  assert.equal(state.hasSavedKey, true);
 });
 
 test('disconnect during onboarding save does not start streams on a stale connection', async () => {

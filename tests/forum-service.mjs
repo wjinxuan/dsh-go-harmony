@@ -1,0 +1,36 @@
+import assert from 'node:assert/strict';import{mkdtemp,readFile,stat,rm,writeFile}from'node:fs/promises';import{tmpdir}from'node:os';import{join}from'node:path';import{pathToFileURL}from'node:url';import{publicEncrypt,constants,randomBytes}from'node:crypto';
+const runtime=process.argv[2];if(!runtime)throw Error('runtime required');
+const{ForumService,ForumError,normalizeForumBase,forumMarkdown}=await import(pathToFileURL(runtime+'/forum-service.mjs'));
+const{PrivateVault}=await import(pathToFileURL(runtime+'/private-vault.mjs'));
+const root=await mkdtemp(join(tmpdir(),'dsh-forum-test-')),key=randomBytes(32).toString('base64url'),calls=[];let rejectPrivate=false;
+const transport=async(base,path,args)=>{calls.push({base,path,...args});if(rejectPrivate&&args.credential)throw new ForumError('unauthorized','expired');if(path==='/session/current.json')return{current_user:{id:1,username:'fixture',unread_notifications:2}};if(path==='/posts.json')return{action:'enqueued'};if(path==='/t/1.json')return{post_stream:{posts:[{id:2,cooked:'<p>Hello <strong>world</strong><script>bad()</script></p>'}]}};return {success:true};};
+let service=new ForumService(root,{transport});
+try{
+ for(const url of ['https://u:p@site.test','javascript:alert(1)','http://plain.test','https://a.test/?secret=x','https://a.test\\evil'])assert.throws(()=>normalizeForumBase(url));
+ assert.equal(normalizeForumBase('forum.test/sub/'),'https://forum.test/sub');
+ const markdown=forumMarkdown('<h2>Title</h2><p><a href="javascript:alert(1)">Bad</a> <a href="/safe">Good</a></p><script>never</script><table><tr><th>A</th><th>B</th></tr><tr><td>one</td><td>two</td></tr></table>','https://forum.test');
+ assert.match(markdown,/## Title/);assert.match(markdown,/\[Good\]\(https:\/\/forum.test\/safe\)/);assert.doesNotMatch(markdown,/javascript|never/);assert.match(markdown,/\| one \| two \|/);
+ await assert.rejects(service.call('site',{}),/解锁/);let state=await service.call('unlock',{masterKey:key});assert.equal(state.signedIn,false);
+ const args={expectedBase:state.baseUrl};
+ await assert.rejects(service.call('createTopic',{...args,title:'no',raw:'not authorized'}),/登录/);
+ const authorization=new URL((await service.call('begin',args)).url);assert.equal(authorization.searchParams.get('padding'),'oaep');assert.equal(authorization.searchParams.get('auth_redirect'),'dshgo://forum/auth');
+ await service.close();service=new ForumService(root,{transport});state=await service.call('unlock',{masterKey:key});assert.equal(state.waiting,true);
+ const encrypted=publicEncrypt({key:authorization.searchParams.get('public_key'),padding:constants.RSA_PKCS1_OAEP_PADDING,oaepHash:'sha1'},Buffer.from(JSON.stringify({nonce:authorization.searchParams.get('nonce'),key:'fixture-private-api-key'}))).toString('base64');
+ const callback='dshgo://forum/auth?payload='+encodeURIComponent(encrypted);state=await service.call('complete',{redirect:callback});assert.equal(state.signedIn,true);assert.equal(state.user.username,'fixture');assert.equal(calls.at(-1).credential.key,'fixture-private-api-key');assert.equal(state.key,undefined);
+ const disk=await readFile(join(root,'.harmony-forum-vault.json'),'utf8');assert.doesNotMatch(disk,/fixture-private|PRIVATE KEY/);assert.equal((await stat(join(root,'.harmony-forum-vault.json'))).mode&0o777,0o600);
+ await assert.rejects(service.call('complete',{redirect:callback}),/过期/);
+ const topic=await service.call('topic',{...args,id:1});assert.equal(topic.post_stream.posts[0].native_markdown,'Hello **world**');
+ const result=await service.call('createTopic',{...args,title:'Title',raw:'Text',categoryId:3});assert.equal(result.action,'enqueued');assert.deepEqual(calls.at(-1).form,{title:'Title',raw:'Text',archetype:'regular',category:3});
+ await service.call('topics',{...args,kind:'top',page:2});assert.equal(calls.at(-1).query.period,'monthly');assert.equal(calls.at(-1).query.page,2);
+ await service.call('posts',{...args,topicId:1,ids:[2,3]});assert.deepEqual(calls.at(-1).query,{'post_ids[]':[2,3]});
+ await service.call('like',{...args,id:2});assert.equal(calls.at(-1).form.post_action_type_id,2);
+ await service.call('unlike',{...args,id:2});assert.equal(calls.at(-1).method,'DELETE');
+ await service.call('bookmark',{...args,id:2});assert.equal(calls.at(-1).form.bookmarkable_type,'Post');
+ await service.call('markRead',{...args,id:9});assert.equal(calls.at(-1).method,'PUT');
+ await service.call('upload',{...args,filename:'photo.png',data:Buffer.from('image-bytes').toString('base64')});assert.match(calls.at(-1).body.toString(),/name="file"; filename="photo.png"/);
+ await service.call('setBase',{baseUrl:'https://another.test'});await assert.rejects(service.call('reply',{...args,topicId:1,raw:'wrong forum'}),/切换/);
+ await service.call('setBase',{baseUrl:state.baseUrl});rejectPrivate=true;await assert.rejects(service.call('site',args));assert.equal((await service.call('state')).signedIn,false);
+ await service.close();service=new ForumService(root,{transport});assert.equal((await service.call('unlock',{masterKey:key})).signedIn,false);
+ const wrong=new PrivateVault(root,'.harmony-forum-vault.json',randomBytes(32).toString('base64url'));await assert.rejects(wrong.load());wrong.destroy();assert.notEqual(await readFile(join(root,'.harmony-forum-vault.json'),'utf8'),'');
+ console.log('Forum service passed: encrypted vault, cold-start RSA-OAEP callback/nonce/replay protection, authenticated protocol, paging, compose, likes/bookmarks/upload, stale-base guards and expired-key removal');
+}finally{await service.close();await rm(root,{recursive:true,force:true});}

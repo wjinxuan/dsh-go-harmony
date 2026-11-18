@@ -1,0 +1,376 @@
+{
+  "phase": 20,
+  "recordedAt": "2026-11-18T02:59:31.234010+00:00",
+  "status": "installed-verified-listed-phone-fixes",
+  "allAcceptanceComplete": false,
+  "scope": "Configuration import persisted-value acknowledgement and nested workspace list reactivity; no runtime/native changes.",
+  "previousInstalledArtifact": {
+    "phase": 19,
+    "hapSha256": "9e3f1990f6f5d7cc1a869bcc7cdf0ebf28942fc4f96934512d0e49099bc89c9e",
+    "runtimeSha256": "5f1fbe2833694628f86f0c4e6fc1c167e99abb8f66fad6b2b59a5771863826a2"
+  },
+  "build": {
+    "exitCode": 0,
+    "elapsedSeconds": 10.098,
+    "hap": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/build/default/outputs/default/entry-default-signed.hap",
+    "bytes": 197434652,
+    "sha256": "76616e0a04702eafddb8bb69f96bbd979e37b6b94a029a241a52919edbddab6f"
+  },
+  "buildEvidence": {
+    "path": "/tmp/dsh-device-20261118/733-phase20-build-result.json",
+    "bytes": 266,
+    "sha256": "1fdbc58b12cda784b41d7dfb923d3f8956714019341f981360e717ca32d2a9d8"
+  },
+  "buildLog": {
+    "path": "/tmp/dsh-device-20261118/733-phase20-build.log",
+    "bytes": 93469,
+    "sha256": "d070e59a52b3c05e3cc00cf0cf112e0441c142f193658b638c3b840d5a12f610"
+  },
+  "originalTestAttempts": [
+    {
+      "check": "workspace-generated",
+      "exitCode": 0,
+      "log": "/tmp/dsh-device-20261118/735-phase20-workspace-generated.log"
+    },
+    {
+      "check": "profile-share",
+      "exitCode": 0,
+      "log": "/tmp/dsh-device-20261118/735-phase20-profile-share.log"
+    },
+    {
+      "check": "locale",
+      "exitCode": 127,
+      "log": "/tmp/dsh-device-20261118/735-phase20-locale.log"
+    }
+  ],
+  "originalTestEvidence": {
+    "path": "/tmp/dsh-device-20261118/735-phase20-tests.json",
+    "bytes": 381,
+    "sha256": "ee1897f258cfe5f3019ee0c165d666a776fe6c38109e3bc4c272e579ee0696db"
+  },
+  "tests": {
+    "workspace": {
+      "exitCode": 0,
+      "tests": 12,
+      "pass": 12,
+      "fail": 0,
+      "skip": 0,
+      "breakdown": {
+        "source": 6,
+        "actualCompileArkTsGenerated": 6
+      },
+      "log": {
+        "path": "/tmp/dsh-device-20261118/735-phase20-workspace-generated.log",
+        "bytes": 1655,
+        "sha256": "2e1557e3ef09e43d419cc63cfff70bc3ce8ddcba25a38d036cc9ba422413e82d"
+      }
+    },
+    "profileShare": {
+      "exitCode": 0,
+      "tests": 15,
+      "pass": 15,
+      "fail": 0,
+      "skip": 0,
+      "log": {
+        "path": "/tmp/dsh-device-20261118/735-phase20-profile-share.log",
+        "bytes": 2043,
+        "sha256": "cf7a0a896a2b2cd8e10603a92a3c02d3f01748ab666f289408ebb3f91091bd2b"
+      }
+    },
+    "localeInitial": {
+      "exitCode": 127,
+      "productTestsExecuted": false,
+      "reason": "Nonexistent check-settings-locale.sh was invoked; retained invocation failure.",
+      "log": {
+        "path": "/tmp/dsh-device-20261118/735-phase20-locale.log",
+        "bytes": 62,
+        "sha256": "556328c48669897f5c9979d983be2d4447028e03c5fe644cad58fb79b148b34c"
+      }
+    },
+    "localeCorrected": {
+      "exitCode": 0,
+      "tests": 4,
+      "pass": 4,
+      "fail": 0,
+      "skip": 0,
+      "command": [
+        "sh",
+        "tests/check-locale.sh"
+      ],
+      "evidence": {
+        "path": "/tmp/dsh-device-20261118/738-phase20-locale-corrected.json",
+        "bytes": 208,
+        "sha256": "806cfcc011394d9b50f70220ff852369d5508254f60fd32b46f18c1d452a46c8"
+      },
+      "log": {
+        "path": "/tmp/dsh-device-20261118/738-phase20-locale-corrected.log",
+        "bytes": 550,
+        "sha256": "b618bedd63a9f79b6cc87577970fcee5384b88bc43de5527d64143e007970dcf"
+      }
+    }
+  },
+  "counting": "12 workspace + 15 profile + 4 locale passed. Workspace 6 source and 6 actual generated cases are labeled separately. Prior repeated source/default tests and live regressions are not added to this count. Initial locale exit127 remains historical.",
+  "integrity": {
+    "signatureExitCode": 0,
+    "crc": "PASS",
+    "nativeLibrariesUnchanged": 5,
+    "runtimeUnchanged": true,
+    "changedHapEntries": [
+      "ets/modules.abc",
+      "ets/sourceMaps.map"
+    ],
+    "hapSha256": "76616e0a04702eafddb8bb69f96bbd979e37b6b94a029a241a52919edbddab6f"
+  },
+  "integrityEvidence": {
+    "path": "/tmp/dsh-device-20261118/736-phase20-integrity.json",
+    "bytes": 268,
+    "sha256": "0aa088cc04cbcf878f0485b1a254956ca50469ed8a359a7de27f4049a940c762"
+  },
+  "signatureLog": {
+    "path": "/tmp/dsh-device-20261118/736-phase20-signature.log",
+    "bytes": 3285,
+    "sha256": "4f8fd6eb22761497fb50a9855ae89d15aef0276127f3a1cfa094f65a27ce7175"
+  },
+  "sources": [
+    {
+      "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/ets/ui/ProfileShareData.ets",
+      "bytes": 13116,
+      "sha256": "d8fe87d76a22783a2c861149d3c9824f2a86e686f001127b91e9437094b03c5a"
+    },
+    {
+      "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/ets/ui/WorkspacesPanel.ets",
+      "bytes": 16722,
+      "sha256": "3a114a43fe0ce487558ab3fc17421bd8573184800262d9c42e9a06ef42d6af80"
+    },
+    {
+      "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/profile-share-controller.test.mjs",
+      "bytes": 8907,
+      "sha256": "693197da0af757fba8da2e2bc4ad7f00e0c71f24f2bbd790708cedeb09a86079"
+    },
+    {
+      "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/profile-share-provider-live.mjs",
+      "bytes": 5722,
+      "sha256": "da874420201a0b9b5931cb4e94e899adc65ee3d9876149995d34aa583ef8540d"
+    },
+    {
+      "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/check-profile-share.sh",
+      "bytes": 458,
+      "sha256": "aff3a4650909333875fc616f78f74a3b0b617f7b3bf7518af48bb96d3b566a7d"
+    },
+    {
+      "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/workspace-panel-reactivity.test.mjs",
+      "bytes": 6247,
+      "sha256": "1f6a6f19781bfac267158a303ea839cc9de73307c9ad6ac766579252c0c81d51"
+    },
+    {
+      "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/check-workspace-shell.sh",
+      "bytes": 805,
+      "sha256": "2d057cb92e2158957076f83f3e2c128eb9959a62f28a098834a575af46375384"
+    }
+  ],
+  "sourceEvidence": [
+    {
+      "path": "/tmp/dsh-device-20261118/workspace-reactivity-source-verification.json",
+      "bytes": 3955,
+      "sha256": "a814a5d7cad8a578254455734da1148010b873fc97d542b5f839ba3ac562747f"
+    },
+    {
+      "path": "/tmp/dsh-device-20261118/profile-share-ui-prepared/profile-import-normalization-verification.json",
+      "bytes": 5662,
+      "sha256": "7460b16db28c89e95c3d083d6b15e28b42e802eb1c5716401fd23e41cd3b1cf6"
+    },
+    {
+      "path": "/tmp/dsh-device-20261118/profile-share-ui-prepared/profile-readback-peer-review.json",
+      "bytes": 3019,
+      "sha256": "429152ff03d378381fdb96a9a090f68171ae85110a243acffa4b118a03454ab6"
+    }
+  ],
+  "installation": {
+    "installed": true,
+    "result": {
+      "exitCode": 0,
+      "elapsedSeconds": 11.417,
+      "hapSha256": "76616e0a04702eafddb8bb69f96bbd979e37b6b94a029a241a52919edbddab6f"
+    },
+    "evidence": {
+      "path": "/tmp/dsh-device-20261118/740-phase20-install-result.json",
+      "bytes": 131,
+      "sha256": "908dc7f9e4f89a0342578f9a4b9ddd125bf1d35866d59d477788a2d6f2fc349d"
+    },
+    "log": {
+      "path": "/tmp/dsh-device-20261118/740-phase20-install.log",
+      "bytes": 175,
+      "sha256": "9ed9b6d76b5a09c3b3c13dbf265f3febc86fce9d44419041234e67e7b07cafce"
+    },
+    "normalStopEvidence": {
+      "path": "/tmp/dsh-device-20261118/739-engine-stopped-before20.log",
+      "bytes": 4074,
+      "sha256": "66fcaa78c6b5ed0913bfd5669474034b7b37d8801dedfc77f83d03e6fd3903cd"
+    },
+    "launchProcess": {
+      "pid": "14169",
+      "previousPid": "4706",
+      "phase": 20,
+      "installedHapSha256": "76616e0a04702eafddb8bb69f96bbd979e37b6b94a029a241a52919edbddab6f"
+    },
+    "launchProcessEvidence": {
+      "path": "/tmp/dsh-device-20261118/741-phase20-process.json",
+      "bytes": 153,
+      "sha256": "92dc2c2b12a512a436e9c2b742d0956562076802919e833b50cbf1e985f55629"
+    },
+    "launchLog": {
+      "path": "/tmp/dsh-device-20261118/741-phase20-open.log",
+      "bytes": 5118,
+      "sha256": "9337cdaadee401c7b5a4d872948c350c5e036ad98e2dfd81a3930c888758a043"
+    },
+    "profileImportPhoneFixPassed": true,
+    "workspaceImmediateRefreshPhoneFixPassed": true
+  },
+  "remaining": [
+    "Other acceptance cases and final SCREEN/timeout cleanup"
+  ],
+  "privacy": "No private ready files, credentials, share code text or temporary Web tokens copied.",
+  "phoneVerification": {
+    "profileImport": {
+      "status": "PASS",
+      "scope": "Actual phase20 phone UI imports a new synthetic configuration into isolated Mac host60863; authenticated readonly observations verify saved settings. Not a phone-local config write.",
+      "steps": [
+        748,
+        749,
+        750,
+        751,
+        752,
+        753
+      ],
+      "evidence": {
+        "path": "/tmp/dsh-device-20261118/profile-share-ui-phase20/profile-phase20-phone-verification.json",
+        "bytes": 5524,
+        "sha256": "2525b31fefa3af317a9de1c092d27ff0b59ec9f6b0de0ebe8d4b561e7dd1a56c"
+      },
+      "assertions": {
+        "baselineOwnAbsent": true,
+        "cancelOwnAbsentAndControlHashesUnchanged": true,
+        "confirmedPersistedUserExactlyMatchesPayload": true,
+        "effectiveSchemaAddsDefaults": true,
+        "otherProviderCount": 1,
+        "otherProvidersAndNamespaceFieldsUnchanged": true,
+        "globalDefaultUnchanged": true,
+        "namespaceRevision": [
+          1,
+          1,
+          2
+        ]
+      },
+      "limits": [
+        "No claim of default-off observed at748; policy covered by source/host tests only.",
+        "No commercial model/network-provider requests or credentials involved.",
+        "No production mutation by the protocol observer.",
+        "New provider and old709 provider remain until ROOT finishes dependent tests; cleanup only those owned fields with concurrent-change protection."
+      ]
+    },
+    "workspace": {
+      "status": "PASS_LISTED_IMMEDIATE_REFRESH_AND_REOPEN",
+      "steps": [
+        773,
+        776,
+        777,
+        780,
+        781
+      ],
+      "hapSha256": "76616e0a04702eafddb8bb69f96bbd979e37b6b94a029a241a52919edbddab6f",
+      "source": "ROOT actual UI observations",
+      "actions": {
+        "773": "unpin succeeded",
+        "776": "ungroup returned a,b,workspace list",
+        "777": "move a down immediately showed b,a",
+        "780": "rename b immediately showed DSH-UI-B-VERIFIED-1118",
+        "781": "reopen preserved same order and title"
+      },
+      "registryRemovalAndFilesPreservation": "PASS_OWN_REGISTRY_REMOVED_FILES_PRESERVED",
+      "evidence": [
+        {
+          "path": "/tmp/dsh-device-20261117/773-unpin-retest.json",
+          "bytes": 44198,
+          "sha256": "8b0fa8e176258606793732c474382113a992cf9cc692e2e2a18629b4ea0d99a6"
+        },
+        {
+          "path": "/tmp/dsh-device-20261118/773-unpin-retest.log",
+          "bytes": 5910,
+          "sha256": "b10c1929acacee5c7e97ed93be9d4b2b6cb93e6032621e42efc715d6ff1135d5"
+        },
+        {
+          "path": "/tmp/dsh-device-20261117/776-workspace-ungrouped.json",
+          "bytes": 42191,
+          "sha256": "9c6216d7c697012cf7a194c680c40b991b7f92ecaaee91426e384dc18e06c47c"
+        },
+        {
+          "path": "/tmp/dsh-device-20261118/776-workspace-ungrouped.log",
+          "bytes": 5627,
+          "sha256": "90220ad9622049ca7b8ee5b6db89fd1162b146b1b8f4b6306692f7458ab92337"
+        },
+        {
+          "path": "/tmp/dsh-device-20261117/777-workspace-order-fixed.json",
+          "bytes": 42191,
+          "sha256": "d58acf75d603d8e88b2037c65261c93701cd1b36ec56a9219343cc3e3d29adfb"
+        },
+        {
+          "path": "/tmp/dsh-device-20261118/777-workspace-order-fixed.log",
+          "bytes": 5627,
+          "sha256": "827cd6d659500f91474fc2f3a94c15290e9445d61e81978120e69d0fca69ae24"
+        },
+        {
+          "path": "/tmp/dsh-device-20261117/780-workspace-rename-fixed-result.json",
+          "bytes": 42187,
+          "sha256": "46341ece1cc91c4f5d19f7b5845a68677da32a155580f6e207243afd764ce0c4"
+        },
+        {
+          "path": "/tmp/dsh-device-20261118/780-workspace-rename-fixed-result.log",
+          "bytes": 5625,
+          "sha256": "c182266c8c3e0975c389201f6ba59005ff3aab3d53456805bf3f1ab8ab3807ab"
+        },
+        {
+          "path": "/tmp/dsh-device-20261117/781-workspace-fixed-reopened.json",
+          "bytes": 42187,
+          "sha256": "19f02bc44e64ccfebc5575b823297ffb19ef0f6b35be64faa0851b8370dbcff1"
+        },
+        {
+          "path": "/tmp/dsh-device-20261118/781-workspace-fixed-reopened.log",
+          "bytes": 5625,
+          "sha256": "c182266c8c3e0975c389201f6ba59005ff3aab3d53456805bf3f1ab8ab3807ab"
+        }
+      ],
+      "independentVerification": {
+        "evidence": {
+          "path": "/tmp/dsh-device-20261118/workspace-ui-phone-verification.json",
+          "bytes": 14984,
+          "sha256": "1c128a249e8a52b02146a260ea369e05ee74eaf0121ffbe6a42e37b47e584862"
+        },
+        "sourceReferencesChecked": 54,
+        "allHashesMatched": true,
+        "checks": 10,
+        "counting": "UI/protocol assertions already describing these actions, not additional unit test cases."
+      }
+    },
+    "externalInterruptions": {
+      "steps": [
+        755,
+        756,
+        763
+      ],
+      "status": "EXTERNAL_FOREGROUND_NOT_PRODUCT_RESULT",
+      "imagesRetained": false,
+      "evidence": [
+        {
+          "path": "/tmp/dsh-device-20261118/756-external-interruption.json",
+          "bytes": 492,
+          "sha256": "cc29b14c60063fb6efba30033fd142cc875919893c8c4a3a6d4ffcb5b3000194"
+        },
+        {
+          "path": "/tmp/dsh-device-20261118/763-interruption-image-omitted.json",
+          "bytes": 205,
+          "sha256": "387c05864f6683076ff7791406215e210e9e42a1383e823e50a2a3863eaf567e"
+        }
+      ]
+    }
+  }
+}

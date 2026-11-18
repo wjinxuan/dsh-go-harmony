@@ -1,0 +1,665 @@
+{
+  "schema": "dsh-go-harmony.phone-companion-recall-acceptance.v1",
+  "date": "2026-11-17",
+  "status": "PASS_SCOPED_PHONE_PROTOCOL",
+  "runId": "d582b882-79b3-4a25-b897-1a91de610c0c",
+  "started": "2026-11-17T07:16:01.586Z",
+  "finished": "2026-11-17T07:16:11.599Z",
+  "command": {
+    "argv": [
+      "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+      "/tmp/dsh-device-20261117/phone-companion-recall-messages.mjs"
+    ],
+    "stdoutAndStderr": "/tmp/dsh-device-20261117/phone-recall-d582b882-messages-live.log",
+    "exitCode": 0
+  },
+  "artifactUnderTest": {
+    "hapSha256": "ae02a6c3ca0e2c1c5980d42ac2b2f61ed8558ff35cb685517682fbf06747242b",
+    "runtimeSha256": "93bd20716200d852353999568f4898f9fca2f69846fac5bfc4d0ce85d0ebcf27",
+    "identityProvenance": "ROOT installation and freshready verification for phase12; this protocol script did not independently operate HDC or remeasure the installed HAP",
+    "historicalBuildRecord": "native-build-phase12.json"
+  },
+  "scope": {
+    "phoneEngine": true,
+    "phoneUi": false,
+    "syntheticModel": "Dedicated authenticated loopback Messages service reached through ROOT-managed USB reverse forwarding; no external model calls",
+    "shared63277Modified": false,
+    "clientUnderTest": "Actual DshClient and CompanionRecallOwner via existing Node platform-kit fixture",
+    "clientPreferences": "Mac in-memory fixture; does not prove phone native OFF preference persistence",
+    "observer": "Exact complete own nonce text block plus actual x-deepseek-harness-session-id; saves only marker booleans and lengths, never request text",
+    "engineRestarted": false,
+    "clientReconnected": true
+  },
+  "safety": {
+    "requiredBaseline": {
+      "globalMemoryCount": 0,
+      "activeBinding": false,
+      "supported": true,
+      "nonOwnedSessionCount": 12,
+      "nonOwnedRunningCount": 0
+    },
+    "mutationScope": [
+      "One unique DSH-DEVICE confirmed manual memory",
+      "Four new client-owned sessions",
+      "Only llm-deepseek baseURL and apiKeyEnv under revision CAS, plus one unique synthetic key reference"
+    ],
+    "existingCredentialsReadOrOverwritten": false,
+    "defaultPermissionChanged": false,
+    "defaultModelReadbackRestored": true,
+    "realUserMemoryCleared": false,
+    "boundSessionCleanSetup": [
+      "session/create with no reuse or seed",
+      "agentPresets/select direct RPC",
+      "Read and assert inherited workspace-write; no permission command",
+      "session/selectModel direct RPC with default restored via separate owned session",
+      "No bound-session rename or commands/execute"
+    ]
+  },
+  "checks": [
+    {
+      "name": "dedicated-observer-preflight",
+      "port": 61998,
+      "shared63277Untouched": true,
+      "status": "PASS",
+      "elapsedMs": 17
+    },
+    {
+      "name": "empty-store-and-no-active-binding",
+      "memoryCount": 0,
+      "activeBinding": false,
+      "supported": true,
+      "status": "PASS",
+      "elapsedMs": 103
+    },
+    {
+      "name": "capture-idle-host-and-scope-only-two-deepseek-fields",
+      "nonOwnedSessionCount": 12,
+      "nonOwnedRunningCount": 0,
+      "fixtureModel": {
+        "provider": "deepseek-official",
+        "id": "deepseek-flash"
+      },
+      "fieldsChanged": [
+        "baseURL",
+        "apiKeyEnv"
+      ],
+      "existingCredentialsReadOrOverwritten": false,
+      "defaultReadbackRestored": true,
+      "status": "PASS",
+      "elapsedMs": 1613
+    },
+    {
+      "name": "write-only-one-confirmed-owned-memory",
+      "created": 1,
+      "confirmedSource": "manual",
+      "contentsLogged": false,
+      "status": "PASS",
+      "elapsedMs": 67
+    },
+    {
+      "name": "reject-wrong-preset-and-missing-consent-then-bind-clean-full",
+      "bindingId": "89104807-2cc4-4799-a0d5-28dcaffad7b2",
+      "bindingStatus": "ready",
+      "wrongPresetRejected": true,
+      "unconfirmedRejected": true,
+      "serverStatusReadback": true,
+      "status": "PASS",
+      "elapsedMs": 152
+    },
+    {
+      "name": "actual-model-context-bound",
+      "schema": "DSH-DEVICE-RECALL-1117-observation",
+      "observedAt": "2026-11-17T07:16:06.842Z",
+      "phase": "bound",
+      "sessionId": "session-939adf65-7da2-4ff0-bcc3-2d499d8966a0",
+      "ownership": "exact own nonce text block and actual engine session header",
+      "systemContainsMarker": true,
+      "nonSystemContainsMarker": false,
+      "hasRecallBoundary": true,
+      "systemCharacters": 4370,
+      "status": "PASS",
+      "elapsedMs": 624
+    },
+    {
+      "name": "actual-model-context-unbound-full",
+      "schema": "DSH-DEVICE-RECALL-1117-observation",
+      "observedAt": "2026-11-17T07:16:07.398Z",
+      "phase": "unbound-full",
+      "sessionId": "session-8c56ef05-0a32-44f3-b426-82103ee1d5b7",
+      "ownership": "exact own nonce text block and actual engine session header",
+      "systemContainsMarker": false,
+      "nonSystemContainsMarker": false,
+      "hasRecallBoundary": false,
+      "systemCharacters": 4154,
+      "status": "PASS",
+      "elapsedMs": 531
+    },
+    {
+      "name": "actual-model-context-ordinary",
+      "schema": "DSH-DEVICE-RECALL-1117-observation",
+      "observedAt": "2026-11-17T07:16:07.898Z",
+      "phase": "ordinary",
+      "sessionId": "session-7cdf517c-338d-4dc1-a9be-4b0cc1105179",
+      "ownership": "exact own nonce text block and actual engine session header",
+      "systemContainsMarker": false,
+      "nonSystemContainsMarker": false,
+      "hasRecallBoundary": false,
+      "systemCharacters": 2932,
+      "status": "PASS",
+      "elapsedMs": 479
+    },
+    {
+      "name": "revoke-seals-bound-session-without-model-request",
+      "outerCode": "session/agent-busy",
+      "exactRetiredReasonVerified": true,
+      "idleBeforePrompt": true,
+      "retired": true,
+      "serverPromptRejected": true,
+      "modelRequestsAdded": 0,
+      "clientOffPreferenceBacking": "Mac fixture, not phone UI preferences",
+      "status": "PASS",
+      "elapsedMs": 447
+    },
+    {
+      "name": "reconnect-still-sealed-without-engine-restart",
+      "outerCode": "session/agent-busy",
+      "exactRetiredReasonVerified": true,
+      "idleBeforePrompt": true,
+      "serverPromptRejected": true,
+      "engineRestarted": false,
+      "status": "PASS",
+      "elapsedMs": 350
+    }
+  ],
+  "cleanup": [
+    {
+      "name": "revoke-only-owned-binding-including-lost-response",
+      "bindingId": "89104807-2cc4-4799-a0d5-28dcaffad7b2",
+      "status": "PASS"
+    },
+    {
+      "name": "delete-only-owned-test-memory",
+      "ownMemoryRemoved": true,
+      "otherMemoryCount": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "restore-and-readback-original-default",
+      "defaultReadbackRestored": true,
+      "status": "PASS"
+    },
+    {
+      "name": "delete-only-owned-session",
+      "sessionId": "session-3ba76780-711f-44c9-bd7c-d89f9dbf2035",
+      "status": "PASS"
+    },
+    {
+      "name": "delete-only-owned-session",
+      "sessionId": "session-7cdf517c-338d-4dc1-a9be-4b0cc1105179",
+      "status": "PASS"
+    },
+    {
+      "name": "delete-only-owned-session",
+      "sessionId": "session-939adf65-7da2-4ff0-bcc3-2d499d8966a0",
+      "status": "PASS"
+    },
+    {
+      "name": "delete-only-owned-session",
+      "sessionId": "session-8c56ef05-0a32-44f3-b426-82103ee1d5b7",
+      "status": "PASS"
+    },
+    {
+      "name": "CAS-restore-only-two-deepseek-fields",
+      "twoFieldsRestored": true,
+      "otherSettingsUnchanged": true,
+      "defaultModelAndPermissionUnchanged": true,
+      "status": "PASS"
+    },
+    {
+      "name": "remove-only-owned-synthetic-key",
+      "credentialRemoved": true,
+      "status": "PASS"
+    },
+    {
+      "name": "remove-only-owned-observer-plan",
+      "removed": true,
+      "status": "PASS"
+    },
+    {
+      "name": "archive-owned-observation-metrics",
+      "onlyBooleansAndLengthsSaved": true,
+      "status": "PASS"
+    },
+    {
+      "name": "dedicated-observer-idle-check",
+      "active": 0,
+      "accepted": 3,
+      "status": "PASS"
+    },
+    {
+      "name": "stop-only-owned-observer-server",
+      "shared63277Untouched": true,
+      "status": "PASS"
+    }
+  ],
+  "finalState": {
+    "ownSessionsRemaining": 0,
+    "ownMemoryRemoved": true,
+    "ownKeyRemoved": true,
+    "deepseekTwoFieldsCasRestored": true,
+    "defaultModelReadbackRestored": true,
+    "defaultPermissionReadbackRestored": true,
+    "activeRequests": 0,
+    "observerStopped": true,
+    "shared63277Untouched": true,
+    "privateSafetyTombstonesPreserved": true
+  },
+  "errorContract": {
+    "outerCode": "session/agent-busy",
+    "requiredExactDetailsReason": "Error: Automatic recall binding is retired; use a new clean session",
+    "notAcceptedAsProof": "Arbitrary busy errors alone",
+    "source": "Pinned dsh-api-session-controller/lib/index.js prompt catch converts non-RemoteError into session/agent-busy with details.reason; recall.js guardSession throws CompanionError after retirement",
+    "extraAssertions": [
+      "Own bound session observed idle before rejected prompt",
+      "Binding GET confirms exact own binding/session retired",
+      "Observer accepted count remains exactly 3 before and after revoke and reconnect"
+    ]
+  },
+  "earlierAttempts": [
+    {
+      "runId": "96a5bc38-bb26-4b4f-9119-025589c81b39",
+      "status": "FAIL",
+      "cause": "Redundant permission commands generated command/run and command/done, violating fixed clean-session policy",
+      "cleanupRestored": true
+    },
+    {
+      "runId": "7e41ea8f-eadb-4d57-bf78-125e8e72250f",
+      "status": "FAIL",
+      "cause": "Observer incorrectly required concatenated adjacent user/runtime-context blocks to equal one prompt; clean binding itself passed",
+      "cleanupRestored": true
+    },
+    {
+      "runId": "d4b8aace-1f31-4070-8dde-8a0a2dd63b11",
+      "status": "FAIL",
+      "cause": "All three actual model-context assertions passed; fixture incorrectly expected unwrapped recall-retired code instead of pinned controller outer code",
+      "cleanupRestored": true
+    }
+  ],
+  "pending": {
+    "phoneNativeOffPreferenceUi": "NOT_TESTED",
+    "engineRestartRetirementPersistence": "PASS in separate restartContinuation; original d582 run alone only reconnects"
+  },
+  "evidence": [
+    {
+      "path": "/tmp/dsh-device-20261117/phone-recall-d582b882-79b3-4a25-b897-1a91de610c0c-result.json",
+      "sha256": "a80cb629a3129d209ecac4069cd9ac33ebec1df270fa809c4685a7c8ce92c3d6"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/phone-recall-d582b882-messages-live.log",
+      "sha256": "90b399a470cd1cf27c9756d13ce0e3a074d5c17924b7ca54258f9ab6e24d344f"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/phone-recall-d582b882-79b3-4a25-b897-1a91de610c0c-observations.jsonl",
+      "sha256": "edb7c5b4e35e21642f4bc8197d82237e0f0ccecf6abe4a135af2158c1476b952"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/phone-companion-recall-final-summary.json",
+      "sha256": "1168780ecfd1144d30d1eef70995693cd90f59c6b52c4572096d985e58f2bad8"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/recall-observer-merged-block-red.log",
+      "sha256": "228f0bd2064e1729ab15baf34f910b6b0eb83f33d91b4435c1d83af4ae3f4302"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/recall-observer-merged-block-green.log",
+      "sha256": "d4a840eb5a64a53a121cc1bb7faad7242e6ca45eb0ff4299a62dde094c1e8905"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/phone-recall-f44d32cc-fd52-4548-b9ea-72f708b86824-restart-verification-result.json",
+      "sha256": "ad6184bd420ab99bb67d3246b710051b8814b19868195ce8ebce41a4410bad0a"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/phone-recall-f44d32cc-restart-verify.log",
+      "sha256": "5578e20ec6931ca30ed414224dcd8310caf6c596414712eae8c17d89ecd390c5"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/phone-companion-recall-restart-prepare.mjs",
+      "sha256": "67329dfff4fb8fc58cc48613bd080705efeefac9605a523e08722f8d3d89f351"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/phone-companion-recall-restart-verify.mjs",
+      "sha256": "dfcade632273c6935fa6a8a52cb1181281b00a5b9732ae3a93f36be22f90feaf"
+    }
+  ],
+  "fixtureFiles": [
+    {
+      "path": "/tmp/dsh-device-20261117/phone-companion-recall-messages.mjs",
+      "sha256": "0acf79fd938a474f6a7846917c011c30d4db65e80b10cb19acd7c6c85344743b"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/recall-provider-owned.mjs",
+      "sha256": "30d10eabe08a2e7faa0ef6f18fd4643b806c131cd4c94362e88ac57953a94010"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/recall-provider-observer.mjs",
+      "sha256": "812a7cc9b04945200b6a705558be1e88af1efb2eded267c448ad9325a7e1a454"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/recall-observer-selfcheck.mjs",
+      "sha256": "85ae755f174a43672105808c9464640c54c2fad8d8c94bac912bf25fea7e0280"
+    }
+  ],
+  "limits": [
+    "This is not all 17 phone acceptance items passing",
+    "Historical failed attempts remain failures; the successful run uses a new nonce and fresh resources",
+    "Native private-file safety tombstones were preserved; no cleanup bypassed storage guards",
+    "Original d582 reconnect and separate 3cec/f44d actual engine restart are distinct proofs; phone-native OFF preference UI remains untested"
+  ],
+  "restartContinuation": {
+    "status": "PASS_ACTUAL_PHONE_ENGINE_RESTART_PERSISTENCE",
+    "preparationRunId": "3cec724e-56dd-4d23-a0a5-6f21a0041258",
+    "preparationExitCode": 0,
+    "preparedAt": "2026-11-17T07:21:39.909Z",
+    "previousEnginePort": 33779,
+    "retainedOwnSessionId": "session-a0981a89-e4f4-4f7b-90a5-c391107b13d8",
+    "retainedOwnBindingId": "e3d57b6c-119a-4f4e-95ad-b78b6ef59b18",
+    "retainedSessionCount": 1,
+    "testMemoryRemoved": true,
+    "syntheticKeyRemoved": true,
+    "twoFieldsCasRestored": true,
+    "defaultModelReadbackRestored": true,
+    "activeRequests": 0,
+    "observerStopped": true,
+    "checks": [
+      {
+        "name": "dedicated-observer-preflight",
+        "port": 61998,
+        "shared63277Untouched": true,
+        "status": "PASS",
+        "elapsedMs": 14
+      },
+      {
+        "name": "empty-store-and-no-active-binding",
+        "memoryCount": 0,
+        "activeBinding": false,
+        "supported": true,
+        "status": "PASS",
+        "elapsedMs": 234
+      },
+      {
+        "name": "capture-idle-host-and-scope-only-two-deepseek-fields",
+        "nonOwnedSessionCount": 12,
+        "nonOwnedRunningCount": 0,
+        "fixtureModel": {
+          "provider": "deepseek-official",
+          "id": "deepseek-flash"
+        },
+        "fieldsChanged": [
+          "baseURL",
+          "apiKeyEnv"
+        ],
+        "existingCredentialsReadOrOverwritten": false,
+        "defaultReadbackRestored": true,
+        "status": "PASS",
+        "elapsedMs": 1968
+      },
+      {
+        "name": "write-only-one-confirmed-owned-memory",
+        "created": 1,
+        "confirmedSource": "manual",
+        "contentsLogged": false,
+        "status": "PASS",
+        "elapsedMs": 510
+      },
+      {
+        "name": "confirmed-clean-full-bind-for-restart-probe",
+        "bindingId": "e3d57b6c-119a-4f4e-95ad-b78b6ef59b18",
+        "bindingStatus": "ready",
+        "unconfirmedRejected": true,
+        "serverStatusReadback": true,
+        "status": "PASS",
+        "elapsedMs": 105
+      },
+      {
+        "name": "actual-model-context-bound",
+        "schema": "DSH-DEVICE-RECALL-1117-observation",
+        "observedAt": "2026-11-17T07:21:37.610Z",
+        "phase": "bound",
+        "sessionId": "session-a0981a89-e4f4-4f7b-90a5-c391107b13d8",
+        "ownership": "exact own nonce text block and actual engine session header",
+        "systemContainsMarker": true,
+        "nonSystemContainsMarker": false,
+        "hasRecallBoundary": true,
+        "systemCharacters": 4370,
+        "status": "PASS",
+        "elapsedMs": 879
+      },
+      {
+        "name": "revoke-seals-bound-session-without-model-request",
+        "outerCode": "session/agent-busy",
+        "exactRetiredReasonVerified": true,
+        "idleBeforePrompt": true,
+        "retired": true,
+        "serverPromptRejected": true,
+        "modelRequestsAdded": 0,
+        "clientOffPreferenceBacking": "Mac fixture, not phone UI preferences",
+        "status": "PASS",
+        "elapsedMs": 395
+      }
+    ],
+    "cleanup": [
+      {
+        "name": "revoke-only-owned-binding-including-lost-response",
+        "bindingId": "e3d57b6c-119a-4f4e-95ad-b78b6ef59b18",
+        "status": "PASS"
+      },
+      {
+        "name": "delete-only-owned-test-memory",
+        "ownMemoryRemoved": true,
+        "otherMemoryCount": 0,
+        "status": "PASS"
+      },
+      {
+        "name": "restore-and-readback-original-default",
+        "defaultReadbackRestored": true,
+        "status": "PASS"
+      },
+      {
+        "name": "delete-only-owned-session",
+        "sessionId": "session-42d0689f-c5b7-46b9-89b0-3b310c410c8d",
+        "status": "PASS"
+      },
+      {
+        "name": "retain-exactly-owned-retired-session-for-ROOT-restart",
+        "sessionId": "session-a0981a89-e4f4-4f7b-90a5-c391107b13d8",
+        "status": "PASS",
+        "intentional": true
+      },
+      {
+        "name": "CAS-restore-only-two-deepseek-fields",
+        "twoFieldsRestored": true,
+        "otherSettingsUnchanged": true,
+        "defaultModelAndPermissionUnchanged": true,
+        "status": "PASS"
+      },
+      {
+        "name": "remove-only-owned-synthetic-key",
+        "credentialRemoved": true,
+        "status": "PASS"
+      },
+      {
+        "name": "remove-only-owned-observer-plan",
+        "removed": true,
+        "status": "PASS"
+      },
+      {
+        "name": "archive-owned-observation-metrics",
+        "onlyBooleansAndLengthsSaved": true,
+        "status": "PASS"
+      },
+      {
+        "name": "dedicated-observer-idle-check",
+        "active": 0,
+        "accepted": 1,
+        "status": "PASS"
+      },
+      {
+        "name": "stop-only-owned-observer-server",
+        "shared63277Untouched": true,
+        "status": "PASS"
+      }
+    ],
+    "result": {
+      "path": "/tmp/dsh-device-20261117/phone-recall-3cec724e-56dd-4d23-a0a5-6f21a0041258-restart-prepared-result.json",
+      "sha256": "75e5c741205a58c224d76da44e65f2bb0b1e71d1907574d89eb15f99c11a2590"
+    },
+    "log": "/tmp/dsh-device-20261117/phone-recall-3cec724e-restart-prepare.log",
+    "note": "Preparation retained exactly one own retired session; after actual ROOT engine restart its persisted seal was verified, then that test session was deleted. No test sessions remain.",
+    "verification": {
+      "runId": "f44d32cc-fd52-4548-b9ea-72f708b86824",
+      "exitCode": 0,
+      "started": "2026-11-17T07:25:38.868Z",
+      "finished": "2026-11-17T07:25:43.940Z",
+      "enginePort": 39595,
+      "restartPerformedBy": "ROOT phone App engine restart, 270→271→272 freshready; not a client reconnect",
+      "runtimeSha256": "93bd20716200d852353999568f4898f9fca2f69846fac5bfc4d0ce85d0ebcf27",
+      "appBuildDescription": "ROOT confirmed c439 current HAP; the unchanged 93bd runtime is the object of this persistence test",
+      "checks": [
+        {
+          "name": "dedicated-observer-preflight",
+          "port": 61998,
+          "shared63277Untouched": true,
+          "status": "PASS",
+          "elapsedMs": 14
+        },
+        {
+          "name": "empty-store-and-no-active-binding",
+          "memoryCount": 0,
+          "activeBinding": false,
+          "supported": true,
+          "status": "PASS",
+          "elapsedMs": 198
+        },
+        {
+          "name": "retained-own-session-and-stale-binding-after-ROOT-engine-restart",
+          "sessionId": "session-a0981a89-e4f4-4f7b-90a5-c391107b13d8",
+          "sessionStillPresent": true,
+          "oldEphemeralBindingAbsent": true,
+          "previousEnginePort": 33779,
+          "currentEnginePort": 39595,
+          "restartPerformedBy": "ROOT only",
+          "status": "PASS",
+          "elapsedMs": 166
+        },
+        {
+          "name": "capture-idle-host-and-scope-only-two-deepseek-fields",
+          "nonOwnedSessionCount": 12,
+          "nonOwnedRunningCount": 0,
+          "fixtureModel": {
+            "provider": "deepseek-official",
+            "id": "deepseek-flash"
+          },
+          "fieldsChanged": [
+            "baseURL",
+            "apiKeyEnv"
+          ],
+          "existingCredentialsReadOrOverwritten": false,
+          "defaultReadbackRestored": true,
+          "status": "PASS",
+          "elapsedMs": 1901
+        },
+        {
+          "name": "retired-marker-persists-across-actual-engine-restart",
+          "outerCode": "gateway/internal",
+          "exactRetiredResumeReasonVerified": true,
+          "retainedSessionExists": true,
+          "idleBeforePrompt": true,
+          "modelRequests": 0,
+          "observerRejectedRequests": 0,
+          "engineRestarted": true,
+          "clientOffPreferenceBacking": "Not tested; this check uses the real phone engine persisted marker",
+          "status": "PASS",
+          "elapsedMs": 546
+        }
+      ],
+      "cleanup": [
+        {
+          "name": "restore-and-readback-original-default",
+          "defaultReadbackRestored": true,
+          "status": "PASS"
+        },
+        {
+          "name": "delete-only-owned-session",
+          "sessionId": "session-a0981a89-e4f4-4f7b-90a5-c391107b13d8",
+          "status": "PASS"
+        },
+        {
+          "name": "delete-only-owned-session",
+          "sessionId": "session-1f3d25a4-6ca7-4318-aa89-e8a9a89a3463",
+          "status": "PASS"
+        },
+        {
+          "name": "CAS-restore-only-two-deepseek-fields",
+          "twoFieldsRestored": true,
+          "otherSettingsUnchanged": true,
+          "defaultModelAndPermissionUnchanged": true,
+          "status": "PASS"
+        },
+        {
+          "name": "remove-only-owned-synthetic-key",
+          "credentialRemoved": true,
+          "status": "PASS"
+        },
+        {
+          "name": "remove-only-owned-observer-plan",
+          "removed": true,
+          "status": "PASS"
+        },
+        {
+          "name": "archive-owned-observation-metrics",
+          "onlyBooleansAndLengthsSaved": true,
+          "status": "PASS"
+        },
+        {
+          "name": "dedicated-observer-idle-check",
+          "active": 0,
+          "accepted": 0,
+          "status": "PASS"
+        },
+        {
+          "name": "stop-only-owned-observer-server",
+          "shared63277Untouched": true,
+          "status": "PASS"
+        }
+      ],
+      "finalState": {
+        "retainedOwnSessionDeleted": true,
+        "ownSessionsRemaining": 0,
+        "twoFieldsCasRestored": true,
+        "defaultModelReadbackRestored": true,
+        "keyRemoved": true,
+        "resourcesClean": true,
+        "activeRequests": 0,
+        "observerStopped": true,
+        "modelRequests": 0,
+        "rejectedObserverRequests": 0
+      },
+      "result": {
+        "path": "/tmp/dsh-device-20261117/phone-recall-f44d32cc-fd52-4548-b9ea-72f708b86824-restart-verification-result.json",
+        "sha256": "ad6184bd420ab99bb67d3246b710051b8814b19868195ce8ebce41a4410bad0a"
+      },
+      "log": "/tmp/dsh-device-20261117/phone-recall-f44d32cc-restart-verify.log",
+      "requiredRawError": {
+        "code": "gateway/internal",
+        "message": "resume failed for session \"session-a0981a89-e4f4-4f7b-90a5-c391107b13d8\": Error: Automatic recall binding is retired; use a new clean session"
+      },
+      "proofAgainstFalsePositive": [
+        "Old session was present and idle before the request, not already deleted",
+        "Old in-memory bridge binding was absent after the ROOT restart",
+        "Raw rejection matched the exact retired cold-resume reason, not arbitrary gateway/internal",
+        "Dedicated observer received zero accepted and zero rejected model requests",
+        "Only after the assertion was the retained own session permanently deleted"
+      ]
+    }
+  }
+}

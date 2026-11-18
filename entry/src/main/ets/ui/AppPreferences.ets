@@ -1,3 +1,5 @@
+import { advancedPreferences } from './AdvancedPreferencesData';
+import type { AdvancedPreferences } from './AdvancedPreferencesData';
 import { common } from '@kit.AbilityKit';
 import { preferences } from '@kit.ArkData';
 import { ACCENTS } from './DshTheme';
@@ -22,7 +24,7 @@ export async function loadAppPreferences(context: common.Context): Promise<AppPr
     return { accentId: 'mist', themeMode: 'system', fontSize: 16 };
   }
   return {
-    accentId: ACCENTS.some((accent) => accent.id === value?.accentId) ? value.accentId : 'mist',
+    accentId: (value?.accentId === 'custom' || ACCENTS.some((accent) => accent.id === value?.accentId)) ? value.accentId : 'mist',
     themeMode: ['light', 'dark', 'system'].includes(value?.themeMode) ? value.themeMode : 'system',
     fontSize: [14, 16, 18, 20].includes(value?.fontSize) ? value.fontSize : 16
   };
@@ -42,5 +44,16 @@ export async function loadOnboardingComplete(context: common.Context): Promise<b
 export async function saveOnboardingComplete(context: common.Context): Promise<void> {
   const store = await preferences.getPreferences(context, FILE_NAME);
   store.putSync(ONBOARDING_COMPLETE, true);
+  await store.flush();
+}
+
+export async function loadAdvancedPreferences(context: common.Context): Promise<AdvancedPreferences> {
+  const store = await preferences.getPreferences(context, FILE_NAME);
+  try { return advancedPreferences(JSON.parse(store.getSync('advanced-v1', '{}') as string)); }
+  catch { return advancedPreferences(); }
+}
+export async function saveAdvancedPreferences(context: common.Context, value: AdvancedPreferences): Promise<void> {
+  const store = await preferences.getPreferences(context, FILE_NAME);
+  store.putSync('advanced-v1', JSON.stringify(advancedPreferences(value)));
   await store.flush();
 }

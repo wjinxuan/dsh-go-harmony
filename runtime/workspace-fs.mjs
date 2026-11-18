@@ -7,6 +7,7 @@ import { FsError } from '@deepseek-ai/dsh-fs';
 import { SandboxedFileSystem } from '@deepseek-ai/dsh-fs-sandbox';
 import { DirectoryPicker, DirectoryPickerError } from '@deepseek-ai/dsh-host-directory-picker';
 import { boundedInsert } from '@deepseek-ai/dsh-host-directory-picker-browse';
+import { attachmentPath } from './attachment-files.mjs';
 
 function inside(root, path) {
   const suffix = relative(root, path);
@@ -151,6 +152,8 @@ export default class WorkspaceFileSystem extends SandboxedFileSystem {
   }
 
   processPathFromHostPath(path) {
+    // Only the read tool can resolve this handle, after checking the current session log.
+    if (attachmentPath(path)) return path;
     const candidate = super.processPathFromHostPath(path);
     return candidate && inside(this.root, candidate) ? candidate : undefined;
   }

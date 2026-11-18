@@ -11,6 +11,8 @@ sed -e "s|'@kit.ArkTS'|'../onboarding-fixture.mjs'|" \
   "$project_dir/entry/src/main/ets/local/LocalKeyStore.ets" > "$test_dir/local/LocalKeyStore.ts"
 sed -e '/^import { common } /d' -e "s|'@kit.ArkData'|'../onboarding-fixture.mjs'|" \
   -e "s|'./DshTheme'|'../onboarding-fixture.mjs'|" \
+  -e "s|'./AdvancedPreferencesData'|'./AdvancedPreferencesData.ts'|g" \
   "$project_dir/entry/src/main/ets/ui/AppPreferences.ets" > "$test_dir/ui/AppPreferences.ts"
+sed "s|'../dsh/DshWire'|'../dsh/DshWire.ts'|g" "$project_dir/entry/src/main/ets/ui/AdvancedPreferencesData.ets" > "$test_dir/ui/AdvancedPreferencesData.ts"
 cp "$project_dir/tests/onboarding.test.mjs" "$project_dir/tests/onboarding-fixture.mjs" "$test_dir/"
 node --disable-warning=ExperimentalWarning --experimental-strip-types "$test_dir/onboarding.test.mjs" "$@"

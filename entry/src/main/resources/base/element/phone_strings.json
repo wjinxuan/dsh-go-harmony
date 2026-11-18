@@ -1,0 +1,12 @@
+{
+  "string": [
+    {
+      "name": "phone_capture_reason",
+      "value": "用于您主动发起的屏幕截图与本机文字识别"
+    },
+    {
+      "name": "phone_accessibility_reason",
+      "value": "仅在您主动确认后读取屏幕节点并执行指定的手机操作"
+    }
+  ]
+}

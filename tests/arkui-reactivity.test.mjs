@@ -5,8 +5,33 @@ import test from 'node:test';
 
 const generated = process.argv[2];
 
+test('page construction initializes language storage before translated model state', () => {
+  const source = readFileSync(join(generated, '../pages/Index.ts'), 'utf8');
+  const initializers = source.split('\n').filter(line => /^\s*this\.__(?:localeLanguage|modelName) =/.test(line));
+  assert.equal(initializers.length, 2);
+  const getter = source.match(/get localeLanguage\(\) \{([^]*?)\n    \}/);
+  assert.ok(getter, 'generated locale getter must be present');
+  class Property {
+    constructor(value) { this.value = value; }
+    get() { return this.value; }
+  }
+  const page = {
+    createStorageProp: () => new Property('en'),
+    t(value) { return `${this.localeLanguage}:${value}`; }
+  };
+  Object.defineProperty(page, 'localeLanguage', { get: new Function(getter[1]) });
+  assert.doesNotThrow(() => new Function('ObservedPropertySimplePU', initializers.join('\n')).call(page, Property));
+  assert.equal(page.__modelName.get(), 'en:选择模型');
+});
+
+// Locale wrappers must stay inside the same generated observers. Normalize only
+// label lookups so these checks keep testing state reactivity in either locale.
+const normalized = source => source
+  .replace(/this\.t\(("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')\)/g, (_match, literal) => "'" + literal.slice(1, -1) + "'")
+  .replace(/this\.t\((this\.[A-Za-z_$][\w$]*|text\(\))\)/g, '$1');
+
 function method(file, name) {
-  const output = readFileSync(join(generated, `${file}.ts`), 'utf8');
+  const output = normalized(readFileSync(join(generated, `${file}.ts`), 'utf8'));
   const start = output.indexOf(`    private ${name}(`);
   assert.ok(start >= 0, `${file}.${name} missing from generated ArkUI output`);
   const end = output.indexOf('\n    }', start);
@@ -59,7 +84,46 @@ test('account wallet observers re-read balance after the async response', () => 
   const wallet = method('AccountPanel', 'wallet');
   assert.match(wallet, /observeComponentCreation2\(\(elmtId, isInitialRender\) => \{[^]*?if \(lines\(\)\)/);
   assert.match(wallet, /forEachUpdateFunction\(elmtId, lines\(\)/);
-  const output = readFileSync(join(generated, 'AccountPanel.ts'), 'utf8');
+  const output = normalized(readFileSync(join(generated, 'AccountPanel.ts'), 'utf8'));
   assert.match(output, /wallet\.bind\(this\)\('充值余额', \(\) => this\.overview\.recharge\)/);
   assert.match(output, /wallet\.bind\(this\)\('赠送余额', \(\) => this\.overview\.bonus\)/);
+});
+
+test('mention results and retained rows observe the revision after asynchronous updates', () => {
+  const picker = normalized(readFileSync(join(generated, 'MentionPickerPanel.ts'), 'utf8'));
+  assert.match(picker, /forEachUpdateFunction\(elmtId, this\.sections\(\)/);
+  assert.match(picker, /forEachUpdateFunction\(elmtId, this\.items\(section\.title\)/);
+  for (const name of ['sections', 'current', 'highlighted', 'loading']) {
+    assert.match(method('MentionPickerPanel', name), /this\.revision/);
+  }
+  const row = method('MentionPickerPanel', 'itemRow');
+  assert.match(row, /Text\.create\(this\.current\(item\)\.label\)/);
+  assert.match(row, /Row\.backgroundColor\(this\.highlighted\(item\)/);
+  assert.match(row, /this\.controller\.pick\(this\.current\(item\)\)/);
+});
+
+test('retained voice waveform bars read their current state in the generated observer', () => {
+  const chat = method('../pages/Index', 'chatScreen');
+  assert.match(chat, /observeComponentCreation2\(\(elmtId, isInitialRender\) => \{[^]*?Column\.height\(4 \+ this\.voiceLevels\[index\] \* 20\);/);
+});
+
+test('pet roaming pauses on current editor focus and list scroll state', () => {
+  const index = normalized(readFileSync(join(generated, '../pages/Index.ts'), 'utf8'));
+  assert.match(index, /idleBlocked: this\.composerFocused \|\| this\.chatScrolling/);
+  assert.match(index, /List\.onScrollStart\([^]*?this\.chatScrolling = true/);
+  assert.match(index, /List\.onScrollStop\([^]*?this\.chatScrolling = false/);
+  const editor=normalized(readFileSync(join(generated, 'MentionEditor.ts'), 'utf8'));
+  assert.match(editor,/RichEditor\.onFocus\([^]*?this\.onFocusChanged\(true\)/);
+  assert.match(editor,/RichEditor\.onBlur\([^]*?this\.onFocusChanged\(false\)/);
+});
+
+test('companion signal switches read asynchronously loaded consent inside each Toggle observer', () => {
+ const file=normalized(readFileSync(join(generated,'../companion/CompanionSignalSettings.ts'),'utf8'));
+ assert.match(file,/observeComponentCreation2\(\(elmtId, isInitialRender\) => \{[^]*?Toggle\.create\(\{ type: ToggleType\.Switch, isOn: value\(\) \}\)/);
+ for(const field of ['state','optionalSpeech','voice','nightCare'])assert.match(file,new RegExp('\\(\\)(?:: boolean)? => this\\.view\\.consent\\?\\.'+field+' === true'));
+});
+
+test('companion owners remount when host, connection generation or readiness changes', () => {
+ const index=normalized(readFileSync(join(generated,'../pages/Index.ts'),'utf8'));
+ assert.match(index,/forEachUpdateFunction\(elmtId, \[`\$\{this\.hostScope\(\)\}\|\$\{this\.connectionVersion\}\|\$\{this\.connected\}`\]/);
 });

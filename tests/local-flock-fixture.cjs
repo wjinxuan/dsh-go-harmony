@@ -11,13 +11,15 @@ globalThis.dshHarmonyTryLock = fd => {
   return true;
 };
 
-if (process.env.DSH_HARMONY_TEST_DENY_LINK === '1' || process.env.DSH_HARMONY_TEST_WORKSPACE_LINK === '1') {
+if (process.env.DSH_HARMONY_TEST_DENY_LINK === '1' || process.env.DSH_HARMONY_TEST_WORKSPACE_LINK === '1' ||
+    process.env.DSH_HARMONY_TEST_ATTACHMENT_LINK === '1') {
   const link = fsPromises.link;
   fsPromises.link = async (staged, final) => {
     const session = process.env.DSH_HARMONY_TEST_DENY_LINK === '1' && /\.jsonl(?:\.zstd)?$/.test(final);
     const workspace = process.env.DSH_HARMONY_TEST_WORKSPACE_LINK === '1' && staged.includes('.tmpdir/');
-    if ((session || workspace) && staged.endsWith('.tmp')) {
-      throw Object.assign(new Error('Fixture denied session hardlink'), { code: 'EACCES', syscall: 'link' });
+    const attachment = process.env.DSH_HARMONY_TEST_ATTACHMENT_LINK === '1' && final.includes('/attachments/v1/');
+    if (attachment || ((session || workspace) && staged.endsWith('.tmp'))) {
+      throw Object.assign(new Error('Fixture denied hardlink'), { code: 'EACCES', syscall: 'link' });
     }
     return link(staged, final);
   };
@@ -28,4 +30,5 @@ if (process.env.DSH_HARMONY_TEST_DENY_LINK === '1' || process.env.DSH_HARMONY_TE
     unlinkSync(staged);
   };
   globalThis.dshHarmonyPublishWorkspaceFile = globalThis.dshHarmonyPublishFile;
+  globalThis.dshHarmonyPublishAttachmentFile = globalThis.dshHarmonyPublishFile;
 }

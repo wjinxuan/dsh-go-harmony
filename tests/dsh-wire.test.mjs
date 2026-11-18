@@ -2,7 +2,8 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { DshTranscript, localSessionError, approvalFromEvent, createMuxOpen, createRpcRequest, modelCatalog,
   modelSelectionResult, normalizeProviderKey, parseRpcResponse, workspaceListing, workspaceText,
-  questionFromEvent, continuedQuestions, sessionPage, turnTraces, permissionCatalog } from './DshWire.ts';
+  questionFromEvent, continuedQuestions, sessionPage, turnTraces, permissionCatalog, commandCatalog,
+  commandResult } from './DshWire.ts';
 import { ChatTimeline } from './ChatTimeline.ts';
 
 assert.equal(localSessionError("EACCES: permission denied, link '/private/secret'"), '本机会话写入失败（EACCES/link）');
@@ -22,6 +23,44 @@ const queue = new DshTranscript('queue-session');
 const queued = (id, text, kind = 'user') => ({ id, role: 'user', source: { kind, rpcId: `req-${id}` },
   content: [{ type: 'text', text }] });
 const event = (seq, type, data, time = seq * 100) => ({ event: { seq, type, time, data }, type: 'event' });
+assert.deepEqual(commandCatalog([
+  { name: 'compact', definitionId: '@deepseek-ai/dsh-command-compact', description: 'Compress' },
+  { name: 'plan', definitionId: 'plugin-override', description: 'Custom\u202E plan', input: { hint: 'Input' } },
+  { name: 'plan', description: 'Duplicate' }, { name: 'bad name' }
+]).map(({ name, definitionId, label, description, hint }) => [name, definitionId, label, description, hint]), [
+  ['compact', '@deepseek-ai/dsh-command-compact', '压缩', '压缩以上对话内容，腾出上下文', undefined],
+  ['plan', 'plugin-override', 'plan', 'Custom plan', 'Input']
+]);
+assert.throws(() => commandCatalog({}), /命令列表无效/);
+assert.throws(() => commandResult('compact', {}), /命令结果无效/);
+assert.deepEqual(commandResult('compact', { commandId: 'compact-1', result: { kind: 'success',
+  text: 'Compacted 3 history items (~500 tokens).' } }), { id: 'compact-1', success: true, text: '已压缩 3 条历史记录（约 500 token）' });
+const commands = new DshTranscript('command-session');
+commands.applyCommandResult('local-1', 'compact', commandResult('compact', { commandId: 'compact-1', result: {
+  kind: 'success', text: 'No compactable history yet.'
+} }));
+const commandRun = event(1, 'command/run', { commandId: 'compact-1', name: 'compact' });
+commands.apply(commandRun);
+commands.apply(event(2, 'compaction/start', { compactionId: 'compact-op' }));
+assert.equal(commands.compacting, true);
+commands.apply(event(3, 'compaction/end', { compactionId: 'compact-op' }));
+assert.equal(commands.compacting, false);
+const commandDone = event(4, 'command/done', { commandId: 'compact-1', kind: 'success', text: 'No compactable history yet.' });
+commands.apply(commandDone);
+commands.applyCommandResult('local-2', 'unknown', commandResult('unknown', null));
+commands.apply({ type: 'snapshot', records: [commandRun, commandDone] });
+assert.deepEqual(commands.sessionRecords().map(({ seq, type }) => [seq, type]), [[1, 'command/run'], [4, 'command/done']]);
+commands.apply(commandDone);
+assert.equal(commands.sessionRecords().length, 2);
+assert.deepEqual(commands.commandNotices().map(({ id, seq, args, done, success, text }) => [id, seq, args, done, success, text]), [
+  ['compact-1', 1, undefined, true, true, '暂无可压缩的对话内容'],
+  ['local-2', undefined, undefined, true, false, '这台主机没有这条命令']
+]);
+commands.apply(event(5, 'command/run', { commandId: 'other-1', name: 'other', args: ' hello' }));
+assert.equal(commands.commandNotices()[1].done, false);
+commands.apply(event(6, 'command/done', { commandId: 'other-1', kind: 'error', text: '/host/private/secret.txt' }));
+assert.equal(commands.commandNotices()[1].text, '命令执行失败，请在主机上查看详情');
+
 queue.apply({ type: 'snapshot', cursor: 6, projections: { asOfSeq: 6, values: {
   agentPreset: 'standard', permissions: { currentValue: 'workspace-write' }, todos: [{ content: 'check', status: 'pending' }],
   inbox: { 'next-turn': [queued('a', 'old'), queued('b', 'next')], 'next-step': [queued('c', 'steer')] },
@@ -359,9 +398,9 @@ assert.equal(retryStart.turnNotices()[0].text, '请求重试（2/5）');
 const noticeCodes = {
   AUTH: 'API Key 无效或已过期', INVALID_CREDENTIAL: 'API Key 无效或已过期',
   QUOTA: '余额不足', ACCOUNT_QUOTA: '账号额度已用完',
-  ACCOUNT_SIGN_IN_REQUIRED: '请在主机上登录 DeepSeek 账号',
-  ACCOUNT_TOKEN_INVALID: 'DeepSeek 账号登录已失效，请在主机上重新登录',
-  CONTEXT_WINDOW_EXCEEDED: '对话太长，发送 /compact 压缩后再试',
+  ACCOUNT_SIGN_IN_REQUIRED: '请登录当前引擎的 DeepSeek 账号',
+  ACCOUNT_TOKEN_INVALID: 'DeepSeek 账号登录已失效，请重新登录',
+  CONTEXT_WINDOW_EXCEEDED: '对话太长，请压缩上下文后重试，或新建对话',
   SERVER: '模型服务暂时不可用', HTTP_503: '模型服务暂时不可用', HTTP_599: '模型服务暂时不可用',
   TIMEOUT: '模型响应超时', TRANSPORT: '没能连上模型服务', EMPTY_RESPONSE: '模型没有返回内容',
   CLIENT_UPGRADE_REQUIRED: '这个模型需要新版引擎', MODEL_UNSUPPORTED: '当前模型不可用',

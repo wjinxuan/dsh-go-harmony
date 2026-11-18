@@ -1,3 +1,4 @@
+import { localizedSettingsText } from './SettingsLocale'
 import { common } from '@kit.AbilityKit';
 import { DshGlyphs, ThemeColors, themeColors } from './DshTheme';
 import {
@@ -8,6 +9,9 @@ import {
 
 @Component
 export struct RemoteHostsPanel {
+  @StorageProp('dshLanguage') private localeLanguage: string = 'system'
+  private t(value: string): string { return localizedSettingsText(value, this.localeLanguage) }
+
   @Prop colors: ThemeColors = themeColors();
   @Prop connected: boolean = false;
   @Prop currentId: string = '';
@@ -16,6 +20,8 @@ export struct RemoteHostsPanel {
   @Prop errorText: string = '';
   onConnect: (connection: RemoteHostConnection) => Promise<boolean> = async () => false;
   onLocal: () => void = () => {};
+  onSsh: () => void = () => {};
+  onRelay: () => void = () => {};
   onClose: () => void = () => {};
   onBackHandler?: (handler: (() => boolean) | undefined) => void;
 
@@ -62,7 +68,7 @@ export struct RemoteHostsPanel {
         this.loaded = true;
       }
     } catch (error) {
-      if (this.active) this.failure = error instanceof RemoteHostError ? error.message : '无法读取已保存的主机。';
+      if (this.active) this.failure = error instanceof RemoteHostError ? error.message : this.t("无法读取已保存的主机。");
     } finally {
       if (this.active) this.loading = false;
     }
@@ -113,12 +119,12 @@ export struct RemoteHostsPanel {
     try {
       target = connection || await getRemoteHostConnection(host);
     } catch (error) {
-      if (this.active) this.failure = error instanceof RemoteHostError ? error.message : '无法读取已保存的主机凭据。';
+      if (this.active) this.failure = error instanceof RemoteHostError ? error.message : this.t("无法读取已保存的主机凭据。");
       return false;
     }
     if (!this.active) return false;
     if (!target) {
-      this.failure = '请重新输入这台主机的完整启动链接。';
+      this.failure = this.t("请重新输入这台主机的完整启动链接。");
       return false;
     }
     try {
@@ -126,7 +132,7 @@ export struct RemoteHostsPanel {
     } catch {
       // The connection callback can fail before it updates the page status.
     }
-    if (this.active && !this.errorText) this.failure = '无法连接这台主机。请检查启动链接、代理授权和主机状态。';
+    if (this.active && !this.errorText) this.failure = this.t("无法连接这台主机。请检查启动链接、代理授权和主机状态。");
     return false;
   }
 
@@ -153,7 +159,7 @@ export struct RemoteHostsPanel {
     const draft = this.draft();
     try {
       if (connect && !draft.launchUrl.trim() && !this.profileHasCredential) {
-        this.failure = '请先输入完整的 DSH 启动链接。';
+        this.failure = this.t("请先输入完整的 DSH 启动链接。");
         return;
       }
       const host = await saveRemoteHost(this.context(), draft);
@@ -170,7 +176,7 @@ export struct RemoteHostsPanel {
       if (this.active) this.cancel();
     } catch (error) {
       if (this.active) {
-        this.failure = error instanceof RemoteHostError ? error.message : '无法保存主机，请重试。';
+        this.failure = error instanceof RemoteHostError ? error.message : this.t("无法保存主机，请重试。");
         await this.reloadAfterFailure();
       }
     } finally {
@@ -192,10 +198,10 @@ export struct RemoteHostsPanel {
     if (this.blocked() || !this.profileId) return;
     const id = this.profileId;
     this.getUIContext().showAlertDialog({
-      title: '删除这台主机？',
-      message: '将删除手机上保存的主机资料和凭据。电脑上的 DSH、会话和当前连接会保留。',
-      primaryButton: { value: '取消', action: () => {} },
-      secondaryButton: { value: '删除', action: () => { void this.remove(id); } }
+      title: this.t("删除这台主机？"),
+      message: this.t("将删除手机上保存的主机资料和凭据。电脑上的 DSH、会话和当前连接会保留。"),
+      primaryButton: { value: this.t("取消"), action: () => {} },
+      secondaryButton: { value: this.t("删除"), action: () => { void this.remove(id); } }
     });
   }
 
@@ -210,7 +216,7 @@ export struct RemoteHostsPanel {
       this.cancel();
     } catch (error) {
       if (this.active) {
-        this.failure = error instanceof RemoteHostError ? error.message : '无法删除这台主机，请重试。';
+        this.failure = error instanceof RemoteHostError ? error.message : this.t("无法删除这台主机，请重试。");
         await this.reloadAfterFailure();
       }
     } finally {
@@ -229,14 +235,14 @@ export struct RemoteHostsPanel {
             Text(host.origin).fontSize(13).fontColor(this.colors.muted).maxLines(1).textOverflow({ overflow: TextOverflow.Ellipsis })
           }.alignItems(HorizontalAlign.Start).layoutWeight(1)
           if (this.connected && this.currentId === host.id) {
-            Text('已连接').fontSize(13).fontColor(this.colors.success)
+            Text(this.t("已连接")).fontSize(13).fontColor(this.colors.success)
           } else {
-            Text(host.hasCredential ? '已保存凭据' : '需输入链接').fontSize(12).fontColor(this.colors.hint)
+            Text(host.hasCredential ? this.t("已保存凭据") : this.t("需输入链接")).fontSize(12).fontColor(this.colors.hint)
           }
         }.width('100%').padding({ left: 12, right: 12 })
       }.height(66).backgroundColor(Color.Transparent).layoutWeight(1).enabled(!this.blocked())
         .onClick(() => { void this.select(host); })
-      Button('编辑').fontSize(13).fontColor(this.colors.primary).backgroundColor(this.colors.surfaceAlt)
+      Button(this.t("编辑")).fontSize(13).fontColor(this.colors.primary).backgroundColor(this.colors.surfaceAlt)
         .height(40).enabled(!this.blocked()).onClick(() => this.edit(host))
     }.width('100%').padding({ right: 8 }).borderRadius(14).backgroundColor(this.colors.surface)
   }
@@ -244,45 +250,45 @@ export struct RemoteHostsPanel {
   @Builder
   private editor() {
     Column({ space: 10 }) {
-      Text(this.profileId ? '编辑主机' : '添加主机').fontSize(19).fontWeight(FontWeight.Medium).fontColor(this.colors.text)
+      Text(this.profileId ? this.t("编辑主机") : this.t("添加主机")).fontSize(19).fontWeight(FontWeight.Medium).fontColor(this.colors.text)
       if (this.profileOrigin) {
         Text(this.profileOrigin).fontSize(13).fontColor(this.colors.hint)
       }
-      Text('名称').fontSize(13).fontColor(this.colors.muted)
-      TextInput({ text: this.hostName, placeholder: '例如：家里的电脑' }).maxLength(MAX_REMOTE_HOST_NAME)
+      Text(this.t("名称")).fontSize(13).fontColor(this.colors.muted)
+      TextInput({ text: this.hostName, placeholder: this.t("例如：家里的电脑") }).maxLength(MAX_REMOTE_HOST_NAME)
         .height(46).fontColor(this.colors.text).backgroundColor(this.colors.surfaceAlt).enabled(!this.blocked())
-        .accessibilityText('主机名称').onChange((value: string) => { this.hostName = value; })
-      Text('DSH 启动链接').fontSize(13).fontColor(this.colors.muted)
-      TextInput({ text: this.launchUrl, placeholder: this.profileHasCredential ? '已保存，留空沿用' : '粘贴完整的 HTTPS 启动链接' })
+        .accessibilityText(this.t("主机名称")).onChange((value: string) => { this.hostName = value; })
+      Text(this.t("DSH 启动链接")).fontSize(13).fontColor(this.colors.muted)
+      TextInput({ text: this.launchUrl, placeholder: this.profileHasCredential ? this.t("已保存，留空沿用") : this.t("粘贴完整的 HTTPS 启动链接") })
         .type(InputType.Password).enableAutoFill(false).maxLength(MAX_REMOTE_LAUNCH_URL)
         .height(46).fontColor(this.colors.text).backgroundColor(this.colors.surfaceAlt).enabled(!this.blocked())
-        .accessibilityText('DSH 启动链接').onChange((value: string) => { this.launchUrl = value; })
-      Text('反向代理授权（可选）').fontSize(13).fontColor(this.colors.muted)
-      TextInput({ text: this.authorization, placeholder: '反向代理要求时填写授权头的值' })
+        .accessibilityText(this.t("DSH 启动链接")).onChange((value: string) => { this.launchUrl = value; })
+      Text(this.t("反向代理授权（可选）")).fontSize(13).fontColor(this.colors.muted)
+      TextInput({ text: this.authorization, placeholder: this.t("反向代理要求时填写授权头的值") })
         .type(InputType.Password).enableAutoFill(false).maxLength(MAX_REMOTE_AUTHORIZATION)
         .height(46).fontColor(this.colors.text).backgroundColor(this.colors.surfaceAlt).enabled(!this.blocked())
-        .accessibilityText('反向代理授权').onChange((value: string) => { this.authorization = value; })
+        .accessibilityText(this.t("反向代理授权")).onChange((value: string) => { this.authorization = value; })
       Row({ space: 8 }) {
         Checkbox({ name: 'rememberRemoteHost' }).select(this.remember).selectedColor(this.colors.primary)
-          .enabled(!this.blocked()).accessibilityText('安全保存连接凭据')
+          .enabled(!this.blocked()).accessibilityText(this.t("安全保存连接凭据"))
           .onChange((selected: boolean) => { this.remember = selected; })
-        Text('安全保存连接凭据').fontSize(14).fontColor(this.colors.text)
+        Text(this.t("安全保存连接凭据")).fontSize(14).fontColor(this.colors.text)
       }.width('100%')
       Text(this.profileHasCredential ?
-        '凭据保存在鸿蒙安全资产存储中。取消勾选并保存可移除已有凭据。' :
-        '勾选后，启动链接和代理授权存入鸿蒙安全资产存储。')
+        this.t("凭据保存在鸿蒙安全资产存储中。取消勾选并保存可移除已有凭据。") :
+        this.t("勾选后，启动链接和代理授权存入鸿蒙安全资产存储。"))
         .fontSize(13).fontColor(this.colors.hint)
       Row({ space: 8 }) {
-        Button('保存').fontSize(14).fontColor(this.colors.primary).backgroundColor(this.colors.surfaceAlt)
+        Button(this.t("保存")).fontSize(14).fontColor(this.colors.primary).backgroundColor(this.colors.surfaceAlt)
           .height(44).layoutWeight(1).enabled(!this.blocked() && (!!this.profileId || !!this.launchUrl.trim()))
           .onClick(() => { void this.save(false); })
-        Button(this.blocked() ? '正在处理…' : '保存并连接').fontSize(14)
+        Button(this.blocked() ? this.t("正在处理…") : this.t("保存并连接")).fontSize(14)
           .fontColor(this.colors.onPrimary).backgroundColor(this.colors.primary).height(44).layoutWeight(1)
           .enabled(!this.blocked() && (!!this.launchUrl.trim() || (this.profileHasCredential && this.remember)))
           .onClick(() => { void this.save(true); })
       }.width('100%')
       if (this.profileId) {
-        Button('删除这台主机').fontSize(14).fontColor(this.colors.danger).backgroundColor(Color.Transparent)
+        Button(this.t("删除这台主机")).fontSize(14).fontColor(this.colors.danger).backgroundColor(Color.Transparent)
           .height(42).enabled(!this.blocked()).onClick(() => this.confirmDelete())
       }
     }.width('100%').alignItems(HorizontalAlign.Start).padding(16).borderRadius(16).backgroundColor(this.colors.surface)
@@ -292,16 +298,16 @@ export struct RemoteHostsPanel {
   private hostList() {
     if (this.connected && this.currentName) {
       Column({ space: 4 }) {
-        Text('当前主机').fontSize(13).fontColor(this.colors.hint)
+        Text(this.t("当前主机")).fontSize(13).fontColor(this.colors.hint)
         Text(this.currentName).fontSize(17).fontColor(this.colors.text).maxLines(1)
           .textOverflow({ overflow: TextOverflow.Ellipsis })
-        Text('已连接').fontSize(13).fontColor(this.colors.success)
+        Text(this.t("已连接")).fontSize(13).fontColor(this.colors.success)
       }.width('100%').alignItems(HorizontalAlign.Start).padding(14).borderRadius(14).backgroundColor(this.colors.surface)
     }
     Button({ type: ButtonType.Normal }) {
       Row({ space: 10 }) {
         Text(DshGlyphs.host).fontFamily(DshGlyphs.family).fontSize(20).fontColor(this.colors.primary)
-        Text('本机').fontSize(16).fontColor(this.colors.text).layoutWeight(1)
+        Text(this.t("本机")).fontSize(16).fontColor(this.colors.text).layoutWeight(1)
         if (this.connected && !this.currentId) {
           Text(DshGlyphs.check).fontFamily(DshGlyphs.family).fontSize(18).fontColor(this.colors.success)
         }
@@ -311,7 +317,7 @@ export struct RemoteHostsPanel {
     if (this.loading) {
       LoadingProgress().width(26).height(26).color(this.colors.primary)
     } else if (!this.loaded) {
-      Button('重试').height(42).fontColor(this.colors.primary).backgroundColor(this.colors.surface)
+      Button(this.t("重试")).height(42).fontColor(this.colors.primary).backgroundColor(this.colors.surface)
         .onClick(() => { void this.reload(); })
     } else {
       ForEach(this.hosts, (host: RemoteHost) => {
@@ -320,12 +326,16 @@ export struct RemoteHostsPanel {
       Button({ type: ButtonType.Normal }) {
         Row({ space: 8 }) {
           Text(DshGlyphs.add).fontFamily(DshGlyphs.family).fontSize(18).fontColor(this.colors.primary)
-          Text('连接电脑或服务器').fontSize(15).fontColor(this.colors.primary)
+          Text(this.t("连接电脑或服务器")).fontSize(15).fontColor(this.colors.primary)
         }.padding({ left: 14, right: 14 })
       }.height(44).backgroundColor(this.colors.primaryContainer).borderRadius(22).enabled(!this.blocked())
         .onClick(() => this.edit())
+      Button(this.t("SSH 主机")).height(44).width('100%').fontColor(this.colors.primary)
+        .backgroundColor(this.colors.surface).enabled(!this.blocked()).onClick(this.onSsh)
+      Button('DSHarness Remote').height(44).width('100%').fontColor(this.colors.primary)
+        .backgroundColor(this.colors.surface).enabled(!this.blocked()).onClick(this.onRelay)
     }
-    Text('在电脑运行 dsh web，并通过 HTTPS 暴露 DSH。复制带 token 的完整启动链接，保留路径和查询参数。')
+    Text(this.t("在电脑运行 dsh web，并通过 HTTPS 暴露 DSH。复制带 token 的完整启动链接，保留路径和查询参数。"))
       .fontSize(13).fontColor(this.colors.hint).width('100%').lineHeight(20)
   }
 
@@ -334,9 +344,9 @@ export struct RemoteHostsPanel {
       Row({ space: 10 }) {
         Button({ type: ButtonType.Circle }) {
           Text(DshGlyphs.back).fontFamily(DshGlyphs.family).fontSize(20).fontColor(this.colors.text)
-        }.width(44).height(44).backgroundColor(this.colors.surface).accessibilityText('返回').enabled(!this.blocked())
+        }.width(44).height(44).backgroundColor(this.colors.surface).accessibilityText(this.t("返回")).enabled(!this.blocked())
           .onClick(() => { if (!this.back()) this.onClose(); })
-        Text('远程主机').fontSize(21).fontWeight(FontWeight.Medium).fontColor(this.colors.text).layoutWeight(1)
+        Text(this.t("远程主机")).fontSize(21).fontWeight(FontWeight.Medium).fontColor(this.colors.text).layoutWeight(1)
       }.width('100%').padding({ left: 16, right: 16, top: 12, bottom: 12 })
       Scroll() {
         Column({ space: 12 }) {

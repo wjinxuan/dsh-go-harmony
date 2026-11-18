@@ -1,0 +1,20 @@
+{
+  "base": "4a7b55069ad300eae8be42a74f31bc170b40ead7",
+  "mobilePr": "6f3e1b3e8603abd84820b334a7f99985236dbbdf",
+  "description": "Base v0.2.3 preserved; only mobile API additions ported. No Harmony workspace/schedule adaptation included.",
+  "changes": {
+    "src/host/mobile.js": "4ab8676eeaa5f0ac536f157aebc4989dda66377237a895a22e72335c650a773e",
+    "src/host/remote.js": "ca206fe08bf30a7f93587d21caf5fbd34fa196debcd6e803db39039b55e20e33",
+    "src/host/feed.js": "7089284ec7f88c98bcd31203319e06bc83988b87e18b6c9f7c0840f5241fb1d4",
+    "src/host/approvals.js": "0a6f55c9ee3a4cb0872751987bccba56c6ed80d9b429f76a43772708c180a298",
+    "src/host/usage.js": "6eb4f14dce3dda94661892073f02fcb099e84f4299ca7e7d218370f325cdf58d",
+    "test/mobile.test.js": "d88cf03f97f4ae7676053875074cd268352dcefe7b6829805ac6ca55972417be",
+    "test/remote.test.js": "e20b8d4be7640871f4ffbe9a9a4c703112660bcce8f6e17d66056d8a66df20de",
+    "index.js": "2d7ca49a93c4acbe92eb8d9bcb029de4f994e403627b57f78cd6816b195a4e32",
+    "package.json": "384c637d7ce8edd644dc379c3f093e69431d8162e781ef07e45a895ca4dda03c",
+    "src/host/channel.js": "2eecd65bf0d68dfdc2211e3948bca2088d43921c6e963b8668f221bbc9eaca12",
+    "src/host/groups.js": "d8ece3238651d234394f281de950157888e28aa4e034493dbee6ef3c206234a4",
+    "src/host/tools.js": "db0fd5ccad188b8cdac45879ec2fb1b757db2fa07e5efe7762a188028f56414f",
+    "src/host/memory.js": "e0b861bd6ebd2e5b68ab802078675b9506f7f2f114dbfc579a2bd71d5b5290b8"
+  }
+}

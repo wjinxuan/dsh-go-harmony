@@ -1,3 +1,5 @@
+import { localizedSettingsText, localizedSettingsFormat } from './SettingsLocale'
+import { notificationManager } from '@kit.NotificationKit';
 import { common } from '@kit.AbilityKit';
 import { normalizeProviderKey } from '../dsh/DshWire';
 import { ACCENTS, DshAccent, DshGlyphs, ThemeColors, themeColors } from './DshTheme';
@@ -6,6 +8,10 @@ const KEY_PORTAL: string = 'https://platform.deepseek.com/api_keys';
 
 @Component
 export struct OnboardingPanel {
+  @StorageProp('dshLanguage') private localeLanguage: string = 'system'
+  private t(value: string): string { return localizedSettingsText(value, this.localeLanguage) }
+  private f(value: string, args: (string | number | boolean | null | undefined)[]): string { return localizedSettingsFormat(value, args, this.localeLanguage) }
+
   @Prop colors: ThemeColors = themeColors();
   @Prop accentId: string = 'mist';
   @Prop themeMode: string = 'system';
@@ -18,8 +24,12 @@ export struct OnboardingPanel {
   onFontSizeChange: (size: number) => void = () => {};
   onPrepareLocal: () => void = () => {};
   onConnectLocal: (key: string, remember: boolean) => Promise<boolean> = async () => false;
+  onConnectAccount: () => void = () => {};
   onFinish: () => void = () => {};
   onRemote: () => void = () => {};
+  onOpenPrivacy?: () => void;
+  @State private notificationsAllowed: boolean = false;
+  @State private permissionBusy: boolean = false;
   onBackHandler?: (handler: (() => boolean) | undefined) => void;
   @State private step: string = 'welcome';
   @State private target: string = 'local';
@@ -34,6 +44,7 @@ export struct OnboardingPanel {
 
   aboutToAppear(): void {
     this.active = true;
+    void notificationManager.isNotificationEnabled().then((enabled: boolean) => { if (this.active) this.notificationsAllowed = enabled; }).catch(() => {});
     this.onBackHandler?.(() => this.back());
   }
 
@@ -84,7 +95,7 @@ export struct OnboardingPanel {
       const context = this.getUIContext().getHostContext() as common.UIAbilityContext;
       await context.openLink(KEY_PORTAL);
     } catch {
-      this.validation = '没能打开浏览器，请在 DeepSeek 开放平台创建 API Key。';
+      this.validation = this.t("没能打开浏览器，请在 DeepSeek 开放平台创建 API Key。");
     }
   }
 
@@ -103,7 +114,7 @@ export struct OnboardingPanel {
       if (!await this.onConnectLocal(key, this.remember)) {
         if (this.active) {
           this.advance('apiKey');
-          this.validation = '连接未完成，可以重新输入或重试。';
+          this.validation = this.t("连接未完成，可以重新输入或重试。");
         }
         return;
       }
@@ -117,11 +128,22 @@ export struct OnboardingPanel {
     } catch {
       if (this.active) {
         this.advance('apiKey');
-        this.validation = '连接未完成，可以重新输入或重试。';
+        this.validation = this.t("连接未完成，可以重新输入或重试。");
       }
     } finally {
       if (this.active) this.saving = false;
     }
+  }
+
+  private async notificationPermission(): Promise<void> {
+    if (this.permissionBusy) return;
+    this.permissionBusy = true;
+    try {
+      await notificationManager.requestEnableNotification(this.getUIContext().getHostContext() as common.UIAbilityContext);
+      const enabled = await notificationManager.isNotificationEnabled();
+      if (this.active) this.notificationsAllowed = enabled;
+    } catch { if (this.active) this.validation = this.t("可以稍后在设置中开启通知。"); }
+    finally { if (this.active) this.permissionBusy = false; }
   }
 
   @Builder
@@ -157,9 +179,9 @@ export struct OnboardingPanel {
     Row({ space: 12 }) {
       Button({ type: ButtonType.Circle }) {
         Text(DshGlyphs.back).fontFamily(DshGlyphs.family).fontSize(22).fontColor(this.colors.text);
-      }.width(44).height(44).backgroundColor(this.colors.surface).accessibilityText('返回').onClick(() => { this.back(); });
+      }.width(44).height(44).backgroundColor(this.colors.surface).accessibilityText(this.t("返回")).onClick(() => { this.back(); });
       Column({ space: 7 }) {
-        Text(`第 ${this.stepNumber()} 步，共 4 步`).fontColor(this.colors.muted).fontSize(13).width('100%');
+        Text(this.f("第 {0} 步，共 4 步", [this.stepNumber()])).fontColor(this.colors.muted).fontSize(13).width('100%');
         Progress({ value: this.stepNumber(), total: 4, type: ProgressType.Linear })
           .color(this.colors.primary).backgroundColor(this.colors.surfaceAlt).width('100%');
       }.layoutWeight(1);
@@ -172,10 +194,10 @@ export struct OnboardingPanel {
       Blank().height(54);
       Image($r('app.media.app_icon')).width(110).height(110).objectFit(ImageFit.Contain).borderRadius(24);
       Text($r('app.string.app_name')).fontSize(41).fontWeight(FontWeight.Bold).fontColor(this.colors.text);
-      Text('在鸿蒙上运行或连接\nDeepSeek Harness').fontSize(23).lineHeight(31).fontColor(this.colors.muted)
+      Text(this.t("在鸿蒙上运行或连接\nDeepSeek Harness")).fontSize(23).lineHeight(31).fontColor(this.colors.muted)
         .textAlign(TextAlign.Center);
       Blank().height(66);
-      this.primary('开始', () => this.advance('runtime'));
+      this.primary(this.t("开始"), () => this.advance('runtime'));
     }.width('100%');
   }
 
@@ -191,29 +213,29 @@ export struct OnboardingPanel {
         .fontColor(this.target === id ? this.colors.primary : this.colors.muted);
     }.width('100%').padding(16).borderRadius(16).backgroundColor(this.colors.surface)
       .border({ width: 2, color: this.target === id ? this.colors.primary : this.colors.border })
-      .accessibilityText(this.target === id ? `${label}，已选择` : label)
+      .accessibilityText(this.target === id ? this.f("{0}，已选择", [label]) : label)
       .onClick(() => { this.target = id; });
   }
 
   @Builder
   private runtimeChoice() {
     Column({ space: 12 }) {
-      this.header(DshGlyphs.host, 'DSH 在哪里运行？', '之后可以在设置里更改');
-      this.runtimeOption('local', DshGlyphs.host, '本机', '在这台手机准备并运行 DeepSeek Harness');
-      this.runtimeOption('remote', DshGlyphs.switchHost, '远程主机', '连接电脑或服务器上的 DSH');
+      this.header(DshGlyphs.host, this.t("DSH 在哪里运行？"), this.t("之后可以在设置里更改"));
+      this.runtimeOption('local', DshGlyphs.host, this.t("本机"), this.t("在这台手机准备并运行 DeepSeek Harness"));
+      this.runtimeOption('remote', DshGlyphs.switchHost, this.t("远程主机"), this.t("连接电脑或服务器上的 DSH"));
       Blank().height(16);
-      this.primary('继续', () => this.chooseRuntime());
+      this.primary(this.t("继续"), () => this.chooseRuntime());
     }.width('100%');
   }
 
   @Builder
   private appearance() {
     Column({ space: 13 }) {
-      this.header(DshGlyphs.settings, '选择外观', '随时可以在设置里更改');
+      this.header(DshGlyphs.settings, this.t("选择外观"), this.t("随时可以在设置里更改"));
       Column({ space: 15 }) {
         Row({ space: 6 }) {
           ForEach(['light', 'dark', 'system'], (mode: string) => {
-            Button(mode === 'light' ? '浅色' : mode === 'dark' ? '深色' : '跟随系统')
+            Button(mode === 'light' ? this.t("浅色") : mode === 'dark' ? this.t("深色") : this.t("跟随系统"))
               .fontSize(13).height(41).layoutWeight(1)
               .backgroundColor(this.themeMode === mode ? this.colors.primaryContainer : this.colors.surfaceAlt)
               .fontColor(this.themeMode === mode ? this.colors.onPrimaryContainer : this.colors.text)
@@ -227,71 +249,83 @@ export struct OnboardingPanel {
                 Blank().width(17).height(17).borderRadius(9).backgroundColor(accent.light);
                 Blank().width(17).height(17).borderRadius(9).backgroundColor(accent.dark);
               }
-              Text(accent.name).fontSize(13).fontColor(this.colors.text);
+              Text(this.t(accent.name)).fontSize(13).fontColor(this.colors.text);
             }.padding(7).width('31%').margin({ bottom: 4 }).borderRadius(11)
               .backgroundColor(this.accentId === accent.id ? this.colors.primaryContainer : this.colors.surface)
-              .accessibilityText(this.accentId === accent.id ? `${accent.name}，已选择` : accent.name)
+              .accessibilityText(this.accentId === accent.id ? this.f("{0}，已选择", [accent.name]) : accent.name)
               .onClick(() => this.onThemeChange(accent.id, this.themeMode));
           }, (accent: DshAccent) => accent.id);
         }.width('100%');
       }.padding(14).width('100%').borderRadius(16).backgroundColor(this.colors.surface);
       Blank().height(12);
-      this.primary('继续', () => this.advance('access'));
+      this.primary(this.t("继续"), () => this.advance('access'));
     }.width('100%');
   }
 
   @Builder
   private access() {
     Column({ space: 12 }) {
-      this.header(DshGlyphs.folder, '想让 Harness Pocket 帮你做哪些事', '在鸿蒙上使用工作区内的文件');
+      this.header(DshGlyphs.folder, this.t("想让 Harness Pocket 帮你做哪些事"), this.t("在鸿蒙上使用工作区内的文件"));
       Column({ space: 9 }) {
-        Text('工作区文件').fontSize(17).fontWeight(FontWeight.Medium).fontColor(this.colors.text).width('100%');
-        Text('本机引擎可以读写应用工作区。此步骤无需开启系统权限。').fontSize(14).lineHeight(21)
+        Text(this.t("工作区文件")).fontSize(17).fontWeight(FontWeight.Medium).fontColor(this.colors.text).width('100%');
+        Text(this.t("本机引擎可以读写应用工作区。此步骤无需开启系统权限。")).fontSize(14).lineHeight(21)
           .fontColor(this.colors.muted).width('100%');
       }.padding(16).width('100%').borderRadius(16).backgroundColor(this.colors.surface);
+      Column({ space: 9 }) {
+        Text(this.t("对话提醒")).fontSize(17).fontColor(this.colors.text).width('100%');
+        Text(this.t("对话完成、出错或等待你确认时发送通知。可选，稍后仍可在设置中更改。")).fontSize(14).fontColor(this.colors.muted).width('100%');
+        Button(this.notificationsAllowed ? this.t("通知已开启") : this.t("开启通知")).height(44).width('100%')
+          .fontColor(this.colors.primary).backgroundColor(this.colors.surfaceAlt).enabled(!this.notificationsAllowed && !this.permissionBusy)
+          .onClick(() => { void this.notificationPermission(); });
+      }.padding(16).width('100%').borderRadius(16).backgroundColor(this.colors.surface);
+      if (this.onOpenPrivacy) { this.secondary(this.t("隐私与分享"), () => this.onOpenPrivacy?.()); }
+      if (this.validation) { Text(this.t(this.validation)).fontColor(this.colors.muted).width('100%'); }
       Blank().height(15);
-      this.primary('继续', () => this.advance('apiKey'));
+      this.primary(this.t("继续"), () => this.advance('apiKey'));
     }.width('100%');
   }
 
   @Builder
   private connectionChoice() {
     Column({ space: 12 }) {
-      this.header(DshGlyphs.model, '连接 DeepSeek', '当前引擎支持使用 DeepSeek 开放平台 API Key');
-      this.primary('使用 API Key', () => { this.keyEntry = true; this.validation = ''; });
-      this.secondary('使用远程主机', this.onRemote);
+      this.header(DshGlyphs.model, this.t("连接 DeepSeek"), this.t("登录 DeepSeek 账号或使用开放平台 API Key"));
+      Button(this.t("使用 DeepSeek 账号")).height(48).width('100%').fontSize(16).fontColor(this.colors.onPrimary)
+        .backgroundColor(this.colors.primary).enabled(!this.engineBusy).onClick(this.onConnectAccount);
+      this.secondary(this.t("使用 API Key"), () => { this.keyEntry = true; this.validation = ''; });
+      this.secondary(this.t("使用远程主机"), this.onRemote);
+      if (this.errorText) Text(this.t(this.errorText)).width('100%').fontSize(14).fontColor(this.colors.danger);
     }.width('100%');
   }
 
   @Builder
   private keyForm() {
     Column({ space: 13 }) {
-      this.header(DshGlyphs.model, '输入 API Key', '费用由 DeepSeek 开放平台按量结算');
+      this.header(DshGlyphs.model, this.t("输入 API Key"), this.t("费用由 DeepSeek 开放平台按量结算"));
       Column({ space: 10 }) {
-        TextInput({ text: this.keyDraft, placeholder: '输入 DeepSeek API Key' }).type(InputType.Password)
+        TextInput({ text: this.keyDraft, placeholder: this.t("输入 DeepSeek API Key") }).type(InputType.Password)
           .fontColor(this.colors.text).placeholderColor(this.colors.hint).backgroundColor(this.colors.surfaceAlt)
           .width('100%').height(48).enableAutoFill(false).maxLength(1024).enabled(!this.saving)
           .onChange((value: string) => { this.keyDraft = value; this.validation = ''; })
           .onSubmit(() => { void this.submit(); });
         Row({ space: 10 }) {
           Column({ space: 4 }) {
-            Text('记住 API Key').fontSize(16).fontColor(this.colors.text).width('100%');
-            Text('加密保存在本机，重启引擎时可以继续使用。').fontSize(13).fontColor(this.colors.muted).width('100%');
+            Text(this.t("记住 API Key")).fontSize(16).fontColor(this.colors.text).width('100%');
+            Text(this.t("加密保存在本机，重启引擎时可以继续使用。")).fontSize(13).fontColor(this.colors.muted).width('100%');
           }.layoutWeight(1);
           Toggle({ type: ToggleType.Switch, isOn: this.remember }).selectedColor(this.colors.primary)
-            .accessibilityText('记住 API Key').onChange((value: boolean) => { this.remember = value; });
+            .accessibilityText(this.t("记住 API Key")).onChange((value: boolean) => { this.remember = value; });
         }.width('100%');
       }.width('100%').padding(14).borderRadius(16).backgroundColor(this.colors.surface);
       if (this.validation) {
-        Text(this.validation).width('100%').fontSize(14).fontColor(this.colors.danger);
+        Text(this.t(this.validation)).width('100%').fontSize(14).fontColor(this.colors.danger);
       }
       if (this.errorText) {
-        Text(this.errorText).width('100%').fontSize(14).fontColor(this.colors.danger);
+        Text(this.t(this.errorText)).width('100%').fontSize(14).fontColor(this.colors.danger);
       }
-      Button('保存并继续').height(48).width('100%').fontSize(16).fontColor(this.colors.onPrimary)
+      Button(this.t("保存并继续")).height(48).width('100%').fontSize(16).fontColor(this.colors.onPrimary)
         .backgroundColor(this.colors.primary).enabled(!this.saving && !this.engineBusy && this.keyDraft.trim().length > 0)
         .onClick(() => { void this.submit(); });
-      this.secondary('获取 API Key', () => { void this.openPlatform(); });
+      this.secondary(this.t("获取 API Key"), () => { void this.openPlatform(); });
     }.width('100%');
   }
 
@@ -304,7 +338,7 @@ export struct OnboardingPanel {
         } else if (this.engineReady) {
           Text(DshGlyphs.check).fontFamily(DshGlyphs.family).fontSize(19).fontColor(this.colors.success);
         }
-        Text(this.stageText || (this.engineReady ? '运行环境已就绪' : '准备运行环境'))
+        Text(this.stageText || (this.engineReady ? this.t("运行环境已就绪") : this.t("准备运行环境")))
           .fontSize(13).fontColor(this.colors.muted).layoutWeight(1);
       }.padding(12).width('100%').borderRadius(18).backgroundColor(this.colors.surface);
     }
@@ -315,12 +349,12 @@ export struct OnboardingPanel {
     Column({ space: 14 }) {
       Blank().height(64);
       if (this.finished) {
-        this.header(DshGlyphs.check, '准备就绪', '即将继续');
+        this.header(DshGlyphs.check, this.t("准备就绪"), this.t("即将继续"));
       } else {
-        this.header(DshGlyphs.host, '正在准备运行环境', '完成后自动进入');
+        this.header(DshGlyphs.host, this.t("正在准备运行环境"), this.t("完成后自动进入"));
         LoadingProgress().width(38).height(38).color(this.colors.primary);
         if (this.stageText) {
-          Text(this.stageText).fontColor(this.colors.muted).fontSize(15).lineHeight(23)
+          Text(this.t(this.stageText)).fontColor(this.colors.muted).fontSize(15).lineHeight(23)
             .width('100%').textAlign(TextAlign.Center);
         }
       }

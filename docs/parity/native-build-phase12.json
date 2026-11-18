@@ -1,0 +1,491 @@
+{
+  "phase": 12,
+  "recorded_at": "2026-11-17T13:53:55.026638+08:00",
+  "status": "new_recall_fix_host_checks_passed_package_verified_not_installed_device_offline",
+  "previous_record": "native-build-phase11.json",
+  "baseline": {
+    "version": "dsh-Go 1.0.15",
+    "commit": "a9877420ab9aee121134faf01b6a92a39ce0b05b"
+  },
+  "artifact": {
+    "hap": "entry/build/default/outputs/default/entry-default-signed.hap",
+    "hapSha256": "ae02a6c3ca0e2c1c5980d42ac2b2f61ed8558ff35cb685517682fbf06747242b",
+    "hapBytes": 197390313,
+    "runtimeSha256": "93bd20716200d852353999568f4898f9fca2f69846fac5bfc4d0ce85d0ebcf27",
+    "zipCrc": true,
+    "runtimeManifestMatches": true,
+    "embeddedSourcesMatch": true,
+    "nativeRecallHookPresent": true,
+    "nativeLibrarySha256": "68f7933cb36f2ab6dc7303913efb4aa58ba52268cc002642464dec7b6cb39819",
+    "arm64Libraries": [
+      "libs/arm64-v8a/libc++_shared.so",
+      "libs/arm64-v8a/libdshlocal.so",
+      "libs/arm64-v8a/libnode.so",
+      "libs/arm64-v8a/libonnxruntime.so",
+      "libs/arm64-v8a/libsherpa-onnx-c-api.so"
+    ],
+    "installed": false
+  },
+  "build": {
+    "at": "2026-11-17T13:50:46.315223+08:00",
+    "command": [
+      "/Applications/DevEco-Studio.app/Contents/tools/hvigor/bin/hvigorw",
+      "--mode",
+      "module",
+      "-p",
+      "module=entry@default",
+      "-p",
+      "product=default",
+      "-p",
+      "buildMode=debug",
+      "assembleHap",
+      "--no-daemon"
+    ],
+    "exitCode": 0,
+    "durationSeconds": 27.275,
+    "log": "/tmp/dsh-device-20261117/169-recall-build.log"
+  },
+  "signature": {
+    "exitCode": 0,
+    "durationSeconds": 4.938,
+    "verifyAppSucceeded": true,
+    "log": "/tmp/dsh-device-20261117/170-recall-signature.log"
+  },
+  "runtime_package": {
+    "recordedAt": "2026-11-17T13:48:40.398970+08:00",
+    "method": "Replace only two frozen vendor source members in pinned existing ZIP; retain all other member bytes and metadata",
+    "oldSha256": "b6fb84990d6fd9de64702453c4a76be79f29b45661269749f6c2029726dd46a0",
+    "newSha256": "93bd20716200d852353999568f4898f9fca2f69846fac5bfc4d0ce85d0ebcf27",
+    "archiveBytes": 46623649,
+    "filesVerified": 15537,
+    "changedFiles": [
+      {
+        "path": "vendor/dsh-go-bridge/SOURCE.md",
+        "before": "0b5d0661fbe706aef35907b86aec7f9f0ed0a1b4c337a4d0a2b4328a1fb922bd",
+        "after": "c6362bea83b8a34d4a7d601e652f2192be7eed8e4f65244f677d89ab137a8c48"
+      },
+      {
+        "path": "vendor/dsh-go-bridge/lib/companion/recall-markers.js",
+        "before": "49ec14cb6ccb1cbe43f0cd9912e6e79a5804aaf3ac7141601d7c2ae38acfe41e",
+        "after": "5c951fdeb0ff17166b76d8fad46f2b2387836a4bf0972c35ddcb4f4381af65fd"
+      }
+    ],
+    "crcPassed": true,
+    "allExtractedSha256Passed": true,
+    "dependenciesUnchanged": true,
+    "extracted": "/tmp/dsh-device-20261117/runtime-recall-fixed"
+  },
+  "recall_js_and_live": {
+    "recordedAt": "2026-11-17T05:52:49.419330+00:00",
+    "status": "FINAL_HOST_REGRESSIONS_PASS_DEVICE_RETEST_PENDING",
+    "finalRuntime": "/tmp/dsh-device-20261117/runtime-recall-fixed",
+    "finalRuntimeZipSha256": "93bd20716200d852353999568f4898f9fca2f69846fac5bfc4d0ce85d0ebcf27",
+    "testFiles": [
+      {
+        "path": "tests/companion-recall-markers.test.mjs",
+        "sha256": "7f3bf08684907401c5ae66ba2df5cd888f2cf24268e96adcb2703ef99c5ac510"
+      },
+      {
+        "path": "tests/companion-recall-live-fixture.test.mjs",
+        "sha256": "d1ce18e5e6e247a60b6790318a0b18dce094fc1fa6a1ac786e8c72db36d8367a"
+      },
+      {
+        "path": "tests/companion-recall-live.mjs",
+        "sha256": "89173afc1370a49dc26a66aab76a8e8f23b85f9672a5dc9cc6e2de65ba3c4a6c"
+      },
+      {
+        "path": "tests/check-companion-contracts.sh",
+        "sha256": "fc3895466606bbc6cfed1cc8763c4c01a2a6f62cb538e28a24f75ad15fc274cb"
+      }
+    ],
+    "deviceEvidence": {
+      "path": "/tmp/dsh-device-20261117/phone-recall-baseline-2026-11-17T053804-998Z.json",
+      "memoryCount": 0,
+      "activeBinding": false,
+      "supported": false,
+      "reason": "tag-unavailable",
+      "linkErrnoObserved": false,
+      "causalStatus": "Inference pending physical-device retest: marker source calls hard link without Harmony fallback, same device previously denied hard links. No direct marker link errno was captured.",
+      "phoneFunctionStepsExecuted": false,
+      "memoryWrites": 0,
+      "sessionsCreated": 0,
+      "modelSelections": 0
+    },
+    "runs": [
+      {
+        "name": "markers-before",
+        "log": "/tmp/dsh-device-20261117/recall-markers-before.log",
+        "logSha256": "62509d8d32047587332135d8954fbb6058996205fbbb4ff64cc09c1ecf0d1a51",
+        "exitCode": 1,
+        "note": "Expected red: missing native fallback",
+        "tests": 8,
+        "passed": 3,
+        "failed": 5,
+        "skipped": 0
+      },
+      {
+        "name": "markers-after",
+        "log": "/tmp/dsh-device-20261117/recall-markers-after.log",
+        "logSha256": "bc19885a91eb5fa4d3191814bacb479538d6cda2fadfaaffb18fa9c3908d1d71",
+        "exitCode": 0,
+        "note": "Actual marker module; host native-hook substitute explicitly synthetic",
+        "tests": 8,
+        "passed": 8,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "contracts-before-fixture-regression",
+        "log": "/tmp/dsh-device-20261117/recall-check-shell-after.log",
+        "logSha256": "ee88ecdf6670233258090674d8f4aa6e8f95d1c6bfda0a1c8bfe5f6bc923b03e",
+        "exitCode": 0,
+        "note": "Default check shell includes new marker tests; pre-auth runtime hash oracle",
+        "tests": 35,
+        "passed": 35,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "live-before-fixture-fix",
+        "log": "/tmp/dsh-device-20261117/recall-marker-host-live.log",
+        "logSha256": "e781d0395cbceff07d03fbaa7298bc5168265eaa5c31acb1c86d91ff22642da8",
+        "exitCode": 1,
+        "note": "Failed third boot: original stop watchdog could target successor; not counted as pass"
+      },
+      {
+        "name": "fixture-before",
+        "log": "/tmp/dsh-device-20261117/recall-live-fixture-before-assertions.log",
+        "logSha256": "7eddd666bb84cae941bb9f5a657a3b9439382ac9f546e473f1832e5b014c07ef",
+        "exitCode": 1,
+        "note": "Controlled child lifecycle reproduces wrong-process kill, early completion and signal misclassification",
+        "tests": 3,
+        "passed": 0,
+        "failed": 3,
+        "skipped": 0
+      },
+      {
+        "name": "fixture-after",
+        "log": "/tmp/dsh-device-20261117/recall-live-fixture-after.log",
+        "logSha256": "03f2860825f2c770bb7abf463d4fc00488a911254668d0c51b3f65b72edd3faf",
+        "exitCode": 0,
+        "note": "Captured process, cancelled watchdog, actual exit wait; original business assertions unchanged",
+        "tests": 3,
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "final-runtime-default-contracts",
+        "log": "/tmp/dsh-device-20261117/recall-final-runtime-contracts.log",
+        "logSha256": "8bda55ff87e4a997944783246560e7c8547673c8f800cddd8c6b05f5cd4d7d6d",
+        "exitCode": 0,
+        "note": "Default shell includes both new test files, actual final-runtime source hashes verified",
+        "tests": 38,
+        "passed": 38,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "final-runtime-recall-live",
+        "log": "/tmp/dsh-device-20261117/recall-final-runtime-live.log",
+        "logSha256": "81fdb250ce8dd964ba625d94b6600d7b2e97543488634f5ee964712844daac6e",
+        "exitCode": 0,
+        "note": "Actual packed engine: bind/injection isolation/revoke/OFF restart/ON restart/reconsent; model HTTP/native file lock/Mac preference backing synthetic"
+      }
+    ],
+    "finalCombinedCount": {
+      "tests": 38,
+      "passed": 38,
+      "failed": 0,
+      "skipped": 0,
+      "note": "Do not add overlapping intermediate runs to this count; live is a separate assertion script."
+    },
+    "preparedNotExecuted": {
+      "phoneScript": "/tmp/dsh-device-20261117/phone-companion-recall-live.mjs",
+      "observerScript": "/tmp/dsh-device-20261117/openai-provider-recall.mjs",
+      "observerHelper": "/tmp/dsh-device-20261117/recall-provider-observer.mjs",
+      "existingFixtureRestarted": false,
+      "noPhoneRequestsAfterTagUnavailable": true
+    }
+  },
+  "native_verification": {
+    "createdAt": "2026-11-17T05:52:20.039308+00:00",
+    "scope": "Narrow private Recall marker publication hook plus tests; no HDC/pack/HAP build/install",
+    "status": "HOST_VERIFIED_CPP_FROZEN",
+    "contract": {
+      "global": "dshHarmonyPublishRecallMarker",
+      "arguments": [
+        "temporary",
+        "target"
+      ],
+      "success": "synchronous undefined; stage atomically moved",
+      "errors": "actual errno via Node UVException; EEXIST preserves target and stage",
+      "boundary": "embedded dataDir/companion/recall-sessions; O_DIRECTORY|O_NOFOLLOW per private component",
+      "source": ".recall-<lowercase canonical UUID>.tmp regular file <=4096 bytes",
+      "target": "<lowercase sha256>.json or .probe-<lowercase canonical UUID>.tmp",
+      "publication": "renameat2(RENAME_NOREPLACE); macOS helper harness uses renameatx_np(RENAME_EXCL)",
+      "directoryFsync": "retained in JS caller and errors remain fail-closed"
+    },
+    "files": [
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/cpp/node_engine.cpp",
+        "sha256": "643e5de089d4bc3c1533c0b7bd425761376eed0398ee9115eefd88defd3872f1"
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/cpp/recall_marker.h",
+        "sha256": "386bbf0062234983ecad26992914704f5d98c0065c74b55c4169c58703ff6522"
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/check-recall-marker.sh",
+        "sha256": "727370808bc4f186f4635450eb04664514579403f64c40af6214a0f915d4ef32"
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/check-native-publish.sh",
+        "sha256": "8b4ef71e0935a1035546afe5019f06b4c7dbd22b33f636910b297cfece63d37e"
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/native/recall-marker.cpp",
+        "sha256": "466b8da948b9a1e33f6824d51e90f0d3a5d5df5f216d85b4b73e603ba60fd4e9"
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/native/recall-marker.cjs",
+        "sha256": "df9a2ae8f0acc17f78118000b7fcb568bd80307780e4d5d9c466c94637d3343b"
+      }
+    ],
+    "runs": [
+      {
+        "name": "recall-native-marker-red",
+        "command": "sh tests/check-recall-marker.sh",
+        "cwd": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exitCode": 1,
+        "status": "EXPECTED_RED_MISSING_HELPER",
+        "log": "/tmp/dsh-device-20261117/recall-native-marker-red.log",
+        "logSha256": "3f69a56032ecf8bb4240301957c76661f0b3497dc9159ce8889be648b6f6cb35",
+        "testCount": null,
+        "countNote": "native assert harness prints a named verification summary, not TAP test counts"
+      },
+      {
+        "name": "recall-native-marker-green",
+        "command": "sh tests/check-recall-marker.sh",
+        "cwd": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exitCode": 0,
+        "status": "PASS",
+        "log": "/tmp/dsh-device-20261117/recall-native-marker-green.log",
+        "logSha256": "e99604f22218552ec1b8adb243f4d0052da12cde4266386c9a7f5c41f04d1e61",
+        "testCount": null,
+        "countNote": "native assert harness prints a named verification summary, not TAP test counts"
+      },
+      {
+        "name": "recall-native-deletion-regression",
+        "command": "sh tests/check-deletion-marker.sh",
+        "cwd": "/Users/wangzhaojin/work/dsh/dsh-go-harmony",
+        "exitCode": 0,
+        "status": "PASS",
+        "log": "/tmp/dsh-device-20261117/recall-native-deletion-regression.log",
+        "logSha256": "c498f4203e1ba116bf02b067d3f0a3dff0d45021ac068078b6852ff382e09d70",
+        "testCount": null,
+        "countNote": "native assert harness prints a named verification summary, not TAP test counts"
+      },
+      {
+        "command": [
+          "docker",
+          "run",
+          "--rm",
+          "--cpus=2",
+          "--memory=2g",
+          "--name",
+          "dsh-recall-native-20261117",
+          "-v",
+          "/Users/wangzhaojin/work/dsh/dsh-go-harmony:/work:ro",
+          "-w",
+          "/work",
+          "codex/dsh-native-tests:20261117",
+          "sh",
+          "tests/check-native-publish.sh",
+          "/usr/include/node",
+          "/usr/lib/aarch64-linux-gnu/libnode.so.137"
+        ],
+        "status": "PASS",
+        "log": "/tmp/dsh-device-20261117/recall-native-wrapper-linux.log",
+        "initialContainerStatus": "running",
+        "initialInspectExitCode": 0,
+        "exitCode": 0,
+        "durationSeconds": 9.418,
+        "logSha256": "d104cc0d15613c6f4b319bb182b41554eb661f12a737f8be0643287d568126b5",
+        "resultSha256": "d3ed0e6b1aa78963a244ad846703358f041fecdf1a269f62478602d27bfb1a70",
+        "testCount": null,
+        "countNote": "multiple native harness and engine smoke checks; no independent-case sum across repeated commands"
+      },
+      {
+        "command": [
+          "docker",
+          "run",
+          "--rm",
+          "--cpus=2",
+          "--memory=2g",
+          "--name",
+          "dsh-recall-packed-native-20261117",
+          "-v",
+          "/Users/wangzhaojin/work/dsh/dsh-go-harmony:/work:ro",
+          "-v",
+          "/tmp/dsh-device-20261117/runtime-recall-fixed:/runtime:ro",
+          "-w",
+          "/work",
+          "-e",
+          "DSH_NATIVE_TEST_RUNTIME=/runtime",
+          "-e",
+          "DSH_NATIVE_RECALL_MARKERS=/runtime/vendor/dsh-go-bridge/lib/companion/recall-markers.js",
+          "codex/dsh-native-tests:20261117",
+          "sh",
+          "tests/check-native-publish.sh",
+          "/usr/include/node",
+          "/usr/lib/aarch64-linux-gnu/libnode.so.137"
+        ],
+        "status": "PASS",
+        "log": "/tmp/dsh-device-20261117/recall-native-packed-smoke.log",
+        "runtimeSha256": "93bd20716200d852353999568f4898f9fca2f69846fac5bfc4d0ce85d0ebcf27",
+        "initialContainerStatus": "created",
+        "initialInspectExitCode": 0,
+        "exitCode": 0,
+        "durationSeconds": 63.585,
+        "logSha256": "ec8a30323711db4d85e0eded83774ada5370abd32c00feee44e974383b10e4f2",
+        "resultSha256": "5fc8660d7d9e93cde7973ada99a59ef0b07f50105f6c01686e863992ccbf21a3",
+        "testCount": null,
+        "countNote": "multiple native harness and engine smoke checks; no independent-case sum across repeated commands"
+      }
+    ],
+    "limits": [
+      "No actual phone Recall retry occurred; phone disconnected",
+      "Linux embedder test uses matching installed Node 24.22.2/libnode137 headers and library, not a production runtime dependency upgrade",
+      "Only the JS io.link failure in the packaged Recall check is synthetic; V8 hook, filesystem, no-replace and marker code are real",
+      "Linux shell/spawn smoke does not claim ordinary Harmony phone shell support"
+    ]
+  },
+  "production_sources": {
+    "entry/src/main/cpp/node_engine.cpp": "643e5de089d4bc3c1533c0b7bd425761376eed0398ee9115eefd88defd3872f1",
+    "entry/src/main/cpp/recall_marker.h": "386bbf0062234983ecad26992914704f5d98c0065c74b55c4169c58703ff6522",
+    "runtime/vendor/dsh-go-bridge/lib/companion/recall-markers.js": "5c951fdeb0ff17166b76d8fad46f2b2387836a4bf0972c35ddcb4f4381af65fd",
+    "runtime/vendor/dsh-go-bridge/SOURCE.md": "c6362bea83b8a34d4a7d601e652f2192be7eed8e4f65244f677d89ab137a8c48"
+  },
+  "evidence": [
+    {
+      "path": "/tmp/dsh-device-20261117/168-recall-runtime-package.json",
+      "sha256": "8ee3bd714d5d6a4f72dd747a1750dbd499645e309e9d869cba4d78126c71e680"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/169-recall-build.log",
+      "sha256": "ec0014876d61320dd6bc93236f312bcd95bccf4f282140faf3929e4acce7153d"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/170-recall-signature.log",
+      "sha256": "d2010aa9a848b3ddfe7c45b781403c1506a67c802c69ac71cf66226a292e07bd"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/171-recall-artifact.json",
+      "sha256": "a0edfdd73e6420f724571a6d45cebe32d88beb5fea68441a2cb04039f2d90750"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/recall-regression-summary.json",
+      "sha256": "080c2de275f0d97a755ec0f6d213d69b5e7f9c139788b92745b16cd6f38b6202"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/recall-native-verification.json",
+      "sha256": "08ca4e59145437516a78e2995f913da7fcecdd907903207141b8b992a4ab2bec"
+    }
+  ],
+  "review": {
+    "scope": "Recall native hook and JS fallback read-only peer review",
+    "findings": "No new production blocker; fixture namespace assertion corrected by test owner before final successful native run",
+    "tests_not_repeated_without_change": true
+  },
+  "device": {
+    "connection": "23F0224326021832\t\tUSB\tOffline\tlocalhost\thdc",
+    "new_hap_installed": false,
+    "current_installed_hap": "a4d82fb025dc78483f33982a0fb13da1f10ddcd672e7caef0a5f860816bf62cf",
+    "phone_recall_observation": {
+      "status": "STOPPED_NONEMPTY_OR_UNAVAILABLE",
+      "checkedAt": "2026-11-17T05:38:04.998Z",
+      "purpose": "Read only counts and recall capability; no memory contents in output",
+      "mutations": 0,
+      "resourcesCreated": 0,
+      "modelSelections": 0,
+      "memoryCount": 0,
+      "activeBinding": false,
+      "busy": false,
+      "supported": false,
+      "reason": "tag-unavailable",
+      "emptyBaseline": true
+    },
+    "raw_recall_link_errno_observed": false,
+    "link_policy_cause": "inference from direct link source and prior same-device policy; physical-device retest still required",
+    "sensevoice_network": {
+      "observedBytes": 164264733,
+      "totalBytes": 241357257,
+      "completionVerified": false,
+      "no_repeat_prepare_or_delete": true,
+      "observationInterrupted": true,
+      "production_failure_not_observed": true
+    },
+    "turn": {
+      "phone3": "WAIT_REVERSE timeout before any phone RPC; temporary servers cleaned",
+      "passed": false,
+      "active_requests": 0,
+      "scope_when_retried": "phone TURN/TCP via HDC only, no phone UDP claim"
+    },
+    "restore_when_testing_finishes": "hdc -t 23F0224326021832 shell power-shell timeout -r",
+    "cleanup_pending_after_acceptance": [
+      "Restore temporary screen-off override via power-shell timeout -r when connected.",
+      "Restore original voice preference Auto after voice acceptance; Mac audio already restored to volume15/mutedtrue.",
+      "Remove only uniquely owned test memories/resources and temporary forwards/services after all checks; do not touch existing MAC host/accounts/history."
+    ]
+  },
+  "remaining": [
+    "Reconnect USB, authorize debugging, unlock and keep Harness Pocket foreground.",
+    "Cover-install phase12, refresh ready file and same-port forwards.",
+    "Read existing SenseVoice partial/final status; complete network integrity/load and actual microphone tests.",
+    "Run phone TURN/TCP; do not count Mac-only TURN or entry timeouts as phone pass.",
+    "Run actual phone Recall consent/bind/injection/isolation/revoke/restart and remaining 17-item UI acceptance.",
+    "Live2D authorized full package deferred by user."
+  ],
+  "limits": [
+    "Host tests and synthetic model service do not prove phone UI/platform permissions or commercial services.",
+    "No blanket 100% parity or all-device-tests-passed claim.",
+    "New package not installed because USB is offline."
+  ],
+  "knowledge_sync": {
+    "path": "/tmp/dsh-device-20261117/172-knowledge-sync.json",
+    "sha256": "cec7b80c2b4ea97d43044ef1ec5c37d08a0cc3a4fba3f020658f8b6ace7d2e9e",
+    "result": {
+      "projects": [
+        "dsh-go-harmony"
+      ],
+      "updated": [
+        "20-项目/dsh-go-harmony-46e65bbb-46e6-33/项目概览.md",
+        "20-项目/dsh-go-harmony-46e65bbb-46e6-33/方案.md",
+        "20-项目/dsh-go-harmony-46e65bbb-46e6-33/架构.md",
+        "20-项目/dsh-go-harmony-46e65bbb-46e6-33/设计模式.md",
+        "20-项目/dsh-go-harmony-46e65bbb-46e6-33/技术栈.md",
+        "20-项目/dsh-go-harmony-46e65bbb-46e6-33/资料索引.md",
+        "00-首页/首页.md",
+        "00-首页/项目总览.md",
+        "00-首页/技术栈总览.md",
+        "00-首页/设计模式总览.md",
+        "10-个人/个人信息.md",
+        "10-个人/兴趣爱好.md",
+        "10-个人/工作习惯.md",
+        "10-个人/账号密码.md",
+        "99-系统/数据来源.md",
+        "90-模板/项目概览模板.md",
+        "90-模板/项目方案模板.md",
+        "90-模板/项目架构模板.md",
+        "90-模板/项目设计模式模板.md",
+        "90-模板/项目技术栈模板.md",
+        "90-模板/项目资料索引模板.md",
+        "90-模板/账号模板.md",
+        "99-系统/同步状态.md",
+        "99-系统/同步错误.md"
+      ],
+      "errors": []
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "forms": [
+    {
+      "name": "CompanionWidget",
+      "displayName": "$string:companion_widget_label",
+      "description": "$string:companion_widget_description",
+      "src": "./ets/companion/CompanionFormCard.ets",
+      "uiSyntax": "arkts",
+      "window": {
+        "designWidth": 360,
+        "autoDesignWidth": true
+      },
+      "colorMode": "auto",
+      "isDynamic": true,
+      "isDefault": true,
+      "updateEnabled": true,
+      "scheduledUpdateTime": "00:00",
+      "updateDuration": 1,
+      "defaultDimension": "2*2",
+      "supportDimensions": [
+        "2*2",
+        "2*4"
+      ]
+    }
+  ]
+}

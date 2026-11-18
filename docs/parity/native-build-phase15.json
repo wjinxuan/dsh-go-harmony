@@ -1,0 +1,605 @@
+{
+  "phase": 15,
+  "recorded_at": "2026-11-17T08:37:51.997943+00:00",
+  "status": "installed_replay_both_callers_and_terminal_pass_chat_keyboard_defect_open_snapshot",
+  "all_acceptance_complete": false,
+  "snapshot": {
+    "through": "394-share-fulltext",
+    "scope": "Installed9db artifact: import-paste, both replay callers, reopen/speed/full-text action, terminal keyboard/PTY/Ctrl+C/close/return pass.389 exposes a separate chat action-row occlusion defect. New keyboard-owner changes belong to phase16, not this artifact.",
+    "productionFrozen": true
+  },
+  "previous_record": {
+    "path": "docs/parity/native-build-phase14.json",
+    "sha256": "983ae919f812c33a4e3f24cad4f3cb41658269b950fd2db722f46a5082c233b2"
+  },
+  "baseline": {
+    "version": "dsh-Go1.0.15",
+    "commit": "a9877420ab9aee121134faf01b6a92a39ce0b05b",
+    "previousInstalledHapSha256": "c4392abe410f188692dfd21dd80c2b6a72d5d72eeb1daf7422ec4388d651355a",
+    "runtimeSha256": "93bd20716200d852353999568f4898f9fca2f69846fac5bfc4d0ce85d0ebcf27"
+  },
+  "artifact": {
+    "hap": "entry/build/default/outputs/default/entry-default-signed.hap",
+    "hapSha256": "9db8e6d9f17a711568592b66bb35de72e1a10d0e39f984aa9cb83f1f00515c3f",
+    "hapBytes": 197397153,
+    "runtimeSha256": "93bd20716200d852353999568f4898f9fca2f69846fac5bfc4d0ce85d0ebcf27",
+    "zipCRC": "PASS",
+    "nativeLibrariesUnchanged": [
+      "libs/arm64-v8a/libc++_shared.so",
+      "libs/arm64-v8a/libdshlocal.so",
+      "libs/arm64-v8a/libnode.so",
+      "libs/arm64-v8a/libonnxruntime.so",
+      "libs/arm64-v8a/libsherpa-onnx-c-api.so"
+    ],
+    "changedArchiveEntries": [
+      "ets/modules.abc",
+      "ets/sourceMaps.map"
+    ],
+    "installed": true,
+    "installation": {
+      "path": "/tmp/dsh-device-20261117/359-ui-fixes-install-result.json",
+      "sha256": "b091d5be8db3b3adcf21122edf49e08f5baa31246dceb7cdc8fd086aa11a56bb",
+      "bytes": 613
+    },
+    "identityCheck": "Evidence author independently SHA-256 checked the current HAP against358; 359 confirms installation of that same digest.",
+    "launch": {
+      "status": "SUCCESS_LOG_OBSERVED",
+      "exitCode": null,
+      "evidence": {
+        "path": "/tmp/dsh-device-20261117/360-ui-fixes-launch.log",
+        "sha256": "4765cf6e38f61be3ce9fa13fdcf53077b79f3da39c947a2123d1facd6c0e3962",
+        "bytes": 28
+      },
+      "exitCodeProvenance": "Raw log states start ability successfully; no separate structured exit result was available to the evidence author."
+    }
+  },
+  "candidate_chain": [
+    {
+      "label": "terminal-only candidate, not installed",
+      "hapSha256": "e3e3925a9013a2dfae2f8e26fba75b3ef17d3ea284222f94cbfc8294713e5384",
+      "hapBytes": 197397642,
+      "runtimeSha256": "93bd20716200d852353999568f4898f9fca2f69846fac5bfc4d0ce85d0ebcf27",
+      "build": {
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/hvigor/bin/hvigorw",
+          "--mode",
+          "module",
+          "-p",
+          "module=entry@default",
+          "-p",
+          "product=default",
+          "-p",
+          "buildMode=debug",
+          "assembleHap",
+          "--no-daemon"
+        ],
+        "exitCode": 0,
+        "durationSeconds": 9.457,
+        "record": {
+          "path": "/tmp/dsh-device-20261117/301-terminal-build-result.json",
+          "sha256": "f9a3752798eacadea5dbff462509dc7da270773b6ba56b8d434d680111a06298",
+          "bytes": 414
+        },
+        "log": {
+          "path": "/tmp/dsh-device-20261117/301-terminal-build.log",
+          "sha256": "d3211b8a9b75667c79cb4baa65877b5154e3f889dc2d968612bc6c2ed0289923",
+          "bytes": 92594
+        }
+      },
+      "signature": {
+        "exitCode": 0,
+        "exitCodeProvenance": "ROOT confirmed actual completion",
+        "log": {
+          "path": "/tmp/dsh-device-20261117/305-terminal-signature.log",
+          "sha256": "f605f36d8a7e6a7c18a01196617a76a5f822fe2aadb12613486725e07695b42b",
+          "bytes": 3285
+        }
+      },
+      "artifactEvidence": {
+        "path": "/tmp/dsh-device-20261117/308-terminal-artifact.json",
+        "sha256": "408d1b54dbaafa7e01fa13ccda4f107b1779571bd2839c4af252bac4390fd2de",
+        "bytes": 662
+      },
+      "zipCRC": "PASS",
+      "installed": false
+    },
+    {
+      "label": "combined UI fixes before pet-wrapper followup",
+      "hapSha256": "f26b5a6de982100e00f124a2f0ae828742b8029e6bdd1f0e6d2c17f17fc2e027",
+      "hapBytes": 197397214,
+      "runtimeSha256": "93bd20716200d852353999568f4898f9fca2f69846fac5bfc4d0ce85d0ebcf27",
+      "build": {
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/hvigor/bin/hvigorw",
+          "--mode",
+          "module",
+          "-p",
+          "module=entry@default",
+          "-p",
+          "product=default",
+          "-p",
+          "buildMode=debug",
+          "assembleHap",
+          "--no-daemon"
+        ],
+        "exitCode": 0,
+        "durationSeconds": 37.985,
+        "record": {
+          "path": "/tmp/dsh-device-20261117/347-ui-fixes-build-result.json",
+          "sha256": "a6e30ab2b2f460e0fd8c2911d2b65d5c4ddfdef40b907d0a8ab0485680a4bc48",
+          "bytes": 415
+        },
+        "log": {
+          "path": "/tmp/dsh-device-20261117/347-ui-fixes-build.log",
+          "sha256": "16ca403bbb760f341f59b0fa5064f507da230d9d7c522636bacc5114d458f9da",
+          "bytes": 92605
+        }
+      },
+      "signature": {
+        "exitCode": 0,
+        "exitCodeProvenance": "ROOT confirmed actual completion",
+        "log": {
+          "path": "/tmp/dsh-device-20261117/350-ui-fixes-signer.log",
+          "sha256": "4bc29b6c7f5e32e5d02c52eacfe75c024c2eafac66ae1d0395f2ed8de54aed0e",
+          "bytes": 3285
+        }
+      },
+      "artifactEvidence": {
+        "path": "/tmp/dsh-device-20261117/351-ui-fixes-artifact.json",
+        "sha256": "ffa442828006784b9ac62c28e6d64b876c184b64b92e0fe34f25eb315e396e9c",
+        "bytes": 662
+      },
+      "zipCRC": "PASS",
+      "installed": true,
+      "installation": {
+        "record": {
+          "path": "/tmp/dsh-device-20261117/352-ui-fixes-install-result.json",
+          "sha256": "719245fd7873ae342aa39cc206d7877edcf5764b92d55768558e149959a2b32a",
+          "bytes": 613
+        },
+        "exitCode": 0,
+        "hapSha256": "f26b5a6de982100e00f124a2f0ae828742b8029e6bdd1f0e6d2c17f17fc2e027",
+        "command": "hdc -t <device> install -r entry-default-signed.hap",
+        "commandProvenance": "Device identifier redacted from the structured actual command; original remains in local evidence."
+      }
+    },
+    {
+      "label": "final bounded pet-wrapper pass-through included",
+      "hapSha256": "9db8e6d9f17a711568592b66bb35de72e1a10d0e39f984aa9cb83f1f00515c3f",
+      "hapBytes": 197397153,
+      "runtimeSha256": "93bd20716200d852353999568f4898f9fca2f69846fac5bfc4d0ce85d0ebcf27",
+      "build": {
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/hvigor/bin/hvigorw",
+          "--mode",
+          "module",
+          "-p",
+          "module=entry@default",
+          "-p",
+          "product=default",
+          "-p",
+          "buildMode=debug",
+          "assembleHap",
+          "--no-daemon"
+        ],
+        "exitCode": 0,
+        "durationSeconds": 52.832,
+        "record": {
+          "path": "/tmp/dsh-device-20261117/354-ui-fixes-build-result.json",
+          "sha256": "e95dbd28e0b8f6c9c1a8fbbc29beaf76367c070a67debba097b7dc78495fa4f8",
+          "bytes": 415
+        },
+        "log": {
+          "path": "/tmp/dsh-device-20261117/354-ui-fixes-build.log",
+          "sha256": "523ffd57694fe47849691615dab778bde8b23901992b4381329348a73398f8b4",
+          "bytes": 92607
+        }
+      },
+      "signature": {
+        "exitCode": 0,
+        "exitCodeProvenance": "ROOT confirmed actual completion",
+        "log": {
+          "path": "/tmp/dsh-device-20261117/357-ui-fixes-signer.log",
+          "sha256": "f51fc7ec9bd368afc04ce7b5a9e39d2b31ce9d933324f41679639743288dc41d",
+          "bytes": 3285
+        }
+      },
+      "artifactEvidence": {
+        "path": "/tmp/dsh-device-20261117/358-ui-fixes-artifact.json",
+        "sha256": "7b3f392aa6dc351fd6a2fcd84311f21d89bd2db93f8151bc7e755a49f233d1f4",
+        "bytes": 662
+      },
+      "zipCRC": "PASS",
+      "installed": true,
+      "installation": {
+        "record": {
+          "path": "/tmp/dsh-device-20261117/359-ui-fixes-install-result.json",
+          "sha256": "b091d5be8db3b3adcf21122edf49e08f5baa31246dceb7cdc8fd086aa11a56bb",
+          "bytes": 613
+        },
+        "exitCode": 0,
+        "hapSha256": "9db8e6d9f17a711568592b66bb35de72e1a10d0e39f984aa9cb83f1f00515c3f",
+        "command": "hdc -t <device> install -r entry-default-signed.hap",
+        "commandProvenance": "Device identifier redacted from the structured actual command; original remains in local evidence."
+      }
+    }
+  ],
+  "changes": [
+    {
+      "id": "terminal-keyboard-native-shortcut-row",
+      "problem": "Phone288: Web terminal viewport shrank and real stty reported17x42, but native Ctrl/Alt/Esc/Tab/arrow bar stayed at its old screen-bottom position under the keyboard.",
+      "fix": "Save the current UIContext keyboard avoidance mode, apply RESIZE only while TerminalPanel is mounted, then clear ownership and restore the original mode only when the context still has the mode this component set.",
+      "scope": [
+        "entry/src/main/ets/ui/TerminalPanel.ets",
+        "tests/terminal-keyboard-layout.test.mjs"
+      ],
+      "verification": {
+        "path": "/tmp/dsh-device-20261117/terminal-keyboard-layout-verification.json",
+        "sha256": "50649e813b5abc3aff75514507530d7f386264c33c4117d7413a76cba3c793fe",
+        "bytes": 11539
+      },
+      "latestGeneratedTests": 6,
+      "device": {
+        "status": "TERMINAL_FLOW_PASS_CHAT_KEYBOARD_LAYOUT_DEFECT_CONFIRMED",
+        "evidence": {
+          "path": "/tmp/dsh-device-20261117/terminal-keyboard-device-verification.json",
+          "sha256": "cb747c99fc6820331653c2231ab0e0849d1523caf9c53146689c95573c307435",
+          "bytes": 6886
+        },
+        "passed": [
+          "Native shortcut row stays above visible keyboard",
+          "Real PTY stty size13x42 with keyboard and28x42 after hiding",
+          "Native Ctrl plus C interrupts sleep15 and returns prompt",
+          "Owned PTY closes through confirmation and chat page returns"
+        ],
+        "pending": [
+          "Separate chat keyboard action-row occlusion requires fix"
+        ],
+        "notTested": [
+          "Native terminal PasteButton"
+        ],
+        "separateDefect": {
+          "path": "/tmp/dsh-device-20261117/chat-keyboard-diagnosis.json",
+          "sha256": "5ac61339454c1b3b45222e851046aad38aab52a68aeab5ea850b7d25d07c6160",
+          "bytes": 8035
+        }
+      },
+      "limits": "Source/compiled lifecycle fixtures do not execute native keyboard geometry."
+    },
+    {
+      "id": "conversation-replay-initial-navigation",
+      "problem": "Phone307/309 preview and326 import replay remained blank while native header displayed; component performed loadData during controller attachment while its initial Web.src about:blank still loaded.",
+      "fix": "Load replay once after initial about:blank onPageEnd, with active/started guards to prevent post-disappear loads and repeated completion reloads.",
+      "scope": [
+        "entry/src/main/ets/ui/ConversationReplay.ets",
+        "tests/conversation-replay-load.test.mjs"
+      ],
+      "verification": {
+        "path": "/tmp/dsh-device-20261117/conversation-replay-load-verification.json",
+        "sha256": "4ce8b102f1bae66dcc10d64a05f644d6e900e24215fc8be9d42efdd7dc04c5b3",
+        "bytes": 12827
+      },
+      "latestGeneratedTests": 8,
+      "actualPhoneContentComparison": {
+        "path": "/tmp/dsh-device-20261117/replay-phone-prepare-result.json",
+        "sha256": "5379a4e8acb167044bd8038f081716cd16aaed1672ae4f9a20abeacf6c3c5185",
+        "bytes": 566
+      },
+      "security": "Exact navigation allowlist, blockNetwork, file/DOM-storage/multiwindow/online-image restrictions and original hash-pinned replay CSP remain unchanged.",
+      "device": {
+        "status": "BOTH_CALLERS_REOPEN_SPEED_AND_FULLTEXT_ACTION_PASS",
+        "importEvidence": {
+          "path": "/tmp/dsh-device-20261117/replay-import-device-verification.json",
+          "sha256": "c1d7163fd7449ea1d20e5c43dabbaafc354201c76a110e3f51d859cacff5a109",
+          "bytes": 7034
+        },
+        "directShareEvidence": {
+          "path": "/tmp/dsh-device-20261117/replay-direct-share-device-verification.json",
+          "sha256": "9cd6cdd514957901ab1ae0ca91ffd7ddbecd9413644f226fc985346591197baf",
+          "bytes": 4376
+        },
+        "passed": [
+          "Imported selected user-only content displays",
+          "Back and reopen starts and completes replay",
+          "Speed changes1× to2×",
+          "Direct share preview completes7-second owned fixture replay",
+          "Direct preview全文 action shows the full-content beginning"
+        ],
+        "initialCapture": "366 is initial loading, not a failure;367 after waiting displays content.",
+        "limits": "368 is not a proved full-text switch on its own;394 supplies the observable direct-share action evidence."
+      },
+      "limits": "The authorized phone prepare comparison used an equivalent owned fixture snapshot, not the system-saved UI-selected export file. Real Chromium rendering confirms content validity, not commercial ArkWeb callback ordering."
+    },
+    {
+      "id": "foreground-overlay-safe-paste-occlusion",
+      "problem": "Phone333 security log reports the tapped PasteButton is covered by component15. A persistent empty full-window foreground Stack remained above page content despite transparent hit testing.",
+      "fix": "Remove empty full-window foreground wrappers. Keep PhoneTaskHost permanently mounted but render only its actual pending content with bottom position/anchor; position notification by its own bounds; bottom-anchor bounded PetPerch and preserve its new wrapper hit-test transparency.",
+      "scope": [
+        "entry/src/main/ets/pages/Index.ets floating branch",
+        "entry/src/main/ets/ui/PhoneTaskHost.ets pending container",
+        "tests/index-overlay-placement.test.mjs"
+      ],
+      "verification": {
+        "path": "/tmp/dsh-device-20261117/overlay-paste-peer-review.json",
+        "sha256": "5b73d1dae9153ba9f883cc93b282138f639c6055b0ccf2db0792c716953a855e",
+        "bytes": 6957
+      },
+      "defectEvidence": {
+        "path": "/tmp/dsh-device-20261117/333-paste-security.log",
+        "sha256": "aa2a1eac39beb707a66407f283e4eb758f9b1464f3068eaeabf8ea97c01ab859",
+        "bytes": 1677
+      },
+      "latestGeneratedTests": 4,
+      "security": "No zIndex workaround, security permission expansion or temporary-authorization bypass. Real visible overlays still legitimately cover underlying controls.",
+      "device": {
+        "status": "SAFE_PASTE_IMPORT_PASS_OTHER_OVERLAYS_PENDING",
+        "acceptance": [
+          "Real import PasteButton authorizes and fills the owned share code",
+          "Phone pending confirmation still appears and subscription remains active",
+          "Pet perch drag, position and touch pass-through remain usable",
+          "Notification stays at top without an empty whole-window cover"
+        ],
+        "passed": [
+          "364 actual PasteButton gesture fills owned share code;365 parses read-only"
+        ],
+        "evidence": {
+          "path": "/tmp/dsh-device-20261117/replay-import-device-verification.json",
+          "sha256": "c1d7163fd7449ea1d20e5c43dabbaafc354201c76a110e3f51d859cacff5a109",
+          "bytes": 7034
+        },
+        "pending": [
+          "Phone pending confirmation visibility and subscription",
+          "Pet perch drag/position/pass-through",
+          "Top notification placement"
+        ]
+      }
+    },
+    {
+      "id": "import-paste-denial-feedback",
+      "problem": "Non-success PasteButton result previously produced no visible feedback.",
+      "fix": "Use the existing localized denial message on non-success; invoke existing guarded paste only for SUCCESS, preserving draft and avoiding reads when denied.",
+      "scope": [
+        "entry/src/main/ets/ui/ConversationImportPanel.ets PasteButton callback",
+        "tests/conversation-import-paste.test.mjs"
+      ],
+      "latestGeneratedTests": 4,
+      "device": {
+        "status": "SUCCESS_GESTURE_PASS_DENIAL_FEEDBACK_PENDING",
+        "acceptance": [
+          "Paste authorization failure produces feedback",
+          "Successful security gesture starts paste without bypass"
+        ],
+        "passed": [
+          "364 actual success gesture populated owned share code"
+        ],
+        "pending": [
+          "Actual non-success feedback"
+        ],
+        "evidence": {
+          "path": "/tmp/dsh-device-20261117/replay-import-device-verification.json",
+          "sha256": "c1d7163fd7449ea1d20e5c43dabbaafc354201c76a110e3f51d859cacff5a109",
+          "bytes": 7034
+        }
+      }
+    }
+  ],
+  "final_generated_results": {
+    "structuredEvidence": {
+      "path": "/tmp/dsh-device-20261117/356-generated-results.json",
+      "sha256": "9f9d9dfd977e3a2e2c6f1fb6d2658dad50b57be38febb60d6ed759422b62d006",
+      "bytes": 1752
+    },
+    "runs": [
+      {
+        "test": "terminal-keyboard-layout",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/terminal-keyboard-layout.test.mjs",
+          "entry/build/default/cache/default/default@CompileArkTS/esmodule/debug/entry/src/main/ets/ui/TerminalPanel.ts"
+        ],
+        "exitCode": 0,
+        "counts": {
+          "tests": 6,
+          "pass": 6,
+          "fail": 0,
+          "skipped": 0,
+          "cancelled": 0
+        },
+        "evidence": {
+          "path": "/tmp/dsh-device-20261117/356-terminal-keyboard-layout.log",
+          "sha256": "a6a09b8e8672334a5157c232bd840333c6b8676529e3b6bfbf8e635ba2fa02f8",
+          "bytes": 1022
+        }
+      },
+      {
+        "test": "conversation-replay-load",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/conversation-replay-load.test.mjs",
+          "entry/build/default/cache/default/default@CompileArkTS/esmodule/debug/entry/src/main/ets/ui/ConversationReplay.ts"
+        ],
+        "exitCode": 0,
+        "counts": {
+          "tests": 8,
+          "pass": 8,
+          "fail": 0,
+          "skipped": 0,
+          "cancelled": 0
+        },
+        "evidence": {
+          "path": "/tmp/dsh-device-20261117/356-conversation-replay-load.log",
+          "sha256": "3a7d870c80ea7a961d9e71c3ea0b5ff3a38c29cb6313d13992104732c17e63c8",
+          "bytes": 1106
+        }
+      },
+      {
+        "test": "index-overlay-placement",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/index-overlay-placement.test.mjs",
+          "entry/build/default/cache/default/default@CompileArkTS/esmodule/debug/entry/src/main/ets/pages/Index.ts"
+        ],
+        "exitCode": 0,
+        "counts": {
+          "tests": 4,
+          "pass": 4,
+          "fail": 0,
+          "skipped": 0,
+          "cancelled": 0
+        },
+        "evidence": {
+          "path": "/tmp/dsh-device-20261117/356-index-overlay-placement.log",
+          "sha256": "d7e071f942ea9bf5b3f743ce4a3bad71051352b6fbf84cdb05584086224efc75",
+          "bytes": 526
+        }
+      },
+      {
+        "test": "conversation-import-paste",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/conversation-import-paste.test.mjs",
+          "entry/build/default/cache/default/default@CompileArkTS/esmodule/debug/entry/src/main/ets/ui/ConversationImportPanel.ts"
+        ],
+        "exitCode": 0,
+        "counts": {
+          "tests": 4,
+          "pass": 4,
+          "fail": 0,
+          "skipped": 0,
+          "cancelled": 0
+        },
+        "evidence": {
+          "path": "/tmp/dsh-device-20261117/356-conversation-import-paste.log",
+          "sha256": "3bff76dcce28ecce8d1a738a340875ab1c831d25724170f1cf092aff22aa727b",
+          "bytes": 793
+        }
+      }
+    ],
+    "boundary": "Actual final CompileArkTS callback/attribute output is executed by focused test harnesses. This is distinct from phone rendering and authorization."
+  },
+  "additional_regressions": [
+    {
+      "name": "appearance",
+      "exitCode": 0,
+      "exitCodeProvenance": "ROOT confirmed actual completion",
+      "counts": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "skipped": 0,
+        "cancelled": 0
+      },
+      "evidence": {
+        "path": "/tmp/dsh-device-20261117/345-appearance-regression.log",
+        "sha256": "3b41cead6eaa7a019dc1208a6f219e2a720de43577a08439807c702fa97d8a75",
+        "bytes": 632
+      }
+    },
+    {
+      "name": "pet-sprite",
+      "exitCode": 0,
+      "exitCodeProvenance": "ROOT confirmed actual completion",
+      "counts": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "skipped": 0,
+        "cancelled": 0
+      },
+      "evidence": {
+        "path": "/tmp/dsh-device-20261117/346-pet-sprite-regression.log",
+        "sha256": "3d6bd3b6bee5a8b27e74c029c7d40c19229f0b88b5c979ab162053a959b5a83b",
+        "bytes": 727
+      }
+    }
+  ],
+  "peer_review": {
+    "overlay": {
+      "path": "/tmp/dsh-device-20261117/overlay-paste-peer-review.json",
+      "sha256": "5b73d1dae9153ba9f883cc93b282138f639c6055b0ccf2db0792c716953a855e",
+      "bytes": 6957
+    },
+    "resolvedFinding": "The new PetPerch positioning __Common__ wrapper initially lacked Transparent. Its owner added it after source+old-generated red reproduction, and final356 generated test confirms the attribute.",
+    "replay": "ROOT and media_parity read-only reviews found no blocker; all offline boundaries retained.",
+    "reviewerOperations": "No production edits, test execution, HDC, build or installation by this peer-review task; referenced runs were executed by their documented owners."
+  },
+  "source_snapshot": [
+    {
+      "path": "entry/src/main/ets/ui/TerminalPanel.ets",
+      "sha256": "8ffd586cf93eeb5562c0662fcd523531a9c53a98a6c7457e769e0736ab8e6b7f"
+    },
+    {
+      "path": "entry/src/main/ets/ui/ConversationReplay.ets",
+      "sha256": "ab44b2c7b51c1ab6cc2b742566bee37b7f1fc9d1c243e8e23a117b4ca5f762fb"
+    },
+    {
+      "path": "entry/src/main/ets/pages/Index.ets",
+      "sha256": "7534bc8256faa33ab8cf575485fa30150e6e7783bbd1bd0710f59e6b7ab7854f"
+    },
+    {
+      "path": "entry/src/main/ets/ui/PhoneTaskHost.ets",
+      "sha256": "7dc2caa6cfffda209d667b1744f2da6aece1e83b6d761f68886c787efd4dd70e"
+    },
+    {
+      "path": "entry/src/main/ets/ui/ConversationImportPanel.ets",
+      "sha256": "53477bf8a0676800295387c130a28e06c3ba2a9f1d351a4d37d2bf9f052e4474"
+    },
+    {
+      "path": "entry/src/main/ets/pets/PetPerch.ets",
+      "sha256": "715e8eabed07a03080a939c75172e5e5999ebfc6b8446a79458e5559e2fe3292"
+    }
+  ],
+  "limits": [
+    "This snapshot confirms the explicit import/direct-share replay and terminal flow passes only.389 remains a confirmed chat keyboard action-row defect in installed9db; other untested overlay behaviors remain pending.",
+    "All candidates retain runtime93bd and the same five native libraries; no runtime repack or native change is claimed.",
+    "Red, source, generated, repeated candidate and browser checks must not be added as independent feature acceptance cases.",
+    "Previous SenseVoice network/WAV, TURN, media terminal and other device results remain in their own records and are not rerun or recounted here.",
+    "Physical microphone recognition remains user-deferred; this phase does not change that status.",
+    "Private ready data, authentication headers, account credentials, clipboard payloads and unrelated conversation data are not copied.",
+    "Phase16 keyboard-owner implementation and later build results are separate; source_snapshot here remains the recorded9db source baseline."
+  ],
+  "authoring": {
+    "agent": "sensevoice_native",
+    "mode": "read-only review and evidence authoring",
+    "repoWriteScope": "docs/parity/native-build-phase15.json only",
+    "productionChangesDuringThisReview": false,
+    "hdcOperations": 0,
+    "buildOperations": 0
+  },
+  "phone_rechecks": {
+    "status": "PARTIAL_DEVICE_PASS",
+    "evidence": {
+      "path": "/tmp/dsh-device-20261117/replay-import-device-verification.json",
+      "sha256": "c1d7163fd7449ea1d20e5c43dabbaafc354201c76a110e3f51d859cacff5a109",
+      "bytes": 7034
+    },
+    "terminal": {
+      "path": "/tmp/dsh-device-20261117/terminal-keyboard-device-verification.json",
+      "sha256": "cb747c99fc6820331653c2231ab0e0849d1523caf9c53146689c95573c307435",
+      "bytes": 6886
+    },
+    "chatKeyboardDiagnosis": {
+      "path": "/tmp/dsh-device-20261117/chat-keyboard-diagnosis.json",
+      "sha256": "5ac61339454c1b3b45222e851046aad38aab52a68aeab5ea850b7d25d07c6160",
+      "bytes": 8035
+    },
+    "directShare": {
+      "path": "/tmp/dsh-device-20261117/replay-direct-share-device-verification.json",
+      "sha256": "9cd6cdd514957901ab1ae0ca91ffd7ddbecd9413644f226fc985346591197baf",
+      "bytes": 4376
+    }
+  },
+  "open_findings": [
+    {
+      "id": "chat-keyboard-action-row-occlusion",
+      "status": "CONFIRMED_IN_PHASE15_ARTIFACT_FOLLOWUP_IS_PHASE16",
+      "evidence": {
+        "path": "/tmp/dsh-device-20261117/chat-keyboard-diagnosis.json",
+        "sha256": "5ac61339454c1b3b45222e851046aad38aab52a68aeab5ea850b7d25d07c6160",
+        "bytes": 8035
+      },
+      "effect": "With defaultOFFSET the message editor is exposed but the send/voice/attachment action row is covered. Soft keyboard is newline, not a send fallback.",
+      "productionChanged": false
+    }
+  ]
+}

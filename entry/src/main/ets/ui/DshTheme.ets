@@ -1,3 +1,4 @@
+import { customAccentColors } from './CustomAccent'
 import { UIContext } from '@kit.ArkUI'
 
 // DSH Go v1.0.15 accent.dart, palette.dart and semantic_colors.dart.
@@ -170,9 +171,10 @@ const PRESETS: ThemePreset[] = [
 
 export const ACCENTS: DshAccent[] = PRESETS.map((preset: ThemePreset) => preset.accent)
 
-export function themeColors(accentId: string = 'mist', dark: boolean = false): ThemeColors {
+export function themeColors(accentId: string = 'mist', dark: boolean = false, customColor: string = '#5F7A55'): ThemeColors {
   const preset = PRESETS.find((item: ThemePreset) => item.accent.id === accentId) ?? PRESETS[0]
-  return dark ? preset.dark : preset.light
+  const colors = dark ? preset.dark : preset.light
+  return accentId === 'custom' ? customAccentColors(colors, customColor, dark) : colors
 }
 
 export class DshType {

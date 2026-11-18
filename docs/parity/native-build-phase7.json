@@ -1,0 +1,40 @@
+{
+  "source_reference": "dsh-Go v1.0.15 a9877420ab9aee121134faf01b6a92a39ce0b05b",
+  "built_at": "2026-11-16T09:48:52+08:00",
+  "build": "DevEco Studio 26.0.0.851 debug signed, HarmonyOS API 26, ARM64",
+  "bundle": "com.dshgo.harmony",
+  "version_name": "1.0.1",
+  "version_code": 1000001,
+  "hap": "entry/build/default/outputs/default/entry-default-signed.hap",
+  "hap_sha256": "50fbead265ee6dab7ad3e7a4feb7399cf27447a09e93ab6f96758374608edc10",
+  "hap_size_bytes": 167518017,
+  "runtime_sha256": "5e4221efe9cfc40aa84f808ad3ff167c48e02ec0f6019367534e69d1e87020ca",
+  "checks": {
+    "signed_hap_build": true,
+    "zip_crc_and_embedded_runtime_digest": true,
+    "all_arkts_sources_precede_signed_hap": true,
+    "dsh_client_live_assertions": 129,
+    "chat_regeneration_and_queue_tests": 65,
+    "mention_parser_and_controller_tests": 11,
+    "mention_editor_and_message_tests": 12,
+    "voice_controller_and_native_bridge_tests": 14,
+    "voice_index_tests": 7,
+    "speech_data_and_panel_tests": 9,
+    "arkui_generated_reactivity_tests": 7,
+    "markdown_tests": 6,
+    "settings_tests": 5,
+    "dsh_wire": "passed",
+    "mention_live": "Passed against the packaged DSH: fuzzy file and folder references, canonical session URI, actual read tool context, referenced conversation history and persistent echo.",
+    "regeneration_live": "Passed against the packaged DSH: fork before the image-only prompt, preserve earlier history, upload original image to child, leave source reply unchanged.",
+    "queued_attachments_live": "Passed against the packaged DSH: restaging, stable request IDs, message order and matching attachment digest.",
+    "speech_live": "Packaged DSH correctly reports no speech service. Synthetic HTTP speech service verified catalog/configure/prepare/cancel/transcribe, WAV, authorization errors, unavailable endpoints, internal errors and cancellation.",
+    "git_diff_check": true
+  },
+  "acceptance_limits": [
+    "No HDC device is connected; no installation, actual microphone/ASR, hardware IME, selection-menu, or same-viewport pixel comparison was performed.",
+    "CoreSpeechKit and AudioCapturer tests use API-shaped substitutes. Actual device capability, permission UI, audio sampling, long-clause event order and microphone release remain unverified.",
+    "The embedded runtime has no speech service. On-device SenseVoice download, verification, loading and removal are not implemented. Auto mode first uses the system unless the current on-device host reports ready sensevoice-local.",
+    "Rich clipboard text is normalized; clipboard images are not added as attachments. Use the existing photo/camera/file picker.",
+    "Media generation, voice scribe, reasoning translation and remaining roadmap groups are unfinished. This build is not a completed one-to-one acceptance."
+  ]
+}

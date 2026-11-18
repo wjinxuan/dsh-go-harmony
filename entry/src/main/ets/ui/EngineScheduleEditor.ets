@@ -1,3 +1,4 @@
+import { localizedSettingsText } from './SettingsLocale'
 import { i18n } from '@kit.LocalizationKit'
 import { DshClient } from '../dsh/DshClient'
 import { array, object, string, WireObject } from '../dsh/DshWire'
@@ -17,6 +18,9 @@ const TIMINGS: TimingChoice[] = [
 
 @Component
 export struct EngineScheduleEditor {
+  @StorageProp('dshLanguage') private localeLanguage: string = 'system'
+  private t(value: string): string { return localizedSettingsText(value, this.localeLanguage) }
+
   @Prop colors: ThemeColors = themeColors()
   @Prop sessionId: string = ''
   client: DshClient = new DshClient()
@@ -38,7 +42,7 @@ export struct EngineScheduleEditor {
   @State private error: string = ''
   private active: boolean = true
   private cleanDraft: string = ''
-  private readonly labels: string[] = ['一', '二', '三', '四', '五', '六', '日']
+  private readonly labels: string[] = [this.t("一"), this.t("二"), this.t("三"), this.t("四"), this.t("五"), this.t("六"), this.t("日")]
 
   aboutToAppear(): void {
     this.active = true
@@ -71,9 +75,9 @@ export struct EngineScheduleEditor {
     if (this.busy) return true
     if (this.cleanDraft === this.draftSignature()) return false
     this.getUIContext().showAlertDialog({
-      title: '放弃更改？', message: '还没有保存自动化任务更改。',
-      primaryButton: { value: '继续编辑', action: () => {} },
-      secondaryButton: { value: '放弃', action: this.onClose }
+      title: this.t("放弃更改？"), message: this.t("还没有保存自动化任务更改。"),
+      primaryButton: { value: this.t("继续编辑"), action: () => {} },
+      secondaryButton: { value: this.t("放弃"), action: this.onClose }
     })
     return true
   }
@@ -99,7 +103,7 @@ export struct EngineScheduleEditor {
       const target: WireObject = { 'kind': this.destination }
       return target
     }
-    if (!this.targetSession.trim()) throw new Error('请输入目标对话的 ID')
+    if (!this.targetSession.trim()) throw new Error(this.t("请输入目标对话的 ID"))
     const target: WireObject = { 'kind': 'session', 'sessionId': this.targetSession.trim() }
     return target
   }
@@ -112,7 +116,7 @@ export struct EngineScheduleEditor {
       const id = string(this.task['id'])
       const title = this.name.trim()
       const prompt = this.instruction.trim()
-      if (!title || !prompt || title.length > 120) throw new Error('名称和指令不能为空，名称最多 120 字')
+      if (!title || !prompt || title.length > 120) throw new Error(this.t("名称和指令不能为空，名称最多 120 字"))
       const timing = this.changeTiming ? scheduleTiming(this.timing, this.value, this.zone, this.weekdays) : undefined
       const patch: WireObject = { 'title': title, 'prompt': prompt }
       if (timing) patch['timing'] = timing
@@ -138,10 +142,10 @@ export struct EngineScheduleEditor {
         saved['lastDelivery'] = this.task['lastDelivery']
       }
       scheduleFailure(saved)
-      if (!string(saved['id']) || (id && saved['id'] !== id)) throw new Error('主机未确认任务已保存')
+      if (!string(saved['id']) || (id && saved['id'] !== id)) throw new Error(this.t("主机未确认任务已保存"))
       if (this.active) this.onSaved(saved)
     } catch (reason) {
-      if (this.active) this.error = featureError(reason, '没能保存任务')
+      if (this.active) this.error = featureError(reason, this.t("没能保存任务"))
     } finally {
       if (this.active) this.busy = false
     }
@@ -177,13 +181,13 @@ export struct EngineScheduleEditor {
       }.width('100%')
     }
     if (['at', 'daily', 'weekly', 'cron'].includes(this.timing)) {
-      TextInput({ text: this.zone, placeholder: '时区，例如 Asia/Shanghai' })
+      TextInput({ text: this.zone, placeholder: this.t("时区，例如 Asia/Shanghai") })
         .fontColor(this.colors.text).backgroundColor(this.colors.surface).onChange((text: string) => { this.zone = text })
     }
   }
 
   private timingHint(): string {
-    return TIMINGS.find((choice: TimingChoice) => choice.id === this.timing)?.hint || '运行时间'
+    return TIMINGS.find((choice: TimingChoice) => choice.id === this.timing)?.hint || this.t("运行时间")
   }
 
   build() {
@@ -191,44 +195,44 @@ export struct EngineScheduleEditor {
       Row({ space: 12 }) {
         Button({ type: ButtonType.Circle }) {
           Text(DshGlyphs.back).fontFamily(DshGlyphs.family).fontSize(20).fontColor(this.colors.text)
-        }.width(44).height(44).backgroundColor(this.colors.surface).accessibilityText('返回')
+        }.width(44).height(44).backgroundColor(this.colors.surface).accessibilityText(this.t("返回"))
           .enabled(!this.busy).onClick(() => { if (!this.back()) this.onClose() })
-        Text(this.task['id'] ? '编辑自动化任务' : '新建自动化任务')
+        Text(this.task['id'] ? this.t("编辑自动化任务") : this.t("新建自动化任务"))
           .fontColor(this.colors.text).fontSize(22).fontWeight(FontWeight.Medium).layoutWeight(1)
       }.width('100%')
       Scroll() {
         Column({ space: 12 }) {
-          Text('名称').fontSize(15).fontColor(this.colors.text).width('100%')
-          TextInput({ text: this.name, placeholder: '比如：每日站会提醒' }).maxLength(120)
+          Text(this.t("名称")).fontSize(15).fontColor(this.colors.text).width('100%')
+          TextInput({ text: this.name, placeholder: this.t("比如：每日站会提醒") }).maxLength(120)
             .fontColor(this.colors.text).backgroundColor(this.colors.surface).onChange((value: string) => { this.name = value })
-          Text('指令').fontSize(15).fontColor(this.colors.text).width('100%')
-          TextArea({ text: this.instruction, placeholder: '比如：整理昨天的提交，发我摘要' }).height(108)
+          Text(this.t("指令")).fontSize(15).fontColor(this.colors.text).width('100%')
+          TextArea({ text: this.instruction, placeholder: this.t("比如：整理昨天的提交，发我摘要") }).height(108)
             .fontColor(this.colors.text).backgroundColor(this.colors.surface)
             .onChange((value: string) => { this.instruction = value })
-          Text('运行时间').fontSize(15).fontColor(this.colors.text).width('100%')
-          if (this.task['id']) this.choice(() => this.changeTiming ? '保留原规则' : '修改运行规则', () => this.changeTiming, () => {
+          Text(this.t("运行时间")).fontSize(15).fontColor(this.colors.text).width('100%')
+          if (this.task['id']) this.choice(() => this.changeTiming ? this.t("保留原规则") : this.t("修改运行规则"), () => this.changeTiming, () => {
             this.changeTiming = !this.changeTiming
           })
           if (this.changeTiming) this.timingForm()
           if (!this.task['id'] || this.task['target']) {
-            Text('在哪里运行').fontSize(15).fontColor(this.colors.text).width('100%')
-            if (this.task['id']) this.choice(() => this.changeTarget ? '保留原目的地' : '更换目的地', () => this.changeTarget, () => {
+            Text(this.t("在哪里运行")).fontSize(15).fontColor(this.colors.text).width('100%')
+            if (this.task['id']) this.choice(() => this.changeTarget ? this.t("保留原目的地") : this.t("更换目的地"), () => this.changeTarget, () => {
               this.changeTarget = !this.changeTarget
             })
             if (this.changeTarget) {
               Flex({ wrap: FlexWrap.Wrap }) {
-                this.choice(() => '现有对话', () => this.destination === 'session', () => { this.destination = 'session' })
-                this.choice(() => '首次新建并沿用', () => this.destination === 'new_once', () => { this.destination = 'new_once' })
-                this.choice(() => '每次新建', () => this.destination === 'new', () => { this.destination = 'new' })
+                this.choice(() => this.t("现有对话"), () => this.destination === 'session', () => { this.destination = 'session' })
+                this.choice(() => this.t("首次新建并沿用"), () => this.destination === 'new_once', () => { this.destination = 'new_once' })
+                this.choice(() => this.t("每次新建"), () => this.destination === 'new', () => { this.destination = 'new' })
               }.width('100%')
               if (this.destination === 'session') {
-                TextInput({ text: this.targetSession, placeholder: '目标对话 ID' }).fontColor(this.colors.text)
+                TextInput({ text: this.targetSession, placeholder: this.t("目标对话 ID") }).fontColor(this.colors.text)
                   .backgroundColor(this.colors.surface).onChange((text: string) => { this.targetSession = text })
               }
             }
           }
-          if (this.error) Text(this.error).fontSize(14).fontColor(this.colors.danger).width('100%')
-          Button(this.busy ? '正在保存…' : '保存').height(44).width('100%').fontColor(this.colors.onPrimary)
+          if (this.error) Text(this.t(this.error)).fontSize(14).fontColor(this.colors.danger).width('100%')
+          Button(this.busy ? this.t("正在保存…") : this.t("保存")).height(44).width('100%').fontColor(this.colors.onPrimary)
             .backgroundColor(this.colors.primary).enabled(!this.busy).onClick(() => { void this.save() })
         }.alignItems(HorizontalAlign.Start).width('100%')
       }.layoutWeight(1).width('100%').align(Alignment.TopStart)

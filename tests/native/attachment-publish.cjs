@@ -1,0 +1,30 @@
+'use strict';
+
+const assert = require('node:assert/strict');
+const { randomUUID } = require('node:crypto');
+const { mkdirSync, readFileSync, writeFileSync, symlinkSync } = require('node:fs');
+const { join } = require('node:path');
+
+const root = join(process.argv[2], 'attachments', 'v1');
+const stage = join(root, 'tmp', randomUUID());
+const digest = 'ab' + 'c'.repeat(62);
+const target = join(root, 'file-objects', 'ab', digest);
+mkdirSync(join(root, 'tmp'), { recursive: true });
+mkdirSync(join(root, 'file-objects', 'ab'), { recursive: true });
+writeFileSync(stage, 'new content');
+assert.throws(() => globalThis.dshHarmonyPublishAttachmentFile(stage, join(root, 'objects')), TypeError);
+assert.throws(() => globalThis.dshHarmonyPublishAttachmentFile(stage, join(root, 'file-objects', 'bc', digest)), TypeError);
+writeFileSync(target, 'existing content');
+assert.throws(() => globalThis.dshHarmonyPublishAttachmentFile(stage, target), { code: 'EEXIST' });
+assert.equal(readFileSync(target, 'utf8'), 'existing content');
+assert.equal(readFileSync(stage, 'utf8'), 'new content');
+const aliasDirectory = join(root, 'files', 'ab', digest);
+mkdirSync(aliasDirectory, { recursive: true });
+const alias = join(aliasDirectory, 'attached.txt');
+globalThis.dshHarmonyPublishAttachmentFile(stage, alias);
+assert.equal(readFileSync(alias, 'utf8'), 'new content');
+assert.throws(() => readFileSync(stage), { code: 'ENOENT' });
+const symlink = join(root, 'tmp', randomUUID());
+symlinkSync(alias, symlink);
+assert.throws(() => globalThis.dshHarmonyPublishAttachmentFile(symlink, join(aliasDirectory, 'other.txt')), TypeError);
+console.log('Native attachment publication path and no-replace checks passed.');

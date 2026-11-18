@@ -1,0 +1,293 @@
+{
+  "phase": 23,
+  "recordedAt": "2026-11-18T04:45:04.040653+00:00",
+  "status": "installed-wallpaper-targeted-phone-verification-pass-acceptance-partial",
+  "allAcceptanceComplete": false,
+  "scope": "WallpaperBackdrop converts the existing private filesystem path to a file URI for Image. Raw stored path, import/copy and preferences remain unchanged.",
+  "build": {
+    "exitCode": 0,
+    "seconds": 54.202,
+    "hapSha256": "9d8211807cb609c994ba2184ccdca2d4ff6b2397d3103dc25222442da9741997",
+    "hapBytes": 197452297
+  },
+  "buildEvidence": {
+    "path": "/tmp/dsh-device-20261118/940-phase23-build.json",
+    "bytes": 148,
+    "sha256": "7d245374dc8da93cc4dca919868f828a75a0e5ab5ec4b88896d8d410337b82ee"
+  },
+  "buildLog": {
+    "path": "/tmp/dsh-device-20261118/940-phase23-build.log",
+    "bytes": 92869,
+    "sha256": "63083f993cfbadd3c15a718524466775886ff45f0d0bbd823bc1ada56d634298"
+  },
+  "tests": {
+    "evidence": {
+      "path": "/tmp/dsh-device-20261118/wallpaper-backdrop-phase23-verification.json",
+      "bytes": 3161,
+      "sha256": "f8db024310d006df4d1395e14e778b21a05d3dcc951cdeec3644b91c89fa4004"
+    },
+    "wallpaperSourceAndActualGeneratedExecutions": 6,
+    "wallpaperDistinctBehaviorCases": 3,
+    "defaultAppearanceCases": 11,
+    "deduplicatedBehaviorCases": 11,
+    "fail": 0,
+    "skip": 0,
+    "counting": "Same three wallpaper cases run against source and actual CompileArkTS; default appearance11 already includes those3. No sum to17.",
+    "redHistory": {
+      "oldSourceFailures": 1,
+      "oldActualGeneratedFailures": 1,
+      "evidence": {
+        "path": "/tmp/dsh-device-20261118/wallpaper-backdrop-fix-verification.json",
+        "bytes": 2422,
+        "sha256": "b5ba7a76152b538f670667de18c7487d81efc095f6d5b4208c32823aa2010947"
+      }
+    },
+    "nativePaintVerified": true,
+    "nativePaintEvidence": {
+      "path": "/tmp/dsh-device-20261118/wallpaper-phase23-phone-verification.json",
+      "bytes": 31542,
+      "sha256": "b85dd614133b9f8a0d194a745ec31b0f7ecb795f3d0aee7baa530ae253f6ee96"
+    }
+  },
+  "integrity": {
+    "signatureExitCode": 0,
+    "crc": "PASS",
+    "nativeLibrariesUnchanged": 5,
+    "runtimeHashes": {
+      "resources/rawfile/dsh-runtime.zip": "e87517f2c5326458eecbe2907db5ed7ceb2765738a1292e6ef5acf6b3a2d09e3"
+    },
+    "hapSha256": "9d8211807cb609c994ba2184ccdca2d4ff6b2397d3103dc25222442da9741997",
+    "changedHapEntries": [
+      "ets/modules.abc",
+      "ets/sourceMaps.map"
+    ],
+    "previousCommandError": "946 output certificate .pem unsupported; no HAP verification occurred",
+    "signatureLog": "/tmp/dsh-device-20261118/947-phase23-signature.log"
+  },
+  "integrityEvidence": {
+    "path": "/tmp/dsh-device-20261118/947-phase23-integrity.json",
+    "bytes": 544,
+    "sha256": "d24c52ac0a71ec736d566128c483a655f8090fa1e3a8ae44de58a3a56567ac4d"
+  },
+  "signatureLog": {
+    "path": "/tmp/dsh-device-20261118/947-phase23-signature.log",
+    "bytes": 3285,
+    "sha256": "a15fcfdd6c6e5ca536b3ef7a0c6c1e970de82268cfde5782fc93b9afb1019ef4"
+  },
+  "initialSignatureCommand": {
+    "exitCode": 1,
+    "productSignatureFailure": false,
+    "hapVerificationStarted": false,
+    "cause": "946 used unsupported .pem output certificate extension; corrected .cer command947 passed.",
+    "evidence": {
+      "path": "/tmp/dsh-device-20261118/946-phase23-integrity.json",
+      "bytes": 373,
+      "sha256": "6f47015234bb5b982c05c53cf76d1f5b7f906502f38435084e1dd0b1fa7d0787"
+    },
+    "log": {
+      "path": "/tmp/dsh-device-20261118/946-phase23-signature.log",
+      "bytes": 186,
+      "sha256": "515e5ff77e3dc38f8c4812d765f4cdcc6230a0d81c95b73dd20b81376c34177a"
+    }
+  },
+  "installation": {
+    "installed": true,
+    "installSequence": 955,
+    "exitCode": 0,
+    "seconds": 10.836,
+    "hapSha256": "9d8211807cb609c994ba2184ccdca2d4ff6b2397d3103dc25222442da9741997",
+    "evidence": {
+      "path": "/tmp/dsh-device-20261118/955-phase23-install.json",
+      "bytes": 123,
+      "sha256": "c4b76ad9a2e357796f14ff5d3c72dee37a89425f53750c73ec2066a72a9312da"
+    },
+    "log": {
+      "path": "/tmp/dsh-device-20261118/955-phase23-install.log",
+      "bytes": 175,
+      "sha256": "9ed9b6d76b5a09c3b3c13dbf265f3febc86fce9d44419041234e67e7b07cafce"
+    },
+    "localEngineStartSequence": 981,
+    "chatReadySequence": 983,
+    "runningProcess": {
+      "pid": 22804,
+      "port": 36351,
+      "runtimeVersion": "e87517f2c5326458eecbe2907db5ed7ceb2765738a1292e6ef5acf6b3a2d09e3",
+      "hapSha256": "9d8211807cb609c994ba2184ccdca2d4ff6b2397d3103dc25222442da9741997"
+    },
+    "processEvidence": {
+      "path": "/tmp/dsh-device-20261118/986-phase23-process.json",
+      "bytes": 206,
+      "sha256": "cc53c1a72834deed26404ba57e67cf06ea5b880ca8ee6bad528e76378a09f78a"
+    }
+  },
+  "phoneWallpaperFinding": {
+    "status": "INITIAL_IMPORT_SUCCEEDED_PAINT_FAILED_RESOLVED_BY_PHASE23_PHONE_VERIFICATION",
+    "step": 921,
+    "importedBytes": 1734,
+    "importedSha256": "71d61016e109b5cf73a306c9d30e1bfab3826489fbaa0ed4513b584db97affa0",
+    "size": [
+      320,
+      180
+    ],
+    "stateEvidence": {
+      "path": "/tmp/dsh-device-20261118/921-wallpaper-state.json",
+      "bytes": 372,
+      "sha256": "aa4f4759cf8854a92cb648b90b9a48c16de08c01770a86fe66e3f6cb0dd83e48"
+    },
+    "imageEvidence": {
+      "path": "/tmp/dsh-device-20261118/921-own-imported-wallpaper.png",
+      "bytes": 1734,
+      "sha256": "71d61016e109b5cf73a306c9d30e1bfab3826489fbaa0ed4513b584db97affa0"
+    },
+    "sourceDiagnosis": "Raw sandbox path passed to Image caused onError/fallback; new source uses fileUri.getUriFromPath.",
+    "initialStateAt921": {
+      "on": true
+    },
+    "initialRestoreAttemptAt922": {
+      "wallpaperOn": true,
+      "step922FilenameMisleading": true,
+      "step922ObservedBlur": 0.3,
+      "offTapDidNotTakeEffectWhileBusy": true,
+      "mustDisableViaNativeUi": true,
+      "selectedOwnImageRetained": true,
+      "noPrivatePreferenceMutationAllowed": true
+    },
+    "currentRestoreState": {
+      "appearance": {
+        "accentId": "mist",
+        "themeMode": "system",
+        "fontSize": 16
+      },
+      "nonWallpaperAdvancedEqual921": true,
+      "testImageRetained": true,
+      "emptyOriginalPathRestored": false,
+      "numericTolerance": 1e-06,
+      "priorObserverExactFloatAssertionFailed": true,
+      "sourceSha256": "8e5d0945d115d85055770b6990adee9143fc3ac72d6457e5117c07ffff104294",
+      "wallpaper": {
+        "on": false,
+        "width": 320,
+        "height": 180,
+        "zoom": 1,
+        "alignX": 0,
+        "alignY": 0,
+        "blur": 0.29999998211860657,
+        "lighten": 0.19999998807907104,
+        "dim": 0.19999998807907104,
+        "pathPresent": true,
+        "pathSha256": "cba30de6a75af6b2fca8afebac31983a32906d4744142c0a5fe7400a06dd3a51"
+      }
+    },
+    "resolution": {
+      "sequenceRange": [
+        955,
+        986
+      ],
+      "assertions": {
+        "settingsPreviewNativePaint": "passed_957_ROOT_visual",
+        "cropZoomAndAlignment": "passed_ROOT_visual_and_ui_values",
+        "blurZeroClearBoundaries": "passed_962_ROOT_visual",
+        "lightenAndDim": "passed_ROOT_visual_and_ui_values",
+        "reopenPersistence": "passed_limited_x_y_blur_and_lighten; zoom was deliberately corrected after gesture",
+        "actualChatCustomBackground": "passed_983_ROOT_and_independent_png_review",
+        "actualChatDefaultBackgroundAfterOff": "passed_985_986_ui_value_and_ROOT_and_independent_png_review"
+      },
+      "restorationBoundary": {
+        "defaultVisualRestored": true,
+        "customWallpaperEnabled": false,
+        "otherAdvancedPreferencesEqual921": true,
+        "theme": "system",
+        "accent": "mist",
+        "fontSize": 16,
+        "ownedTestPngRetained": true,
+        "emptyOriginalPathRestored": false,
+        "upstreamSemantics": "Default uses on=false and retains selected picture; no UI clear-file action exists."
+      },
+      "retainedIntermediateEvidence": {
+        "scrollHitZoomAt966": 3.07,
+        "zoomRestoredAt967": 2,
+        "sequence979NotChat": true,
+        "priorExactFloatComparisonFailure": true,
+        "floatingPointRestoreUsesTolerance": 1e-06
+      },
+      "limits": [
+        "Preview paint and actual chat paint are separate claims.",
+        "Only the controlled 320x180 four-colour image was tested; no all-formats claim.",
+        "The file-name chat-background at 979 is not evidence of reaching chat.",
+        "Normal stopped-engine state at 979 is not counted as a product failure.",
+        "No private XML or authentication-bearing ready file was opened.",
+        "Wallpaper OFF preserves the owned selected image and nonempty path, matching fixed upstream semantics.",
+        "This flow does not establish completion of all 17 phone acceptance rows."
+      ],
+      "evidence": {
+        "path": "/tmp/dsh-device-20261118/wallpaper-phase23-phone-verification.json",
+        "bytes": 31542,
+        "sha256": "b85dd614133b9f8a0d194a745ec31b0f7ecb795f3d0aee7baa530ae253f6ee96"
+      },
+      "stateEvidence": {
+        "path": "/tmp/dsh-device-20261118/986-wallpaper-restored-state.json",
+        "bytes": 702,
+        "sha256": "9c4dcb5080bfb0445453b13bc1e8c1277f00b9d0a4a972de13bdea00c3b916d2"
+      },
+      "predicateCountIsNotIndependentPhoneCases": true
+    }
+  },
+  "remaining": [
+    "Other seventeen-row acceptance cases continue; actual local attachment enqueue failed at1041 and is under diagnosis",
+    "Release SCREEN running lock/timeout override and read back when device testing ends",
+    "Live2D is deferred for authorized assets; microphone user-confirmed normal and not retested"
+  ],
+  "preInstallSnapshot": {
+    "recordedAt": "2026-11-18T03:51:37.394123+00:00",
+    "status": "built-verified-not-installed-device-disconnected",
+    "installation": {
+      "installed": false,
+      "currentlyInstalledPhase": 22,
+      "currentHapSha256": "a0ee4a6557a5ee353336cc14ca71ae19ead41ff7ce2bde4479d351e0a6414fe8",
+      "blockedBy": "USB disconnected: HDC Empty and Mac USB Huawei absent",
+      "connectionEvidence": {
+        "path": "/tmp/dsh-device-20261118/944-usb-disconnected.json",
+        "bytes": 275,
+        "sha256": "ae83357112e52df87e960e55ecd6be5713e54e9db5ef01b174809a6b27909ce4"
+      }
+    },
+    "phoneWallpaperFinding": {
+      "status": "IMPORT_SUCCEEDED_PAINT_FAILED_FIX_PENDING_DEVICE",
+      "step": 921,
+      "importedBytes": 1734,
+      "importedSha256": "71d61016e109b5cf73a306c9d30e1bfab3826489fbaa0ed4513b584db97affa0",
+      "size": [
+        320,
+        180
+      ],
+      "on": true,
+      "stateEvidence": {
+        "path": "/tmp/dsh-device-20261118/921-wallpaper-state.json",
+        "bytes": 372,
+        "sha256": "aa4f4759cf8854a92cb648b90b9a48c16de08c01770a86fe66e3f6cb0dd83e48"
+      },
+      "imageEvidence": {
+        "path": "/tmp/dsh-device-20261118/921-own-imported-wallpaper.png",
+        "bytes": 1734,
+        "sha256": "71d61016e109b5cf73a306c9d30e1bfab3826489fbaa0ed4513b584db97affa0"
+      },
+      "sourceDiagnosis": "Raw sandbox path passed to Image caused onError/fallback; new source uses fileUri.getUriFromPath.",
+      "currentRestoreState": {
+        "wallpaperOn": true,
+        "step922FilenameMisleading": true,
+        "step922ObservedBlur": 0.3,
+        "offTapDidNotTakeEffectWhileBusy": true,
+        "mustDisableViaNativeUi": true,
+        "selectedOwnImageRetained": true,
+        "noPrivatePreferenceMutationAllowed": true
+      }
+    },
+    "remaining": [
+      "Reconnect device and install phase23",
+      "Verify actual wallpaper native paint, then turn wallpaper OFF via UI; keep chosen image as original behavior",
+      "Verify 2x4 card tap and remove only that owned card",
+      "Release SCREEN lock/timeout override and read back",
+      "Other seventeen-row acceptance cases remain partial"
+    ]
+  }
+}

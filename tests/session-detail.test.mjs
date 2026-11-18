@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { goalRoundCap, sessionFileChanges, turnTotalTokens } from './ui/SessionDetailData.ts';
+import { goalRoundCap, sessionFileChanges, sessionTextDiff, toolDiffLines, turnTotalTokens } from './ui/SessionDetailData.ts';
 
 function call(seq, id, name, args) {
   return { seq, type: 'tool/call', data: { callId: id, name, arguments: JSON.stringify(args) } };
@@ -52,4 +52,27 @@ test('round cap accepts a positive safe integer and token totals honor a host-pr
     {},
     { usage: { inputTokens: 4, outputTokens: 5 } }
   ] }), 17);
+});
+
+test('large diffs retain every line and preserve independent old/new block coordinates', () => {
+  const before = Array.from({ length: 1600 }, (_, i) => `old ${i}`).join('\n');
+  const after = Array.from({ length: 1700 }, (_, i) => `new ${i}`).join('\n');
+  const diff = sessionTextDiff(before, after, 12, 20);
+  assert.equal(diff.length, 3300);
+  assert.equal(diff.filter(line => line.marker === '-').at(-1).oldLine, 1611);
+  assert.equal(diff.filter(line => line.marker === '+').at(-1).newLine, 1719);
+  assert.equal(diff.at(-1).text, 'new 1699');
+  const context = sessionTextDiff('same\nold\ntail', 'same\nnew\ntail');
+  assert.deepEqual(context.map(line => [line.marker, line.oldLine, line.newLine]), [
+    [' ', 1, 1], ['-', 2, undefined], ['+', undefined, 2], [' ', 3, 3]]);
+});
+
+test('tool previews prefer structured host diffs and parse unified hunk coordinates', () => {
+  const host = toolDiffLines('edit', JSON.stringify({ old_string: 'ignore', new_string: 'ignore too' }), '',
+    { diffs: [{ oldText: 'old', newText: 'new' }] });
+  assert.deepEqual(host.map(line => line.text), ['old', 'new']);
+  const raw = toolDiffLines('bash', '{}', '--- a/file\n+++ b/file\n@@ -8,2 +9,2 @@\n old\n-gone\n+new\n', undefined);
+  assert.deepEqual(raw.slice(3).map(line => [line.marker, line.oldLine, line.newLine]), [
+    [' ', 8, 9], ['-', 9, undefined], ['+', undefined, 10]]);
+  assert.deepEqual(toolDiffLines('read', '{', 'ordinary output', undefined), []);
 });

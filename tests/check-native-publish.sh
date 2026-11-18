@@ -24,3 +24,12 @@ fixture_dir=$project_dir/tests/native
 mkdir "$scratch/data"
 timeout 30s "$scratch/runner" "$project_dir/tests/native-workspace-publish.cjs" "$scratch/data"
 timeout 30s "$scratch/runner" "$fixture_dir/session-publish.cjs" "$scratch/data"
+timeout 30s "$scratch/runner" "$fixture_dir/attachment-publish.cjs" "$scratch/data"
+timeout 30s "$scratch/runner" "$fixture_dir/recall-marker.cjs" "$scratch/data"
+timeout 30s "$scratch/runner" "$fixture_dir/file-lock.cjs" "$scratch/data"
+
+if [ -n "${DSH_NATIVE_TEST_RUNTIME:-}" ]; then
+  timeout 30s "$scratch/runner" "$fixture_dir/attachment-store.cjs" "$scratch/data"
+  DSH_LOCAL_ENGINE_TEST_RUNNER="$scratch/runner" node "$project_dir/tests/local-engine-smoke.mjs" \
+    "$DSH_NATIVE_TEST_RUNTIME" --deepseek --tools --danger-full-access --compact
+fi

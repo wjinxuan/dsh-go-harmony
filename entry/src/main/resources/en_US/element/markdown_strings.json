@@ -3,6 +3,8 @@
     { "name": "markdown_copied", "value": "Copied" },
     { "name": "markdown_copy_code", "value": "Copy code" },
     { "name": "markdown_copy_failed", "value": "Could not copy" },
-    { "name": "markdown_link_failed", "value": "Can’t open this link" }
+    { "name": "markdown_link_failed", "value": "Can’t open this link" },
+    { "name": "markdown_task_checked", "value": "Task checked" },
+    { "name": "markdown_task_unchecked", "value": "Task unchecked" }
   ]
 }

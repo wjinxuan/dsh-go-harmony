@@ -1,10 +1,18 @@
+import { CompanionSignalSse, signalCapability, signalDecode, signalRun, signalId } from './CompanionSignalProtocol';
+import type { CompanionSignalCapability, CompanionRunReceipt, CompanionSignalFrame } from './CompanionSignalProtocol';
+import { dsBotAnswer, DSBOT_ENDPOINTS, DsBotEvent, DsBotSseParser } from './DsBotProtocol';
 import { url, util } from '@kit.ArkTS';
 import { webSocket } from '@kit.NetworkKit';
 import { rcp } from '@kit.RemoteCommunicationKit';
 import { fileIo as fs } from '@kit.CoreFileKit';
 import { deviceInfo } from '@kit.BasicServicesKit';
+import type { DraftAttachment } from '../ui/AttachmentPicker';
+import type { SpeechCatalog, SpeechTranscript } from './SpeechData';
+import { checkSpeechWav, speechCatalog, speechTranscript } from './SpeechData';
+import { parseBinaryRpcResponse } from './DshBinaryResponse';
 import {
-  approvalFromEvent, array, createMuxOpen, createRpcRequest, DshApproval, DshChatUpdate, DshSession,
+  approvalFromEvent, array, commandCatalog, commandResult, createMuxOpen, createRpcRequest, DshApproval,
+  DshChatUpdate, DshCommand, DshCommandResult, DshMessage, DshSession,
   DshGoal, DshGoalRef, DshPermissionCatalog, DshQuestionAnswer, DshQuestionRequest, DshQueueAction,
   DshQueuedPrompt, DshQueueMoveResult, DshRpcError, DshSessionDetail, DshSessionPage, DshSessionProjections,
   DshSessionSearch, DshSessionSearchHit,
@@ -15,7 +23,8 @@ import {
   workspaceListing, workspaceText
 } from './DshWire';
 
-export { DshApproval, DshChatUpdate, DshMessage, DshModelCatalog, DshModelInfo, DshModelSelection,
+export { DshApproval, DshChatUpdate, DshCommand, DshCommandNotice, DshCommandResult, DshMessage,
+  DshModelCatalog, DshModelInfo, DshModelSelection,
   DshModelSelectionResult, DshProviderGroup, DshReasoningEffort, DshSession, DshSettingsOp, DshTool,
   DshGoal, DshGoalRef, DshPermissionCatalog, DshPermissionOption, DshQuestion, DshQuestionAnswer, DshQuestionOption,
   DshQuestionRequest, DshQueueAction, DshQueuedPrompt, DshQueueMoveResult, DshQueueTarget, DshSessionDetail,
@@ -24,6 +33,20 @@ export { DshApproval, DshChatUpdate, DshMessage, DshModelCatalog, DshModelInfo, 
   DshWorkspace, DshWorkspaceEntry, DshWorkspaceListing, DshWorkspaceText, WireObject } from './DshWire';
 
 export type DshSubscription = () => void;
+
+class DshAttachmentPreparationError extends Error {}
+
+export interface DshDuplexStream {
+  write: (value: WireObject) => Promise<void>;
+  cancel: DshSubscription;
+}
+
+export interface DshWebSession {
+  baseUrl: string;
+  cookie: string;
+  authorization: string;
+  generation: number;
+}
 
 export interface DshEngineCapabilities {
   local: boolean;
@@ -77,15 +100,21 @@ function agentArgs(sessionId: string): WireObject {
 
 export class DshClient {
   private socket?: webSocket.WebSocket;
+  private ownedConnections: Set<DshClient> = new Set();
+  private connectionOwner?: DshClient;
   private http?: rcp.Session;
   private base: string = '';
   private local: boolean = false;
   private proxy: 'system' | 'no-proxy' = 'system';
+  private binaryUploadMissing: boolean = false;
   private headers: rcp.RequestHeaders = {};
   private events?: Subscription;
   private workspaceStream?: Subscription;
   private sessionStream?: Subscription;
   private streams: Map<string, Subscription> = new Map();
+  private signalReceipts: WeakSet<CompanionRunReceipt> = new WeakSet();
+  private signalCapabilities: Map<CompanionSignalCapability, number> = new Map();
+  private signalSubscriptions: Set<DshSubscription> = new Set();
   private hostListeners: Set<(event: WireObject) => void> = new Set();
   private clientId: string = '';
   private generation: number = 0;
@@ -180,7 +209,14 @@ export class DshClient {
   }
 
   close(): void {
+    this.connectionOwner?.ownedConnections.delete(this);
+    this.connectionOwner = undefined;
+    for (const child of Array.from(this.ownedConnections)) child.close();
+    this.ownedConnections.clear();
     this.generation++;
+    this.signalSubscriptions.forEach((stop: DshSubscription) => stop());
+    this.signalSubscriptions.clear();
+    this.signalCapabilities.clear();
     const socket = this.socket;
     const http = this.http;
     this.socket = undefined;
@@ -188,6 +224,7 @@ export class DshClient {
     this.base = '';
     this.local = false;
     this.proxy = 'system';
+    this.binaryUploadMissing = false;
     this.headers = {};
     this.clientId = '';
     const events = this.events;
@@ -225,6 +262,16 @@ export class DshClient {
 
   connectionIdentity(): number {
     return this.generation;
+  }
+
+  webSession(): DshWebSession {
+    if (!this.http || !this.clientId) throw new Error('DSH 主机未连接');
+    return { baseUrl: this.base, cookie: String(this.headers.cookie || ''),
+      authorization: String(this.headers.authorization || ''), generation: this.generation };
+  }
+
+  localAccountCallbackOrigin(): string {
+    return this.local ? this.base : '';
   }
 
   async exportSessionLog(sessionId: string, localPath: string,
@@ -400,7 +447,7 @@ export class DshClient {
     return { items: items, hasMore: value['hasMore'] === true };
   }
 
-  async listSessions(includeArchived: boolean = false): Promise<DshSession[]> {
+  async listSessions(includeArchived: boolean = false, includeSubagents: boolean = false): Promise<DshSession[]> {
     const request: WireObject = {};
     const args: WireObject = {};
     args['_request'] = request;
@@ -410,7 +457,7 @@ export class DshClient {
       const row = object(value);
       const id = string(row['sessionId']);
       const archived = this.archived.includes(id);
-      if (!id || (!includeArchived && archived) || row['origin'] === 'subagent') {
+      if (!id || (!includeArchived && archived) || (!includeSubagents && row['origin'] === 'subagent')) {
         continue;
       }
       const projections = object(object(row['projections'])['values']);
@@ -421,6 +468,7 @@ export class DshClient {
         id: id,
         title: string(projections['title']) || string(row['title']) || '新对话',
         cwd: string(row['cwd']),
+        origin: string(row['origin']), parentSessionId: string(row['parentSessionId']),
         updatedAt: Number.isFinite(parsed) ? parsed : 0,
         archived: archived, pinned: this.pinned.includes(id), model: modelSelection(models['next']) ?? modelSelection(models['lastUsed'])
       });
@@ -498,6 +546,7 @@ export class DshClient {
             this.stopChatControl();
             this.cancelStream(stream.id);
             transcript.running = false;
+            transcript.compacting = false;
             if (opened) {
               this.publishChat(reason);
             }
@@ -743,6 +792,18 @@ export class DshClient {
     return workspaceListing(await this.rpc('workspaceFiles/list', workspaceFileArgs(sessionId, path)), path);
   }
 
+  async fileReferences(sessionId: string, query: string): Promise<WireObject[]> {
+    const args = agentArgs(sessionId);
+    args['query'] = query;
+    return array(await this.rpc('fileReferences/list', args)).map((value: Object): WireObject => object(value));
+  }
+
+  async sessionReferences(sessionId: string, query: string): Promise<WireObject[]> {
+    const args = agentArgs(sessionId);
+    args['query'] = query;
+    return array(await this.rpc('sessionReferenceResolver/candidates', args)).map((value: Object): WireObject => object(value));
+  }
+
   async readWorkspaceText(sessionId: string, path: string, offset: number = 1, limit: number = 500): Promise<DshWorkspaceText> {
     const args = workspaceFileArgs(sessionId, path);
     const range: WireObject = {};
@@ -756,6 +817,183 @@ export class DshClient {
     await this.sendPrompt(sessionId, text, false, requestId ?? util.generateRandomUUID());
   }
 
+  async speechCatalog(): Promise<SpeechCatalog | undefined> {
+    try { return speechCatalog(await this.rpc('speech/catalog', {}, 4000)); }
+    catch (error) {
+      if (error instanceof DshRpcError && ['gateway/endpoint-not-found', 'gateway/definition-unavailable',
+        'gateway/invocation-unavailable', 'gateway/service-unavailable', 'gateway/method-unavailable'].includes(error.code)) return undefined;
+      throw error as Error;
+    }
+  }
+
+  async configureSpeech(providerId?: string, language?: string): Promise<void> {
+    const patch: WireObject = {};
+    if (providerId !== undefined) patch['providerId'] = providerId;
+    if (language !== undefined) patch['language'] = language;
+    await this.rpc('speech/configure', { 'patch': patch });
+  }
+
+  async prepareSpeech(providerId: string, downloadSource?: string): Promise<void> {
+    const args: WireObject = { 'providerId': providerId };
+    if (downloadSource !== undefined) {
+      const options: WireObject = { 'downloadSource': downloadSource };
+      args['options'] = options;
+    }
+    await this.rpc('speech/prepare', args);
+  }
+
+  async cancelSpeechPreparation(providerId: string): Promise<void> {
+    await this.rpc('speech/cancelPreparation', { 'providerId': providerId }, 20000);
+  }
+
+  async transcribeSpeech(wav: ArrayBuffer, providerId?: string, language?: string,
+    setCancel?: (cancel: DshSubscription) => void): Promise<SpeechTranscript> {
+    checkSpeechWav(wav);
+    const request: WireObject = { 'audioBase64': new util.Base64Helper().encodeToString(new Uint8Array(wav)) };
+    if (providerId !== undefined) request['providerId'] = providerId;
+    if (language !== undefined) request['language'] = language;
+    return speechTranscript(await this.rpc('speech/transcribe', { 'request': request }, 120000, setCancel));
+  }
+
+  async promptWithAttachments(sessionId: string, text: string, files: DraftAttachment[], requestId: string,
+    current: () => boolean, allowFileFallback: boolean, steer: boolean = false): Promise<boolean> {
+    const generation = this.generation;
+    const check = (): void => {
+      if (generation !== this.generation || !current()) throw new Error('主机或对话已切换，附件未发送。');
+    };
+    const content: WireObject[] = [];
+    const imageIndexes: number[] = [];
+    if (text) content.push({ 'type': 'text', 'text': text });
+    let imageBytes = 0;
+    try {
+      for (const file of files) {
+        check();
+        if (file.mediaType) {
+          imageBytes += file.size;
+          if (imageBytes > 12 * 1024 * 1024) throw new Error('单次发送的图片数据不能超过 12 MiB。');
+          imageIndexes.push(content.length);
+          const data = await this.attachmentBase64(file, 4 * 1024 * 1024);
+          content.push({ 'type': 'image', 'mediaType': file.mediaType, 'name': file.name, 'data': data });
+        } else {
+          if (!allowFileFallback) throw new Error('加密中继只支持图片附件。');
+          content.push(await this.stageAttachment(sessionId, file, check));
+        }
+      }
+      check();
+    } catch (error) {
+      // No prompt was submitted, so a removed queue item can safely be restored as a draft.
+      throw new DshAttachmentPreparationError((error as Error).message);
+    }
+    try {
+      await this.submitPromptContent(sessionId, content, steer, requestId);
+      return false;
+    } catch (error) {
+      if (!(error instanceof DshRpcError) || error.code !== 'session/attachment-invalid' ||
+        error.reason !== 'MODEL_DOES_NOT_SUPPORT_IMAGES' || !imageIndexes.length) throw error as Error;
+      if (!allowFileFallback) throw new DshAttachmentPreparationError('当前模型不支持图片，请切换到支持图片的模型。');
+      const images = files.filter((file: DraftAttachment) => !!file.mediaType);
+      try {
+        for (let i = 0; i < imageIndexes.length; i++) {
+          check();
+          content[imageIndexes[i]] = await this.stageAttachment(sessionId, images[i], check);
+        }
+        check();
+      } catch (preparationError) {
+        throw new DshAttachmentPreparationError((preparationError as Error).message);
+      }
+      await this.submitPromptContent(sessionId, content, steer, requestId);
+      return true;
+    }
+  }
+
+  private async attachmentBase64(file: DraftAttachment, limit: number): Promise<string> {
+    if (file.size > limit) throw new Error('主机的内联附件限额低于这个文件的大小。');
+    const bytes = new ArrayBuffer(file.size);
+    if (file.size) {
+      const source = await fs.open(file.path, fs.OpenMode.READ_ONLY);
+      try {
+        let offset = 0;
+        while (offset < file.size) {
+          const chunk = new ArrayBuffer(Math.min(1024 * 1024, file.size - offset));
+          const count = await fs.read(source.fd, chunk);
+          if (count <= 0) throw new Error('附件缓存未完整读取。');
+          new Uint8Array(bytes).set(new Uint8Array(chunk, 0, count), offset);
+          offset += count;
+        }
+      } finally { await fs.close(source); }
+    }
+    return new util.Base64Helper().encodeToString(new Uint8Array(bytes));
+  }
+
+  private async stageAttachment(sessionId: string, file: DraftAttachment, check: () => void): Promise<WireObject> {
+    const http = this.http;
+    if (!http || !this.clientId) throw new Error('DSH 主机未连接');
+    let value: WireObject = {};
+    if (!this.binaryUploadMissing) {
+      const address = `${this.base}/api/session/uploadFileBinary?sessionId=${encodeURIComponent(sessionId)}&name=${encodeURIComponent(file.name)}`;
+      const headers: rcp.RequestHeaders = { cookie: this.headers.cookie, authorization: this.headers.authorization,
+        'content-type': 'application/octet-stream' };
+      const body = file.size ? new rcp.UploadFromFile(file.path) : new ArrayBuffer(0);
+      const request = new rcp.Request(address, 'POST', headers, body);
+      request.configuration = { proxy: this.proxy,
+        transfer: { autoRedirect: false, timeout: { connectMs: 10000, transferMs: 600000 } } };
+      const response = await http.fetch(request);
+      check();
+      if (response.statusCode === 404) this.binaryUploadMissing = true;
+      else {
+        if (response.statusCode !== 200 || !response.body || response.body.byteLength > 65536) {
+          throw new Error(`主机未能上传附件（HTTP ${response.statusCode}）。`);
+        }
+        const envelope = object(JSON.parse(util.TextDecoder.create('utf-8').decodeToString(new Uint8Array(response.body))));
+        if (envelope['ok'] !== true) throw new Error(wireError(envelope['error']));
+        value = object(envelope['value']);
+      }
+    }
+    if (this.binaryUploadMissing) {
+      const data = await this.attachmentBase64(file, 30 * 1024 * 1024);
+      check();
+      const request: WireObject = { 'data': data, 'name': file.name };
+      const args = agentArgs(sessionId);
+      args['request'] = request;
+      value = object(await this.rpc('fileUploads/upload', args, 120000));
+      check();
+    }
+    const receipt = string(value['receiptId']);
+    if (!receipt || receipt.length > 256 || number(object(value['file'])['bytes'], -1) !== file.size) {
+      throw new Error('主机返回了无效的附件收据。');
+    }
+    return { 'type': 'file', 'receiptId': receipt };
+  }
+
+  async readSessionImage(sessionId: string, reference: WireObject,
+    setCancel?: (cancel: DshSubscription) => void, current: () => boolean = () => true): Promise<ArrayBuffer> {
+    if (!current()) throw new Error('图片请求已取消');
+    const id = string(reference['attachmentId']);
+    if (!/^sha256:[a-f0-9]{64}$/.test(id) || number(reference['bytes'], 0) > 20 * 1024 * 1024) {
+      throw new Error('图片超出预览范围。');
+    }
+    const generation = this.generation;
+    const request = sessionRequest(sessionId);
+    request['attachment'] = reference;
+    let result: WireObject;
+    try { result = object(await this.rpc('session/attachment', requestArgs(request), 120000, setCancel)); }
+    catch (error) {
+      if (!current() || generation !== this.generation || !(error instanceof DshRpcError) ||
+        !['gateway/arguments-invalid', 'gateway/input-invalid'].includes(error.code)) throw error as Error;
+      const legacy = sessionRequest(sessionId);
+      legacy['attachmentId'] = id;
+      result = object(await this.rpc('session/attachment', requestArgs(legacy), 120000, setCancel));
+    }
+    if (!current() || generation !== this.generation) throw new Error('图片请求已取消');
+    const data = string(result['data']);
+    if (!data || data.length > 4 * Math.ceil(20 * 1024 * 1024 / 3) || !/^[A-Za-z0-9+/]+={0,2}$/.test(data) ||
+      string(object(result['attachment'])['attachmentId']) !== id) throw new Error('主机返回了无效的图片。');
+    const decoded = await new util.Base64Helper().decode(data);
+    if (!current() || generation !== this.generation) throw new Error('图片请求已取消');
+    if (decoded.byteLength > 20 * 1024 * 1024) throw new Error('图片超出预览范围。');
+    return new Uint8Array(decoded).buffer;
+  }
+
   private async sendPrompt(sessionId: string, text: string, steer: boolean, requestId: string): Promise<void> {
     if (!text.trim()) {
       throw new Error('请输入消息');
@@ -763,11 +1001,15 @@ export class DshClient {
     const content: WireObject = {};
     content['type'] = 'text';
     content['text'] = text;
+    await this.submitPromptContent(sessionId, [content], steer, requestId);
+  }
+
+  private async submitPromptContent(sessionId: string, content: WireObject[], steer: boolean, requestId: string): Promise<void> {
     const request: WireObject = {};
     request['requestId'] = requestId;
     request['sessionId'] = sessionId;
     request['mode'] = steer ? 'steer' : 'queue';
-    request['content'] = [content];
+    request['content'] = content;
     const args: WireObject = {};
     args['request'] = request;
     await this.rpc('session/prompt', args);
@@ -794,25 +1036,34 @@ export class DshClient {
     }
   }
 
-  async sendQueuedNow(sessionId: string, itemId: string): Promise<DshQueueMoveResult> {
+  async sendQueuedNow(sessionId: string, itemId: string,
+    attachments: (requestId: string) => DraftAttachment[] = () => [], allowFileFallback: boolean = true): Promise<DshQueueMoveResult> {
     const transcript = this.transcript;
     if (!transcript || transcript.sessionId !== sessionId || !this.sessionStream || this.queueMove === transcript) {
       throw new Error('待发送消息当前无法移动');
     }
     const queue = transcript.queuedPrompts();
+    const files = new Map<string, DraftAttachment[]>();
+    for (const item of queue) {
+      if (item.hasAttachments && item.requestId) files.set(item.id, attachments(item.requestId).slice());
+    }
+    const resendable = (item: DshQueuedPrompt): boolean => !item.automatic &&
+      (item.resendable || (item.hasAttachments === true && (files.get(item.id)?.length || 0) > 0));
     const index = queue.findIndex((item: DshQueuedPrompt) => item.id === itemId);
     const selected = queue[index];
-    if (!selected?.resendable || selected.automatic) {
+    if (!selected || !resendable(selected)) {
       throw new Error('无法重新发送这条消息');
     }
     const recoverable: DshQueuedPrompt[] = [];
     const result: DshQueueMoveResult = { sent: false, recoverable: recoverable };
     const generation = this.generation;
+    const stream = this.sessionStream;
+    const current = (): boolean => generation === this.generation && this.transcript === transcript && this.sessionStream === stream;
     this.queueMove = transcript;
     try {
       await this.updateQueue(sessionId, selected.id, 'remove');
       const moved = [selected];
-      if (generation === this.generation && transcript.running) {
+      if (current() && transcript.running) {
         try {
           await this.cancel(sessionId);
         } catch {
@@ -820,10 +1071,10 @@ export class DshClient {
         }
       }
       for (const item of queue.slice(index + 1)) {
-        if (generation !== this.generation || this.transcript !== transcript) {
+        if (!current()) {
           break;
         }
-        if (item.target === 'next-turn' && item.resendable) {
+        if (item.target === 'next-turn' && resendable(item)) {
           try {
             await this.updateQueue(sessionId, item.id, 'remove');
             moved.push(item);
@@ -839,13 +1090,22 @@ export class DshClient {
           result.error = '主机连接已变更，请核对原主机的待发送消息';
           break;
         }
+        const requestId = item.requestId ?? item.id;
         try {
-          await this.sendPrompt(sessionId, item.text, item.target === 'next-step', item.requestId ?? item.id);
+          const itemFiles = files.get(item.id) || [];
+          if (itemFiles.length) {
+            await this.promptWithAttachments(sessionId, item.text, itemFiles, requestId,
+              () => generation === this.generation, allowFileFallback, item.target === 'next-step');
+          } else {
+            await this.sendPrompt(sessionId, item.text, item.target === 'next-step', requestId);
+          }
           result.sent = result.sent || item.id === selected.id;
         } catch (error) {
-          if (error instanceof DshRpcError && error.code === 'gateway/bad-request') {
+          if (transcript.messages().some((message: DshMessage) => message.role === 'user' && message.requestId === requestId)) {
+            result.sent = result.sent || item.id === selected.id;
+          } else if (error instanceof DshRpcError || error instanceof DshAttachmentPreparationError) {
             recoverable.push(item);
-            result.error = '有消息被主机拒绝，请检查恢复的草稿';
+            result.error = '有消息未能重新发送，请检查恢复的草稿';
           } else {
             result.error = '有消息未获主机确认，重新发送前请检查会话';
           }
@@ -1058,14 +1318,37 @@ export class DshClient {
     if (!/^[a-zA-Z0-9_-]+$/.test(preset)) {
       throw new Error('权限预设格式无效');
     }
-    const args = agentArgs(sessionId);
-    args['line'] = `/permission ${preset}`;
-    const attachments: Object[] = [];
-    args['submittedAttachments'] = attachments;
-    const value = object(await this.rpc('commands/execute', args));
-    if (object(value['result'])['kind'] !== 'success') {
+    if (!(await this.runCommandRequest(sessionId, 'permission', `/permission ${preset}`)).success) {
       throw new Error('主机未能切换会话权限');
     }
+  }
+
+  async listCommands(sessionId: string): Promise<DshCommand[]> {
+    return commandCatalog(await this.rpc('commands/list', agentArgs(sessionId)));
+  }
+
+  async executeCommand(sessionId: string, line: string): Promise<DshCommandResult> {
+    const trimmed = line.trim();
+    const name = /^\/([a-z][a-z0-9_-]*)(?=$|[\t\n\r ])/.exec(trimmed)?.[1];
+    if (!name) {
+      throw new Error('命令格式无效');
+    }
+    const transcript = this.transcript;
+    const result = await this.runCommandRequest(sessionId, name, trimmed);
+    if (this.transcript === transcript && transcript?.sessionId === sessionId) {
+      transcript.applyCommandResult(`local-${util.generateRandomUUID()}`, name, result);
+      this.publishChat();
+    }
+    return result;
+  }
+
+  private async runCommandRequest(sessionId: string, name: string, line: string): Promise<DshCommandResult> {
+    const args = agentArgs(sessionId);
+    args['line'] = line;
+    const attachments: Object[] = [];
+    args['submittedAttachments'] = attachments;
+    // The request owns cancellation, so a normal transfer deadline can abort a healthy compaction.
+    return commandResult(name, await this.rpc('commands/execute', args, name === 'compact' ? 1800000 : undefined));
   }
 
   async sessionProjections(sessionId: string): Promise<DshSessionProjections | null> {
@@ -1285,6 +1568,254 @@ export class DshClient {
     return this.rpc(method, args, timeoutMs);
   }
 
+  async bridgeJson(method: string, path: string, query: WireObject = {}, body?: WireObject,
+    timeoutMs: number = 10000): Promise<Object | null> {
+    const read = method === 'GET' && (/^\/dsh-go\/v1\/(contributions|inventory|plugin-config)$/.test(path) ||
+      /^\/dsh-go\/v1\/(views|plugin-config)\/[A-Za-z0-9_.%~-]+(?:\/[A-Za-z0-9_.%~-]+)*$/.test(path));
+    const write = method === 'POST' && (path === '/dsh-go/v1/invoke' ||
+      /^\/dsh-go\/v1\/plugin-config\/[A-Za-z0-9_.%~-]+$/.test(path));
+    if ((!read && !write) || path.includes('..') || /%2e|%25|%5c/i.test(path) ||
+      !Number.isSafeInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 60000) throw new Error('插件请求路径无效');
+    const http = this.http;
+    if (!http || !this.clientId) throw new Error('DSH 主机未连接');
+    const params: string[] = [];
+    for (const key of Object.keys(query)) {
+      const value = query[key];
+      if (typeof value !== 'string' || value.length > 65536 || !/^[A-Za-z][A-Za-z0-9]*$/.test(key)) {
+        throw new Error('插件请求参数无效');
+      }
+      params.push(`${encodeURIComponent(key)}=${encodeURIComponent(value)}`);
+    }
+    const serialized = body === undefined ? undefined : JSON.stringify(body);
+    if (serialized && serialized.length > 262144) throw new Error('插件请求过大');
+    const request = new rcp.Request(`${this.base}${path}${params.length ? '?' + params.join('&') : ''}`, method, {
+      cookie: this.headers.cookie, authorization: this.headers.authorization, 'content-type': 'application/json'
+    }, serialized);
+    request.configuration = { proxy: this.proxy, transfer: { autoRedirect: false,
+      timeout: { connectMs: 10000, transferMs: timeoutMs } } };
+    const response = await http.fetch(request);
+    if (this.http !== http) throw new Error('主机连接已变更');
+    if (response.statusCode === 404 && read && ['/dsh-go/v1/contributions', '/dsh-go/v1/inventory',
+      '/dsh-go/v1/plugin-config'].includes(path)) return null;
+    const contentType = response.headers['content-type'];
+    if (typeof contentType !== 'string' || !/^application\/json(?:\s*;|$)/i.test(contentType) ||
+      !response.body || response.body.byteLength > 1048576) throw new Error(`插件接口响应无效（HTTP ${response.statusCode}）`);
+    let value: Object;
+    try { value = JSON.parse(util.TextDecoder.create('utf-8').decodeToString(new Uint8Array(response.body))) as Object; }
+    catch { throw new Error('插件接口返回了无效 JSON'); }
+    if (response.statusCode !== 200) {
+      const code = string(object(value)['code']) || string(object(object(value)['error'])['code']);
+      throw new Error(`插件请求失败（${code || 'HTTP ' + response.statusCode}）`);
+    }
+    return value;
+  }
+
+  async webBootPage(): Promise<string> {
+    const http = this.http, generation = this.generation;
+    if (!http || !this.clientId) throw new Error('DSH 主机未连接');
+    const request = new rcp.Request(this.base + '/', 'GET', { cookie: this.headers.cookie, authorization: this.headers.authorization });
+    const chunks: Uint8Array[] = []; let size = 0, invalid = false;
+    const fail = (): void => { invalid = true; try { http.cancel(request); } catch {} };
+    const events: rcp.HttpEventsHandler = {
+      onStatusCodeReceive: (status: number): void => { if (status !== 200) fail(); },
+      onDataReceive: (data: ArrayBuffer): void => { size += data.byteLength; if (size > 4194304 || generation !== this.generation) fail(); if (!invalid) chunks.push(new Uint8Array(data).slice()); }
+    };
+    request.configuration = { proxy: this.proxy, transfer: { autoRedirect: false, timeout: { connectMs: 8000, transferMs: 10000 } }, tracing: { httpEventsHandler: events } };
+    const response = await http.fetch(request);
+    if (invalid || response.statusCode !== 200 || generation !== this.generation || this.http !== http) throw new Error('主机网页读取失败');
+    const bytes = new Uint8Array(size); let offset = 0;
+    for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.byteLength; }
+    return util.TextDecoder.create('utf-8', { fatal: true }).decodeToString(bytes);
+  }
+
+  async pluginAsset(pkg: string, path: string, current: () => boolean = () => true): Promise<Uint8Array> {
+    if (!/^(?:@[a-z0-9._~-]+\/)?[a-z0-9._~-]+$/.test(pkg) || path.length > 512 ||
+      !/^([A-Za-z0-9_~-][A-Za-z0-9._~-]*(\/[A-Za-z0-9_~-][A-Za-z0-9._~-]*)*)\.(png|jpe?g|webp|gif)$/i.test(path)) throw new Error('插件图片来源无效');
+    const http = this.http, generation = this.generation;
+    if (!http || !this.clientId) throw new Error('DSH 主机未连接');
+    const request = new rcp.Request(this.base + '/dsh-go/v1/assets/' + pkg.split('/').map(encodeURIComponent).join('/') + '/' + path.split('/').map(encodeURIComponent).join('/'),
+      'GET', { cookie: this.headers.cookie, authorization: this.headers.authorization });
+    let received = 0, invalid = false, accepted = false;
+    const chunks: Uint8Array[] = [];
+    const cancel = (): void => { invalid = true; try { http.cancel(request); } catch {} };
+    const events: rcp.HttpEventsHandler = {
+      onStatusCodeReceive: (status: number): void => { if (status !== 200) cancel(); },
+      onHeaderReceive: (headers: rcp.ResponseHeaders): void => {
+        const type = headers['content-type'], size = headers['content-length'];
+        accepted = typeof type === 'string' && /^image\/(png|jpe?g|webp|gif)(?:\s*;|$)/i.test(type);
+        if (typeof type !== 'string' || !/^image\/(png|jpe?g|webp|gif)(?:\s*;|$)/i.test(type) || (typeof size === 'string' && Number(size) > 4194304)) cancel();
+      },
+      onDataReceive: (data: ArrayBuffer): void => { received += data.byteLength; if (!accepted || received > 4194304 || !current() || generation !== this.generation) cancel(); if (!invalid) chunks.push(new Uint8Array(data).slice()); }
+    };
+    request.configuration = { proxy: this.proxy, transfer: { autoRedirect: false, timeout: { connectMs: 8000, transferMs: 15000 } }, tracing: { httpEventsHandler: events } };
+    try {
+      const response = await http.fetch(request);
+      if (invalid || !accepted || !received || !current() || generation !== this.generation || this.http !== http || response.statusCode !== 200) throw new Error('插件图片不可用');
+      const bytes = new Uint8Array(received); let offset = 0;
+      for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.byteLength; }
+      return bytes;
+    } catch { throw new Error('插件图片不可用'); }
+  }
+
+  // A separately subscribed client for the companion room. It shares only the
+  // current authenticated origin; closing either child never closes its parent.
+  async forkConnection(onDisconnected?: (reason: string) => void): Promise<DshClient> {
+    if (!this.http || !this.clientId) throw new Error('DSH 主机未连接');
+    const generation = this.generation;
+    const child = new DshClient(onDisconnected);
+    child.base = this.base; child.local = this.local; child.proxy = this.proxy;
+    child.headers = {};
+    if (this.headers.cookie) child.headers.cookie = this.headers.cookie;
+    if (this.headers.authorization) child.headers.authorization = this.headers.authorization;
+    child.http = rcp.createSession({ requestConfiguration: { proxy: this.proxy,
+      transfer: { autoRedirect: false, timeout: { connectMs: 10000, transferMs: 20000 } } } });
+    child.connectionOwner = this; this.ownedConnections.add(child);
+    try {
+      await child.openSocket();
+      if (generation !== this.generation || !this.clientId) throw new Error('主机连接已变更');
+      return child;
+    } catch (error) { child.close(); throw error as Error; }
+  }
+
+  ownsCompanionRunReceipt(receipt:CompanionRunReceipt):boolean { return this.signalReceipts.has(receipt); }
+
+  async companionSignalCapabilities(): Promise<CompanionSignalCapability | undefined> {
+    const http=this.http,generation=this.generation;if(!http||!this.clientId)throw new Error('DSH 主机未连接');
+    const request=new rcp.Request(this.base+'/dsh-go/v1/companion/signals','GET',{cookie:this.headers.cookie,authorization:this.headers.authorization});
+    let status=0,oversized=false;const bytes:number[]=[];
+    const events:rcp.HttpEventsHandler={onStatusCodeReceive:(value:number):void=>{status=value},onDataReceive:(data:ArrayBuffer):void=>{if(bytes.length+data.byteLength>4096){oversized=true;http.cancel(request);return}for(const byte of new Uint8Array(data))bytes.push(byte)}};
+    request.configuration={proxy:this.proxy,transfer:{autoRedirect:false,timeout:{connectMs:8000,transferMs:8000}},tracing:{httpEventsHandler:events}};
+    try{const response=await http.fetch(request);if(!status)status=response.statusCode}catch(error){if(oversized)throw new Error('伙伴信号能力超过大小限制');throw new Error(error instanceof Error?error.message:'伙伴信号能力请求失败')}
+    if(this.http!==http||this.generation!==generation||!this.clientId)throw new Error('主机连接已变更');if(oversized)throw new Error('伙伴信号能力超过大小限制');
+    const text=signalDecode(bytes);let value:WireObject={};try{value=object(JSON.parse(text))}catch{if(status===404&&['Not Found','Not found','Not Found\n','Not found\n'].includes(text))return undefined;throw new Error('伙伴信号能力无效')}
+    if(status===404&&object(value['error'])['code']==='companion/not-found')return undefined;if(status!==200)throw new Error('伙伴信号能力请求失败（HTTP '+status+'）');
+    const capability=signalCapability(value);this.signalCapabilities.set(capability,generation);return capability;
+  }
+
+  companionSignalEvents(capability:CompanionSignalCapability,hostKey:string,isAllowed:()=>boolean,monotonic:()=>number,
+    onEvent:(receipt:CompanionRunReceipt)=>void,onClose:(reason:string)=>void,onReady:()=>void=()=>{}):DshSubscription {
+    const http=this.http,generation=this.generation;
+    if(!http||!this.clientId||this.signalCapabilities.get(capability)!==generation||!capability.available||!signalId(hostKey))throw new Error('伙伴信号需要当前主机的有效能力');
+    const parser=new CompanionSignalSse(capability.generation);let active=true,accepted=false,status=0,timer=-1,connectionTimer=-1;
+    const request=new rcp.Request(this.base+'/dsh-go/v1/companion/signals/stream','GET',{cookie:this.headers.cookie,authorization:this.headers.authorization,accept:'text/event-stream'});
+    const local=():boolean=>active&&this.http===http&&this.generation===generation&&!!this.clientId&&this.signalCapabilities.get(capability)===generation;
+    const stop=():void=>{if(!active)return;active=false;clearTimeout(timer);clearInterval(connectionTimer);this.signalSubscriptions.delete(stop);try{http.cancel(request)}catch{}};
+    const fail=(reason:string):void=>{if(!active)return;stop();onClose(reason)};
+    const current=():boolean=>{if(!local()){stop();return false}let allowed=false;try{allowed=isAllowed()}catch{}if(!allowed||!local()){stop();return false}return true};
+    const touch=():void=>{clearTimeout(timer);timer=setTimeout(()=>fail('伙伴信号连接超时'),45000)};
+    const events:rcp.HttpEventsHandler={
+      onStatusCodeReceive:(value:number):void=>{status=value;if(value!==200)fail('伙伴信号连接失败（HTTP '+value+'）')},
+      onHeaderReceive:(headers:rcp.ResponseHeaders):void=>{const type=headers['content-type'];accepted=typeof type==='string'&&/^text\/event-stream(?:\s*;|$)/i.test(type);if(!accepted)fail('伙伴信号返回无效类型')},
+      onDataReceive:(bytes:ArrayBuffer):void=>{if(!current())return;touch();if(!accepted||status!==200){fail('伙伴信号缺少有效响应头');return}try{parser.push(new Uint8Array(bytes),(frame:CompanionSignalFrame):void=>{if(!current())return;if(frame.event==='companion/ready'){onReady();current();return}if(frame.event==='companion/unavailable'){fail(string(frame.value['reason']));return}const signal=signalRun(frame.value,capability.generation,hostKey,new Date().toISOString());if(signal.id!==frame.id)throw new Error('伙伴信号标识不匹配');const receipt:CompanionRunReceipt={client:this,connection:generation,capability:capability,signal:signal,received:monotonic(),current:():boolean=>current()&&parser.ready,locallyCurrent:():boolean=>local()&&parser.ready};this.signalReceipts.add(receipt);if(current())onEvent(receipt);current()})}catch{fail('伙伴信号协议无效')}}
+    };
+    request.configuration={proxy:this.proxy,transfer:{autoRedirect:false,timeout:{connectMs:8000,transferMs:2147483647}},tracing:{httpEventsHandler:events}};
+    this.signalSubscriptions.add(stop);if(!current())return stop;touch();connectionTimer=setInterval(()=>{current()},250);
+    void http.fetch(request).then(()=>fail('伙伴信号连接已结束')).catch(()=>fail('伙伴信号连接失败'));return stop;
+  }
+
+  async companionJson(method: string, endpoint: string, body?: WireObject, sessionId?: string): Promise<Object | null> {
+    const reads: string[] = ['', '/memories', '/prompt-context', '/signals', '/recall', '/export'];
+    const writes: string[] = ['/events', '/memories', '/memories/delete', '/memories/clear', '/prompt-context', '/signals', '/recall/bind', '/recall/revoke'];
+    if (!(method === 'GET' && (reads.includes(endpoint) || /^\/recall\/bindings\/[a-f0-9]{8}-[a-f0-9]{4}-[1-8][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/.test(endpoint)) || method === 'POST' && writes.includes(endpoint))) throw new Error('伙伴请求路径无效');
+    const http = this.http; if (!http || !this.clientId) throw new Error('DSH 主机未连接');
+    const encoded = body === undefined ? undefined : JSON.stringify(body);
+    if (encoded && encoded.length > 262144) throw new Error('伙伴请求过大');
+    if (sessionId !== undefined && (endpoint !== '/prompt-context' || method !== 'GET' || !sessionId || sessionId.length > 128 || /[\x00-\x1f\x7f]/.test(sessionId))) throw new Error('伙伴会话参数无效');
+    const request = new rcp.Request(this.base + '/dsh-go/v1/companion' + endpoint + (sessionId ? '?sessionId=' + encodeURIComponent(sessionId) : ''), method,
+      { cookie: this.headers.cookie, authorization: this.headers.authorization, 'content-type': 'application/json' }, encoded);
+    request.configuration = { proxy: this.proxy, transfer: { autoRedirect: false, timeout: { connectMs: 8000, transferMs: 10000 } } };
+    const response = await http.fetch(request); if (this.http !== http) throw new Error('主机连接已变更');
+    if (!response.body || response.body.byteLength > 1048576) throw new Error('伙伴接口返回无效内容');
+    let value: Object; try { value = JSON.parse(util.TextDecoder.create('utf-8').decodeToString(new Uint8Array(response.body))) as Object; }
+    catch { throw new Error('伙伴接口返回无效 JSON'); }
+    if (response.statusCode !== 200) { const row = object(value); const code = string(row['code']) || string(object(row['error'])['code']); if (response.statusCode === 404 && method === 'GET' && (endpoint === '' || endpoint === '/prompt-context' || endpoint === '/recall') && (!code || code === 'not-found' || code === 'route/not-found' || code === 'companion/not-found')) return null; throw new Error('伙伴请求失败（' + (code || response.statusCode.toString()) + '）'); }
+    return value;
+  }
+
+  async dsBotCall(endpoint: string, payload: WireObject = {}, timeoutMs: number = 20000): Promise<Object | null> {
+    if (!DSBOT_ENDPOINTS.includes(endpoint) || !Number.isSafeInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 60000) throw new Error('DS Bot 请求无效');
+    const http = this.http;
+    if (!http || !this.clientId) throw new DshRpcError('bot/offline', 'DSH 主机未连接');
+    const body: WireObject = { 'endpoint': endpoint, 'payload': payload };
+    const serialized = JSON.stringify(body);
+    if (serialized.length > 262144) throw new Error('DS Bot 请求过大');
+    const request = new rcp.Request(`${this.base}/api/bot`, 'POST', {
+      cookie: this.headers.cookie, authorization: this.headers.authorization, 'content-type': 'application/json'
+    }, serialized);
+    request.configuration = { proxy: this.proxy, transfer: { autoRedirect: false, timeout: { connectMs: 10000, transferMs: timeoutMs } } };
+    const response = await http.fetch(request);
+    if (this.http !== http) throw new DshRpcError('bot/connection-changed', '主机连接已变更');
+    if (response.statusCode !== 200) throw new DshRpcError('bot/http-' + response.statusCode, 'DS Bot 请求失败');
+    const contentType = response.headers['content-type'];
+    if (typeof contentType !== 'string' || !/^application\/json(?:\s*;|$)/i.test(contentType) || !response.body || response.body.byteLength > 2097152) throw new DshRpcError('bot/protocol', 'DS Bot 返回了无效响应');
+    let answer: Object;
+    try { answer = JSON.parse(util.TextDecoder.create('utf-8').decodeToString(new Uint8Array(response.body))) as Object; }
+    catch { throw new DshRpcError('bot/protocol', 'DS Bot 返回了无效响应'); }
+    return dsBotAnswer(answer);
+  }
+
+  dsBotFeed(onEvent: (event: DsBotEvent) => void, onClose: (reason: string) => void): DshSubscription {
+    const http = this.http;
+    if (!http || !this.clientId) throw new DshRpcError('bot/offline', 'DSH 主机未连接');
+    const parser = new DsBotSseParser(), decoder = util.TextDecoder.create('utf-8');
+    let active = true, accepted = false, timer = -1;
+    const request = new rcp.Request(`${this.base}/api/bot/feed`, 'GET', {
+      cookie: this.headers.cookie, authorization: this.headers.authorization, accept: 'text/event-stream'
+    });
+    const stop = (): void => { active = false; clearTimeout(timer); try { http.cancel(request); } catch {} };
+    const fail = (reason: string): void => { if (!active) return; stop(); if (this.http === http) onClose(reason); };
+    const heartbeat = (): void => { clearTimeout(timer); timer = setTimeout(() => fail('DS Bot 实时连接超时'), 50000); };
+    const events: rcp.HttpEventsHandler = {
+      onStatusCodeReceive: (status: number): void => { if (status !== 200) fail('DS Bot 实时连接失败（HTTP ' + status + '）'); },
+      onHeaderReceive: (headers: rcp.ResponseHeaders): void => { const type = headers['content-type']; accepted = typeof type === 'string' && /^text\/event-stream(?:\s*;|$)/i.test(type); if (!accepted) fail('DS Bot 实时连接返回无效类型'); },
+      onDataReceive: (data: ArrayBuffer): void => {
+        if (!active || this.http !== http) { stop(); return; }
+        heartbeat(); if (!accepted) return;
+        try { const text = decoder.decodeWithStream(new Uint8Array(data), { stream: true }); for (const event of parser.push(text)) onEvent(event); }
+        catch { fail('DS Bot 实时事件无效'); }
+      }
+    };
+    request.configuration = { proxy: this.proxy, transfer: { autoRedirect: false, timeout: { connectMs: 10000, transferMs: 600000 } }, tracing: { httpEventsHandler: events } };
+    heartbeat(); void http.fetch(request).then(() => fail('DS Bot 实时连接已断开')).catch(() => fail('DS Bot 实时连接失败'));
+    return stop;
+  }
+
+  async voiceScribeRequest(body: WireObject): Promise<WireObject> {
+    const http = this.http;
+    if (!http || !this.clientId) throw new Error('DSH 主机未连接');
+    if (body['action'] !== 'get-settings' && body['action'] !== 'set-settings') {
+      throw new Error('语音速记请求无效');
+    }
+    const serialized = JSON.stringify(body);
+    if (serialized.length > 65536) throw new Error('语音速记设置过大');
+    const request = new rcp.Request(`${this.base}/voice-input`, 'POST', {
+      cookie: this.headers.cookie, authorization: this.headers.authorization, 'content-type': 'application/json'
+    }, serialized);
+    request.configuration = { proxy: this.proxy,
+      transfer: { autoRedirect: false, timeout: { connectMs: 10000, transferMs: 20000 } } };
+    const response = await http.fetch(request);
+    if (this.http !== http) throw new Error('主机连接已变更');
+    if (response.statusCode !== 200) throw new Error(`语音速记请求失败（HTTP ${response.statusCode}）`);
+    const contentType = response.headers['content-type'];
+    if (typeof contentType !== 'string' || !/^application\/json(?:\s*;|$)/i.test(contentType) ||
+      !response.body || response.body.byteLength > 262144) throw new Error('语音速记返回了无效响应');
+    let envelope: WireObject;
+    try { envelope = object(JSON.parse(util.TextDecoder.create('utf-8').decodeToString(new Uint8Array(response.body)))); }
+    catch { throw new Error('语音速记返回了无效响应'); }
+    if (envelope['ok'] !== true) throw new Error(wireError(envelope['error']));
+    const value = envelope['value'];
+    if (body['action'] === 'set-settings' && value === undefined) return {};
+    if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error('语音速记返回了无效设置');
+    return object(value);
+  }
+
+  pendingAttention(): WireObject[] {
+    const rows: WireObject[] = [];
+    for (const pending of this.approvals.values()) rows.push({ 'id': pending.request.id, 'sessionId': pending.request.sessionId, 'kind': 'approval' });
+    for (const question of this.questions.values()) if (!question.continued) rows.push({ 'id': question.id, 'sessionId': question.sessionId, 'kind': 'question' });
+    return rows;
+  }
+
   onHostEvent(listener: (event: WireObject) => void): DshSubscription {
     this.hostListeners.add(listener);
     return () => { this.hostListeners.delete(listener); };
@@ -1292,6 +1823,12 @@ export class DshClient {
 
   async openStream(endpoint: string, args: WireObject, onItem: (value: WireObject) => void,
     onClose: (error?: string) => void): Promise<DshSubscription> {
+    const stream = await this.openDuplexStream(endpoint, args, onItem, onClose);
+    return stream.cancel;
+  }
+
+  async openDuplexStream(endpoint: string, args: WireObject, onItem: (value: WireObject) => void,
+    onClose: (error?: string) => void): Promise<DshDuplexStream> {
     if (!this.socket || !this.clientId) {
       throw new Error('DSH 主机未连接');
     }
@@ -1304,11 +1841,20 @@ export class DshClient {
       this.streams.delete(id);
       throw new Error('无法打开 DSH 订阅');
     }
-    return () => {
+    const cancel = (): void => {
       if (this.streams.delete(id)) {
         this.cancelStream(id).catch(() => {});
       }
     };
+    const write = async (value: WireObject): Promise<void> => {
+      if (this.streams.get(id) !== stream) throw new Error('DSH 订阅已关闭');
+      const frame: WireObject = {};
+      frame['type'] = 'item';
+      frame['streamId'] = id;
+      frame['value'] = value;
+      await this.send(frame);
+    };
+    return { write: write, cancel: cancel };
   }
 
   private checkCredentialRef(ref: string): void {
@@ -1331,18 +1877,20 @@ export class DshClient {
     let response: rcp.Response;
     try {
       const request = new rcp.Request(`${this.base}/api/${method}`, 'POST', headers, body);
-      setCancel?.(() => {
-        if (this.http === http) {
-          http.cancel(request);
-        }
-      });
       if (timeoutMs !== undefined) {
         request.configuration = {
           proxy: this.proxy,
           transfer: { autoRedirect: false, timeout: { connectMs: Math.min(timeoutMs, 10000), transferMs: timeoutMs } }
         };
       }
-      response = await http.fetch(request);
+      const pending = http.fetch(request);
+      let active = true;
+      setCancel?.(() => {
+        if (active && this.http === http) {
+          try { http.cancel(request); } catch { /* The request may already have completed. */ }
+        }
+      });
+      try { response = await pending; } finally { active = false; }
     } catch {
       throw new Error('与 DSH 主机通信失败');
     }
@@ -1353,13 +1901,24 @@ export class DshClient {
       if (response.statusCode === 401 || response.statusCode === 403) {
         throw new Error('主机拒绝请求，请检查令牌、代理认证和 DSH 的受信任主机配置');
       }
+      if (response.statusCode === 404 && method.startsWith('speech/')) {
+        throw new DshRpcError('gateway/endpoint-not-found', '这台主机未提供语音服务');
+      }
       if (response.statusCode === 404 && (method.startsWith('goals/') || method.startsWith('permissionPresets/') ||
-        method.startsWith('userQuestions/'))) {
+        method.startsWith('userQuestions/') || method.startsWith('commands/'))) {
         throw new Error('这台主机不支持此功能');
       }
       throw new Error(`主机请求失败（HTTP ${response.statusCode}）`);
     }
     const bodyBytes = response.body;
+    const contentTypeHeader = response.headers['content-type'];
+    const contentType = typeof contentTypeHeader === 'string' ? contentTypeHeader : '';
+    if (bodyBytes && /^multipart\/form-data\s*;/i.test(contentType)) {
+      return parseBinaryRpcResponse(bodyBytes, contentType, rpcId, method);
+    }
+    if (method === 'session/attachment' && bodyBytes && bodyBytes.byteLength > 28 * 1024 * 1024) {
+      throw new Error('图片超出预览范围。');
+    }
     const responseText = bodyBytes ? util.TextDecoder.create('utf-8').decodeToString(new Uint8Array(bodyBytes)) : '';
     return parseRpcResponse(responseText, rpcId, method);
   }
@@ -1597,9 +2156,10 @@ export class DshClient {
     const questions = liveQuestions.concat(transcript.continuedQuestions().filter((item: DshQuestionRequest) =>
       !liveQuestions.some((live: DshQuestionRequest) => live.callId === item.callId)));
     const update: DshChatUpdate = {
-      sessionId: transcript.sessionId, messages: transcript.messages(), running: transcript.running,
+      sessionId: transcript.sessionId, messages: transcript.messages(), records: transcript.sessionRecords(), running: transcript.running,
       approval: pending ? this.approvalView(pending) : undefined, error: error, sessionError: transcript.sessionError,
       tools: transcript.tools(), notices: transcript.turnNotices(), turnFailureCode: transcript.turnFailureCode,
+      commands: transcript.commandNotices(), compacting: transcript.compacting,
       queue: transcript.queuedPrompts(),
       questions: questions, projections: transcript.projections(), todos: transcript.todos(), goal: transcript.goal(),
       goalSupported: transcript.goalSupported()

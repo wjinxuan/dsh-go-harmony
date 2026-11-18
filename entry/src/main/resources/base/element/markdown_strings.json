@@ -3,6 +3,8 @@
     { "name": "markdown_copied", "value": "已复制" },
     { "name": "markdown_copy_code", "value": "复制代码" },
     { "name": "markdown_copy_failed", "value": "复制失败" },
-    { "name": "markdown_link_failed", "value": "无法打开这个链接" }
+    { "name": "markdown_link_failed", "value": "无法打开这个链接" },
+    { "name": "markdown_task_checked", "value": "任务已勾选" },
+    { "name": "markdown_task_unchecked", "value": "任务未勾选" }
   ]
 }

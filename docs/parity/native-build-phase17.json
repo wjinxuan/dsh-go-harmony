@@ -1,0 +1,560 @@
+{
+  "phase": 17,
+  "recorded_at": "2026-11-17T09:10:39.331432+00:00",
+  "status": "installed_five_targeted_ui_rechecks_pass_partial_acceptance_pending",
+  "all_acceptance_complete": false,
+  "snapshot": {
+    "through": "2026-11-18 step590",
+    "scope": "Five targeted phase17 UI fixes rechecked. NativeRecall ON/OFF/cancel/reopen and pre-restart marker read.589 delete plus unchanged own controls confirmed after588 found target not yet deleted. Actual restart and full17-row acceptance remain open.",
+    "productionFrozen": true
+  },
+  "previous_record": {
+    "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/docs/parity/native-build-phase16.json",
+    "bytes": 17039,
+    "sha256": "f73ce930259987227419fd714d3be016857e0e5adc300fc273d9490b32e1a2e4"
+  },
+  "baseline": {
+    "upstreamCommit": "a9877420ab9aee121134faf01b6a92a39ce0b05b",
+    "version": "dsh-Go v1.0.15",
+    "installedHapSha256": "d677c58ef79eef4f9580c820667a50e30ce9df2123c8f73bf8146a59c4a9cda4",
+    "runtimeSha256": "93bd20716200d852353999568f4898f9fca2f69846fac5bfc4d0ce85d0ebcf27"
+  },
+  "problems": [
+    {
+      "id": "native-plugin-retained-values",
+      "deviceSteps": [
+        451,
+        452,
+        453,
+        454,
+        455
+      ],
+      "status": "PHONE_FAILURE_PRESERVED",
+      "description": "Server accepted exact five fields, increment2 and reset, but settled UI retained Waiting/0 and old fields. Stable keys now resolve the current node in retained child observers."
+    },
+    {
+      "id": "native-plugin-selection",
+      "deviceSteps": [
+        449,
+        450,
+        456
+      ],
+      "status": "PHONE_FAILURE_PRESERVED",
+      "description": "A/B/C all blue. Selected styles/checkmark/accessibility now derive from current raw value for single and multi controls."
+    },
+    {
+      "id": "native-plugin-image-safe-area",
+      "deviceSteps": [
+        461,
+        462
+      ],
+      "status": "PHONE_FAILURE_PRESERVED",
+      "description": "Fullscreen Back/title covered by status/capsule. Same-window avoid-area lifecycle and root padding now retain a56vp header, preserving loader/release/zoom."
+    },
+    {
+      "id": "appearance-live-language",
+      "deviceSteps": [
+        468,
+        469
+      ],
+      "status": "PHONE_FAILURE_PRESERVED",
+      "description": "Title switched but retained builder labels stayed Chinese. Seven toggle/five slider labels now resolve translations inside retained Text observers. Preference write behavior unchanged."
+    },
+    {
+      "id": "quick-panel-save-echo",
+      "deviceSteps": [
+        493,
+        494,
+        495,
+        496
+      ],
+      "status": "PHONE_FAILURE_PRESERVED",
+      "description": "Added row disappeared and controls stayed disabled. Consume requested selection, ignore equal swipe/order values and ignore detached callbacks; failed saves preserve prior component preferences and restore controls; no disk rollback proof."
+    }
+  ],
+  "change": {
+    "productionSources": [
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/ets/ui/NativePluginView.ets",
+        "bytes": 20915,
+        "sha256": "3cf32d3565f79aad0aab7caed9c75ca46d21a0e043fd713cb4556b42d090f789"
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/ets/ui/NativePluginInput.ets",
+        "bytes": 5225,
+        "sha256": "94145ff67d83de82ef947510dff2c85ac267246dbafe5de6a4e7f0b15f20780c"
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/ets/ui/NativePluginImage.ets",
+        "bytes": 6650,
+        "sha256": "62afaca1e65365c2275bebb082de312b9bcddf2ff28c01919240db612081135f"
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/ets/ui/QuickPanel.ets",
+        "bytes": 10088,
+        "sha256": "94b8745f45a7ca020e8be59fac1c78e56bf5d6190e5fdd8d4a3e5a8764bafb54"
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/ets/ui/settings/AppearanceSettings.ets",
+        "bytes": 9896,
+        "sha256": "94f8dd3f0802a5e1d45c699873f4111ffcecbc55a2b233f2d6c114f57078f552"
+      }
+    ],
+    "testSources": [
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/native-plugin-reactivity.test.mjs",
+        "bytes": 10009,
+        "sha256": "ab3577ca21cd2fe499d0c18f116635e0073159ad02b556361ac289ad20efc529"
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/quick-panel-reactivity.test.mjs",
+        "bytes": 7526,
+        "sha256": "2e494a85d4ce911e8ec300f542a75e0b689a4efa88b344ef2172d1c5d9f0615b"
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/appearance-label-reactivity.test.mjs",
+        "bytes": 6666,
+        "sha256": "7014904076b4cb4f4c8b9f4078bc520743c168abe7ee67ef35c5607471a930d3"
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/native-plugin-image-safe-area.test.mjs",
+        "bytes": 6109,
+        "sha256": "bbcd174247fe1413e020b747bc85331f6e69330e7fd72f7bc5cf58743be7c6d9"
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/mermaid-safe-area.test.mjs",
+        "bytes": 2657,
+        "sha256": "db8882bf861c46abcc461226670c0ebbb4ae8f60d5b94dc74a3a7db2dbbca3fc"
+      }
+    ],
+    "peerReview": [
+      {
+        "path": "/tmp/dsh-device-20261117/plugin-reactivity-and-image-peer-review.json",
+        "bytes": 2570,
+        "sha256": "470f71a096ac9b8d6527f74edfda3b481be7dca69db32602508a2c087af45e98"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/appearance-label-reactivity-verification.json",
+        "bytes": 6944,
+        "sha256": "e1e756a4ddb890cd2d277b90b0f3f2c51fe839d1a3c4f917bed0b16b3245b197"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/quick-panel-reactivity-verification.json",
+        "bytes": 6064,
+        "sha256": "dd88d133210a2589914b063d24f85bb40892589f4f7a42190ba0bbd18653c1c3"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/quick-panel-peer-review.json",
+        "bytes": 2301,
+        "sha256": "7dd2c95ae61e2bf7f56d67a6738daeff2d5d5654ba976dccaebe112c754c2e62"
+      }
+    ],
+    "peerReviewSnapshotNote": "Some earlier source-review artifacts still say compiled pending;501/505 below provide later actual build/generated results. Their historical wording and failed attempts are preserved.",
+    "quickPanelReviewBoundary": "Both Index callers mount conditionally. Actual compiled ForEach uses itemUsesIndex=true, so no new ordering rewrite is needed. Failed-flush tests prove old component preferences/error/control recovery only, not disk transaction rollback."
+  },
+  "build": {
+    "exitCode": 0,
+    "elapsedSeconds": 7.733,
+    "record": {
+      "path": "/tmp/dsh-device-20261117/501-phase17-build-result.json",
+      "bytes": 208,
+      "sha256": "6c333502adca1d793ee6d7ca1f27e485dd64673915cf7118cd47354fe9967999"
+    },
+    "log": {
+      "path": "/tmp/dsh-device-20261117/501-phase17-build.log",
+      "bytes": 93265,
+      "sha256": "dfa18769f56d0af2290fd60d1a4a92e9110ea282e25384055d4e3fcc2516feb7"
+    }
+  },
+  "focused_tests": {
+    "initialAttempt": {
+      "status": "MIXED_FAILED_ATTEMPT_PRESERVED",
+      "tests": 36,
+      "pass": 32,
+      "fail": 4,
+      "skipped": 0,
+      "record": {
+        "path": "/tmp/dsh-device-20261117/502-phase17-tests.json",
+        "bytes": 2096,
+        "sha256": "3fc1971a23ede5ffb162290f8f847538615e1998d01d5f93d514e2fd823ea7ab"
+      },
+      "attempts": [
+        {
+          "test": "native-plugin-reactivity",
+          "command": [
+            "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+            "tests/native-plugin-reactivity.test.mjs",
+            "entry/build/default/cache/default/default@CompileArkTS/esmodule/debug/entry/src/main/ets/ui/NativePluginView.ts"
+          ],
+          "exitCode": 1,
+          "log": "/tmp/dsh-device-20261117/502-native-plugin-reactivity.log",
+          "tests": 13,
+          "pass": 9,
+          "fail": 4,
+          "skipped": 0
+        },
+        {
+          "test": "quick-panel-reactivity",
+          "command": [
+            "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+            "tests/quick-panel-reactivity.test.mjs",
+            "entry/build/default/cache/default/default@CompileArkTS/esmodule/debug/entry/src/main/ets/ui/QuickPanel.ts"
+          ],
+          "exitCode": 0,
+          "log": "/tmp/dsh-device-20261117/502-quick-panel-reactivity.log",
+          "tests": 12,
+          "pass": 12,
+          "fail": 0,
+          "skipped": 0
+        },
+        {
+          "test": "appearance-label-reactivity",
+          "command": [
+            "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+            "tests/appearance-label-reactivity.test.mjs",
+            "entry/build/default/cache/default/default@CompileArkTS/esmodule/debug/entry/src/main/ets/ui/settings/AppearanceSettings.ts"
+          ],
+          "exitCode": 0,
+          "log": "/tmp/dsh-device-20261117/502-appearance-label-reactivity.log",
+          "tests": 6,
+          "pass": 6,
+          "fail": 0,
+          "skipped": 0
+        },
+        {
+          "test": "native-plugin-image-safe-area",
+          "command": [
+            "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+            "tests/native-plugin-image-safe-area.test.mjs"
+          ],
+          "exitCode": 0,
+          "log": "/tmp/dsh-device-20261117/502-native-plugin-image-safe-area.log",
+          "tests": 4,
+          "pass": 4,
+          "fail": 0,
+          "skipped": 0
+        },
+        {
+          "test": "mermaid-safe-area",
+          "command": [
+            "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+            "tests/mermaid-safe-area.test.mjs"
+          ],
+          "exitCode": 0,
+          "log": "/tmp/dsh-device-20261117/502-mermaid-safe-area.log",
+          "tests": 1,
+          "pass": 1,
+          "fail": 0,
+          "skipped": 0
+        }
+      ],
+      "failure": "Four actual compiled input cases failed at test extractor start assertion. The generated compiler hoisted itemgen before the old anchor. Test-only extraction anchor corrected; product assertions were not removed or skipped."
+    },
+    "finalAttempt": {
+      "status": "PASS_DEVELOPMENT_CHECKS_NOT_DEVICE",
+      "tests": 36,
+      "pass": 36,
+      "fail": 0,
+      "skipped": 0,
+      "record": {
+        "path": "/tmp/dsh-device-20261117/505-phase17-tests-final.json",
+        "bytes": 3580,
+        "sha256": "eaedebf53675a0b55d852192db3a6cb69626c10b973037a7f25e2dfee24697a7"
+      },
+      "attempts": [
+        {
+          "test": "native-plugin-reactivity",
+          "command": [
+            "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+            "tests/native-plugin-reactivity.test.mjs",
+            "entry/build/default/cache/default/default@CompileArkTS/esmodule/debug/entry/src/main/ets/ui/NativePluginView.ts"
+          ],
+          "exitCode": 0,
+          "log": "/tmp/dsh-device-20261117/native-plugin-reactivity-generated-green.log",
+          "tests": 13,
+          "pass": 13,
+          "fail": 0,
+          "skipped": 0,
+          "priorFailedAttempt": "/tmp/dsh-device-20261117/502-native-plugin-reactivity.log",
+          "testHarnessOnlyCorrection": "Anchor generated Button extraction at the select/segmented/chips branch, before compiler-hoisted itemgen."
+        },
+        {
+          "test": "quick-panel-reactivity",
+          "command": [
+            "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+            "tests/quick-panel-reactivity.test.mjs",
+            "entry/build/default/cache/default/default@CompileArkTS/esmodule/debug/entry/src/main/ets/ui/QuickPanel.ts"
+          ],
+          "exitCode": 0,
+          "log": "/tmp/dsh-device-20261117/502-quick-panel-reactivity.log",
+          "tests": 12,
+          "pass": 12,
+          "fail": 0,
+          "skipped": 0
+        },
+        {
+          "test": "appearance-label-reactivity",
+          "command": [
+            "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+            "tests/appearance-label-reactivity.test.mjs",
+            "entry/build/default/cache/default/default@CompileArkTS/esmodule/debug/entry/src/main/ets/ui/settings/AppearanceSettings.ts"
+          ],
+          "exitCode": 0,
+          "log": "/tmp/dsh-device-20261117/502-appearance-label-reactivity.log",
+          "tests": 6,
+          "pass": 6,
+          "fail": 0,
+          "skipped": 0
+        },
+        {
+          "test": "native-plugin-image-safe-area",
+          "command": [
+            "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+            "tests/native-plugin-image-safe-area.test.mjs"
+          ],
+          "exitCode": 0,
+          "log": "/tmp/dsh-device-20261117/502-native-plugin-image-safe-area.log",
+          "tests": 4,
+          "pass": 4,
+          "fail": 0,
+          "skipped": 0
+        },
+        {
+          "test": "mermaid-safe-area",
+          "command": [
+            "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+            "tests/mermaid-safe-area.test.mjs"
+          ],
+          "exitCode": 0,
+          "log": "/tmp/dsh-device-20261117/502-mermaid-safe-area.log",
+          "tests": 1,
+          "pass": 1,
+          "fail": 0,
+          "skipped": 0
+        }
+      ],
+      "aggregation": "ROOT read the13/13 corrected generated retry and reused the already-passed12+6+4+1 results. No unnecessary rerun;36 is a focused test count, not36 independent phone actions."
+    },
+    "logs": [
+      {
+        "path": "/tmp/dsh-device-20261117/native-plugin-reactivity-generated-green.log",
+        "bytes": 1660,
+        "sha256": "939ef3d9ce660edecad31324a179be20c46a33540925b3abc64725418e9d407d"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/502-quick-panel-reactivity.log",
+        "bytes": 1722,
+        "sha256": "63992931cb51736d4ebacbad9c1729e0c5f28d45425417652bec80e8f9a15c18"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/502-appearance-label-reactivity.log",
+        "bytes": 963,
+        "sha256": "59d82a3404f993a96d3bdb7b204a3fadb39daf9dffb554dde61ae2863cb215eb"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/502-native-plugin-image-safe-area.log",
+        "bytes": 813,
+        "sha256": "f47d3fe9877f25f3b7ab9d41f3840ffaed6b8261d1262056fcddc490c3332edd"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/502-mermaid-safe-area.log",
+        "bytes": 401,
+        "sha256": "87e1bc0c0ffa2ebfe08b171b6626474bb477c9b76af8d0c2efb039d821e85a81"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/502-native-plugin-reactivity.log",
+        "bytes": 6353,
+        "sha256": "374bef17d979246d31c5ab23d03bb615ecd858d5e5422575b7512708de25fe00"
+      }
+    ],
+    "imageDefaultEntry": {
+      "path": "tests/check-native-plugins-live.sh",
+      "change": "Add image-safe-area4 test entry beside reactivity. No live suite rerun:502 already passed4; sh -n passed exit0.",
+      "source": {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/check-native-plugins-live.sh",
+        "bytes": 550,
+        "sha256": "f384e16f1b143a54aec25e19d2f9c9f1de4dc7b3be0dbac04c57af59798f4858"
+      },
+      "syntaxExitCode": 0
+    },
+    "defaultEntries": [
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/check-native-plugins-live.sh",
+        "bytes": 550,
+        "sha256": "f384e16f1b143a54aec25e19d2f9c9f1de4dc7b3be0dbac04c57af59798f4858"
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/check-appearance-notifications.sh",
+        "bytes": 756,
+        "sha256": "a266cb761179b432edac61652429858e4d77f7b7359dfc9f771c2865024e5d2b"
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/check-workspace-shell.sh",
+        "bytes": 736,
+        "sha256": "dc0681aabc347d5d50c1f04629cd5f9dc7341211abdac34bc4dc79aa723549ae"
+      }
+    ],
+    "defaultEntryBoundary": "Test-wrapper changes are outside HAP; they do not change the501 artifact or runtime. Image/appearance entries added and sh -n verified; already-passed focused/live suites were not rerun."
+  },
+  "signature": {
+    "exitCode": 0,
+    "digestVerified": true,
+    "permissionSignatureVerified": true,
+    "verifyAppPassed": true,
+    "log": {
+      "path": "/tmp/dsh-device-20261117/503-phase17-signature.log",
+      "bytes": 3285,
+      "sha256": "e153624c4984714a8015bc2b79043abd7ea0ec342486d049c5ec19f10162623a"
+    }
+  },
+  "artifact": {
+    "hap": "entry/build/default/outputs/default/entry-default-signed.hap",
+    "sha256": "e4c0743cf645526189094497ec800440961fe4a2688a2ec41abaacbbb23d5b47",
+    "bytes": 197416715,
+    "zipCRC": "PASS",
+    "entrySetUnchanged": true,
+    "runtimeSha256": "93bd20716200d852353999568f4898f9fca2f69846fac5bfc4d0ce85d0ebcf27",
+    "runtimeUnchanged": true,
+    "nativeLibraries": {
+      "libs/arm64-v8a/libc++_shared.so": "60bce7be77b6dbb7be3151a14e5b0f83f04ee29d641dba025b8c1b7207e93d34",
+      "libs/arm64-v8a/libdshlocal.so": "68f7933cb36f2ab6dc7303913efb4aa58ba52268cc002642464dec7b6cb39819",
+      "libs/arm64-v8a/libnode.so": "efd4a03096bde322d1c171361a8a1d7b208ea34ddc70ae907e660750c56e6acf",
+      "libs/arm64-v8a/libonnxruntime.so": "f9fd9080a10f2b93323d597225fbaa63d06f93b384bdfdd7285db9a9115fcc2b",
+      "libs/arm64-v8a/libsherpa-onnx-c-api.so": "75b38a525e7178bee052ec99a77175a934daa71ab6983deabbe948a96ae84221"
+    },
+    "nativeLibrariesUnchanged": true,
+    "changedEntries": [
+      "ets/modules.abc",
+      ".pages.info",
+      "ets/sourceMaps.map"
+    ],
+    "integrityRecord": {
+      "path": "/tmp/dsh-device-20261117/503-phase17-integrity.json",
+      "bytes": 978,
+      "sha256": "96ecfc598907b00c6d0e10d71241aeeb4a08450e8a0b43a5dce7293ec3920c87"
+    },
+    "whitelist": {
+      "initialStatus": "FAILED_WRONG_EXPECTED_PATH",
+      "initialExpectedPagesInfoPath": "resources/base/profile/.pages.info",
+      "actualPagesInfoPath": ".pages.info",
+      "correctedStatus": "PASS",
+      "pagesInfoBytes": {
+        "before": 17128,
+        "after": 17136
+      },
+      "correctedRecord": {
+        "path": "/tmp/dsh-device-20261117/504-phase17-integrity-corrected.json",
+        "bytes": 581,
+        "sha256": "56f15a409099c5b8fb36bedc9c99df5742cf43508f5df9b4e40447b7c3093745"
+      },
+      "note": "Signature/CRC/native/runtime checks passed before the final initial whitelist assertion failed.504 corrects the expected root path and preserves503; no artifact was changed to hide that failure."
+    }
+  },
+  "installation": {
+    "status": "INSTALLED",
+    "installed": true,
+    "record": {
+      "path": "/tmp/dsh-device-20261117/506-phase17-install-result.json",
+      "bytes": 335,
+      "sha256": "88b1235e6287c982a0a139f74e72607fd82a3e8cbc300a082028cac9f3cb90ce"
+    },
+    "installedHapSha256": "e4c0743cf645526189094497ec800440961fe4a2688a2ec41abaacbbb23d5b47",
+    "launchConfirmedByRoot": [
+      507,
+      508
+    ]
+  },
+  "remaining": {
+    "scope": "See2026-11-18 device record and17-row checklist; still incomplete.",
+    "priority": [
+      "Actual restart delete/control/marker verification",
+      "Actual restart: nativeOFF plus same persistent marker",
+      "Busy/related delete and native scheduling questions",
+      "Remaining navigation/chat/settings/system UI"
+    ],
+    "cleanup": "SCREEN running-lock and7200000ms timeout override still not restored; ROOT must release/reset and read back.",
+    "live2D": "Missing authorized runtime/character package; deferred",
+    "microphone": "User confirmed normal; not retested and not counted as agent pass."
+  },
+  "authoring": {
+    "role": "Read-only evidence compilation plus one existing test shell entry. No HDC/build/install from this author; ROOT performed501/503/504 and aggregated505.",
+    "markdownStatus": "Original pre-install snapshot/failures retained; appended506 installation and independently bounded509–562 UI/backend evidence."
+  },
+  "readOnlyRecallObserver": {
+    "status": "PREPARED_NOT_RUN_ON_PHONE",
+    "script": {
+      "path": "/tmp/dsh-device-20261117/phone-recall-readonly-observer.mjs",
+      "bytes": 7004,
+      "sha256": "23be4303160ebea3a30300427d0c4696c6b8323f62e72966d89c4e3c6e666c5e"
+    },
+    "arguments": [
+      "private-ready.json",
+      "new-output.json"
+    ],
+    "offlineSelfTest": {
+      "path": "/tmp/dsh-device-20261117/recall-readonly-observer-self-test-final.log",
+      "bytes": 217,
+      "sha256": "b0ba6120df50446c5dd6a53118943c305527d7594e8af7caa4bed11edeb43a30"
+    },
+    "offlineCliSafetyTest": {
+      "path": "/tmp/dsh-device-20261117/recall-readonly-observer-offline-self-test.json",
+      "bytes": 532,
+      "sha256": "67a5ff35ea1de6ffca93f656669eb277127f9e33ae27d1b29226455eabb8ab8d"
+    },
+    "actualSelfTestExitCode": 0,
+    "actualPhoneRequests": 0,
+    "allowedClientCalls": [
+      "authenticate",
+      "GET /memories",
+      "GET /recall"
+    ],
+    "projection": [
+      "memoryCount",
+      "activeBinding boolean",
+      "busy",
+      "supported"
+    ],
+    "limits": "No memory text, store/session/binding ID or credentials printed. Missing/invalid reads remain unknown; no unsafe empty baseline inference. Capability GET may refresh stale binding internally. Native ON/OFF persistence still requires real UI.",
+    "historicalStatusNote": "Prepared-not-run describes the original pre-install record. Actual527/548 read-only runs and nativeUI readbacks are in postInstall20261118 evidence."
+  },
+  "preInstallSnapshot": {
+    "status": "built-verified-not-installed",
+    "snapshot": {
+      "through": "505-phase17-tests-final",
+      "scope": "Five observed UI defects have source changes and focused development verification. New HAP has not been installed or phone-retested. Old device failures remain failures at their observed artifacts.",
+      "deviceConnection": "USB disconnected; ROOT has requested reconnection. No additional request from evidence author."
+    },
+    "installation": {
+      "status": "NOT_INSTALLED",
+      "installed": false,
+      "phoneRecheck": "NOT_RUN",
+      "currentlyInstalledHap": "d677c58ef79eef4f9580c820667a50e30ce9df2123c8f73bf8146a59c4a9cda4"
+    },
+    "remaining": {
+      "phoneRecheck": [
+        "Native form saved/reset fields and current server status",
+        "Single/multi selection visible state without losing focus",
+        "Fullscreen image safe area plus double-tap/pan/back",
+        "Same-page language labels without reopening",
+        "Quick-panel add/move/remove/reopen and restore original preferences"
+      ],
+      "otherAcceptance": "17-row checklist remains open. No prior partial device/protocol result is upgraded by this build. Microphone and Live2D stay user-deferred. Screen running-lock/timeout cleanup remains ROOT-owned and pending actual evidence.",
+      "cleanup": "SCREEN running-lock and previous7200000ms timeout override have NOT been restored. ROOT must release lock with official -f, restore timeout -r and read back after device reconnection. No cleanup pass is asserted."
+    },
+    "recordSha256BeforeAppend": "6d92195fb99a5a003ea2b90afad9cac9e3841bf5b836911ab00a92ac33a47497",
+    "recordBytesBeforeAppend": 21311
+  },
+  "postInstall20261118": {
+    "evidence": {
+      "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/docs/parity/device-acceptance-20261118.json",
+      "bytes": 259436,
+      "sha256": "36d231ec51d60dad4390c2f0a6ce70dfc5ba460cc7da7346257fbcca8f69b48c"
+    },
+    "fiveTargetedUiRechecks": "PASS_LISTED_ACTIONS",
+    "originalFailures": "Preserved in problems and pre-install stage; not relabeled as original passes.",
+    "nativeRecall": "ON/OFF/cancel/reopen and596nativeOFF after actualrestart pass;marker/history/active readbacks verified. First549 discrepancy remainsUNRESOLVED_CAUSE.",
+    "delete": "589 exact deletion confirmed;591/593 actualrestart and594marker unchanged; postrestart exacttarget absent and3controls+47Bproof unchanged. Busy/related still pending.",
+    "phase18": "591installed;593newprocess;594markerssame;595–606settings/entry UI passedlistedactions. No live-stage/previewpass.",
+    "microphone": "USER_CONFIRMED_NORMAL_NOT_RETESTED"
+  }
+}

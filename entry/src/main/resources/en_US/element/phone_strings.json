@@ -1,0 +1,12 @@
+{
+  "string": [
+    {
+      "name": "phone_capture_reason",
+      "value": "Capture the screen and recognize its text when you request it"
+    },
+    {
+      "name": "phone_accessibility_reason",
+      "value": "Read screen elements and perform the specified phone action only after you confirm"
+    }
+  ]
+}

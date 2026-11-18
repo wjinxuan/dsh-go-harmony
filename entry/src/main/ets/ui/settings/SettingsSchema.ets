@@ -59,12 +59,13 @@ const FIELD_NAMES: Record<string, string> = {
   'allowedModels': '允许的模型', 'rememberLastSelection': '记住上次选择'
 };
 
-function localized(value: Object | null | undefined): string {
+function localized(value: Object | null | undefined, language: string = 'zh'): string {
   const locales = object(value);
   const keys = Object.keys(locales);
   const chinese = keys.find((key: string) => /^zh(?:[-_]|$)/i.test(key) && string(locales[key]).trim());
   const english = keys.find((key: string) => /^en(?:[-_]|$)/i.test(key) && string(locales[key]).trim());
   const plain = string(locales['']);
+  if (language.toLowerCase().startsWith('en')) return string(value) || (english ? string(locales[english]) : '') || plain || (chinese ? string(locales[chinese]) : '');
   return string(value) || (chinese ? string(locales[chinese]) : '') ||
     (/[\u3400-\u9fff]/.test(plain) ? plain : '') || (english ? string(locales[english]) : '') || plain;
 }
@@ -86,6 +87,7 @@ function numeric(value: Object | null | undefined): number | undefined {
 }
 
 interface SchemaContext {
+  language: string;
   refs: WireObject;
   value: WireObject;
   base: WireObject;
@@ -167,8 +169,8 @@ function walk(node: WireObject, path: string[], inherited: WireObject, context: 
   const protectedCollection = ['array', 'dict', 'tuple', 'union'].includes(kind) && containsSecret(node, context.refs, 0);
   context.fields.push({
     path: path,
-    title: localized(effective['title']) || FIELD_NAMES[key] || path.join(' · '),
-    description: localized(effective['description']) || string(effective['comment']),
+    title: localized(effective['title'],context.language) || FIELD_NAMES[key] || path.join(' · '),
+    description: localized(effective['description'],context.language) || string(effective['comment']),
     kind: secret ? 'secret' : protectedCollection ? 'protected' : choices.length ? 'enum' : kind,
     disabled: effective['disabled'] === true || protectedCollection || (secret && kind !== 'string' &&
       kind !== 'transform' && kind !== 'lazy'),
@@ -182,7 +184,7 @@ function walk(node: WireObject, path: string[], inherited: WireObject, context: 
   });
 }
 
-export function parseSettingsSection(raw: WireObject, writable: boolean): SettingsSection {
+export function parseSettingsSection(raw: WireObject, writable: boolean, language: string = 'zh'): SettingsSection {
   const id = string(raw['ns']);
   const envelope = object(raw['schema']);
   const refs = object(envelope['refs']);
@@ -196,19 +198,19 @@ export function parseSettingsSection(raw: WireObject, writable: boolean): Settin
   const value = object(raw['value']);
   const fields: SettingsField[] = [];
   const context: SchemaContext = {
-    refs: refs, value: value, base: object(raw['base']), user: object(raw['user']), secrets: secrets, fields: fields
+    language: language, refs: refs, value: value, base: object(raw['base']), user: object(raw['user']), secrets: secrets, fields: fields
   };
   walk(root, [], {}, context, 0);
   return {
-    id: id, title: SECTION_NAMES[id] || localized(meta['title']) || id,
-    description: localized(meta['description']), revision: number(raw['revision'], 0),
+    id: id, title: SECTION_NAMES[id] || localized(meta['title'],language) || id,
+    description: localized(meta['description'],language), revision: number(raw['revision'], 0),
     writable: writable && raw['writable'] !== false,
     autoGenerate: raw['autoGenerate'] !== false, fields: fields, value: value
   };
 }
 
-export function parseSettings(raw: WireObject): SettingsSection[] {
-  return array(raw['namespaces']).map((item: Object) => parseSettingsSection(object(item), raw['writable'] !== false))
+export function parseSettings(raw: WireObject, language: string = 'zh'): SettingsSection[] {
+  return array(raw['namespaces']).map((item: Object) => parseSettingsSection(object(item), raw['writable'] !== false, language))
     .filter((section: SettingsSection) => section.id.length > 0);
 }
 

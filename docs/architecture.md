@@ -2,6 +2,10 @@
 
 以社区项目 `ccch1mneyyy/dsh-Go` 的 Android v1.0.15 为对照。上游用 Flutter/Riverpod 做界面、纯 Dart 做客户端，Kotlin 管理 Android 本机引擎。应用包名为 `io.github.ccch1mneyyy.dsh_app`。 [发布页](https://github.com/ccch1mneyyy/dsh-Go/releases/tag/v1.0.15) · [上游架构](https://github.com/ccch1mneyyy/dsh-Go/blob/v1.0.15/docs/architecture.md) · [Android 构建配置](https://github.com/ccch1mneyyy/dsh-Go/blob/v1.0.15/app/android/app/build.gradle.kts)
 
+## 当前集成状态（2026-11-16）
+
+八组功能的实现及回归见[逐项清单](parity/full-implementation-checklist.md)，交付产物摘要见[第八批构建记录](parity/native-build-phase8.json)。安全删除与伙伴自动回忆使用固定上游补丁；删除墓碑通过受限目录句柄及不可覆盖的原子重命名兼容手机硬链接限制。原生插件资源、信号分享、媒体保存和主机切换均有真实协议或生命周期回归。下文首版与第二批手机记录是历史证据，本批新增能力仍按[真机清单](parity/phone-acceptance.md)验收。
+
 ## REA 发布包观察
 
 分析对象是官方 arm64 APK，大小 210,847,089 字节。SHA-256 为 `231ac2a5155e5460466529b99790f111484378c3b1f579dc00cef0fe418928cb`，与发布元数据一致。Android `apksigner` 另外通过了 v2、v3 签名完整性验证。
@@ -22,12 +26,16 @@ ArkTS/ArkUI 原生页面与本机和远程 `dsh web` 共用会话协议。客户
 | 模式 | Android 上游 v1.0.15 | 鸿蒙版 |
 | --- | --- | --- |
 | 直接连接 `dsh web` | 本机和 SSH 启动的引擎使用 DSH Web 客户端协议 | 首版使用用户配置的 WSS 反向代理 |
-| SSH | 通过密码或私钥认证、校验主机指纹、启动远端 DSH，再通过隧道连接 | 待移植 |
-| DSHarness Remote | 身份校验与端到端加密，按条件尝试 LAN、WebRTC/TURN 或中继。只支持图片附件，插件管理限开关 | 待移植 |
+| SSH | 通过密码或私钥认证、校验主机指纹、启动远端 DSH，再通过隧道连接 | 使用打包的 SSH 客户端建立连接，认证和指纹校验完成后启动或复用远端 DSH，经本机回环代理提供原生客户端接口 |
+| DSHarness Remote | 身份校验与端到端加密，按条件尝试 LAN、WebRTC/TURN 或中继。只支持图片附件，插件管理限开关 | 支持登录和二维码配对。依次尝试 LAN/WebRTC、TURN 和服务中继，各通道统一验证主机身份并使用 Noise IK |
 | 本机引擎 | App 自带 Ubuntu、Node.js 和 DSH。支持启动、停止、重启、日志与不加载插件的安全模式 | HAP 内嵌 ARM64 Node，支持手机本机引擎启动与首轮文本流程 |
 | 插件、网页与手机操控 | 本机有插件桥和 DSH WebView。正常模式的本机引擎可经授权操控 Android 设备 | 待移植 |
 
 [上游主机使用指南](https://github.com/ccch1mneyyy/dsh-Go/blob/v1.0.15/docs/guide/zh/03-engine-hosts.md) · [手机操控指南](https://github.com/ccch1mneyyy/dsh-Go/blob/v1.0.15/docs/guide/zh/04-phone-control.md) · [Dart 客户端](https://github.com/ccch1mneyyy/dsh-Go/tree/v1.0.15/packages/dsh_client) · [登录与传输协议](https://github.com/ccch1mneyyy/dsh-Go/blob/v1.0.15/packages/dsh_client/lib/src/connection.dart) · [WebSocket 多路复用](https://github.com/ccch1mneyyy/dsh-Go/blob/v1.0.15/packages/dsh_client/lib/src/mux.dart) · [远程传输](https://github.com/ccch1mneyyy/dsh-Go/tree/v1.0.15/packages/dsh_remote)
+
+SSH 和中继由内嵌 Node 运行时管理，控制接口只监听手机回环地址，并校验引擎每次启动生成的随机凭据。建立连接后，数据端口分别通过 SSH 隧道或 Noise IK 通道复用原有 DSH 客户端。远程会话的 PTY 由主机维护，ArkUI 将输入与尺寸送入现有多路复用连接，并通过只加载本地资源的 ArkWeb 渲染终端。
+
+直连使用打包的 werift 建立 DataChannel，根据选中的 ICE 候选报告 LAN、WebRTC 或 TURN。直连协商失败后使用新连接尝试下一个通道，主机身份或 Noise 握手校验失败会终止连接。图片缩略图沿用会话附件接口，进入可见区域才请求和解码，滑出或切换会话会取消旧请求并释放图像。
 
 ## 上游本机引擎与插件
 
@@ -40,12 +48,14 @@ ArkTS/ArkUI 原生页面与本机和远程 `dsh web` 共用会话协议。客户
 
 华为的 `startNativeChildProcess` 公开接口支持平板和 PC/2in1，手机返回 801。NDK 的对应接口也有同类限制。HAP 集成并独立运行 ELF 的公开能力从 API 24 起支持 PC/2in1，PTRACE 调试权限同样面向 PC/2in1。鸿蒙 Node-API 是 ArkTS/JS 与 C/C++ 的桥接机制。 [ArkTS 子进程 API](https://developer.huawei.com/consumer/cn/doc/harmonyos-references/js-apis-app-ability-childprocessmanager/) · [NDK 子进程 API](https://developer.huawei.com/consumer/cn/doc/harmonyos-references/capi-native-child-process-h/) · [HAP 可执行文件](https://developer.huawei.com/consumer/cn/doc/HarmonyOS-Guides/hap-bin/) · [PTRACE 权限](https://developer.huawei.com/consumer/cn/doc/HarmonyOS-Guides/permissions-for-all/) · [Node-API](https://developer.huawei.com/consumer/en/doc/harmonyos-guides/napi-introduction/)
 
+ARM64 SDK 能链接 `posix_spawn` 和 `openpty`。OpenHarmony 的公开 SELinux 策略把 `/system/bin/sh` 标为 `sh_exec`，并对执行转换设限，普通 HAP 不在例外域内。手机出厂系统的实际结果仍需设备验证。当前本机引擎未启用系统 Shell。 [文件标签](https://github.com/openharmony/security_selinux_adapter/blob/master/sepolicy/base/system/file_contexts#L327) · [Shell 执行规则](https://github.com/openharmony/security_selinux_adapter/blob/master/sepolicy/base/public/domain.te#L291-L294)
+
 ## 本机引擎
 
 - `runtime/prepare-node.sh` 校验并准备 OpenHarmony ARM64 的 Node.js 24.22.1 与匹配的 libc++。`runtime/pack-dsh.sh` 使用 Android 版 v1.0.15 的固定依赖锁准备 DSH 0.2.2-rc.1，打包 JavaScript 和许可文件。HAP 携带完整运行时。
 - ArkTS 首次启动把资源解包到应用私有目录，使用原生模块在后台线程创建 Node 环境。V8 使用 jitless，Node 的信号和标准流设置与宿主隔离。会话写入使用 C++ 提供的非阻塞文件锁。 [Node.js 嵌入 API](https://nodejs.org/docs/latest-v24.x/api/embedding.html)
 - DSH 监听随机端口的 `127.0.0.1`。ArkTS 用沙箱内就绪标记提供的启动链接交换会话 Cookie。会话和工作区存放于 `filesDir/dsh-local-data`。DeepSeek 密钥通过本机 DSH API 注入内存凭据提供者，停止引擎后清除。
-- 最初首轮仅开放文本对话。其后原生重写批次增加了受约束的工作区文件、技能和子代理工具，见 [当前进度](parity/native-progress.md)。子进程、原生 Node 扩展和动态插件仍关闭。jitless 模式用 Node HTTP/TLS 的实现提供流式 Fetch 接口，避免 Undici 加载 WebAssembly。
+- 最初首轮仅开放文本对话。其后原生重写批次增加了受约束的工作区文件、技能和子代理工具，见 [当前进度](parity/native-progress.md)。任意子进程、外部原生 Node 扩展与任意安装脚本仍受普通手机 HAP 限制；随包插件桥、媒体、DS Bot 与原生动态面板已启用。SenseVoice 使用经过打包校验的 C++ 桥。jitless 模式用 Node HTTP/TLS 的实现提供流式 Fetch 接口，避免 Undici 加载 WebAssembly。
 
 ## 本机验证
 

@@ -1,0 +1,484 @@
+{
+  "phase": 24,
+  "recordedAt": "2026-11-18T05:15:08.545656+00:00",
+  "status": "installed-targeted-phone-attachment-loop-pass-acceptance-partial",
+  "allAcceptanceComplete": false,
+  "scope": "Repair the confirmed local attachment durability failure without treating host validation as phone acceptance.",
+  "originalPhoneFailure": {
+    "status": "CONFIRMED_PHONE_ATTACHMENT_UPLOAD_FAILURE",
+    "sequences": [
+      1040,
+      1041,
+      1043
+    ],
+    "evidence": {
+      "path": "/tmp/dsh-device-20261118/attachment-upload-failure-verification.json",
+      "bytes": 4803,
+      "sha256": "c5f974c7b3f1c88812c4d661c579740f88afe2e1010d8eab7f2952257e54a790"
+    },
+    "errorCode": "gateway/internal",
+    "cause": "ensureDurableHome walked above the application-owned attachment boundary; one actual phone diagnostic upload failed opening /data/storage/el2 with EACCES.",
+    "mutationsInDiagnostic": {
+      "uploads": 1,
+      "submits": 0,
+      "prompts": 0,
+      "queueMutation": false
+    },
+    "originalFailurePreserved": true
+  },
+  "runtime": {
+    "status": "PASS_SINGLE_MODULE_CHANGE",
+    "oldRuntimeSha256": "e87517f2c5326458eecbe2907db5ed7ceb2765738a1292e6ef5acf6b3a2d09e3",
+    "runtimeSha256": "48ae9d052ca3e90416d36fcf28adc930ffc158323b3a550c38c9e08e12a29754",
+    "runtimeBytes": 46625448,
+    "entries": 18394,
+    "changed": [
+      "node_modules/@deepseek-ai/dsh-attachment-local/lib/index.js"
+    ],
+    "unchangedEntries": 18393,
+    "crcPassed": true,
+    "moduleSha256": "68053174a94ede1a439fc49a5063982cafb5200c6e46aaa39dc25d3d19984989",
+    "productionPatchAppliedExactly": true
+  },
+  "runtimeEvidence": {
+    "path": "/tmp/dsh-device-20261118/phase24/runtime-integrity.json",
+    "bytes": 532,
+    "sha256": "c0bc627171eedb4726d5d1aace1097480fafca1d738c9bb36aec84a0e8236356"
+  },
+  "validation": {
+    "nativeStore": {
+      "status": "PASS_RED_GREEN_REAL_CPP_AND_PACKAGED_STORE",
+      "runs": [
+        {
+          "stage": "old",
+          "exitCode": 1,
+          "elapsedSeconds": 0.621,
+          "log": "/tmp/dsh-device-20261118/phase24/native-store-old.log",
+          "logEvidence": {
+            "path": "/tmp/dsh-device-20261118/phase24/native-store-old.log",
+            "bytes": 929,
+            "sha256": "a43c02488f0f548b976a67ff2acdbd1787fe9aeefb3ce7ce2de2e3c0e4304354"
+          }
+        },
+        {
+          "stage": "new",
+          "exitCode": 0,
+          "elapsedSeconds": 0.557,
+          "log": "/tmp/dsh-device-20261118/phase24/native-store-new.log",
+          "logEvidence": {
+            "path": "/tmp/dsh-device-20261118/phase24/native-store-new.log",
+            "bytes": 176,
+            "sha256": "24677221f77f315cf7609258645f32ff4f08422baeb5477d810712995dbce22e"
+          }
+        }
+      ],
+      "evidence": {
+        "path": "/tmp/dsh-device-20261118/phase24/native-store-verification.json",
+        "bytes": 389,
+        "sha256": "9653e336824fe79b1cf6b0bbbb4c92384c88063c75ef0bf53de0856bc156fabe"
+      },
+      "scope": "Actual Linux C++ publication hook and actual packaged attachment module; denial of ancestor opens is an explicit sandbox fixture. This is not a new phone upload."
+    },
+    "packagedClient": {
+      "exitCode": 0,
+      "attachmentCases": 5,
+      "attachmentPassed": 5,
+      "attachmentFailed": 0,
+      "attachmentSkipped": 0,
+      "nativeClientAssertions": 129,
+      "evidence": {
+        "path": "/tmp/dsh-device-20261118/phase24/client-live.log",
+        "bytes": 684,
+        "sha256": "b9eecbc84e5a7e9c0d23b472e03dc2315dbed5ec5a0d085ef8fd49a9de353d3a"
+      }
+    },
+    "sourcePeerReview": {
+      "status": "NO_BLOCKING_FINDINGS",
+      "sourceRuntime": {
+        "evidence": {
+          "path": "/tmp/dsh-device-20261118/attachment-durability/verification.json",
+          "bytes": 3964,
+          "sha256": "22f4df17a3501f243f59080013054e7657424764fd668db545c7352c0d7ac8bb"
+        },
+        "red": {
+          "exitCode": 1,
+          "passed": 3,
+          "failed": 2,
+          "skipped": 0
+        },
+        "green": {
+          "exitCode": 0,
+          "passed": 5,
+          "failed": 0,
+          "skipped": 0
+        },
+        "scope": "Actual packaged JavaScript store with isolated real filesystem and host-only publication seam; not itself C++ or phone proof. Same five cases rerun against final runtime are not extra independent cases."
+      },
+      "evidence": {
+        "path": "/tmp/dsh-device-20261118/attachment-durability/peer-review.json",
+        "bytes": 3530,
+        "sha256": "b8f26945dea6b8031ffbf85a4496c6523ad9d2a713226296d3a302e3eb5cacc3"
+      }
+    }
+  },
+  "build": {
+    "exitCode": 0,
+    "elapsedSeconds": 7.14,
+    "reported": "7 s 140 ms",
+    "hapSha256": "4ae6167bbbfb7f376db67050351541c827a319663331727bef84b4a4e13580a7",
+    "hapBytes": 197452298,
+    "evidence": {
+      "path": "/tmp/dsh-device-20261118/phase24/build.log",
+      "bytes": 92876,
+      "sha256": "f7f1afaf1b04cef5eb941affb4cde25ddb75f42e35d798c9cde8136d951fbede"
+    }
+  },
+  "integrity": {
+    "status": "PASS_RUNTIME_ONLY_HAP_CHANGE",
+    "hapSha256": "4ae6167bbbfb7f376db67050351541c827a319663331727bef84b4a4e13580a7",
+    "hapBytes": 197452298,
+    "changed": [
+      "resources/rawfile/dsh-runtime-version.txt",
+      "resources/rawfile/dsh-runtime.zip"
+    ],
+    "nativeLibrariesUnchanged": [
+      "libs/arm64-v8a/libc++_shared.so",
+      "libs/arm64-v8a/libdshlocal.so",
+      "libs/arm64-v8a/libnode.so",
+      "libs/arm64-v8a/libonnxruntime.so",
+      "libs/arm64-v8a/libsherpa-onnx-c-api.so"
+    ],
+    "crcPassed": true,
+    "clientAssertions": 129,
+    "attachmentCases": 5,
+    "clientExitCode": 0,
+    "buildExitCode": 0,
+    "buildReported": "7 s 140 ms",
+    "signatureExitCode": 0,
+    "signatureExitCodeProvenance": "ROOT reported the actual tool exit code; verify-app success independently read from log.",
+    "signatureEvidence": {
+      "path": "/tmp/dsh-device-20261118/phase24/signature.log",
+      "bytes": 3285,
+      "sha256": "7dcd9bd0f3d973c0d02d2437d8864ebabf779bd2e2bd985098a552e1739d3759"
+    },
+    "evidence": {
+      "path": "/tmp/dsh-device-20261118/phase24/hap-integrity.json",
+      "bytes": 645,
+      "sha256": "29a9f72659c29024739cdcdb262f46290f1da6c299798859c8b7ead32fd7e10a"
+    }
+  },
+  "beforeInstall": {
+    "installedPhase": 23,
+    "engineStoppedThroughUiAt": 1046,
+    "ownFailedDraftAndAttachmentClearedAt": 1044,
+    "idleStateAt": 1045,
+    "idleState": {
+      "running": false,
+      "queueLength": 0,
+      "recordCount": 80,
+      "cursor": 79
+    },
+    "idleEvidence": {
+      "path": "/tmp/dsh-device-20261118/synthetic-openai-24gorhxs/1045-before-phase24-stop.json",
+      "bytes": 1795,
+      "sha256": "dc41f4b983c0748fed641383a3b0af01a03d950cd90a20da606211433af77f43"
+    },
+    "uiEvidence": [
+      {
+        "path": "/tmp/dsh-device-20261118/1044-failed-owned-draft-cleared.log",
+        "bytes": 4822,
+        "sha256": "a979e1849a70b7c5534bcf8b9985ef2ab5c5d8f8fcd4e0248643ef2c8bfc81f4"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/1045-engine-before-phase24.log",
+        "bytes": 4049,
+        "sha256": "fb9e3a242856420dcbb3e07efe0883ca26fcd5ddc61682237239e6405c1e582a"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/1046-engine-stop-for-phase24.log",
+        "bytes": 2333,
+        "sha256": "a59d7896ffdeeb5e996db31978d15f2653d5de4f2d092d175ce2335ebf91ee82"
+      }
+    ]
+  },
+  "installation": {
+    "exitCode": 0,
+    "elapsedSeconds": 11.067,
+    "log": "/tmp/dsh-device-20261118/1048-phase24-install.log",
+    "successReported": true,
+    "installed": true,
+    "sequence": 1048,
+    "evidence": {
+      "path": "/tmp/dsh-device-20261118/1048-phase24-install.json",
+      "bytes": 137,
+      "sha256": "e8f5c925a246733bed768f3b269633f6e9c4b73358acb782f6a4b162ebf863b1"
+    },
+    "logEvidence": {
+      "path": "/tmp/dsh-device-20261118/1048-phase24-install.log",
+      "bytes": 175,
+      "sha256": "9ed9b6d76b5a09c3b3c13dbf265f3febc86fce9d44419041234e67e7b07cafce"
+    },
+    "startupVerified": true,
+    "phoneAttachmentRetestPassed": true,
+    "processEvidence": {
+      "path": "/tmp/dsh-device-20261118/1051-phase24-process.json",
+      "bytes": 256,
+      "sha256": "96c82289a78f2f2d11761b6966308ceb1301ee09aa8b9b15cd7cf208ae11719c"
+    }
+  },
+  "fixtureExtension": {
+    "status": "READY_SAME_CONFIG_EXTENDED",
+    "oldPid": 34242,
+    "newPid": 90097,
+    "oldRequests": 32,
+    "rejected": 2,
+    "expiresAt": "2026-11-18T06:30:53.456Z",
+    "port": 64114,
+    "samePrivateConfiguration": true,
+    "sameKey": true,
+    "phoneRequests": 0,
+    "hostRequests": 0,
+    "sourceSha256": "b46bc55cb91c452b911321d1c10fefc8bc82f31e14933aefa1ec90af693ca8d4",
+    "evidence": {
+      "path": "/tmp/dsh-device-20261118/synthetic-openai-24gorhxs/phase24-fixture-extension.json",
+      "bytes": 365,
+      "sha256": "c35de2965bb408cffe053a529e274d86f415ea38a7f187fc78836f5982ba3223"
+    }
+  },
+  "reverse60863Cleanup": {
+    "status": "REMOVED_AFTER_CORRECTED_ARGUMENTS",
+    "firstAttempt": {
+      "toolExitCode": 0,
+      "semanticResult": "FAILED_RULE_NOT_FOUND_WITH_SINGLE_COMBINED_ARGUMENT",
+      "evidence": {
+        "path": "/tmp/dsh-device-20261118/plugin-server1-cleanup/phone-reverse60863-removed.json",
+        "bytes": 316,
+        "sha256": "7a95212dd35c0149c2d725a19a4c9101ed4557ea0517af10d63abd6cdab2fe15"
+      }
+    },
+    "retry": {
+      "toolExitCode": 0,
+      "semanticResult": "SUCCESS",
+      "evidence": {
+        "path": "/tmp/dsh-device-20261118/plugin-server1-cleanup/phone-reverse60863-removal-retry.json",
+        "bytes": 235,
+        "sha256": "9cbeab32162750cda94ba284b8a638dbd96c9a213022a576fc5af1789e859235"
+      }
+    },
+    "unrelatedForwardsPreserved": [
+      64114,
+      36351
+    ]
+  },
+  "remaining": [
+    "DSBot native enable control is missing at1066/1067 despite control HTTP200/enabledfalse; phase25 fix and phone retest pending.",
+    "Other seventeen-row phone acceptance branches remain unverified; one attachment scenario does not prove arbitrary files or restart/cross-host queue recovery.",
+    "Restore SCREEN running lock and timeout override when testing ends; microphone is user-confirmed normal/no retest; Live2D authorized assets deferred."
+  ],
+  "prePhoneRetestSnapshot": {
+    "status": "installed-targeted-phone-attachment-retest-pending",
+    "installation": {
+      "exitCode": 0,
+      "elapsedSeconds": 11.067,
+      "log": "/tmp/dsh-device-20261118/1048-phase24-install.log",
+      "successReported": true,
+      "installed": true,
+      "sequence": 1048,
+      "evidence": {
+        "path": "/tmp/dsh-device-20261118/1048-phase24-install.json",
+        "bytes": 137,
+        "sha256": "e8f5c925a246733bed768f3b269633f6e9c4b73358acb782f6a4b162ebf863b1"
+      },
+      "logEvidence": {
+        "path": "/tmp/dsh-device-20261118/1048-phase24-install.log",
+        "bytes": 175,
+        "sha256": "9ed9b6d76b5a09c3b3c13dbf265f3febc86fce9d44419041234e67e7b07cafce"
+      },
+      "startupVerified": false,
+      "phoneAttachmentRetestPassed": false
+    },
+    "remaining": [
+      "Confirm the installed phase24 runtime starts, then retry an owned attachment enqueue and verify exact bytes/history/queue behavior.",
+      "Continue the remaining seventeen-row phone acceptance; DSBot UI has not yet run.",
+      "Restore SCREEN running lock and timeout override after testing; microphone is user-confirmed normal and will not be retested; Live2D assets remain deferred."
+    ]
+  },
+  "phoneAttachment": {
+    "status": "PASS_PHONE_ATTACHMENT_UPLOAD_WITHDRAW_REQUEUE_SEND_NOW_EXACTLY_ONCE",
+    "aggregationEvidence": {
+      "path": "/tmp/dsh-device-20261118/phase24/phone-attachment-queue-verification.json",
+      "bytes": 22940,
+      "sha256": "2b45110389d9c8a59fd7a8eea3cf9ff9cc9a4ebf7cf666bd4a039c59e404315e"
+    },
+    "scenarioCount": 1,
+    "scope": "ROOT drove native phone UI on installed phase24. Observer used exact owned session passive reads only. Official HDC exact owned digest files were read by ROOT. Synthetic model only; no paid model or external messages.",
+    "artifact": {
+      "pid": 35344,
+      "port": 39595,
+      "phase": "running",
+      "runtimeVersion": "48ae9d052ca3e90416d36fcf28adc930ffc158323b3a550c38c9e08e12a29754",
+      "failurePresent": false,
+      "hapSha256": "4ae6167bbbfb7f376db67050351541c827a319663331727bef84b4a4e13580a7"
+    },
+    "stages": [
+      {
+        "stage": "baseline",
+        "exitCode": 0,
+        "snapshot": {
+          "cursor": 80,
+          "recordCount": 81,
+          "hasMore": false,
+          "running": false,
+          "queueCount": 0,
+          "holdStreamTextPresent": false
+        },
+        "markerHistoryOccurrences": 0
+      },
+      {
+        "stage": "queued",
+        "exitCode": 0,
+        "snapshot": {
+          "cursor": 87,
+          "recordCount": 88,
+          "hasMore": false,
+          "running": true,
+          "queueCount": 1,
+          "holdStreamTextPresent": true
+        },
+        "markerHistoryOccurrences": 0
+      },
+      {
+        "stage": "withdrawn",
+        "exitCode": 0,
+        "snapshot": {
+          "cursor": 88,
+          "recordCount": 89,
+          "hasMore": false,
+          "running": true,
+          "queueCount": 0,
+          "holdStreamTextPresent": true
+        },
+        "markerHistoryOccurrences": 0
+      },
+      {
+        "stage": "requeued",
+        "exitCode": 0,
+        "snapshot": {
+          "cursor": 89,
+          "recordCount": 90,
+          "hasMore": false,
+          "running": true,
+          "queueCount": 1,
+          "holdStreamTextPresent": true
+        },
+        "markerHistoryOccurrences": 0
+      },
+      {
+        "stage": "final2",
+        "exitCode": 0,
+        "snapshot": {
+          "cursor": 101,
+          "recordCount": 102,
+          "hasMore": false,
+          "running": false,
+          "queueCount": 0,
+          "holdStreamTextPresent": false
+        },
+        "markerHistoryOccurrences": 1
+      }
+    ],
+    "result": {
+      "attachment": {
+        "messageId": "e2656d15-99e0-45ab-886f-2358dcf0cd6b",
+        "seq": 98,
+        "requestId": "d7fbbfa3-3457-4f77-8ca8-6480aff2ac5e",
+        "name": "DSH-UI-1117-artifact.html",
+        "bytes": 211,
+        "attachmentId": "sha256:8ec6ff8098887bdf5a4b70ad77c97dd9e84073e328ae5d32da26aa3e7d7334b9",
+        "expectedSha256": "8ec6ff8098887bdf5a4b70ad77c97dd9e84073e328ae5d32da26aa3e7d7334b9",
+        "durableContentAddressMatches": true,
+        "physicalFileBytesRead": false
+      },
+      "holdTurn": {
+        "turn": 9,
+        "startSeq": 82,
+        "endSeq": 93,
+        "kind": "aborted",
+        "durationMs": 171552
+      },
+      "attachmentTurn": {
+        "turn": 10,
+        "startSeq": 95,
+        "endSeq": 101,
+        "kind": "completed",
+        "durationMs": 701
+      },
+      "markerOccurrences": 1,
+      "idle": true,
+      "queueCount": 0,
+      "committedRequestMatchesRequeuedItem": true,
+      "withdrawnFirstRequestNotCommitted": true,
+      "newQueueIdAfterWithdrawal": true,
+      "providerEventsSinceBaseline": [
+        {
+          "event": "request",
+          "request": 33,
+          "case": "fixture-hold",
+          "tool": null,
+          "continued": false
+        },
+        {
+          "event": "hold-cancelled"
+        },
+        {
+          "event": "request",
+          "request": 34,
+          "case": "fixture-render",
+          "tool": null,
+          "continued": false
+        }
+      ]
+    },
+    "physicalBytes": {
+      "status": "PASS_EXACT_OBJECT_AND_ALIAS_BYTES",
+      "source": "official HDC debug-bundle file recv of exact owned digest paths",
+      "files": [
+        {
+          "kind": "object",
+          "bytes": 211,
+          "sha256": "8ec6ff8098887bdf5a4b70ad77c97dd9e84073e328ae5d32da26aa3e7d7334b9"
+        },
+        {
+          "kind": "alias",
+          "bytes": 211,
+          "sha256": "8ec6ff8098887bdf5a4b70ad77c97dd9e84073e328ae5d32da26aa3e7d7334b9"
+        }
+      ]
+    },
+    "limits": [
+      "Five observation commands are stages of one end-to-end attachment scenario, not five independent product cases. UI/hash assertions must not be summed as test count.",
+      "No hold-only snapshot command was run after phase24; queued/requeued snapshots independently observed the running hold and streamed fixture-start text.",
+      "Old failed draft was explicitly cleared before installation. requestId is not preserved across app restart. Withdraw/re-send uses a new requestId; Send now preserved the requeued requestId and committed it once.",
+      "Native provider response does not itself read the HTML; exact phone object and alias bytes were independently verified by ROOT official HDC and matched here.",
+      "No claim for arbitrary file types/sizes, commercial model processing, app restart during a queued attachment, or cross-host queue restoration."
+    ]
+  },
+  "observerErrorsPreserved": [
+    {
+      "evidence": {
+        "path": "/tmp/dsh-device-20261118/1050-observer-path-error.json",
+        "bytes": 161,
+        "sha256": "e70a7ad813cf6221b9c1f6bcf6e936f20c582619dde4d715705e3ab2bbe2bc54"
+      },
+      "meaning": "Observer requested engine-state.json rather than runtime-state.json; not a product failure."
+    },
+    {
+      "evidence": {
+        "path": "/tmp/dsh-device-20261118/synthetic-openai-24gorhxs/1064-attachment-retry-final.json",
+        "bytes": 1673,
+        "sha256": "503b3c50efd833ca238341a870aef80a3ff90d5d08d45dfa4bfdcd6d51394c4a"
+      },
+      "meaning": "Temporary observer decoded snapshot wrappers incorrectly; original failure preserved, final2 retained all assertions and passed."
+    }
+  ]
+}

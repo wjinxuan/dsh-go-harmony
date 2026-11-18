@@ -1,0 +1,34 @@
+{
+  "shortcuts": [
+    {
+      "shortcutId": "dsh_new",
+      "label": "$string:shortcut_new",
+      "icon": "$media:app_icon",
+      "wants": [
+        {
+          "bundleName": "com.dshgo.harmony",
+          "moduleName": "entry",
+          "abilityName": "EntryAbility",
+          "parameters": {
+            "dsh.kind": "new"
+          }
+        }
+      ]
+    },
+    {
+      "shortcutId": "dsh_voice",
+      "label": "$string:shortcut_voice",
+      "icon": "$media:app_icon",
+      "wants": [
+        {
+          "bundleName": "com.dshgo.harmony",
+          "moduleName": "entry",
+          "abilityName": "EntryAbility",
+          "parameters": {
+            "dsh.kind": "voice"
+          }
+        }
+      ]
+    }
+  ]
+}

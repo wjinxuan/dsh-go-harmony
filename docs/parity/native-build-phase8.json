@@ -1,0 +1,824 @@
+{
+  "source_reference": "dsh-Go v1.0.15 a9877420ab9aee121134faf01b6a92a39ce0b05b",
+  "built_at": "2026-11-16T12:55:31.948220+08:00",
+  "build": "DevEco Studio 26.0.0.851, HarmonyOS API 26, ARM64 debug signed",
+  "bundle": "com.dshgo.harmony",
+  "version_name": "1.0.1",
+  "version_code": 1000001,
+  "hap": "entry/build/default/outputs/default/entry-default-signed.hap",
+  "hap_sha256": "2dd0dab30719cda0fee13a09c71c555288459bc5321d6508b15f7e0f53fef16a",
+  "hap_size_bytes": 196715820,
+  "runtime_sha256": "751480d93025e54d1bac6ad71a18d4fa21654fcd6284ec5d03d4e843763cd451",
+  "zip_crc_valid": true,
+  "runtime_matches": true,
+  "native_libraries": [
+    "libs/arm64-v8a/libc++_shared.so",
+    "libs/arm64-v8a/libdshlocal.so",
+    "libs/arm64-v8a/libnode.so",
+    "libs/arm64-v8a/libonnxruntime.so",
+    "libs/arm64-v8a/libsherpa-onnx-c-api.so"
+  ],
+  "all_sources_precede_hap": true,
+  "status": "Eight groups integrated; development checks passed with the explicit skips and device acceptance limits below. Not a claim of completed device or pixel parity.",
+  "checks": {
+    "arkts_cpp_signed_build": true,
+    "independent_hap_digest_and_permission_signature": true,
+    "git_diff_check": true,
+    "dsh_client_assertions": 129,
+    "latest_chat_companion_tests": 82,
+    "latest_recall_contracts": 27,
+    "latest_profile_share_tests": 12,
+    "generated_arkui_observers": 10,
+    "english_entries": 2601,
+    "english_resource_checks": 4,
+    "actual_sensevoice_transcript": "开饭时间早上9点至下午5点。",
+    "original_runtime_patch_sha_and_idempotence": true,
+    "same_runtime_tested_and_embedded": true,
+    "all_native_libraries_elf_arm64": true,
+    "companion_form_profile_and_assets_embedded": true,
+    "ds_bot_version": "0.2.3 + fixed mobile overlay",
+    "schedule_authorization_exact_patch_and_preset": true,
+    "real_120_second_schedule_authorization_timeout": true,
+    "full_access_does_not_bypass_schedule_authorization": true,
+    "bot_schedule_migration_and_archive_race": true
+  },
+  "evidence": [
+    {
+      "name": "account",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-check-account.log",
+      "counts": {}
+    },
+    {
+      "name": "session-options",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-check-session-options.log",
+      "counts": {
+        "tests": 2,
+        "pass": 2,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "session-management",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-check-session-management.log",
+      "counts": {
+        "tests": 6,
+        "pass": 6,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "appearance-notifications",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-check-appearance-notifications.log",
+      "counts": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "remote-hosts",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-check-remote-hosts.log",
+      "counts": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "session-detail",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-check-session-detail.log",
+      "counts": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "voice",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-check-voice.log",
+      "counts": {
+        "tests": 14,
+        "pass": 14,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "cot-scribe",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-check-cot-scribe.log",
+      "counts": {
+        "tests": 12,
+        "pass": 12,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "onboarding",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-check-onboarding.log",
+      "counts": {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "engine-features",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-check-engine-features.log",
+      "counts": {
+        "tests": 4,
+        "pass": 4,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "mentions",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-check-mentions.log",
+      "counts": {
+        "tests": 11,
+        "pass": 11,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "voice-scribe-transport",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-check-voice-scribe-transport.log",
+      "counts": {}
+    },
+    {
+      "name": "settings",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-check-settings.log",
+      "counts": {
+        "tests": 6,
+        "pass": 6,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "usage-stats",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-check-usage-stats.log",
+      "counts": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "media",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-check-media.log",
+      "counts": {
+        "tests": 8,
+        "pass": 8,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "markdown",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-check-markdown.log",
+      "counts": {
+        "tests": 8,
+        "pass": 8,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "model-panel",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-check-model-panel.log",
+      "counts": {
+        "tests": 7,
+        "pass": 7,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "session-export",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-check-session-export.log",
+      "counts": {
+        "tests": 2,
+        "pass": 2,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "notifications",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-check-notifications.log",
+      "counts": {
+        "tests": 4,
+        "pass": 4,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "question-drafts",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-check-question-drafts.log",
+      "counts": {}
+    },
+    {
+      "name": "dsh-wire",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-check-dsh-wire.log",
+      "counts": {}
+    },
+    {
+      "name": "locale",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-check-locale.log",
+      "counts": {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "engine-maintenance",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-check-engine-maintenance.log",
+      "counts": {
+        "tests": 12,
+        "pass": 12,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "workspace-shell",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-check-workspace-shell.log",
+      "counts": {
+        "tests": 11,
+        "pass": 11,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "subscriptions",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-check-subscriptions.log",
+      "counts": {
+        "tests": 7,
+        "pass": 7,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "sensevoice",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-check-sensevoice.log",
+      "counts": {
+        "tests": 15,
+        "pass": 15,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "phone",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-check-phone.log",
+      "counts": {
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "forum",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-check-forum.log",
+      "counts": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "profile-share",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-check-profile-share.log",
+      "counts": {
+        "tests": 11,
+        "pass": 11,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "dsbot",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-check-dsbot.log",
+      "counts": {
+        "tests": 10,
+        "pass": 10,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "node-budget",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-check-node-budget.log",
+      "counts": {}
+    },
+    {
+      "name": "speech",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-check-speech.log",
+      "counts": {
+        "tests": 9,
+        "pass": 9,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "companion-contracts",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-check-companion-contracts.log",
+      "counts": {
+        "tests": 20,
+        "pass": 20,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "final_chat_companion_lifecycle",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-ui-closure.log",
+      "counts": {
+        "tests": 82,
+        "pass": 82,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "final_profile_share",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-profile-closure.log",
+      "counts": {
+        "tests": 12,
+        "pass": 12,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "final_recall_contracts",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-recall-closure.log",
+      "counts": {
+        "tests": 27,
+        "pass": 27,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "final_locale",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-locale-closure.log",
+      "counts": {
+        "tests": 4,
+        "pass": 4,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "final_arkui_observers",
+      "exit_code": 0,
+      "log": "/tmp/dsh-release-arkui.log",
+      "counts": {
+        "tests": 10,
+        "pass": 10,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "signals_strict_receipts_and_preview",
+      "exit_code": 0,
+      "log": "/tmp/dsh-release-signals-pure.log",
+      "counts": {
+        "tests": 10,
+        "pass": 10,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "signals_real_http",
+      "exit_code": 0,
+      "log": "/tmp/dsh-release-signals-http.log",
+      "counts": {}
+    },
+    {
+      "name": "signals_original_producer",
+      "exit_code": 0,
+      "log": "/tmp/dsh-release-signals-live.log",
+      "counts": {}
+    },
+    {
+      "name": "sensevoice_real_native",
+      "exit_code": 0,
+      "log": "/tmp/dsh-release-sensevoice-native.log",
+      "counts": {}
+    },
+    {
+      "name": "final_mentions",
+      "exit_code": 0,
+      "log": "/tmp/dsh-release-mentions.log",
+      "counts": {
+        "tests": 11,
+        "pass": 11,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "recall_restart_while_on",
+      "exit_code": 0,
+      "log": "/tmp/dsh-release-recall-closure.log",
+      "counts": {}
+    },
+    {
+      "name": "remote_original_server",
+      "exit_code": 0,
+      "log": "/tmp/dsh-release-remote-relay.log",
+      "counts": {
+        "tests": 2,
+        "pass": 2,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "remote_official_mac_dsh",
+      "exit_code": 0,
+      "log": "/tmp/dsh-remote-reference-remote.log",
+      "counts": {}
+    },
+    {
+      "name": "ssh_isolated_openssh",
+      "exit_code": 0,
+      "log": "/tmp/dsh-remote-reference-ssh.log",
+      "counts": {}
+    },
+    {
+      "name": "real_remote_pty",
+      "exit_code": 0,
+      "log": "/tmp/dsh-remote-reference-terminal.log",
+      "counts": {
+        "tests": 4,
+        "pass": 4,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "offline_browser_renderers",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-browser.log",
+      "counts": {
+        "tests": 4,
+        "pass": 4,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "real_webrtc",
+      "exit_code": 0,
+      "log": "/tmp/dsh-release-rtc.log",
+      "counts": {
+        "tests": 4,
+        "pass": 3,
+        "fail": 0,
+        "skipped": 1
+      }
+    },
+    {
+      "name": "native_deletion_marker",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-deletion-native.log",
+      "counts": {}
+    },
+    {
+      "name": "deletion_contracts_and_real_persistence",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-deletion-contracts.log",
+      "counts": {
+        "tests": 7,
+        "pass": 7,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "current_usage_reporting",
+      "exit_code": 0,
+      "log": "/tmp/dsh-release-usage.log",
+      "counts": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "extended_ui_plugins_and_sharing",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-extended-ui.log",
+      "counts": {
+        "tests": 68,
+        "pass": 68,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "root_regressions",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-root-regression.log",
+      "counts": {
+        "tests": 95,
+        "pass": 95,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "profile",
+      "exit_code": 0,
+      "log": "/tmp/dsh-release4-test-profile.log",
+      "command": [
+        "node",
+        "tests/profile-share-live.mjs",
+        "/tmp/dsh-release4-runtime"
+      ]
+    },
+    {
+      "name": "deletion",
+      "exit_code": 0,
+      "log": "/tmp/dsh-release4-test-deletion.log",
+      "command": [
+        "node",
+        "tests/session-deletion-live.mjs",
+        "/tmp/dsh-release4-runtime"
+      ]
+    },
+    {
+      "name": "recall",
+      "exit_code": 0,
+      "log": "/tmp/dsh-release4-test-recall.log",
+      "command": [
+        "node",
+        "tests/companion-recall-live.mjs",
+        "/tmp/dsh-release4-runtime"
+      ]
+    },
+    {
+      "name": "signals-http",
+      "exit_code": 0,
+      "log": "/tmp/dsh-release4-test-signals-http.log",
+      "command": [
+        "node",
+        "tests/companion-signals-http.mjs",
+        "/tmp/dsh-release4-runtime"
+      ]
+    },
+    {
+      "name": "client",
+      "exit_code": 0,
+      "log": "/tmp/dsh-release4-test-client.log",
+      "command": [
+        "sh",
+        "tests/check-dsh-client-live.sh",
+        "/tmp/dsh-release4-pack/dsh-runtime.zip"
+      ]
+    },
+    {
+      "name": "phone",
+      "exit_code": 0,
+      "log": "/tmp/dsh-release4-test-phone.log",
+      "command": [
+        "node",
+        "tests/phone-live.mjs",
+        "/tmp/dsh-release4-runtime"
+      ]
+    },
+    {
+      "name": "speech",
+      "exit_code": 0,
+      "log": "/tmp/dsh-release4-test-speech.log",
+      "command": [
+        "node",
+        "tests/speech-live.mjs",
+        "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/ets/dsh/DshClient.ets",
+        "/tmp/dsh-release4-runtime",
+        "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/local-flock-fixture.cjs"
+      ]
+    },
+    {
+      "name": "bot",
+      "exit_code": 0,
+      "log": "/tmp/dsh-release4-test-bot.log",
+      "command": [
+        "node",
+        "tests/dsbot-live.mjs",
+        "/tmp/dsh-release4-runtime"
+      ]
+    },
+    {
+      "name": "signals-live",
+      "exit_code": 0,
+      "log": "/tmp/dsh-release4-test-signals-live.log",
+      "command": [
+        "node",
+        "tests/companion-signals-live.mjs",
+        "/tmp/dsh-release4-runtime"
+      ]
+    },
+    {
+      "name": "media-generation",
+      "exit_code": 0,
+      "log": "/tmp/dsh-release4-test-media-generation.log",
+      "command": [
+        "sh",
+        "tests/check-media-generation-live.sh",
+        "/tmp/dsh-release4-pack/dsh-runtime.zip"
+      ]
+    },
+    {
+      "name": "native-plugins",
+      "exit_code": 0,
+      "log": "/tmp/dsh-release4-test-native-plugins.log",
+      "command": [
+        "sh",
+        "tests/check-native-plugins-live.sh",
+        "/tmp/dsh-release4-pack/dsh-runtime.zip"
+      ]
+    },
+    {
+      "name": "final_bot_schedules",
+      "exit_code": 0,
+      "log": "/tmp/dsh-release4-dsbot-schedules.log",
+      "counts": {}
+    },
+    {
+      "name": "final_bot_schedule_contracts",
+      "exit_code": 0,
+      "log": "/tmp/dsh-final-dsbot-schedule-contracts.log",
+      "counts": {
+        "tests": 7,
+        "pass": 7,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "final_bot_contracts",
+      "exit_code": 0,
+      "log": "/tmp/dsh-release4-dsbot-unit.log",
+      "counts": {
+        "tests": 6,
+        "pass": 6,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "schedule_original_patch",
+      "exit_code": 0,
+      "log": "/tmp/dsh-release4-schedule-patch.log",
+      "counts": {
+        "tests": 4,
+        "pass": 4,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "bot_original_mobile",
+      "exit_code": 0,
+      "log": "/tmp/dsh-bot-v023-mobile-contracts.log",
+      "counts": {
+        "tests": 11,
+        "pass": 11,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "bot_original_core",
+      "exit_code": 0,
+      "log": "/tmp/dsh-bot-v023-mobile-regression.log",
+      "counts": {
+        "tests": 114,
+        "pass": 114,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "bot_original_part_recovery",
+      "exit_code": 0,
+      "log": "/tmp/dsh-bot-v023-mobile-parts.log",
+      "counts": {
+        "tests": 10,
+        "pass": 10,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "final_schedule_authorization",
+      "exit_code": 0,
+      "log": "/tmp/dsh-release4-schedule-authorization.log",
+      "counts": {}
+    },
+    {
+      "name": "final_composed_bot_upstream_regression",
+      "exit_code": 0,
+      "log": "/tmp/dsh-bot-v023-final-upstream.log",
+      "counts": {
+        "tests": 26,
+        "pass": 26,
+        "fail": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "reproduction": {
+    "node": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node (24.14.1)",
+    "build_log": "/tmp/dsh-all-features-build28.log",
+    "signature_log": "/tmp/dsh-release-signature.log",
+    "runtime_pack_log": "/tmp/dsh-release4-pack.log",
+    "test_runtime": "/tmp/dsh-release4-runtime",
+    "sensevoice": "sh tests/check-sensevoice-native.sh /tmp/sensevoice-models /tmp/sensevoice-zh.wav /tmp/sherpa-onnx-v1.13.8-osx-arm64-shared-no-tts-lib/lib",
+    "relay": "sh tests/check-dsh-remote.sh /tmp/dsh-remote-final-reference entry/src/main/resources/rawfile/dsh-runtime.zip",
+    "relay_reference": "04edf424e08909f2929f74c23abaa8ad86670a7d",
+    "official_mac_dsh": "/tmp/dsh-remote-reference-host/node_modules/@deepseek-ai/dsh/lib/bin.js",
+    "arkui": "sh tests/check-arkui-reactivity.sh",
+    "schedule_authorization": "node tests/schedule-authorization-live.mjs /tmp/dsh-release4-runtime",
+    "bot_schedules": "node tests/dsbot-schedules-live.mjs /tmp/dsh-release4-runtime"
+  },
+  "acceptance_limits": [
+    "No HDC device was connected. This final HAP was not installed; hardware IME, actual microphone/system ASR/TTS/AV playback, notifications, permissions, Live2D GPU, ArkWeb, Form launcher and same-viewport visual parity await the user phone checklist.",
+    "Local model/provider, OAuth/forum/Bot/media HTTP fixtures use synthetic credentials and responses. Real DSH, persistence, tools, jobs, authenticated binary and streaming paths were exercised; no paid generation, real external post or user message was sent.",
+    "Ordinary phone HAP sandbox does not provide Android Shizuku/root/ADB/private virtual screen, unrestricted app inventory, outside-app floating pets, arbitrary local process/PTY or package installation scripts. Public accessibility, single screenshot, permitted intents, static launch shortcuts and Companion Form cards are implemented; remote Shell/PTY/package paths remain available.",
+    "Latest WebRTC suite passed real ICE/DTLS/SCTP tests but skipped the forced TURN server test because DSH_TEST_TURN_URL was unset. Prior phase6 TURN evidence is historical and not a new test of this HAP.",
+    "Original usage reporting rejects unsupported real device/SDK metadata. No Android information is fabricated; production collector acceptance was not exercised.",
+    "Recall and deletion are implemented runtime capabilities, not platform exceptions. Recall revocation/restart seals the old session; a fresh explicitly consented session is required.",
+    "Companion system battery/notification producers are unavailable in the fixed original reference. Local run-result signals correctly report unavailable when real shell production is unavailable; host-only tests enabled the unchanged original producer without altering production policy."
+  ],
+  "knowledge_sync": {
+    "projects": [
+      "dsh-go-harmony"
+    ],
+    "project_count": 1,
+    "errors": [],
+    "last_success": "2026-11-16T12:58:54.871034+08:00"
+  }
+}

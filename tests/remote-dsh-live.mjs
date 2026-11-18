@@ -23,6 +23,7 @@ const providerKey = 'synthetic-remote-fixture';
 const payload = 'file created by the Mac DSH fixture';
 const shellOutput = 'mac-shell-fixture';
 const jobOutput = 'mac-job-fixture';
+const compactionSummary = 'Remote fixture summary.';
 const cases = {
   'fixture-write': ['write', { file_path: 'fixture.txt', content: payload }],
   'fixture-read': ['read', { file_path: 'fixture.txt' }],
@@ -57,13 +58,13 @@ let reverse;
 let providerError;
 let startupDependencyMissing = false;
 
-function sendModelResponse(response, id, prompt, tool) {
+function sendModelResponse(response, id, text, tool) {
   const content = tool ? [
     { type: 'content_block_start', content_block: { type: 'tool_use', id: `call-${id}`, name: tool[0], input: {} } },
     { type: 'content_block_delta', delta: { type: 'input_json_delta', partial_json: JSON.stringify(tool[1]) } }
   ] : [
     { type: 'content_block_start', content_block: { type: 'text', text: '' } },
-    { type: 'content_block_delta', delta: { type: 'text_delta', text: answer(prompt) } }
+    { type: 'content_block_delta', delta: { type: 'text_delta', text } }
   ];
   response.writeHead(200, { 'Content-Type': 'text/event-stream' });
   for (const event of [
@@ -100,7 +101,8 @@ const provider = createServer(async (request, response) => {
       Array.isArray(message.content) && message.content.some(part => part.type === 'tool_result'));
     const tool = continued || !Object.hasOwn(cases, prompt) ? undefined : cases[prompt];
     if (tool) assert.ok(payload.tools?.some(entry => entry.name === tool[0]), `Model has no ${tool[0]} tool`);
-    sendModelResponse(response, randomUUID(), prompt, tool);
+    const compacting = body.includes('You are now acting as a compaction engine');
+    sendModelResponse(response, randomUUID(), compacting ? compactionSummary : answer(prompt), tool);
   } catch (error) {
     providerError = error.message;
     response.writeHead(500).end();
@@ -264,7 +266,17 @@ try {
     await client.approve(approval.id, false);
     await completed('fixture-approval');
     await assert.rejects(readFile(join(workspace, 'approval-proof.txt')), { code: 'ENOENT' });
-    console.log('PASS: official Mac DSH authentication, file write/read/error, shell, background job and rejected approval');
+
+    assert.ok((await client.listCommands(session)).some(command => command.name === 'compact'));
+    await prompt('Build a fixture with meaningful history. '.repeat(300).trim());
+    const result = await client.executeCommand(session, '/compact');
+    assert.ok(result.success && result.id, result.text);
+    assert.match(result.text, /^已压缩 [1-9]\d* 条历史记录/);
+    await until(() => chat?.commands.some(command => command.id === result.id && command.done && command.seq !== undefined),
+      'No durable remote /compact result arrived');
+    assert.ok((await client.sessionPage(session)).records.some(event => event.type === 'compaction/summary' &&
+      event.data.sourceCommandId === result.id && event.data.summary.some(part => part.text === compactionSummary)));
+    console.log('PASS: official Mac DSH authentication, file write/read/error, shell, background job, rejected approval and /compact');
   }
 } finally {
   client?.close();

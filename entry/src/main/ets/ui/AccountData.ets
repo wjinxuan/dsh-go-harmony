@@ -18,9 +18,101 @@ export interface AccountOverview {
   recharge?: string[];
   bonus?: string[];
   balanceFailed?: boolean;
+  usageUrl?: string;
+  topUpUrl?: string;
 }
 
 type AccountRequest = (method: string, args: WireObject, timeoutMs?: number) => Promise<Object | null | undefined>;
+
+export interface AccountSignInAttempt {
+  id: string;
+  phase: 'initializing' | 'waiting-browser' | 'exchanging' | 'committing';
+  authorizeUrl: string;
+  expiresAt: number;
+}
+
+export type AccountSignInResult = 'signed-in' | 'cancelled' | 'expired' | 'failed' | 'unsafe-url';
+
+export function accountCallbackOrigin(value: string): string {
+  const match = /^http:\/\/127\.0\.0\.1:([1-9]\d{0,4})$/.exec(value);
+  return match && Number(match[1]) <= 65535 && match[0] === value ? value : '';
+}
+
+export function accountAuthorizeUrl(value: string): string {
+  // Only the production Platform authorization route can receive the browser handoff.
+  return value.startsWith('https://platform.deepseek.com/dsh/authorize?') &&
+    !/[\s\\#\x00-\x1f\x7f]/.test(value) ? value : '';
+}
+
+export function accountPlatformUrl(value: string): string {
+  return /^https:\/\/platform\.deepseek\.com\/(?:usage|top_up)\/?$/.test(value) ? value : '';
+}
+
+function activeAccountAttempt(value: WireObject): AccountSignInAttempt | undefined {
+  const id = string(value['id']);
+  const phase = string(value['phase']);
+  if (!id || (phase !== 'initializing' && phase !== 'waiting-browser' && phase !== 'exchanging' &&
+    phase !== 'committing')) return undefined;
+  const expires = value['expiresAt'];
+  return { id: id, phase: phase, authorizeUrl: accountAuthorizeUrl(string(value['authorizeUrl'])),
+    expiresAt: typeof expires === 'number' && Number.isFinite(expires) ? expires : 0 };
+}
+
+export async function runAccountSignIn(request: AccountRequest, client: AccountClientMetadata, origin: string,
+  isCurrent: () => boolean, publish: (attempt: AccountSignInAttempt) => Promise<void>,
+  wait: () => Promise<void>, canCancel: () => boolean = isCurrent): Promise<AccountSignInResult> {
+  const callbackOrigin = accountCallbackOrigin(origin);
+  if (!callbackOrigin || !isCurrent()) return 'cancelled';
+  const args: WireObject = {};
+  args['callbackOrigin'] = callbackOrigin;
+  args['loginSource'] = 'web';
+  args['client'] = client;
+  let reply = await request('account/startSignIn', args);
+  const deadline = Date.now() + 615000;
+  let attemptId = '';
+  let last: AccountSignInAttempt | undefined;
+  while (true) {
+    const attemptValue = object(object(reply)['attempt']);
+    const attempt = activeAccountAttempt(attemptValue);
+    attemptId = attemptId || string(attemptValue['id']);
+    if (!isCurrent()) {
+      if (canCancel()) {
+        if (accountStatus(reply) === 'credential-stored') return 'signed-in';
+        if (attempt && attempt.id === attemptId && await cancelAccountSignIn(request, attempt.id)) return 'signed-in';
+      }
+      return 'cancelled';
+    }
+    if (accountStatus(reply) === 'credential-stored') return 'signed-in';
+    if (!attempt || attempt.id !== attemptId) {
+      if (attemptValue['phase'] === 'expired') return 'expired';
+      return attemptValue['phase'] === 'failed' || !attemptId ? 'failed' : 'cancelled';
+    }
+    if (Date.now() >= Math.min(deadline, attempt.expiresAt ? attempt.expiresAt + 15000 : deadline)) {
+      return await cancelAccountSignIn(request, attempt.id) ? 'signed-in' : 'expired';
+    }
+    if (attempt.phase === 'waiting-browser' && !attempt.authorizeUrl) {
+      await cancelAccountSignIn(request, attempt.id);
+      return 'unsafe-url';
+    }
+    if (attempt.phase !== last?.phase || attempt.authorizeUrl !== last?.authorizeUrl) {
+      last = attempt;
+      await publish(attempt);
+    }
+    if (isCurrent()) await wait();
+    if (!isCurrent()) {
+      if (canCancel() && await cancelAccountSignIn(request, attempt.id)) return 'signed-in';
+      return 'cancelled';
+    }
+    reply = await request('account/getState', {});
+  }
+}
+
+async function cancelAccountSignIn(request: AccountRequest, id: string): Promise<boolean> {
+  const args: WireObject = {};
+  args['attemptId'] = id;
+  const value = await request('account/cancelSignIn', args);
+  return accountStatus(value) === 'credential-stored';
+}
 
 interface AccountDecimal {
   digits: bigint;
@@ -97,8 +189,11 @@ function accountText(value: Object | null | undefined): string {
 export async function loadAccountOverview(request: AccountRequest, client: AccountClientMetadata,
   isCurrent: () => boolean, publish: (view: AccountOverview) => void): Promise<void> {
   let status: 'signed-out' | 'credential-stored';
+  let links: WireObject = {};
   try {
-    status = accountStatus(await request('account/getState', {}));
+    const state = await request('account/getState', {});
+    status = accountStatus(state);
+    links = object(object(state)['links']);
   } catch (error) {
     if (isCurrent()) {
       const unsupported = error instanceof Error && error.message === '主机请求失败（HTTP 404）';
@@ -111,6 +206,8 @@ export async function loadAccountOverview(request: AccountRequest, client: Accou
   if (status !== 'credential-stored') return;
 
   const overview: AccountOverview = { status: status };
+  overview.usageUrl = accountPlatformUrl(string(links['usageUrl']));
+  overview.topUpUrl = accountPlatformUrl(string(links['topUpUrl']));
   const args: WireObject = {};
   args['client'] = client;
   let changed = false;
@@ -130,7 +227,7 @@ export async function loadAccountOverview(request: AccountRequest, client: Accou
   const update = (): void => {
     if (isCurrent() && !changed) publish({ status: overview.status, profile: overview.profile,
       profileFailed: overview.profileFailed, recharge: overview.recharge, bonus: overview.bonus,
-      balanceFailed: overview.balanceFailed });
+      balanceFailed: overview.balanceFailed, usageUrl: overview.usageUrl, topUpUrl: overview.topUpUrl });
   };
   const profile = request('account/getProfile', args).then(async (reply: Object | null | undefined): Promise<void> => {
     if (reply === null) { await refreshStatus(); return; }

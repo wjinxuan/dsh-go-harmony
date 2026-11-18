@@ -1,0 +1,1225 @@
+{
+  "phase": 18,
+  "recordedAt": "2026-11-18T01:42:25.483695+00:00",
+  "status": "installed_targeted_settings_ui_pass_live_scene_pending",
+  "allAcceptanceComplete": false,
+  "scope": "Companion settings/capability access without a character, scene-gated event ingestion and current full-session entry; no device pass inferred.",
+  "installedBaseline": {
+    "phase": 17,
+    "sha256": "e4c0743cf645526189094497ec800440961fe4a2688a2ec41abaacbbb23d5b47",
+    "installStep": 506
+  },
+  "build": {
+    "phase": 18,
+    "exitCode": 0,
+    "elapsedSeconds": 7.956,
+    "log": "/tmp/dsh-device-20261118/583-phase18-build.log",
+    "artifact": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/build/default/outputs/default/entry-default-signed.hap",
+    "artifactSha256": "bff63f5c08284b53684e4da43cf24c94c0145c6462dbf50d7a2e30636b2edc40",
+    "artifactBytes": 197426727,
+    "artifactIsNewBuild": true
+  },
+  "buildEvidence": {
+    "path": "/tmp/dsh-device-20261118/583-phase18-build-result.json",
+    "bytes": 390,
+    "sha256": "bf424057343fbe0c517f3cc1998db2c6ef6edf1342fae33e4582990052db96cd"
+  },
+  "buildLog": {
+    "path": "/tmp/dsh-device-20261118/583-phase18-build.log",
+    "bytes": 93266,
+    "sha256": "9eb247629d51f3940fb16d92e12cea5226090771a47ed46636d64b69f49b3ffb"
+  },
+  "focusedTests": {
+    "phase": 18,
+    "attempts": [
+      {
+        "name": "compiled-signals",
+        "exitCode": 0,
+        "log": "/tmp/dsh-device-20261118/584-phase18-compiled-signals.log",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/companion-signal-settings.test.mjs",
+          "entry/build/default/cache/default/default@CompileArkTS/esmodule/debug/entry/src/main/ets/companion/CompanionPanel.ts"
+        ],
+        "tests": 19,
+        "pass": 19,
+        "fail": 0,
+        "skipped": 0
+      },
+      {
+        "name": "locale",
+        "exitCode": 0,
+        "log": "/tmp/dsh-device-20261118/584-phase18-locale.log",
+        "command": [
+          "sh",
+          "tests/check-locale.sh"
+        ],
+        "tests": 4,
+        "pass": 4,
+        "fail": 0,
+        "skipped": 0
+      }
+    ],
+    "pass": true
+  },
+  "focusedTestsEvidence": {
+    "path": "/tmp/dsh-device-20261118/584-phase18-tests.json",
+    "bytes": 815,
+    "sha256": "f7f86429d6c679f97f69b6d05472575e8f7b251e59d5a104bef95feaf298d09b"
+  },
+  "focusedTestLogs": [
+    {
+      "path": "/tmp/dsh-device-20261118/584-phase18-compiled-signals.log",
+      "bytes": 2368,
+      "sha256": "55f2880eb78a3781369a912c4d1ae0f7c728cff9351faeea3c55621853b9b75a"
+    },
+    {
+      "path": "/tmp/dsh-device-20261118/584-phase18-locale.log",
+      "bytes": 554,
+      "sha256": "0583f31a8689cbd93ff973be12d20fc4b14432a38e920a5f3c697d8a84b0f688"
+    }
+  ],
+  "integrity": {
+    "phase": 18,
+    "signatureExitCode": 0,
+    "artifactSha256": "bff63f5c08284b53684e4da43cf24c94c0145c6462dbf50d7a2e30636b2edc40",
+    "artifactBytes": 197426727,
+    "crcPass": true,
+    "changedEntries": [
+      ".pages.info",
+      "ets/modules.abc",
+      "ets/sourceMaps.map"
+    ],
+    "expectedChangedEntriesOnly": true,
+    "nativeLibraries": [
+      {
+        "path": "libs/arm64-v8a/libc++_shared.so",
+        "sha256": "60bce7be77b6dbb7be3151a14e5b0f83f04ee29d641dba025b8c1b7207e93d34",
+        "unchanged": true
+      },
+      {
+        "path": "libs/arm64-v8a/libdshlocal.so",
+        "sha256": "68f7933cb36f2ab6dc7303913efb4aa58ba52268cc002642464dec7b6cb39819",
+        "unchanged": true
+      },
+      {
+        "path": "libs/arm64-v8a/libnode.so",
+        "sha256": "efd4a03096bde322d1c171361a8a1d7b208ea34ddc70ae907e660750c56e6acf",
+        "unchanged": true
+      },
+      {
+        "path": "libs/arm64-v8a/libonnxruntime.so",
+        "sha256": "f9fd9080a10f2b93323d597225fbaa63d06f93b384bdfdd7285db9a9115fcc2b",
+        "unchanged": true
+      },
+      {
+        "path": "libs/arm64-v8a/libsherpa-onnx-c-api.so",
+        "sha256": "75b38a525e7178bee052ec99a77175a934daa71ab6983deabbe948a96ae84221",
+        "unchanged": true
+      }
+    ],
+    "runtimeSha256": "93bd20716200d852353999568f4898f9fca2f69846fac5bfc4d0ce85d0ebcf27",
+    "runtimeMatchesBaseline": true,
+    "pass": true
+  },
+  "integrityEvidence": {
+    "path": "/tmp/dsh-device-20261118/585-phase18-integrity.json",
+    "bytes": 1327,
+    "sha256": "15cbc2d2f881e346db227cbebed83f4bef3e81647be68050c00a2f4133161ccf"
+  },
+  "signatureLog": {
+    "path": "/tmp/dsh-device-20261118/585-phase18-signature.log",
+    "bytes": 3285,
+    "sha256": "8fce75b396ce83b067e4435b18ae58e5a6ef535aa5c57be8b36b53885e2d0691"
+  },
+  "sourceVerification": {
+    "schema": 1,
+    "scope": "companion settings without character; actual signal ingress remains scene gated; reactive full-session entry",
+    "sourceFrozen": true,
+    "sourceFiles": [
+      {
+        "path": "entry/src/main/ets/companion/CompanionSignals.ets",
+        "sha256": "67385ccd11c61919951a4e1994f70bf008032c6444113e773e3f6ac99b3c523e"
+      },
+      {
+        "path": "entry/src/main/ets/companion/CompanionPanel.ets",
+        "sha256": "aa6061b4201c4b21e304e7506c31f67e2e52bdb2f6e0a719debfb298a715f4ea"
+      },
+      {
+        "path": "entry/src/main/ets/companion/CompanionSignalSettings.ets",
+        "sha256": "687eba39951e28caee51091f25160c539a59db5cb696acb62f501ec588a59e80"
+      },
+      {
+        "path": "tests/companion-signal-settings.test.mjs",
+        "sha256": "c15f892cb999fbd202d8ead63dd93fdc62faa399b5227a4a34ae087f840fe9ac"
+      },
+      {
+        "path": "tests/check-companion-contracts.sh",
+        "sha256": "2bfe8339096feec097054fec9620e989f429153ab54a499dd696c62f6cb4f49d"
+      }
+    ],
+    "proofs": [
+      {
+        "path": "/tmp/dsh-device-20261118/companion-signals-diagnosis/valid-source-generated-red.log",
+        "exitCode": 1,
+        "passed": 0,
+        "failed": 11,
+        "meaning": "Valid baseline source and existing CompileArkTS regressions before correction; last two added source race cases not yet present"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/companion-signals-diagnosis/source-contracts-final-green.log",
+        "exitCode": 0,
+        "passed": 19,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/companion-signals-diagnosis/default-contracts-green.log",
+        "exitCode": 0,
+        "passed": 56,
+        "failed": 0,
+        "skipped": 1,
+        "skipReason": "Existing fixed-runtime-hash test requires runtime argument; all new scene/settings cases ran"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/companion-signals-diagnosis/peer-blockers-red.log",
+        "exitCode": 1,
+        "passed": 9,
+        "failed": 3,
+        "skipped": 0
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/companion-signals-diagnosis/peer-blockers-final-green.log",
+        "exitCode": 0,
+        "passed": 22,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/companion-signals-diagnosis/default-contracts-peer-green.log",
+        "exitCode": 0,
+        "passed": 59,
+        "failed": 0,
+        "skipped": 1,
+        "skipReason": "Existing fixed-runtime-hash test requires runtime argument"
+      }
+    ],
+    "phoneReadonlyCapability": {
+      "path": "/tmp/dsh-device-20261118/companion-signals-diagnosis/capability.json",
+      "sha256": "22b0023f13e7d8f8145255fcadb8baacdf130aa4f6794b770a35ae847b1b3675",
+      "available": false,
+      "reason": "producer-unavailable",
+      "scope": "Metadata GET only; not a UI activation pass"
+    },
+    "pending": {
+      "compileArkTS": "ROOT unified phase18 build",
+      "generatedTests": "node tests/companion-signal-settings.test.mjs <CompanionPanel.ts>; expected 19 cases",
+      "phoneUi": "NOT_YET_RETESTED"
+    },
+    "constraints": {
+      "hdc": false,
+      "build": false,
+      "phoneMutation": false,
+      "modelRequest": false,
+      "changesToConsentQuietRateVoicePolicy": false
+    },
+    "revision": 2,
+    "supersedes": "/tmp/dsh-device-20261118/companion-signals-diagnosis/source-verification.json",
+    "peerCorrections": [
+      "Preview/detail/explicit share remain reachable inside live room with existing component event mode; settings mode only consent/capability",
+      "Panel active guard rejects late install/remove callbacks after disappearance",
+      "Returning from settings awaits new stage ready; previous destroyed stage readiness is cleared"
+    ]
+  },
+  "sourceVerificationEvidence": {
+    "path": "/tmp/dsh-device-20261118/companion-signals-diagnosis/source-verification-v2.json",
+    "bytes": 3651,
+    "sha256": "54b03c8e2d05edc8d5f2b709d501da49d87a1f9822b33bf642da8caf2c1e16fe"
+  },
+  "peerReview": {
+    "status": "REVIEWED_NO_NEW_BLOCKING_FINDINGS",
+    "reviewMode": "Read-only source/diff/tests/log review; no test rerun, device API, HDC, build or production edit by reviewer.",
+    "resolvedFindings": [
+      {
+        "issue": "Only preview UI previously lived after scene retirement.",
+        "resolution": "Actual live-room scroll now renders existing component with settingsMode:false only while hasSignalEvents; settings renders consent/capability only. Gate retirement still invalidates old slots."
+      },
+      {
+        "issue": "Late pack import/remove completion could recreate an owner after leaving.",
+        "resolution": "Panel active flag set true on appear, false first on disappear; centralized startSignals refuses inactive panel. Actual production async methods covered by deferred import/remove test."
+      }
+    ],
+    "additionalChecks": [
+      "Inactive scene consent/capability path does not open mux/SSE/history/list/timer; current generation and foreground checked after capability await.",
+      "Scene exit clears stageReady; returning to room remains inactive until new ready signal. Direct method test covers false-false-true transition.",
+      "Preview/detail/share retain original gate provenance, exact text and single-use permission; dialog confirmation is necessary before send.",
+      "getOwner supplier resolves current owner; stale async detail/share cannot replace current preview UI."
+    ],
+    "observedTestLogs": {
+      "red": {
+        "tests": 12,
+        "pass": 9,
+        "fail": 3,
+        "skip": 0
+      },
+      "green": {
+        "tests": 22,
+        "pass": 22,
+        "fail": 0,
+        "skip": 0,
+        "composition": "12 new source cases + 10 existing signal cases"
+      }
+    },
+    "generatedOrDeviceValidation": "ROOT phase18 build, actual CompileArkTS 19/19, locale 4/4, signature and CRC passed. Phone offline; new HAP not installed or UI reverified at this snapshot.",
+    "sourceFiles": [
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/ets/companion/CompanionPanel.ets",
+        "sha256": "aa6061b4201c4b21e304e7506c31f67e2e52bdb2f6e0a719debfb298a715f4ea"
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/ets/companion/CompanionSignals.ets",
+        "sha256": "67385ccd11c61919951a4e1994f70bf008032c6444113e773e3f6ac99b3c523e"
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/ets/companion/CompanionSignalSettings.ets",
+        "sha256": "687eba39951e28caee51091f25160c539a59db5cb696acb62f501ec588a59e80"
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/companion-signal-settings.test.mjs",
+        "sha256": "c15f892cb999fbd202d8ead63dd93fdc62faa399b5227a4a34ae087f840fe9ac"
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/check-companion-contracts.sh",
+        "sha256": "2bfe8339096feec097054fec9620e989f429153ab54a499dd696c62f6cb4f49d"
+      }
+    ],
+    "logEvidence": [
+      {
+        "path": "/tmp/dsh-device-20261118/companion-signals-diagnosis/valid-source-generated-red.log",
+        "sha256": "b5d118a7eeffd706b16aaab1267c76421aaa83e6fd64c0ba9cfd1340b72e1c1e"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/companion-signals-diagnosis/peer-blockers-red.log",
+        "sha256": "c543f619f61f405a00d101df355bec3a58b268bd672a086014e0fad4caa080a5"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/companion-signals-diagnosis/peer-blockers-final-green.log",
+        "sha256": "913bc7d85d70b4f08a7c41269c2eeebf72646b085ce10fb0fbfe5f91340bab13"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/companion-signals-diagnosis/default-contracts-peer-green.log",
+        "sha256": "22a3541e74984f2f7ece1e15dde6f90fc943fe17bc382ae250605bf59436daa7"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/583-phase18-build.log",
+        "sha256": "9eb247629d51f3940fb16d92e12cea5226090771a47ed46636d64b69f49b3ffb"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/584-phase18-compiled-signals.log",
+        "sha256": "55f2880eb78a3781369a912c4d1ae0f7c728cff9351faeea3c55621853b9b75a"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/584-phase18-locale.log",
+        "sha256": "0583f31a8689cbd93ff973be12d20fc4b14432a38e920a5f3c697d8a84b0f688"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/585-phase18-signature.log",
+        "sha256": "8fce75b396ce83b067e4435b18ae58e5a6ef535aa5c57be8b36b53885e2d0691"
+      }
+    ],
+    "rootVerification": {
+      "provenance": "ROOT actual execution results plus reviewed stored logs; reviewer did not rerun.",
+      "build": {
+        "phase": 18,
+        "exitCode": 0,
+        "elapsedSeconds": 7.956,
+        "log": "/tmp/dsh-device-20261118/583-phase18-build.log",
+        "artifact": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/build/default/outputs/default/entry-default-signed.hap",
+        "artifactSha256": "bff63f5c08284b53684e4da43cf24c94c0145c6462dbf50d7a2e30636b2edc40",
+        "artifactBytes": 197426727,
+        "artifactIsNewBuild": true
+      },
+      "tests": {
+        "phase": 18,
+        "attempts": [
+          {
+            "name": "compiled-signals",
+            "exitCode": 0,
+            "log": "/tmp/dsh-device-20261118/584-phase18-compiled-signals.log",
+            "command": [
+              "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+              "tests/companion-signal-settings.test.mjs",
+              "entry/build/default/cache/default/default@CompileArkTS/esmodule/debug/entry/src/main/ets/companion/CompanionPanel.ts"
+            ],
+            "tests": 19,
+            "pass": 19,
+            "fail": 0,
+            "skipped": 0
+          },
+          {
+            "name": "locale",
+            "exitCode": 0,
+            "log": "/tmp/dsh-device-20261118/584-phase18-locale.log",
+            "command": [
+              "sh",
+              "tests/check-locale.sh"
+            ],
+            "tests": 4,
+            "pass": 4,
+            "fail": 0,
+            "skipped": 0
+          }
+        ],
+        "pass": true
+      },
+      "integrity": {
+        "phase": 18,
+        "signatureExitCode": 0,
+        "artifactSha256": "bff63f5c08284b53684e4da43cf24c94c0145c6462dbf50d7a2e30636b2edc40",
+        "artifactBytes": 197426727,
+        "crcPass": true,
+        "changedEntries": [
+          ".pages.info",
+          "ets/modules.abc",
+          "ets/sourceMaps.map"
+        ],
+        "expectedChangedEntriesOnly": true,
+        "nativeLibraries": [
+          {
+            "path": "libs/arm64-v8a/libc++_shared.so",
+            "sha256": "60bce7be77b6dbb7be3151a14e5b0f83f04ee29d641dba025b8c1b7207e93d34",
+            "unchanged": true
+          },
+          {
+            "path": "libs/arm64-v8a/libdshlocal.so",
+            "sha256": "68f7933cb36f2ab6dc7303913efb4aa58ba52268cc002642464dec7b6cb39819",
+            "unchanged": true
+          },
+          {
+            "path": "libs/arm64-v8a/libnode.so",
+            "sha256": "efd4a03096bde322d1c171361a8a1d7b208ea34ddc70ae907e660750c56e6acf",
+            "unchanged": true
+          },
+          {
+            "path": "libs/arm64-v8a/libonnxruntime.so",
+            "sha256": "f9fd9080a10f2b93323d597225fbaa63d06f93b384bdfdd7285db9a9115fcc2b",
+            "unchanged": true
+          },
+          {
+            "path": "libs/arm64-v8a/libsherpa-onnx-c-api.so",
+            "sha256": "75b38a525e7178bee052ec99a77175a934daa71ab6983deabbe948a96ae84221",
+            "unchanged": true
+          }
+        ],
+        "runtimeSha256": "93bd20716200d852353999568f4898f9fca2f69846fac5bfc4d0ce85d0ebcf27",
+        "runtimeMatchesBaseline": true,
+        "pass": true
+      },
+      "evidenceFiles": [
+        {
+          "path": "/tmp/dsh-device-20261118/583-phase18-build-result.json",
+          "sha256": "bf424057343fbe0c517f3cc1998db2c6ef6edf1342fae33e4582990052db96cd"
+        },
+        {
+          "path": "/tmp/dsh-device-20261118/584-phase18-tests.json",
+          "sha256": "f7f86429d6c679f97f69b6d05472575e8f7b251e59d5a104bef95feaf298d09b"
+        },
+        {
+          "path": "/tmp/dsh-device-20261118/585-phase18-integrity.json",
+          "sha256": "15cbc2d2f881e346db227cbebed83f4bef3e81647be68050c00a2f4133161ccf"
+        }
+      ]
+    },
+    "countingNote": "Do not add repeated source cases across red/green/default/generated commands as independent tests. The compiled command includes 12 source and 7 actual generated method cases."
+  },
+  "peerReviewEvidence": {
+    "path": "/tmp/dsh-device-20261118/companion-signals-diagnosis/peer-final-review.json",
+    "bytes": 8162,
+    "sha256": "f04db8be3946e7cf8da60714175b44519cd0219edb3e20b97b1f1d8998b6baa9"
+  },
+  "historicalAttemptBoundaries": [
+    "582 locale log reports4 pass,0 fail,0 skip; original command exit code not retained.584 re-runs with actual exitCode0.",
+    "Source-only default contract runs retained one pre-existing fixed-runtime-hash test skip because runtime argument was absent. This is not described as a zero-skip all-contract run. Final focused compiled19+locale4 both ran with zero skips.",
+    "Source-verification pending build/generated entries describe its earlier snapshot;583/584 supersede those two pending actions. Phone UI remains pending."
+  ],
+  "installation": {
+    "installed": true,
+    "status": "INSTALLED",
+    "step": 591,
+    "result": {
+      "artifactSha256": "bff63f5c08284b53684e4da43cf24c94c0145c6462dbf50d7a2e30636b2edc40",
+      "exitCode": 0,
+      "elapsedSeconds": 10.497,
+      "priorPid": "21288",
+      "success": true
+    },
+    "evidence": {
+      "path": "/tmp/dsh-device-20261118/591-phase18-install-result.json",
+      "bytes": 178,
+      "sha256": "43592980ae3a9176eef74ebd19a69e5656d5bf1a2c29f7b9280a409c3c8c96e9"
+    },
+    "deviceUiRetested": true
+  },
+  "remaining": [
+    "Fix/retest custom-provider credential persistence in a later package;612/613 BUSY attempt neverheld",
+    "Related deletion and native schedule Questions;busy615–622verified",
+    "Real stage/preview/share needs authorized character package and actual producer; not inferred from settings",
+    "Remaining17-row cases and final cleanup"
+  ],
+  "authoring": "Evidence compilation only. ROOT ran build/tests/signature/integrity; author verified referenced bytes/hashes without HDC, production edit, rebuild or device mutation.",
+  "productionSources": [
+    {
+      "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/ets/companion/CompanionSignals.ets",
+      "bytes": 15075,
+      "sha256": "67385ccd11c61919951a4e1994f70bf008032c6444113e773e3f6ac99b3c523e"
+    },
+    {
+      "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/ets/companion/CompanionPanel.ets",
+      "bytes": 44047,
+      "sha256": "aa6061b4201c4b21e304e7506c31f67e2e52bdb2f6e0a719debfb298a715f4ea"
+    },
+    {
+      "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/ets/companion/CompanionSignalSettings.ets",
+      "bytes": 5884,
+      "sha256": "687eba39951e28caee51091f25160c539a59db5cb696acb62f501ec588a59e80"
+    },
+    {
+      "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/ets/ui/SettingsLocaleData.ets",
+      "bytes": 182397,
+      "sha256": "0a3528cae6d34bf41f7636e6010c1275a7c1ff455b69682292ce0450e6ea8c40"
+    }
+  ],
+  "testCounting": {
+    "focused19": {
+      "source": 12,
+      "actualCompileArkTSGenerated": 7
+    },
+    "locale": 4,
+    "defaultContract59NotAddedToUniqueCount": true
+  },
+  "independentPeerEvidenceCheck": {
+    "pass": true,
+    "checked": 21,
+    "mismatches": [],
+    "items": [
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/ets/companion/CompanionPanel.ets",
+        "type": "local file",
+        "matches": true
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/ets/companion/CompanionSignals.ets",
+        "type": "local file",
+        "matches": true
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/ets/companion/CompanionSignalSettings.ets",
+        "type": "local file",
+        "matches": true
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/companion-signal-settings.test.mjs",
+        "type": "local file",
+        "matches": true
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/check-companion-contracts.sh",
+        "type": "local file",
+        "matches": true
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/companion-signals-diagnosis/valid-source-generated-red.log",
+        "type": "local file",
+        "matches": true
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/companion-signals-diagnosis/peer-blockers-red.log",
+        "type": "local file",
+        "matches": true
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/companion-signals-diagnosis/peer-blockers-final-green.log",
+        "type": "local file",
+        "matches": true
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/companion-signals-diagnosis/default-contracts-peer-green.log",
+        "type": "local file",
+        "matches": true
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/583-phase18-build.log",
+        "type": "local file",
+        "matches": true
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/584-phase18-compiled-signals.log",
+        "type": "local file",
+        "matches": true
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/584-phase18-locale.log",
+        "type": "local file",
+        "matches": true
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/585-phase18-signature.log",
+        "type": "local file",
+        "matches": true
+      },
+      {
+        "path": "libs/arm64-v8a/libc++_shared.so",
+        "type": "HAP member",
+        "matches": true
+      },
+      {
+        "path": "libs/arm64-v8a/libdshlocal.so",
+        "type": "HAP member",
+        "matches": true
+      },
+      {
+        "path": "libs/arm64-v8a/libnode.so",
+        "type": "HAP member",
+        "matches": true
+      },
+      {
+        "path": "libs/arm64-v8a/libonnxruntime.so",
+        "type": "HAP member",
+        "matches": true
+      },
+      {
+        "path": "libs/arm64-v8a/libsherpa-onnx-c-api.so",
+        "type": "HAP member",
+        "matches": true
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/583-phase18-build-result.json",
+        "type": "local file",
+        "matches": true
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/584-phase18-tests.json",
+        "type": "local file",
+        "matches": true
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/585-phase18-integrity.json",
+        "type": "local file",
+        "matches": true
+      }
+    ],
+    "priorVerifierMistake": "First check treated 5 relative HAP native-library paths as local filesystem paths. Those checks were invalid, not missing libraries. This check reads them from the verified HAP."
+  },
+  "independentPeerEvidenceCheckRef": {
+    "path": "/tmp/dsh-device-20261118/587-phase18-peer-evidence-check.json",
+    "bytes": 3253,
+    "sha256": "a70db0158eaccfdc4a7fdeb63e0fd621d468f5f9adf41bd3d20dfa893c465e07"
+  },
+  "connectionEvidenceHistorical": {
+    "path": "/tmp/dsh-device-20261118/586-device-connection.json",
+    "bytes": 377,
+    "sha256": "2bf4293728f7d3ada090eee25499cc06bb81e2b07abcba8e326c4cebc494eb4d"
+  },
+  "currentConnection": {
+    "status": "RECONNECTED_REPORTED_BY_ROOT_STEP588",
+    "record": {
+      "path": "/tmp/dsh-device-20261118/588-reconnected.log",
+      "bytes": 11830,
+      "sha256": "39778d377570c23548c311a183aa059e26ad3e097cf3fe698c3923831cd436ff"
+    },
+    "doesNotProveDeleteOutcome": true
+  },
+  "preInstallSnapshot": {
+    "status": "built-verified-not-installed",
+    "installation": {
+      "installed": false,
+      "deviceUiRetested": false,
+      "reason": "Device reconnected at588; no phase18 installation evidence yet.586 disconnection is historical."
+    },
+    "remaining": [
+      "Install only after ROOT reconnects device",
+      "Recheck companion settings and full-session entry on phone",
+      "NativeRecall OFF persistence through actual restart",
+      "Resolve permanent-delete580 outcome before further destructive action",
+      "Finish remaining17-row cases within materials/permission constraints",
+      "Release SCREEN running lock and restore timeout override with readback"
+    ]
+  },
+  "restart": {
+    "result": {
+      "newPid": "48509",
+      "localPort": 46673,
+      "runtimeVersion": "93bd20716200d852353999568f4898f9fca2f69846fac5bfc4d0ce85d0ebcf27",
+      "readyChanged": true
+    },
+    "evidence": {
+      "path": "/tmp/dsh-device-20261118/593-restart-evidence.json",
+      "bytes": 158,
+      "sha256": "5bbb5fde8141ca4e717e46c5edfea233151cabb397e6b18a8f2f4064e735a558"
+    },
+    "changedPid": true,
+    "markers": {
+      "pass": true,
+      "markers": [
+        {
+          "kind": "delete",
+          "bytes": 140,
+          "sha256": "ef04a95ba3022d1884a3d4bee97847396921d8d09b24dc616b14dd9333375c22",
+          "unchanged": true
+        },
+        {
+          "kind": "recall",
+          "bytes": 192,
+          "sha256": "ffe05c6a4071d1960203a38fb39282373e2beb61fa8c754d87c19dd62d2125d8",
+          "unchanged": true
+        }
+      ]
+    },
+    "markersEvidence": {
+      "path": "/tmp/dsh-device-20261118/594-restart-markers.json",
+      "bytes": 368,
+      "sha256": "35e8800f798a595012edb455ada75164986b3214082d099fe5314c66a08084f4"
+    },
+    "limits": "Delete target remains absent and own controls retained.Recall marker unchanged,old history readable,active null and596nativeOFF after restart verified. No prompt admission probe in this round.",
+    "readOnlyReadback": {
+      "deletion": {
+        "status": "PASS_EXACT_TARGET_ABSENT_CONTROLS_UNCHANGED",
+        "exitCode": 0,
+        "evidence": {
+          "path": "/tmp/dsh-device-20261118/synthetic-openai-24gorhxs/delete-control-after-restart1.json",
+          "bytes": 3483,
+          "sha256": "95399b8abaa34b56cb7136611201a775ee0e0bc00b0502b262f27b3636d80acd"
+        },
+        "log": {
+          "path": "/tmp/dsh-device-20261118/synthetic-openai-24gorhxs/read-delete-controls-after-restart1.log",
+          "bytes": 132,
+          "sha256": "a2a1bd876de6b0687d56b642edbc263f265616e509aa3543c0257916b1dd602f"
+        }
+      },
+      "recall": {
+        "status": "PASS_OLD_HISTORY_READABLE_NO_ACTIVE_BINDING",
+        "exitCode": 0,
+        "recordsInReturnedPage": 5,
+        "hasMore": false,
+        "supported": true,
+        "busy": false,
+        "activeBindingId": null,
+        "prompts": 0,
+        "mutations": 0,
+        "evidence": {
+          "path": "/tmp/dsh-device-20261118/synthetic-openai-24gorhxs/recall-after-restart1.json",
+          "bytes": 780,
+          "sha256": "0c6be2af856ba1964585d9634bd43ec1848c0a57f8cbe33fc22566fba869e6a6"
+        },
+        "log": {
+          "path": "/tmp/dsh-device-20261118/synthetic-openai-24gorhxs/read-recall-after-restart1.log",
+          "bytes": 373,
+          "sha256": "f7f47cad70d97287b2b72d2858cc99a6d1161b9cb5a505409292c790197ad360"
+        },
+        "notProven": [
+          "prompt admission rejection in this round"
+        ]
+      }
+    }
+  },
+  "deviceUi": {
+    "status": "PASS_LISTED_SETTINGS_AND_SESSION_ENTRY_ACTIONS",
+    "steps": [
+      595,
+      596,
+      597,
+      598,
+      599,
+      600,
+      601,
+      602,
+      603,
+      604,
+      605,
+      606
+    ],
+    "checks": {
+      "nativeRecallOffAfterActualRestart": true,
+      "fourSignalTogglesEnabledWithoutCharacter": true,
+      "checkedBaseline": [
+        true,
+        true,
+        false,
+        false
+      ],
+      "stateConsentOffPersistsPageReopen": true,
+      "fourValuesRestored": true,
+      "capabilityRefreshStableNoUnread": true,
+      "capabilityReason": "producer-unavailable",
+      "fullSessionEntryEnabledAndOpensNativeChat": true,
+      "nativeChatTitle": "伙伴小屋",
+      "modeRestoredLightTreeConfirmed": true
+    },
+    "independentTreeAssertions": "596nativeOFF;596/597/599/600 first4signals enabled+checked;603enabled entry;604title;606lightcheck. ROOT separately viewed601 screenshot.",
+    "limits": [
+      "No character/runtime pack; live stage and real signal ingress/preview/share not tested on phone",
+      "producer-unavailable is actual capability; settings usability does not manufacture producer events",
+      "No microphone test or model prompt issued by evidence author"
+    ],
+    "evidence": [
+      {
+        "path": "/tmp/dsh-device-20261117/595-settings-restart-top.json",
+        "bytes": 24392,
+        "sha256": "ee9d491cc93faf7a1b4ee47609932f57c081413f2ab833631065f0e357a1909a"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/595-settings-restart-top.png",
+        "bytes": 3345251,
+        "sha256": "4a129e4a534d32e6298f1b04b658675bc4dba31d52168150e29391d97471e6e3"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/595-settings-restart-top.log",
+        "bytes": 3037,
+        "sha256": "2b288ac33dd7710e46042240ff5962145884978ba5d9077189c4c0a244ea738e"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/596-settings-restart-recall.json",
+        "bytes": 36349,
+        "sha256": "31f8c0408032922e0f6bcb8d7ff8d30c06d07552a296518e01b9ca2203047b05"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/596-settings-restart-recall.png",
+        "bytes": 3345251,
+        "sha256": "91981af7e6b92a92e16f974ece24bbcdba1bfebb34bfcf465257f56a43c436c8"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/596-settings-restart-recall.log",
+        "bytes": 4335,
+        "sha256": "1537ebaabc462ff5bbc054b08502e493a38a66bd35e7920156a5b07a91198a71"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/597-signals-consent-off.json",
+        "bytes": 36350,
+        "sha256": "0901472f49f65cad3b97ec5fc75aae74643a19291ad4fa5ef1bfdcf3960542a9"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/597-signals-consent-off.png",
+        "bytes": 3345251,
+        "sha256": "d7970e952ec9511d1aca3fe985bcc02a7930c98cd330788382811cc49ed950b6"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/597-signals-consent-off.log",
+        "bytes": 4336,
+        "sha256": "3c362106d409fbecda6973c79b70f3a8a43f73051aea369a689cd58a631afcb0"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/598-companion-reopened.json",
+        "bytes": 18746,
+        "sha256": "645fc7d49957a55c91be9721792c7f14827ba91ed9d598b361f72c147ecf7b84"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/598-companion-reopened.png",
+        "bytes": 3345251,
+        "sha256": "68e9bee77ce1d9178a372fa6dffc1df965fd8267673c03d0dce038d9065b13db"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/598-companion-reopened.log",
+        "bytes": 2041,
+        "sha256": "cefb624f38f3dde9ac8cf1cdc4048cbecca2c8ba5ea4c60d545792425532204b"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/599-signals-off-persisted.json",
+        "bytes": 35058,
+        "sha256": "b596a3d299aff10d98176f79df08a0a1bc9d0b4577a719d33e7d843e30396da4"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/599-signals-off-persisted.png",
+        "bytes": 3345251,
+        "sha256": "6baa6b07af8a8fce3209176edd9ae85f99a16caeeace96bdaf3a2453798743b8"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/599-signals-off-persisted.log",
+        "bytes": 4081,
+        "sha256": "a9f05eab23863b1b2f966299b596feda5576b62d0f32574c2acb1969b85d84da"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/600-signals-consent-restored.json",
+        "bytes": 36371,
+        "sha256": "b316a63f4149ccd0cff3973234334dd49138cf456615061309d0d752cc019330"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/600-signals-consent-restored.png",
+        "bytes": 3345251,
+        "sha256": "ee2314ff2e3f6ec4293fbde6518491e61efb79f0abede0f9949cda5aed7e5982"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/600-signals-consent-restored.log",
+        "bytes": 4345,
+        "sha256": "e6457ad0df58f1d5158697e46c06e4389141a7bc655e5e2c5193f6d0161257d6"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/601-signals-refresh-visible.json",
+        "bytes": 38507,
+        "sha256": "c4d0012e3fd78e58f3439ddf80a11af5ef5fea53e6653ef4300d182f0881fc4f"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/601-signals-refresh-visible.png",
+        "bytes": 3345251,
+        "sha256": "4587f2f8424bd39260f393fa0590bb770624f8f6eb980ede87a4bb4c8a980136"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/601-signals-refresh-visible.log",
+        "bytes": 4706,
+        "sha256": "54fef090f6f07e3d042a7b9f9a498a7fec864551ef78c090f5658df9d1ca9eec"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/602-signals-refreshed.json",
+        "bytes": 38507,
+        "sha256": "c4d0012e3fd78e58f3439ddf80a11af5ef5fea53e6653ef4300d182f0881fc4f"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/602-signals-refreshed.png",
+        "bytes": 3345251,
+        "sha256": "58af6a475bc7e67ea2bc88dd283f342e64feafe5ecee7aeb970bfc83d8e3d614"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/602-signals-refreshed.log",
+        "bytes": 4706,
+        "sha256": "54fef090f6f07e3d042a7b9f9a498a7fec864551ef78c090f5658df9d1ca9eec"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/603-full-session-entry.json",
+        "bytes": 33993,
+        "sha256": "ee2be848e9b2276c6c7bb8f75973d2e83938204d432fea9f2286b4fc6242a71a"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/603-full-session-entry.png",
+        "bytes": 3345251,
+        "sha256": "93477faa30c4584705c89c45380be48985337dd3e554af315c414fbfff44003a"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/603-full-session-entry.log",
+        "bytes": 4514,
+        "sha256": "6125a936d8d19c05eed27c54b2ca77a3f4c2cc12a6dd30ff9d7a2f4339daf716"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/604-full-session-opened.json",
+        "bytes": 29336,
+        "sha256": "abf2fc5a2e3994380e9293695c4be77be9f16acfd13ecc13d585ba46c7feb3e4"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/604-full-session-opened.png",
+        "bytes": 3345251,
+        "sha256": "cc5d3b95bddffd4b0818a75031bac42a9371fa93bb627819c8a13a8840767960"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/604-full-session-opened.log",
+        "bytes": 2754,
+        "sha256": "36250261b63eb85900e52c671ab6b4d167abb07f8c7532d8dea00e6b81d61c08"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/605-mode-before-restore.json",
+        "bytes": 24392,
+        "sha256": "1c74055ddf7a22b5421be88a1b606756c6accab71e48f5a102272bb4902b486a"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/605-mode-before-restore.png",
+        "bytes": 3345251,
+        "sha256": "7b6a72fb33eb9655065c97ce227f2c4f12988ff001458406a08361dd05ebf71c"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/605-mode-before-restore.log",
+        "bytes": 3037,
+        "sha256": "2b288ac33dd7710e46042240ff5962145884978ba5d9077189c4c0a244ea738e"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/606-mode-restored-light.json",
+        "bytes": 24392,
+        "sha256": "c8f84ac71629daee33c10324805abc1e8d1a065b69bdbffa3f9ab4928fa2c497"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/606-mode-restored-light.png",
+        "bytes": 3345251,
+        "sha256": "6c88269816ef2a8c34065b855d88456d1aa7460392c63ae1e25c7f88abbf4af3"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/606-mode-restored-light.log",
+        "bytes": 3037,
+        "sha256": "3a0d8ca2b380bf3483d3717096ebca1977b0e34132a42acb03fb052959e5296e"
+      }
+    ]
+  },
+  "laterRuntimeFinding612": {
+    "status": "CONFIRMED_CUSTOM_PROVIDER_CREDENTIAL_RESTART_LOSS_FIX_PENDING",
+    "discoverySteps": [
+      612,
+      613
+    ],
+    "uiError": "这个模型渠道还没有密钥",
+    "busyTestActuallyStarted": false,
+    "sessionRunning": false,
+    "holdStartObserved": false,
+    "phoneProviderRequestObserved": false,
+    "providerLogBoundary": "Reported no new phone request from612/613. Existingrecent fixture log events are earlierhost preflight, not thesephoneactions.",
+    "rootDiagnosis": "Generic credentials/set used a memory Map; restart lost the custom-channel key. ProviderSettings uses this same path; it is a real persistence defect, not a completed busy-deletion test.",
+    "temporaryRecovery": {
+      "status": "TEST_PRECONDITION_RESTORED_NOT_A_FIX",
+      "onlyOwnedSyntheticKey": true,
+      "configuredBefore": false,
+      "configuredAfter": true,
+      "sourceAfter": "memory",
+      "providerWrites": 0,
+      "modelWrites": 0,
+      "permissionWrites": 0,
+      "prompts": 0,
+      "secretStored": false
+    },
+    "next": "sensevoice_native owns encrypted-vault/sharedcredentials fix with red/green tests; phase19 real restart and describe/readback required before claiming fixed. No phase19 build/install/devicepass yet.",
+    "evidence": [
+      {
+        "path": "/tmp/dsh-device-20261118/synthetic-openai-24gorhxs/busy-start-observation1.json",
+        "bytes": 2243,
+        "sha256": "3a63701408af46401f06b844962958c3c56ebd4e3a75e336123bd6f329ab6b6e"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/synthetic-openai-24gorhxs/busy-start-observation1.log",
+        "bytes": 353,
+        "sha256": "5b86b17cec498c9e892ea822d34689063d8d60edcaccff02a5d29a538d2a0ef1"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/synthetic-openai-24gorhxs/credential-restart-recovery1.json",
+        "bytes": 665,
+        "sha256": "abf06139c2a2f7d170204b2ed848dbc2ea06df1d8a993baf03d375ff7ea0e7b6"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/synthetic-openai-24gorhxs/credential-restart-recovery1.log",
+        "bytes": 222,
+        "sha256": "dbc3828606bd86a7701073aacaf023f3e0abee611688c495cea9a00fcb0b8c08"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/612-busy-running.json",
+        "bytes": 35976,
+        "sha256": "990a02b3db0b35cfe0084e199306993e9babaf31fd4c4cc6cb7863c552927b7f"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/612-busy-running.png",
+        "bytes": 3345251,
+        "sha256": "4f980fe4732e38cedbcd45199c4ab807fb223bc213841ace04e6848f9df11432"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/612-busy-running.log",
+        "bytes": 3193,
+        "sha256": "d201bc9b94877adfc7d83bbf0f977cb3c9a713f256b04b98960ea35f5038a6d2"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/613-busy-settled.png",
+        "bytes": 3345251,
+        "sha256": "4f980fe4732e38cedbcd45199c4ab807fb223bc213841ace04e6848f9df11432"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/613-busy-settled.json",
+        "bytes": 35976,
+        "sha256": "990a02b3db0b35cfe0084e199306993e9babaf31fd4c4cc6cb7863c552927b7f"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/613-busy-settled.log",
+        "bytes": 3193,
+        "sha256": "d201bc9b94877adfc7d83bbf0f977cb3c9a713f256b04b98960ea35f5038a6d2"
+      }
+    ]
+  },
+  "busyDeletion615622": {
+    "status": "PASS_BUSY_DELETE_REJECTION_AND_EXPLICIT_STOP",
+    "steps": [
+      615,
+      616,
+      617,
+      618,
+      619,
+      620,
+      621,
+      622
+    ],
+    "sessionId": "session-cccc033e-d8b4-4555-98f6-e7bf8cce72b9",
+    "precondition": "Ownsynthetic key temporarily restored in memory; this does not resolve credential persistence defect.",
+    "running": {
+      "cursor": 22,
+      "running": true,
+      "activeAttempt": true,
+      "providerRequest": 12,
+      "case": "fixture-hold",
+      "uiText": "Synthetic cancellation fixture started"
+    },
+    "deleteAttempt": {
+      "exactOwnedTitle": "DSH-DEVICE-BUSY-1118",
+      "uiResult": "已完成0个，未完成1个。主机拒绝永久删除（session-active）",
+      "targetStillExists": true,
+      "runningRemainsTrue": true,
+      "cursorRemains22": true
+    },
+    "stop": {
+      "nativeStopClicked": true,
+      "cursor": 25,
+      "running": false,
+      "activeAttempt": false,
+      "queue": [],
+      "providerFinalEvent": "hold-cancelled",
+      "approxSecondsReportedByRoot": 110,
+      "fixtureNaturalDurationSeconds": 180,
+      "naturalCompletionClaimed": false
+    },
+    "firstAttempt612613": "Retainedfailedprecondition,norequest;do notmergewithrequest12",
+    "limits": [
+      "Relatedschedule/reference deletion refusal notyetcovered",
+      "Customprovidercredential rebootpersistence stillopen",
+      "623onward SCHEDULE inprogress,noresultinthisrecord"
+    ],
+    "evidence": [
+      {
+        "path": "/tmp/dsh-device-20261118/synthetic-openai-24gorhxs/busy-start-observation2.json",
+        "bytes": 2323,
+        "sha256": "c22313a4f099c201f4fd5c0ce50188166e5d0cb947f59f6a896e08cdae0a5e63"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/synthetic-openai-24gorhxs/busy-start-observation2.log",
+        "bytes": 349,
+        "sha256": "b2ea5f5654c5e67de5a87f6a37bc3ace9d55d889813f4fb16d2283d8ddc2f887"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/synthetic-openai-24gorhxs/busy-delete-rejection-observation1.json",
+        "bytes": 2323,
+        "sha256": "1157d4cd695ca43efe2772a51641697d15b29768b3643ae88b61d7540f55936b"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/synthetic-openai-24gorhxs/busy-delete-rejection-observation1.log",
+        "bytes": 360,
+        "sha256": "0acde1a4ea1ae117f8c1dbbec80a01a4d36e746843fbd5ff7bf7beb9051ed616"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/synthetic-openai-24gorhxs/busy-stop-observation1.json",
+        "bytes": 2204,
+        "sha256": "9471ecbdbbe1db2cf3635fac8c00bc946a2c9ccdf19f8e9ba871a567f0a63244"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/synthetic-openai-24gorhxs/busy-stop-observation1.log",
+        "bytes": 352,
+        "sha256": "402627484fa41541be16fc3a1d8437b4ce31129d783e5b3e6433fc6b418fdfe1"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/615-busy-retry-draft.json",
+        "bytes": 36000,
+        "sha256": "276aa8e4c627991445228661575ab24833df907ae00065a60ab8e232bd43eda4"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/615-busy-retry-draft.png",
+        "bytes": 3345251,
+        "sha256": "00502755ccf65e0245314300b1603e41603ba988767250b4708061144bf0daa7"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/615-busy-retry-draft.log",
+        "bytes": 3217,
+        "sha256": "b2524daaff417e3523d4abef4e6341c783d54356f3224f47eb49f5bf6bcb7684"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/616-busy-retry-running.json",
+        "bytes": 43191,
+        "sha256": "9089385b87b0212a1a6b7418c14da78b88c7f129eb93b3d86031ecaef9cfb956"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/616-busy-retry-running.png",
+        "bytes": 3345251,
+        "sha256": "97d0b48c7240d506e8003a9c37d7fa59456c3183fd33fb1648364ecbe54f2e6c"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/616-busy-retry-running.log",
+        "bytes": 3729,
+        "sha256": "4d4ecfd2f05227b0d3566f784efe06b6eb81b195fba255ba91b33c2c6a5ca18d"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/617-busy-drawer-running.json",
+        "bytes": 97838,
+        "sha256": "f99fc4124cb282167c0a3fbc37699fd5c7375bbaec536ad49aa2a31e686b08b1"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/617-busy-drawer-running.png",
+        "bytes": 3345251,
+        "sha256": "1161c4d249060ca92689d70cc25b3df619184482a3002a381ce899312f950dbf"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/617-busy-drawer-running.log",
+        "bytes": 11397,
+        "sha256": "bbe5b584b18f7eb39273fd87fe4bd66983eef87d0d8070477d7cbd0a06f5eb70"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/618-busy-menu.json",
+        "bytes": 114058,
+        "sha256": "bd15d0f0cc7982b55ae6341b4de0ba4353094b22383028789424eec1931581c4"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/618-busy-menu.png",
+        "bytes": 3345251,
+        "sha256": "981bcfbeeda6f44784b062432d7dd67668c2ef7cd240950cb5ad9a4e448feea4"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/618-busy-menu.log",
+        "bytes": 12731,
+        "sha256": "5e54d04b0fc056dbf082c08c10bb80c62af46c17c4fb49c7169edeb114e459ea"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/619-busy-delete-dialog.json",
+        "bytes": 108298,
+        "sha256": "3df9eec4f3f25e6891e7ec31d4a1a77e667f08d4a52ef6f80e9fb1ad04437d20"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/619-busy-delete-dialog.png",
+        "bytes": 3345251,
+        "sha256": "d6d3cc6d81a6f73e9cbc8b4559cef87e1c169343070f787e092a9abb2d005c2d"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/619-busy-delete-dialog.log",
+        "bytes": 12680,
+        "sha256": "b2e4c93e13b42016777e085ea546924ebbdbf957cea42f71fe6bbc154191cdcc"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/620-busy-delete-rejected.json",
+        "bytes": 94696,
+        "sha256": "4702e804e8fc0b239e5888170f0d18ec2b5369f62ae8c168bde94a9463e42a14"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/620-busy-delete-rejected.png",
+        "bytes": 3345251,
+        "sha256": "37f2084da4fd77ff20d1900498ca1b054a3c8ef2cd4809410e5bb4d51c9ff983"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/620-busy-delete-rejected.log",
+        "bytes": 11091,
+        "sha256": "aa8284209aa1c1c135c7ffbd603b4444b9511c2d019314e572622519af0856ae"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/621-busy-before-stop.json",
+        "bytes": 43191,
+        "sha256": "cd9692a5f8b60eed88d6a5cc38fa32db894105e996cb940b5f4eeedc2aae9de6"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/621-busy-before-stop.png",
+        "bytes": 3345251,
+        "sha256": "a63170cf418221ad046c1104cd55c05f91d209e5601e3717c0096d0962bb3c01"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/621-busy-before-stop.log",
+        "bytes": 3729,
+        "sha256": "4d4ecfd2f05227b0d3566f784efe06b6eb81b195fba255ba91b33c2c6a5ca18d"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/622-busy-stopped.json",
+        "bytes": 45785,
+        "sha256": "b679bbdabc9933bbd5b1a898b976ba2bfe7e99b0f4bfba8282d4795704b909cc"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/622-busy-stopped.png",
+        "bytes": 3345251,
+        "sha256": "cc4dad37c1ff1088be442bb6a660c2ea3d29c5ae8043994c00eecb1d362bf9ff"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/622-busy-stopped.log",
+        "bytes": 3859,
+        "sha256": "2fad1c1de9d4a6c884d2a0b28fb2aaf878f015699892732946bcda0206af1441"
+      }
+    ]
+  }
+}

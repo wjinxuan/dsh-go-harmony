@@ -1,4 +1,10 @@
 #include "node_engine.h"
+#include "node_budget.h"
+#include "deletion_marker.h"
+#include "recall_marker.h"
+#ifdef DSH_ENABLE_SENSEVOICE
+#include "sensevoice_bridge.h"
+#endif
 
 #include <hilog/log.h>
 #include <node.h>
@@ -38,8 +44,11 @@ Engine& GetEngine()
 const auto& InitializeNode()
 {
     using namespace node::ProcessInitializationFlags;
+    // Match the fixed upstream PerformanceRules.oldSpaceMiB budget. This is V8 old
+    // space only; it does not include native ASR, ArkUI or shared array buffers.
+    const uint64_t heapMiB = NodeOldSpaceMiB(uv_get_total_memory());
     static const auto initialized = node::InitializeOncePerProcess(
-        {"dsh-node", "--jitless", "--expose-internals"},
+        {"dsh-node", "--jitless", "--expose-internals", "--max-old-space-size=" + std::to_string(heapMiB)},
         {kNoDefaultSignalHandling, kNoStdioInitialization, kDisableNodeOptionsEnv,
          kNoParseGlobalDebugVariables, kNoAdjustResourceLimits, kNoUseLargePages});
     return initialized;
@@ -121,6 +130,38 @@ void PublishFile(const v8::FunctionCallbackInfo<v8::Value>& args)
     if (result < 0) {
         const int error = uv_translate_sys_error(errno);
         isolate->ThrowException(node::UVException(isolate, error, "renameat2", nullptr, *stageText, *finalText));
+    }
+}
+
+void PublishDeletionMarker(const v8::FunctionCallbackInfo<v8::Value>& args)
+{
+    auto* isolate = args.GetIsolate();
+    if (args.Length() != 2 || !args[0]->IsString() || !args[1]->IsString() || !args.Data()->IsString()) {
+        isolate->ThrowException(v8::Exception::TypeError(v8::String::NewFromUtf8Literal(isolate, "Expected private staged deletion marker paths")));
+        return;
+    }
+    const v8::String::Utf8Value stage(isolate, args[0]), target(isolate, args[1]), root(isolate, args.Data());
+    if (!*stage || !*target || !*root || PublishDeletionMarkerAt(std::string(*root, root.length()),
+        std::string_view(*stage, stage.length()), std::string_view(*target, target.length())) < 0) {
+        isolate->ThrowException(node::UVException(isolate, uv_translate_sys_error(errno), "renameat2"));
+    }
+}
+
+void PublishRecallMarker(const v8::FunctionCallbackInfo<v8::Value>& args)
+{
+    auto* isolate = args.GetIsolate();
+    if (args.Length() != 2 || !args[0]->IsString() || !args[1]->IsString() || !args.Data()->IsString()) {
+        isolate->ThrowException(v8::Exception::TypeError(v8::String::NewFromUtf8Literal(isolate, "Expected private staged Recall marker paths")));
+        return;
+    }
+    const v8::String::Utf8Value stage(isolate, args[0]), target(isolate, args[1]), data(isolate, args.Data());
+    if (!*stage || !*target || !*data) {
+        isolate->ThrowException(node::UVException(isolate, UV_EINVAL, "renameat2"));
+        return;
+    }
+    if (PublishRecallMarkerAt(std::string(*data, data.length()), std::string_view(*stage, stage.length()),
+        std::string_view(*target, target.length())) < 0) {
+        isolate->ThrowException(node::UVException(isolate, uv_translate_sys_error(errno), "renameat2"));
     }
 }
 
@@ -215,6 +256,64 @@ void PublishWorkspaceFile(const v8::FunctionCallbackInfo<v8::Value>& args)
     }
 }
 
+void PublishAttachmentFile(const v8::FunctionCallbackInfo<v8::Value>& args)
+{
+    auto* isolate = args.GetIsolate();
+    const auto invalid = [isolate] {
+        isolate->ThrowException(v8::Exception::TypeError(
+            v8::String::NewFromUtf8Literal(isolate, "Expected a staged private attachment and digest-derived target")));
+    };
+    if (args.Length() != 2 || !args[0]->IsString() || !args[1]->IsString() || !args.Data()->IsString()) {
+        invalid();
+        return;
+    }
+    const v8::String::Utf8Value stageText(isolate, args[0]);
+    const v8::String::Utf8Value finalText(isolate, args[1]);
+    const v8::String::Utf8Value rootText(isolate, args.Data());
+    const std::string root(*rootText);
+    const std::string sourcePrefix = root + "/tmp/";
+    std::string_view stage, final;
+    if (!ReadAbsolutePath(stageText, stage) || !ReadAbsolutePath(finalText, final) ||
+        !stage.starts_with(sourcePrefix) || !IsUuid(stage.substr(sourcePrefix.size())) || !final.starts_with(root + "/")) {
+        invalid();
+        return;
+    }
+    const auto suffix = final.substr(root.size() + 1);
+    const auto separator = suffix.find('/');
+    if (separator == std::string_view::npos) { invalid(); return; }
+    const auto family = suffix.substr(0, separator);
+    if (family != "objects" && family != "file-objects" && family != "files") { invalid(); return; }
+    const auto tail = suffix.substr(separator + 1);
+    if (tail.size() < 67 || tail[2] != '/' || tail.substr(0, 2) != tail.substr(3, 2) ||
+        !std::all_of(tail.begin() + 3, tail.begin() + 67, [](char value) {
+            return (value >= '0' && value <= '9') || (value >= 'a' && value <= 'f');
+        })) { invalid(); return; }
+    if ((family == "files" && (tail.size() < 69 || tail[67] != '/' || tail.substr(68).find('/') != std::string_view::npos)) ||
+        (family != "files" && tail.size() != 67)) { invalid(); return; }
+    const std::string name(final.substr(final.rfind('/') + 1));
+    if (name == "." || name == "..") { invalid(); return; }
+    ScopedFd boundary(open(root.c_str(), O_RDONLY | O_DIRECTORY | O_NOFOLLOW | O_CLOEXEC));
+    ScopedFd source(boundary.get() < 0 ? -1 : openat(boundary.get(), "tmp", O_RDONLY | O_DIRECTORY | O_NOFOLLOW | O_CLOEXEC));
+    ScopedFd destination(boundary.get() < 0 ? -1 : openat(boundary.get(), std::string(family).c_str(),
+        O_RDONLY | O_DIRECTORY | O_NOFOLLOW | O_CLOEXEC));
+    if (destination.get() >= 0) destination.reset(openat(destination.get(), std::string(tail.substr(0, 2)).c_str(),
+        O_RDONLY | O_DIRECTORY | O_NOFOLLOW | O_CLOEXEC));
+    if (family == "files" && destination.get() >= 0) destination.reset(openat(destination.get(), std::string(tail.substr(3, 64)).c_str(),
+        O_RDONLY | O_DIRECTORY | O_NOFOLLOW | O_CLOEXEC));
+    const std::string stagedName(stage.substr(sourcePrefix.size()));
+    struct stat info {};
+    int result = -1;
+    if (source.get() < 0 || destination.get() < 0) {
+        errno = ENOENT;
+    } else if (fstatat(source.get(), stagedName.c_str(), &info, AT_SYMLINK_NOFOLLOW) == 0) {
+        if (!S_ISREG(info.st_mode)) { invalid(); return; }
+        do {
+            result = renameat2(source.get(), stagedName.c_str(), destination.get(), name.c_str(), RENAME_NOREPLACE);
+        } while (result < 0 && errno == EINTR);
+    }
+    if (result < 0) isolate->ThrowException(node::UVException(isolate, uv_translate_sys_error(errno), "renameat2"));
+}
+
 bool SetGlobal(v8::Local<v8::Context> context, v8::Local<v8::String> name, v8::FunctionCallback callback)
 {
     v8::Local<v8::Function> function;
@@ -263,12 +362,31 @@ int RunNode(const std::string& script, const std::string& data)
     int loopCode = 22;
     auto context = setup->context();
     v8::Local<v8::Function> publishWorkspace;
+    v8::Local<v8::Function> publishAttachment;
+    v8::Local<v8::Function> publishDeletion;
+    v8::Local<v8::Function> publishRecall;
     const auto workspace = v8::String::NewFromUtf8(isolate, (data + "/workspace").c_str()).ToLocalChecked();
-    if (SetGlobal(context, v8::String::NewFromUtf8Literal(isolate, "dshHarmonyTryLock"), TryLock) &&
+    const auto attachmentRoot = v8::String::NewFromUtf8(isolate, (data + "/attachments/v1").c_str()).ToLocalChecked();
+    const auto sessionRoot = v8::String::NewFromUtf8(isolate, (data + "/sessions").c_str()).ToLocalChecked();
+    const auto recallDataRoot = v8::String::NewFromUtf8(isolate, data.c_str()).ToLocalChecked();
+    if (
+#ifdef DSH_ENABLE_SENSEVOICE
+        InstallSenseVoice(context, data) &&
+#endif
+        SetGlobal(context, v8::String::NewFromUtf8Literal(isolate, "dshHarmonyTryLock"), TryLock) &&
         SetGlobal(context, v8::String::NewFromUtf8Literal(isolate, "dshHarmonyPublishFile"), PublishFile) &&
+        v8::Function::New(context, PublishDeletionMarker, sessionRoot).ToLocal(&publishDeletion) &&
+        context->Global()->Set(context, v8::String::NewFromUtf8Literal(isolate, "dshHarmonyPublishDeletionMarker"),
+            publishDeletion).FromMaybe(false) &&
+        v8::Function::New(context, PublishRecallMarker, recallDataRoot).ToLocal(&publishRecall) &&
+        context->Global()->Set(context, v8::String::NewFromUtf8Literal(isolate, "dshHarmonyPublishRecallMarker"),
+            publishRecall).FromMaybe(false) &&
         v8::Function::New(context, PublishWorkspaceFile, workspace).ToLocal(&publishWorkspace) &&
         context->Global()->Set(context, v8::String::NewFromUtf8Literal(isolate, "dshHarmonyPublishWorkspaceFile"),
-            publishWorkspace).FromMaybe(false)) {
+            publishWorkspace).FromMaybe(false) &&
+        v8::Function::New(context, PublishAttachmentFile, attachmentRoot).ToLocal(&publishAttachment) &&
+        context->Global()->Set(context, v8::String::NewFromUtf8Literal(isolate, "dshHarmonyPublishAttachmentFile"),
+            publishAttachment).FromMaybe(false)) {
         const auto loaded = node::LoadEnvironment(
             env, "require('node:module').createRequire(process.argv[1])(process.argv[1]);");
         if (!loaded.IsEmpty()) {

@@ -1,0 +1,922 @@
+{
+  "phase": 19,
+  "recordedAt": "2026-11-18T02:32:45.562711+00:00",
+  "status": "installed-verified-listed-phone-fixes",
+  "allAcceptanceComplete": false,
+  "scope": "Generic custom-provider encrypted credential persistence and saved-route model discovery. Account/subscription grants and defaultDeepSeek remember-key policy unchanged.",
+  "installedBaseline": {
+    "phase": 18,
+    "hapSha256": "bff63f5c08284b53684e4da43cf24c94c0145c6462dbf50d7a2e30636b2edc40",
+    "runtimeSha256": "93bd20716200d852353999568f4898f9fca2f69846fac5bfc4d0ce85d0ebcf27"
+  },
+  "package": {
+    "recordedAt": "2026-11-18T02:08:13.529106+00:00",
+    "status": "PACKAGED_CONTENT_VERIFIED_NOT_INSTALLED",
+    "beforeSha256": "93bd20716200d852353999568f4898f9fca2f69846fac5bfc4d0ce85d0ebcf27",
+    "afterSha256": "5f1fbe2833694628f86f0c4e6fc1c167e99abb8f66fad6b2b59a5771863826a2",
+    "afterBytes": 46625294,
+    "entries": 18394,
+    "changedEntries": [
+      {
+        "path": "main.cjs",
+        "beforeSha256": "5042d24dad7b78566893cdf772461a1d8eb16f16bc2be97cedb237bb9fb2b583",
+        "afterSha256": "2384c3f6521564c8d52731833e29ddec945043575b2ac7a0f81300ec938f5999"
+      },
+      {
+        "path": "credentials.mjs",
+        "beforeSha256": "8329e3de69d2837346802d153b78e6db7c62bb09bff01b741af7675b7bb7adc3",
+        "afterSha256": "a8d89ab3cddf511b499b5b8d01514440d923e89fbc9ae3cfa9f22a1ed1a05639"
+      },
+      {
+        "path": "engine-reset.mjs",
+        "beforeSha256": "8d2f88f2bba64eb23346161d9b62b72aae8fa779d2849b96042e1fb446d1db82",
+        "afterSha256": "3f4dcc3b01f79d628da7783064e0d189e9f01141ad6991b864734c124d374c3a"
+      }
+    ],
+    "otherEntriesUnchanged": true,
+    "crcPass": true
+  },
+  "packageEvidence": {
+    "path": "/tmp/dsh-device-20261118/642-phase19-runtime-package.json",
+    "bytes": 1071,
+    "sha256": "d5963a442e88c02298413909d5611d36e35cb01a51350e049abd74345c109874"
+  },
+  "originalPackageVerificationFailure": {
+    "status": "VERIFIER_FAILED_ORIGINAL_UNCHANGED",
+    "originalSha256": "93bd20716200d852353999568f4898f9fca2f69846fac5bfc4d0ce85d0ebcf27",
+    "reason": "ZipFile.writestr mutated shared ZipInfo header offsets; subsequent comparison falsely read original entries with new offsets. Corrected by copying ZipInfo before writing. Original archive was never replaced."
+  },
+  "originalPackageVerificationFailureEvidence": {
+    "path": "/tmp/dsh-device-20261118/641-phase19-package-attempt1-failure.json",
+    "bytes": 364,
+    "sha256": "6100088e0bec3608569db011e475f76d3ea0f69d799ac8c0bd660e5391ff5006"
+  },
+  "build": {
+    "phase": 19,
+    "exitCode": 0,
+    "elapsedSeconds": 7.059,
+    "log": "/tmp/dsh-device-20261118/644-phase19-build.log",
+    "artifact": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/build/default/outputs/default/entry-default-signed.hap",
+    "artifactSha256": "9e3f1990f6f5d7cc1a869bcc7cdf0ebf28942fc4f96934512d0e49099bc89c9e",
+    "artifactBytes": 197437176,
+    "artifactIsNewBuild": true
+  },
+  "buildEvidence": {
+    "path": "/tmp/dsh-device-20261118/644-phase19-build-result.json",
+    "bytes": 390,
+    "sha256": "8798de5d184936f94f4ee8d9bd09fbb09467f3fd82a2a89eed024fe8039262bc"
+  },
+  "buildLog": {
+    "path": "/tmp/dsh-device-20261118/644-phase19-build.log",
+    "bytes": 93487,
+    "sha256": "f225f2d8b9d60811339b535675b2ff11b80026b5160ba8960671e735d149f4f1"
+  },
+  "tests": {
+    "phase": 19,
+    "pass": true,
+    "attempts": [
+      {
+        "name": "packaged-credentials",
+        "command": [
+          "sh",
+          "tests/check-provider-credentials.sh"
+        ],
+        "exitCode": 0,
+        "log": "/tmp/dsh-device-20261118/649-phase19-packaged-credentials.log",
+        "tests": 18,
+        "pass": 18,
+        "fail": 0,
+        "skipped": 0
+      },
+      {
+        "name": "locale",
+        "command": [
+          "sh",
+          "tests/check-locale.sh"
+        ],
+        "exitCode": 0,
+        "log": "/tmp/dsh-device-20261118/649-phase19-locale.log",
+        "tests": 4,
+        "pass": 4,
+        "fail": 0,
+        "skipped": 0
+      }
+    ]
+  },
+  "testEvidence": {
+    "path": "/tmp/dsh-device-20261118/649-phase19-tests.json",
+    "bytes": 632,
+    "sha256": "407f3d4af93a60f45392ab18572e372969aa7c0481d8c93b6a8930aa8dd9ad21"
+  },
+  "testLogs": [
+    {
+      "path": "/tmp/dsh-device-20261118/649-phase19-packaged-credentials.log",
+      "bytes": 2529,
+      "sha256": "97f5b0ef939f5422f12a9a41240ba86adaa5612a95ce74f2f036e6289eab1ca4"
+    },
+    {
+      "path": "/tmp/dsh-device-20261118/649-phase19-locale.log",
+      "bytes": 553,
+      "sha256": "593c74fd09b50585d3dcf2f5c09548ea334fa9ffc14270ecf64bd27ef93d1798"
+    }
+  ],
+  "testCounting": "18 packaged contracts=8credential+3nativeunlock+7reset; same shell also runs actual3boot/2listing/unset live. locale4 separately. Prior repeated commands are not added as new unique cases.",
+  "integrity": {
+    "phase": 19,
+    "signatureExitCode": 0,
+    "artifactSha256": "9e3f1990f6f5d7cc1a869bcc7cdf0ebf28942fc4f96934512d0e49099bc89c9e",
+    "artifactBytes": 197437176,
+    "crcPass": true,
+    "changedEntries": [
+      ".pages.info",
+      "ets/modules.abc",
+      "ets/sourceMaps.map",
+      "resources/rawfile/dsh-runtime-version.txt",
+      "resources/rawfile/dsh-runtime.zip"
+    ],
+    "expectedChangedEntriesOnly": true,
+    "nativeLibraries": [
+      {
+        "path": "libs/arm64-v8a/libc++_shared.so",
+        "sha256": "60bce7be77b6dbb7be3151a14e5b0f83f04ee29d641dba025b8c1b7207e93d34",
+        "unchanged": true
+      },
+      {
+        "path": "libs/arm64-v8a/libdshlocal.so",
+        "sha256": "68f7933cb36f2ab6dc7303913efb4aa58ba52268cc002642464dec7b6cb39819",
+        "unchanged": true
+      },
+      {
+        "path": "libs/arm64-v8a/libnode.so",
+        "sha256": "efd4a03096bde322d1c171361a8a1d7b208ea34ddc70ae907e660750c56e6acf",
+        "unchanged": true
+      },
+      {
+        "path": "libs/arm64-v8a/libonnxruntime.so",
+        "sha256": "f9fd9080a10f2b93323d597225fbaa63d06f93b384bdfdd7285db9a9115fcc2b",
+        "unchanged": true
+      },
+      {
+        "path": "libs/arm64-v8a/libsherpa-onnx-c-api.so",
+        "sha256": "75b38a525e7178bee052ec99a77175a934daa71ab6983deabbe948a96ae84221",
+        "unchanged": true
+      }
+    ],
+    "runtimeSha256": "5f1fbe2833694628f86f0c4e6fc1c167e99abb8f66fad6b2b59a5771863826a2",
+    "runtimeManifestMatches": true,
+    "pass": true
+  },
+  "integrityEvidence": {
+    "path": "/tmp/dsh-device-20261118/650-phase19-integrity.json",
+    "bytes": 1417,
+    "sha256": "3007288b32b722868a99b305dfe55acbe96bf44a74694f338dcb85cbd697fd34"
+  },
+  "signatureLog": {
+    "path": "/tmp/dsh-device-20261118/650-phase19-signature.log",
+    "bytes": 3285,
+    "sha256": "c9b8258e9273b0f796dbba4556edfe8a0af7a3fffcd7ef74d436412306fe628d"
+  },
+  "credentialSourceVerification": {
+    "recordedAt": "2026-11-18T02:07:16.880934+00:00",
+    "status": "SOURCE_FROZEN_HOST_CHECKS_PASS_PHONE_RESTART_PENDING",
+    "scope": "Generic credentials reference persistence; account/subscription grant storage and explicit default DeepSeek remember-key policy unchanged.",
+    "rootCause": {
+      "before": "credentials/set stored generic refs in a process Map; custom-provider settings persisted but the key disappeared on runtime restart. ProviderSettings also used that RPC, so this was a real production persistence gap.",
+      "phoneFailure": [
+        "612/613 showed missing provider key, not an active hold.",
+        "Exact own BUSY state idle; provider had no new hold request."
+      ],
+      "ownedOnlyPhoneEvidence": [
+        {
+          "path": "/tmp/dsh-device-20261118/synthetic-openai-24gorhxs/busy-start-observation1.json",
+          "bytes": 2243,
+          "sha256": "3a63701408af46401f06b844962958c3c56ebd4e3a75e336123bd6f329ab6b6e"
+        },
+        {
+          "path": "/tmp/dsh-device-20261118/synthetic-openai-24gorhxs/credential-restart-recovery1.json",
+          "bytes": 665,
+          "sha256": "abf06139c2a2f7d170204b2ed848dbc2ea06df1d8a993baf03d375ff7ea0e7b6"
+        }
+      ],
+      "temporaryRecovery": "Only the existing synthetic own ref was re-injected through credentials/set; described source=memory. This recovery is explicitly not persistence verification."
+    },
+    "implementation": {
+      "masterKey": "32-byte key under existing Harmony AssetStore alias dsh-go.vault.v1.credentials; DEVICE_UNLOCKED, SYNC_TYPE.NEVER; authenticated loopback control only, never stored beside ciphertext.",
+      "vault": ".harmony-provider-credentials.json via existing PrivateVault AES-256-GCM, fixed AAD, atomic replace, mode0600, 64KiB plaintext limit.",
+      "mutation": "Serialized queue and withFileLock; re-read/validate inside lock; notify only after successful save; no overwrite on invalid key, ciphertext, schema or symlink.",
+      "startup": "All production LocalEngine.start callers await credentials/unlock before ready is returned; existing remote DshClient unchanged.",
+      "specialCase": "DEEPSEEK_API_KEY remains process-only; its existing LocalKeyStore remember preference still controls AssetStore persistence.",
+      "reset": "pluginsAndSettings=true preserves the encrypted vault bytes; false removes them. AssetStore master key alone cannot restore removed ciphertext.",
+      "refCompatibility": "Exact same /^[A-Za-z_][A-Za-z0-9_]*$/ grammar as upstream dsh-credentials REF_PATTERN and DshClient.checkCredentialRef. Covers custom-provider uppercase refs, DSH_MEDIA_* refs, plugin refs, underscore and mixed case."
+    },
+    "productionFiles": [
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/runtime/credentials.mjs",
+        "bytes": 12189,
+        "sha256": "a8d89ab3cddf511b499b5b8d01514440d923e89fbc9ae3cfa9f22a1ed1a05639"
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/runtime/main.cjs",
+        "bytes": 7167,
+        "sha256": "2384c3f6521564c8d52731833e29ddec945043575b2ac7a0f81300ec938f5999"
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/runtime/engine-reset.mjs",
+        "bytes": 3277,
+        "sha256": "3f4dcc3b01f79d628da7783064e0d189e9f01141ad6991b864734c124d374c3a"
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/ets/local/LocalEngine.ets",
+        "bytes": 7742,
+        "sha256": "f8182fd144bb02f4b37c08d01ef470eb048fa3053205f7d9509c18886d097396"
+      }
+    ],
+    "testFiles": [
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/provider-credentials.test.mjs",
+        "bytes": 8911,
+        "sha256": "1dd534bd605bf3f51339bd9732004480ad83873e3476d2576b5bb29e78f3dea8"
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/provider-credentials-live.mjs",
+        "bytes": 5778,
+        "sha256": "b7e6e4ad835f65ae7771c272b106858a5cfe69a0b7b3012c72a9093a82123677"
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/local-credentials-unlock.test.mjs",
+        "bytes": 4099,
+        "sha256": "643228f046c3950eb36c3157ad20b9c7b13ea56f63afbe1ca187b3f6dff73b54"
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/unlock-test-credentials.mjs",
+        "bytes": 882,
+        "sha256": "da333e6a03ee0838e1eb9b85267636b04f05dc01ed97d106e2f44564168edf31"
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/check-provider-credentials.sh",
+        "bytes": 558,
+        "sha256": "217c65aa355fd705d8b9a590bfa2025b438ed1b9105e1c45b7ac069a70b4f08a"
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/local-engine-smoke.mjs",
+        "bytes": 20735,
+        "sha256": "16b570e93d957859ce8dba2ab9f14c252ff3a5c41e7c3cb90016fa81ca75fdcd"
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/media-generation-live.mjs",
+        "bytes": 11482,
+        "sha256": "b0178df3c50df1701254f2284b1abd00463bfca41ce9f52d2015e77340610312"
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/media-phone-fixture.mjs",
+        "bytes": 16946,
+        "sha256": "f394951c50b725252cabb6a46e42616aca2073407a45955b5997eb81df8071dd"
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/engine-reset.test.mjs",
+        "bytes": 5141,
+        "sha256": "960e3437504cc809e23764071c0562d7014697a3a3253244fc0c524a17ae89e2"
+      }
+    ],
+    "runs": [
+      {
+        "name": "Old generic provider loses the stored key across a fresh provider instance",
+        "command": "DSH_TEST_RUNTIME=/tmp/dsh-device-20261117/runtime-recall-fixed /Applications/DevEco-Studio.app/Contents/tools/node/bin/node --test tests/provider-credentials.test.mjs",
+        "exitCode": 1,
+        "classification": "expected red; restart case exercises old set/resolve, remaining cases introduce required unlock contract",
+        "provenance": "actual tool exit_code observed by sensevoice_native",
+        "log": {
+          "path": "/tmp/dsh-device-20261118/provider-credentials-red-v2.log",
+          "bytes": 6181,
+          "sha256": "c9b1774e73e47eb22c9f2e9113dac7a0b28cc997b53407afe044bcb52793bf3f"
+        },
+        "tests": {
+          "total": 8,
+          "pass": 0,
+          "fail": 8,
+          "skip": 0
+        }
+      },
+      {
+        "name": "Encrypted reference persistence and failure boundaries",
+        "command": "DSH_TEST_RUNTIME=/tmp/dsh-device-20261117/runtime-recall-fixed /Applications/DevEco-Studio.app/Contents/tools/node/bin/node --test tests/provider-credentials.test.mjs",
+        "exitCode": 0,
+        "classification": "successful",
+        "provenance": "actual tool exit_code observed by sensevoice_native",
+        "log": {
+          "path": "/tmp/dsh-device-20261118/provider-credentials-green-attempt1.log",
+          "bytes": 939,
+          "sha256": "0af7067bd4e9aa5dcea0f30431e4e8d47df9a0898e03fff1da46542fa6dbf5c2"
+        },
+        "tests": {
+          "total": 8,
+          "pass": 8,
+          "fail": 0,
+          "skip": 0
+        }
+      },
+      {
+        "name": "Native startup caller unlocks before returning ready",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --test tests/local-credentials-unlock.test.mjs",
+        "exitCode": 0,
+        "classification": "successful",
+        "provenance": "actual tool exit_code observed by sensevoice_native",
+        "log": {
+          "path": "/tmp/dsh-device-20261118/local-credentials-unlock-green.log",
+          "bytes": 638,
+          "sha256": "3b77c8a78befb653d04960aa7ad26589a2429b1559188813ea6a9640ffcf0c66"
+        },
+        "tests": {
+          "total": 3,
+          "pass": 3,
+          "fail": 0,
+          "skip": 0
+        }
+      },
+      {
+        "name": "Native caller test initial filesystem fixture error",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --test tests/local-credentials-unlock.test.mjs",
+        "exitCode": 1,
+        "classification": "fixture error; fs.access mistakenly reported error.json present; retained, not a production failure",
+        "provenance": "actual tool exit_code observed by sensevoice_native",
+        "log": {
+          "path": "/tmp/dsh-device-20261118/local-credentials-unlock-fixture-error.log",
+          "bytes": 2935,
+          "sha256": "4c1b3dc9f87f0470f55f756cb49275acecd5dc9d28551a3c47194fc41905ae8a"
+        },
+        "tests": {
+          "total": 3,
+          "pass": 0,
+          "fail": 3,
+          "skip": 0
+        }
+      },
+      {
+        "name": "Reset preservation red",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --test tests/engine-reset.test.mjs",
+        "exitCode": 1,
+        "classification": "expected red; encrypted vault was absent from preserved plugin settings",
+        "provenance": "actual tool exit_code observed by sensevoice_native",
+        "log": {
+          "path": "/tmp/dsh-device-20261118/provider-credentials-reset-red.log",
+          "bytes": 1558,
+          "sha256": "82071a4735f6415cda117509097380b96487b42fa0d58a33a9418cc7554b2ba9"
+        },
+        "tests": {
+          "total": 7,
+          "pass": 6,
+          "fail": 1,
+          "skip": 0
+        }
+      },
+      {
+        "name": "Reset preservation green",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --test tests/engine-reset.test.mjs",
+        "exitCode": 0,
+        "classification": "successful",
+        "provenance": "actual tool exit_code observed by sensevoice_native",
+        "log": {
+          "path": "/tmp/dsh-device-20261118/provider-credentials-reset-green.log",
+          "bytes": 751,
+          "sha256": "bb17c95ccdbc7b521df224084d0a4449b2ade64ced91efeb3d7b0535921a0989"
+        },
+        "tests": {
+          "total": 7,
+          "pass": 7,
+          "fail": 0,
+          "skip": 0
+        }
+      },
+      {
+        "name": "Real engine provider restart, resolve, clear and second restart",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node tests/provider-credentials-live.mjs /tmp/dsh-device-20261118/credentials-runtime",
+        "exitCode": 0,
+        "classification": "successful",
+        "provenance": "actual tool exit_code observed by sensevoice_native",
+        "log": {
+          "path": "/tmp/dsh-device-20261118/provider-credentials-live-green.log",
+          "bytes": 251,
+          "sha256": "6341ec6f2ab10f6018554d004d9ac71725fceffebdad135773cb36f286d2fe31"
+        }
+      },
+      {
+        "name": "Actual ProviderDraft helper after its independent fix",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node tests/provider-credentials-live.mjs /tmp/dsh-device-20261118/credentials-runtime",
+        "exitCode": 0,
+        "classification": "successful; supersedes literal discovery arguments in previous run",
+        "provenance": "actual exit_code 0 reported by scribe_translation; same original credential assertions retained",
+        "log": {
+          "path": "/tmp/dsh-device-20261118/provider-discovery-live-green.log",
+          "bytes": 434,
+          "sha256": "f5e50b4b3a998186f31955ecee5a15de85e01f00b80ac326d689cba40d51fbff"
+        }
+      },
+      {
+        "name": "Local generic OpenAI-compatible streamed model smoke",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node tests/local-engine-smoke.mjs /tmp/dsh-device-20261118/credentials-runtime",
+        "exitCode": 0,
+        "classification": "successful",
+        "provenance": "actual tool exit_code observed by sensevoice_native",
+        "log": {
+          "path": "/tmp/dsh-device-20261118/provider-credentials-local-smoke-final.log",
+          "bytes": 170,
+          "sha256": "06f7b1f3317496343695d6ca70a025e42faa63ebc3903b8891a45f6113df466e"
+        }
+      },
+      {
+        "name": "Default DeepSeek session-only key smoke",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node tests/local-engine-smoke.mjs /tmp/dsh-device-20261118/credentials-runtime --deepseek",
+        "exitCode": 0,
+        "classification": "successful",
+        "provenance": "actual tool exit_code observed by sensevoice_native",
+        "log": {
+          "path": "/tmp/dsh-device-20261118/provider-credentials-deepseek-smoke.log",
+          "bytes": 173,
+          "sha256": "4a7018510fb6242ba0daf65023528a63565531700e436a3f3a50246407f5e297"
+        }
+      },
+      {
+        "name": "Subscription grant persistence regression",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node tests/subscription-credentials.mjs /tmp/dsh-device-20261118/credentials-runtime",
+        "exitCode": 0,
+        "classification": "successful",
+        "provenance": "actual tool exit_code observed by sensevoice_native",
+        "log": {
+          "path": "/tmp/dsh-device-20261118/provider-credentials-subscription-regression.log",
+          "bytes": 127,
+          "sha256": "a4b2fabf650b581191cfb38f506f2ce1092ade8381615720049cad13e5642199"
+        }
+      },
+      {
+        "name": "Media generic key consumer image/video/cancellation regression",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node tests/media-generation-live.mjs /tmp/dsh-device-20261118/credentials-media-regression",
+        "exitCode": 0,
+        "classification": "successful",
+        "provenance": "actual tool exit_code observed by sensevoice_native",
+        "log": {
+          "path": "/tmp/dsh-device-20261118/provider-credentials-media-regression.log",
+          "bytes": 532,
+          "sha256": "394a5c0d20cead07a5063a146440e36c1d734b68ecb765eb83896d08a0880f6a"
+        }
+      }
+    ],
+    "coverageNotes": [
+      "8 credential + 3 caller + 7 reset tests are distinct focused contracts. Red/green repetitions and repeated full-restart commands are not additional independent cases.",
+      "Native caller tests execute the actual LocalEngine source with simulated AssetStore/RCP/FS boundaries; they do not claim actual phone AssetStore acceptance.",
+      "Live runtime runs use real RPC/profile/credential consumers and synthetic network providers with the existing test-only host flock/publication fixture. C++ hooks and native libraries were unchanged.",
+      "The media test copied its own mutable vendor/dsh-media subtree; reference runtime/vendor was not modified.",
+      "No new prompts, settings, tasks or phone requests occurred after ROOT transferred observation ownership to media_parity.",
+      "The old immediate state failure and temporary own-key reinjection are retained; new HAP/device restart validation remains pending."
+    ],
+    "checksWithoutLogs": [
+      {
+        "command": "sh -n tests/check-provider-credentials.sh",
+        "exitCode": 0
+      },
+      {
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --check tests/media-phone-fixture.mjs",
+        "exitCode": 0
+      },
+      {
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --check tests/media-generation-live.mjs",
+        "exitCode": 0
+      },
+      {
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --check runtime/main.cjs",
+        "exitCode": 0
+      }
+    ],
+    "peerReview": {
+      "root": "Read-only review found no blocker; requested caller/ref compatibility confirmation.",
+      "scribe_translation": "Read-only review found no blocker across encrypted refs, queue/lock, no-overwrite failures, default-key preference, authenticated startup and reset preservation; did not repeat tests."
+    },
+    "packExpected": {
+      "baseZipSha256": "93bd20716200d852353999568f4898f9fca2f69846fac5bfc4d0ce85d0ebcf27",
+      "replaceExistingEntries": [
+        "main.cjs",
+        "credentials.mjs",
+        "engine-reset.mjs"
+      ],
+      "addedEntries": [],
+      "zipEntryCountIncludingDirectories": 18394,
+      "unchanged": [
+        "private-vault.mjs",
+        "all pinned node_modules/vendor/dependency files",
+        "all five native libraries"
+      ],
+      "versionFile": "entry/src/main/resources/rawfile/dsh-runtime-version.txt must equal SHA256 of the newly produced ZIP",
+      "packPerformedByThisAgent": false
+    },
+    "pending": [
+      "ROOT repack, full checksum/CRC validation and unified HAP build/sign/install",
+      "Actual phone AssetStore unlock and only-owned synthetic reference survive engine restart",
+      "No claim that the fixed provider key was already persisted on the currently running phase18 phone"
+    ]
+  },
+  "credentialSourceEvidence": {
+    "path": "/tmp/dsh-device-20261118/provider-credentials-verification.json",
+    "bytes": 16074,
+    "sha256": "9f638502be86cd2f190714d6a8703fd0ee09d959899d02db303f0c0504659c9f"
+  },
+  "discoverySourceVerification": {
+    "status": "SOURCE_FROZEN_DEVELOPMENT_RED_GREEN_PASS_DEVICE_PENDING",
+    "scope": "Saved custom-provider model discovery sends existing endpoint/protocol and stored-route reference; no reading/exporting real keys. One provider-unlock English entry.",
+    "rootCause": "ProviderDraft omitted baseURL/api on unchanged saved route; pi-ai only resolves saved headers/key and requires request baseURL for custom routes.",
+    "upstream": [
+      "fixed a9877420 app/lib/state/providers_state.dart:523 sends provider+baseUrl+api",
+      "fixed actual dsh-llm-pi-ai/lib/index.js:2427 validatesrequest.baseURL;2970 storedDiscoveryProfileonlyheaders/resolveApiKey"
+    ],
+    "files": [
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/ets/ui/settings/ProviderDraft.ets",
+        "bytes": 1167,
+        "sha256": "3394a3785eb917ef79e4ba0c19190bf04d9f1eb2bfdddd428dae4d494917a927"
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/ets/ui/SettingsLocaleData.ets",
+        "bytes": 182529,
+        "sha256": "faa62afc79d21001c766c87a4cd75bd8efc308e33a2e0a573dd734189746cbd4"
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/settings.test.mjs",
+        "bytes": 6449,
+        "sha256": "7e41595d40767483a85775a46fb5c1c5688f825734dc2a7bec6011c66aad184c"
+      },
+      {
+        "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/provider-credentials-live.mjs",
+        "bytes": 5778,
+        "sha256": "b7e6e4ad835f65ae7771c272b106858a5cfe69a0b7b3012c72a9093a82123677"
+      }
+    ],
+    "proofs": [
+      {
+        "log": {
+          "path": "/tmp/dsh-device-20261118/provider-discovery-red.log",
+          "bytes": 1990,
+          "sha256": "be4b8e321dfbfb5fbf57848104cd71e77d637521fd6ef3885e827e438280ca10"
+        },
+        "exitCode": 1,
+        "tests": 6,
+        "pass": 5,
+        "fail": 1,
+        "skip": 0
+      },
+      {
+        "log": {
+          "path": "/tmp/dsh-device-20261118/provider-discovery-live-red.log",
+          "bytes": 991,
+          "sha256": "4ac39c33ca409a65d4ec0f57857a4f659453091ebab6544b79dedcd69d71c356"
+        },
+        "exitCode": 1,
+        "failureCode": "llm/model-discovery-rejected",
+        "phase": "actual helper firstdiscovery"
+      },
+      {
+        "log": {
+          "path": "/tmp/dsh-device-20261118/provider-discovery-green.log",
+          "bytes": 757,
+          "sha256": "f828ae89098c41e8d665e17b1c671a69ea5db3e6ad031eb1b8864ae117f25b6b"
+        },
+        "exitCode": 0,
+        "tests": 6,
+        "pass": 6,
+        "fail": 0,
+        "skip": 0
+      },
+      {
+        "log": {
+          "path": "/tmp/dsh-device-20261118/provider-discovery-live-green.log",
+          "bytes": 434,
+          "sha256": "f5e50b4b3a998186f31955ecee5a15de85e01f00b80ac326d689cba40d51fbff"
+        },
+        "exitCode": 0,
+        "actualEngineBoots": 3,
+        "successfulListings": 2,
+        "unsetSurvivesRestart": true,
+        "defaultSelectionUnchanged": true
+      },
+      {
+        "log": {
+          "path": "/tmp/dsh-device-20261118/provider-unlock-locale-green.log",
+          "bytes": 552,
+          "sha256": "abc1603b3e550a9f79d811ab23a9bceca00128bdebf9535d612c7da704f964be"
+        },
+        "exitCode": 0,
+        "tests": 4,
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      }
+    ],
+    "safety": [
+      "Changed endpoint or protocol doesnotreceive savedprovider ref",
+      "Draftkey isonlyoneshot parameter;explicitdrafttests preserved",
+      "Actual live usesfreshisolatedhome/randomsynthetickey/master andloopbackmodelslisting",
+      "No user sessions,phone,HDC,globalmodelmutation,externalprovider orpaidcall",
+      "Existing credential restart/unset/encryption/default checks preserved in permanent check-provider-credentials entry"
+    ],
+    "credentialImplementationPeer": {
+      "mode": "Read-only,no reruns",
+      "result": "NO_NEW_BLOCKING_FINDINGS",
+      "areas": [
+        "wrong-key/tampered-cipher failsclosed",
+        "writes serialized+lock/reload",
+        "unlock before native readyreturn",
+        "DEEPSEEK_API_KEY remains session-only plus originalrememberpath",
+        "resetpreservesvault onlyselectedpluginsAndSettings"
+      ],
+      "notVerified": "Actual AssetStore and phone credentials restart await newpackage"
+    },
+    "buildRanByThisAgent": false,
+    "phonePassed": false
+  },
+  "discoverySourceEvidence": {
+    "path": "/tmp/dsh-device-20261118/provider-discovery-fix-result.json",
+    "bytes": 4191,
+    "sha256": "146e950619116c828aca5269174479bf8df26720c497acd00b8212b0fc7e68cc"
+  },
+  "installation": {
+    "installed": true,
+    "installStep": 675,
+    "installExitCode": 0,
+    "exitCodeSource": "ROOT tool result; log independently confirms successful install",
+    "evidence": {
+      "path": "/tmp/dsh-device-20261118/675-phase19-install.log",
+      "bytes": 175,
+      "sha256": "9ed9b6d76b5a09c3b3c13dbf265f3febc86fce9d44419041234e67e7b07cafce"
+    },
+    "launchStep": 676,
+    "launchEvidence": {
+      "path": "/tmp/dsh-device-20261118/676-phase19-open.log",
+      "bytes": 1959,
+      "sha256": "8063b538a6433c0adcc5e75fb6beaa6d5dfda2dfc84d20aa85522a8431a01e10"
+    },
+    "readyStep": 677,
+    "readyEvidence": {
+      "path": "/tmp/dsh-device-20261118/677-phase19-ready.log",
+      "bytes": 2904,
+      "sha256": "b1ea022bc7004bd3425362f1118627f8a2489d25e3b320d73cf0005eb83bf9b5"
+    },
+    "restart": {
+      "newPid": "3495",
+      "localPort": 43391,
+      "runtimeVersion": "5f1fbe2833694628f86f0c4e6fc1c167e99abb8f66fad6b2b59a5771863826a2",
+      "readyChanged": true
+    },
+    "restartEvidence": {
+      "path": "/tmp/dsh-device-20261118/678-restart-evidence.json",
+      "bytes": 157,
+      "sha256": "8140990ac44217362f951de2d400963426f684c0bc9065fbbdd30a636ebdae93"
+    },
+    "phonePersistenceVerified": true,
+    "phoneSavedRouteDiscoveryVerified": true
+  },
+  "remaining": [
+    "OwnSchedule edit/relatedactive refusal/cleanup nowverified onphase18; Bot/groupUI remainsseparate",
+    "Remaining17-row cases plus finalSCREENlock/timeout cleanup"
+  ],
+  "authoring": "ROOT performed package/build/checks/signature. This author only read artifacts/evidence and updated docs; noHDC orproductionchange.",
+  "preInstallSnapshot": {
+    "status": "built-verified-not-installed",
+    "recordedAt": "2026-11-18T02:14:00.887679+00:00",
+    "installation": {
+      "installed": false,
+      "phonePersistenceVerified": false,
+      "phoneSavedRouteDiscoveryVerified": false
+    }
+  },
+  "phoneVerification": {
+    "status": "PASS_OWN_CREDENTIAL_RESTART_AND_SAVED_ROUTE_DISCOVERY",
+    "steps": [
+      679,
+      680,
+      681,
+      682,
+      683,
+      684,
+      685,
+      686,
+      687,
+      688,
+      689
+    ],
+    "scope": "One owned synthetic provider. No commercial account, key export, provider save, default-model change or prompt in this check. Not all provider/account acceptance.",
+    "save": {
+      "status": "PASS_OWN_KEY_SAVED_FILE_SOURCE",
+      "started": "2026-11-18T02:28:10.341Z",
+      "mode": "save-own",
+      "enginePort": 43391,
+      "credentialRef": "DEVICE_FIXTURE_976C9A5C40054F1CB81BEE3A4744BBC4",
+      "secretRead": true,
+      "secretStoredInEvidence": false,
+      "ownKeyWrites": 1,
+      "unlockCalls": 0,
+      "providerWrites": 0,
+      "modelWrites": 0,
+      "permissionWrites": 0,
+      "prompts": 0,
+      "rpcs": [
+        "credentials/describe",
+        "credentials/set",
+        "credentials/describe"
+      ],
+      "before": {
+        "configured": false,
+        "writable": true
+      },
+      "after": {
+        "configured": true,
+        "writable": true,
+        "source": "file"
+      },
+      "providerBoundary": {
+        "logBytes": 2883,
+        "sha256": "74bfcf02768449c6967511dcf93cbae5212fb2123e9ae1d8d4308c4587b79c6c",
+        "lastRequest": 25
+      },
+      "finished": "2026-11-18T02:28:10.647Z"
+    },
+    "saveEvidence": {
+      "path": "/tmp/dsh-device-20261118/synthetic-openai-24gorhxs/phase19-credential-save-own1.json",
+      "bytes": 829,
+      "sha256": "6d7aec92c963ea9412f1a14450218771c1cbf5c3456c2570c0556477defb9c2b"
+    },
+    "afterRestart": {
+      "status": "PASS_OWN_KEY_PRESENT_AFTER_RESTART_NO_REINJECTION",
+      "started": "2026-11-18T02:29:51.914Z",
+      "mode": "describe-only",
+      "enginePort": 45337,
+      "credentialRef": "DEVICE_FIXTURE_976C9A5C40054F1CB81BEE3A4744BBC4",
+      "secretRead": false,
+      "secretStoredInEvidence": false,
+      "ownKeyWrites": 0,
+      "unlockCalls": 0,
+      "providerWrites": 0,
+      "modelWrites": 0,
+      "permissionWrites": 0,
+      "prompts": 0,
+      "rpcs": [
+        "credentials/describe"
+      ],
+      "before": {
+        "configured": true,
+        "writable": true,
+        "source": "file"
+      },
+      "after": {
+        "configured": true,
+        "writable": true,
+        "source": "file"
+      },
+      "providerBoundary": {
+        "logBytes": 2883,
+        "sha256": "74bfcf02768449c6967511dcf93cbae5212fb2123e9ae1d8d4308c4587b79c6c",
+        "lastRequest": 25
+      },
+      "finished": "2026-11-18T02:29:52.156Z"
+    },
+    "afterRestartEvidence": {
+      "path": "/tmp/dsh-device-20261118/synthetic-openai-24gorhxs/phase19-credential-after-restart1.json",
+      "bytes": 824,
+      "sha256": "2814aedbb8effd66daf0014d665e2a7bf0f8a25f03064d1e1faec93fdfcd8333"
+    },
+    "processRestart": {
+      "previousPid": "3495",
+      "newPid": "4706",
+      "localPort": 45337,
+      "runtimeVersion": "5f1fbe2833694628f86f0c4e6fc1c167e99abb8f66fad6b2b59a5771863826a2",
+      "readyChanged": true
+    },
+    "processRestartEvidence": {
+      "path": "/tmp/dsh-device-20261118/682-restart-evidence.json",
+      "bytes": 182,
+      "sha256": "0b6f49704074545c9512892026075bf7f0ebed370956c38e081bbab0793e2fe7"
+    },
+    "discovery": {
+      "beforeStep": 687,
+      "afterSteps": [
+        688,
+        689
+      ],
+      "emptyApiKeyInput": true,
+      "protocol": "OpenAI",
+      "baseUrlSource": "Existing owned provider endpoint; preserved",
+      "beforeAddButton": false,
+      "afterButtonText": "添加 device-fixture",
+      "providerSaved": false,
+      "defaultModelChanged": false,
+      "fixtureAuthenticatesExactBearerBeforeModels": true,
+      "fixtureSource": {
+        "path": "/tmp/dsh-device-20261118/synthetic-openai-24gorhxs/openai-provider.mjs",
+        "bytes": 8943,
+        "sha256": "db2960453b75dab9b8aadf6ee2ee0a6c2c9217a349fd5eae3bd4b9629014c183"
+      },
+      "authCheckLine": 37,
+      "modelsRouteLine": 38,
+      "successfulGetEventLogged": false,
+      "evidenceBoundary": "Actual native UI model result plus fixture route authentication order; no fabricated successful GET event.",
+      "excludedEvidence": "688 PNG is not copied or referenced because it contains an external notification."
+    },
+    "evidence": [
+      {
+        "path": "/tmp/dsh-device-20261118/synthetic-openai-24gorhxs/phase19-credential-save-own1.log",
+        "bytes": 681,
+        "sha256": "8c5aa124b46dda04b06e7cb6fff095957cb8701e075360aaf924d0bde6859c99"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/synthetic-openai-24gorhxs/phase19-credential-after-restart1.log",
+        "bytes": 680,
+        "sha256": "674cfbf36db6826c9a68ac85bc304a596ff60c1c75fd9aac87872800d3a5a35b"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/681-process-restart.json",
+        "bytes": 119,
+        "sha256": "620a4a7bff5de96da22456dd2e474d21ce9f4150df31912d0989fe1a5751744f"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/679-engine-before-key-restart.log",
+        "bytes": 4205,
+        "sha256": "1ccd44f387e413bc4cad0612efad6af7ad1e84e66e15bb0954ea40353f7a05bf"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/680-key-normal-stop.log",
+        "bytes": 2333,
+        "sha256": "a59d7896ffdeeb5e996db31978d15f2653d5de4f2d092d175ce2335ebf91ee82"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/681-key-process-restart.log",
+        "bytes": 2199,
+        "sha256": "890af4ee520b19996c63433af11f052eda3a299ad8a270becab007f0e0cc1ef5"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/683-key-restart-ready.log",
+        "bytes": 1904,
+        "sha256": "ac54cc1ac08f12cad37cfe99ac62be40189287cdf68758b75c75b6e697c5bbf7"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/684-settings-for-discovery.log",
+        "bytes": 6197,
+        "sha256": "b76a4e663ad8ce97620d5c29fb5e907f06a11a963014c1f4aae9c91201654c87"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/686-saved-provider-edit.log",
+        "bytes": 3844,
+        "sha256": "0158d13dd7b47e5245c4b99bc7b54af4c9371aa99b26f8406c1f7d0af4b2d608"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/687-saved-provider-before-discovery.log",
+        "bytes": 2644,
+        "sha256": "8acde5d410ab96e2199515b0579d0fa675395a7a431afe12aedd7ad4a11b1c7c"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/688-saved-provider-discovered.log",
+        "bytes": 2167,
+        "sha256": "b8c66d3142d788ff678e08f8354805e5748363a3d6fe8c20b3d570c7429d7426"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/689-provider-discovery-clear.log",
+        "bytes": 2791,
+        "sha256": "ec889b558d68b013b805e17ca8269136d2224d6eed1e0d5009710ce705c34fb1"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/684-settings-for-discovery.json",
+        "bytes": 43771,
+        "sha256": "3ad93f8f0271afd4e8856ba5ad256506ae590ff11ec3fac9faa5c75e204eb701"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/685-model-provider-list.json",
+        "bytes": 36148,
+        "sha256": "95639ba4d469695c9f15cf8a2f437e5d65b2a41e571037418008a58256613787"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/686-saved-provider-edit.json",
+        "bytes": 32174,
+        "sha256": "962bdac2c0a52073bd1a2026643e466a03a25d622c408a25d7a819181363044d"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/687-saved-provider-before-discovery.json",
+        "bytes": 22836,
+        "sha256": "0395a3f493babb34e3bd57c822aac27f732c35bf49125d8f568e19ac07a7f9f3"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/688-saved-provider-discovered.json",
+        "bytes": 20293,
+        "sha256": "6308a845edda517a69e0fc4c63b6e5bd489d952d858477ded4daf6795972bc99"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/689-provider-discovery-clear.json",
+        "bytes": 23530,
+        "sha256": "72b774a003bccd838327122e38b64a9d3fe6215490446ea980b0d0e0c9a29c25"
+      }
+    ],
+    "independentVerification": {
+      "evidence": {
+        "path": "/tmp/dsh-device-20261118/synthetic-openai-24gorhxs/phase19-credential-persistence-verification.json",
+        "bytes": 6938,
+        "sha256": "4ca6d7e3b110e3a86d5db7fffac476d4d769787f287cd2abfe84509d7e06125b"
+      },
+      "all19SourceHashesMatched": true,
+      "newPhoneRequestsByVerifier": 0
+    }
+  }
+}

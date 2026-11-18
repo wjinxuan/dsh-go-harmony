@@ -1,0 +1,6 @@
+{
+  "name": "dsh-harmony-webrtc",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": { "werift": "0.26.0" }
+}

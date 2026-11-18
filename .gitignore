@@ -12,6 +12,9 @@ oh_modules/
 /entry/src/main/resources/rawfile/dsh-runtime-version.txt
 /runtime/.node/
 /runtime/.build/
+/runtime/ssh-deps/node_modules/
+/runtime/harmony-deps/node_modules/
+/runtime/webrtc-deps/node_modules/
 
 /entry/.cxx/
 /entry/src/main/resources/rawfile/dsh-runtime.zip.tmp
@@ -22,3 +25,9 @@ oh_modules/
 /docs/parity/device-*.jpeg
 /docs/parity/public-test.json
 /docs/parity/.local/
+
+/runtime/.sensevoice/
+/entry/libs/arm64-v8a/libsherpa-onnx-c-api.so
+/entry/libs/arm64-v8a/libonnxruntime.so
+
+/runtime/render-deps/node_modules/

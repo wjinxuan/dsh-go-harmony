@@ -24,11 +24,11 @@ export function providerModelIds(text: string): string[] {
 export function providerDiscoveryArgs(address: string, api: string, key: string,
   savedRoute?: string, savedAddress?: string, savedApi?: string): WireObject {
   const request: WireObject = {};
+  request['baseURL'] = address;
+  request['api'] = api;
   if (!key && savedRoute && savedAddress === address && savedApi === api) {
     request['provider'] = savedRoute;
   } else {
-    request['baseURL'] = address;
-    request['api'] = api;
     if (key) {
       request['apiKey'] = key;
     }

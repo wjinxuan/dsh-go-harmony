@@ -1,20 +1,33 @@
+import { localizedSettingsText, localizedSettingsFormat } from './SettingsLocale'
 import { DshClient, DshSession, DshWorkspace } from '../dsh/DshClient'
 import { ThemeColors, themeColors, DshGlyphs } from './DshTheme'
 import { SessionSearchPanel } from './SessionSearchPanel'
 import { deletionOutcomeUnknown, sessionActionError, SessionDeletionGate } from './SessionManagementData'
+import { common } from '@kit.AbilityKit'
+import { WorkspaceViewPreferences, WorkspaceViewSection, workspaceViewPreferences, workspaceSections, workspaceDisplayTitle } from './WorkspaceViewData'
+import { loadWorkspaceView, changeWorkspaceView } from './WorkspaceViewPreferences'
 
 // Both drawer layouts and its search/archives share one recovery gate per connection.
 const DELETION_GATES: WeakMap<DshClient, SessionDeletionGate> = new WeakMap()
 
 @Component
 export struct SessionsPanel {
+  @StorageProp('dshLanguage') private localeLanguage: string = 'system'
+  private t(value: string): string { return localizedSettingsText(value, this.localeLanguage) }
+  private f(value: string, args: (string | number | boolean | null | undefined)[]): string { return localizedSettingsFormat(value, args, this.localeLanguage) }
+
   @Prop colors: ThemeColors = themeColors()
   client: DshClient = new DshClient()
+  @Prop @Watch('searchRequested') searchRequest: number = 0
+  @Prop excludedIds: string[] = []
+  onSearchConsumed: () => void = () => {}
+  private searchRequested(): void { if (this.active && this.searchRequest > 0) { this.section = 'search'; this.onSearchConsumed() } }
   @Prop sessions: DshSession[] = []
   @Prop workspaces: DshWorkspace[] = []
   @Prop workspaceId: string = ''
   @Prop selectedId: string = ''
-  @Prop host: string = '本机'
+  @Prop host: string = this.t("本机")
+  @Prop @Watch('scopeChanged') hostScope: string = 'local'
   @Prop refreshing: boolean = false
   onSelect: (id: string, title: string) => void = () => {}
   onNew: () => void = () => {}
@@ -36,6 +49,8 @@ export struct SessionsPanel {
   @State private chosen: string[] = []
   @State private canDelete: boolean = false
   @State private deletionLocked: boolean = false
+  @State private workspaceView: WorkspaceViewPreferences = workspaceViewPreferences()
+  private workspaceGeneration: number = 0
   private editingId: string = ''
   private active: boolean = false
   private searchBack?: () => boolean
@@ -43,6 +58,8 @@ export struct SessionsPanel {
 
   aboutToAppear(): void {
     this.active = true
+    this.scopeChanged()
+    this.searchRequested()
     this.onBackHandler(() => this.back())
     const connection = this.client.connectionIdentity()
     const existing = DELETION_GATES.get(this.client)
@@ -52,6 +69,16 @@ export struct SessionsPanel {
     void this.client.sessionDeletionAvailable().then((supported: boolean) => {
       if (this.active && connection === this.client.connectionIdentity()) this.canDelete = supported
     }).catch(() => {})
+  }
+
+  private scopeChanged(): void {
+    if (!this.active) return
+    const generation = ++this.workspaceGeneration
+    this.workspaceView = workspaceViewPreferences()
+    const context = this.getUIContext().getHostContext() as common.Context | undefined
+    if (context) void loadWorkspaceView(context, this.hostScope).then((view: WorkspaceViewPreferences) => {
+      if (this.active && generation === this.workspaceGeneration) this.workspaceView = view
+    })
   }
 
   private setDeletionLock(locked: boolean, connection: number): void {
@@ -90,15 +117,22 @@ export struct SessionsPanel {
     const date = new Date(value)
     const today = new Date()
     const midnight = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime()
-    if (date.getTime() >= midnight) return '今天'
-    if (date.getTime() >= midnight - 86400000) return '昨天'
-    return `${date.getMonth() + 1}月${date.getDate()}日`
+    if (date.getTime() >= midnight) return this.t("今天")
+    if (date.getTime() >= midnight - 86400000) return this.t("昨天")
+    return this.f("{0}月{1}日", [date.getMonth() + 1, date.getDate()])
   }
 
   private workspaceOptions(): SelectOption[] {
-    const options: SelectOption[] = [{ value: '全部对话' }]
-    this.workspaces.forEach((item: DshWorkspace) => options.push({ value: item.title || item.path }))
+    const options: SelectOption[] = [{ value: this.t("全部对话") }]
+    workspaceSections(this.workspaces, this.workspaceView).forEach((section: WorkspaceViewSection) =>
+      section.items.forEach((item: DshWorkspace) => options.push({ value: `${section.title ? `${section.title} · ` : ''}${workspaceDisplayTitle(item)}` })))
     return options
+  }
+
+  private workspaceRows(): DshWorkspace[] {
+    const rows: DshWorkspace[] = []
+    workspaceSections(this.workspaces, this.workspaceView).forEach((section: WorkspaceViewSection) => rows.push(...section.items))
+    return rows
   }
 
   private async rename(): Promise<void> {
@@ -111,7 +145,7 @@ export struct SessionsPanel {
       this.editing = false
       this.onRefresh()
     } catch {
-      this.error = '重命名失败，请重试。'
+      this.error = this.t("重命名失败，请重试。")
     } finally {
       this.working = false
     }
@@ -132,7 +166,7 @@ export struct SessionsPanel {
         try {
           if (action === 'delete') await this.client.deleteSessionPermanently(id)
           else if (action === 'archive') {
-            if (!(await this.client.archiveSession(id, true)).includes(id)) throw new Error('主机未确认归档')
+            if (!(await this.client.archiveSession(id, true)).includes(id)) throw new Error(this.t("主机未确认归档"))
           } else {
             const pinned = action === 'pin'
             const current = this.sessions.find((row: DshSession) => row.id === id)
@@ -140,22 +174,22 @@ export struct SessionsPanel {
               confirmed.push(id)
               continue
             }
-            if ((await this.client.pinSession(id, pinned)).includes(id) !== pinned) throw new Error('主机未确认置顶状态')
+            if ((await this.client.pinSession(id, pinned)).includes(id) !== pinned) throw new Error(this.t("主机未确认置顶状态"))
           }
           confirmed.push(id)
         } catch (reason) {
-          failure = sessionActionError(reason, '主机未确认操作，请刷新对话列表后再操作。')
+          failure = sessionActionError(reason, this.t("主机未确认操作，请刷新对话列表后再操作。"))
           if (action !== 'delete' || deletionOutcomeUnknown(reason)) {
             if (action === 'delete') {
               this.setDeletionLock(true, connection)
-              failure = '删除结果未确认，请刷新对话列表后再操作。'
+              failure = this.t("删除结果未确认，请刷新对话列表后再操作。")
             }
             break
           }
         }
       }
       if (!this.active || connection !== this.client.connectionIdentity()) return
-      if (failure) this.error = `已完成 ${confirmed.length} 个，未完成 ${ids.length - confirmed.length} 个。${failure}`
+      if (failure) this.error = this.f("已完成 {0} 个，未完成 {1} 个。{2}", [confirmed.length, ids.length - confirmed.length, failure])
       this.chosen = action === 'delete' ? [] : this.chosen.filter((id: string) => !confirmed.includes(id))
       if (this.chosen.length === 0) this.selecting = false
       this.onRefresh()
@@ -175,12 +209,12 @@ export struct SessionsPanel {
     if (this.working || !ids.length || (action === 'delete' && (!this.canDelete || this.deletionGate.blocked(connection)))) return
     const deleting = action === 'delete'
     const row = this.sessions.find((session: DshSession) => session.id === ids[0])
-    const noun = ids.length === 1 ? `「${row?.title || ids[0]}」` : `${ids.length} 个对话`
+    const noun = ids.length === 1 ? `「${row?.title || ids[0]}」` : this.f("{0} 个对话", [ids.length])
     this.getUIContext().showAlertDialog({
-      title: `${deleting ? '永久删除' : '归档'}${noun}？`,
-      message: deleting ? '将从此主机永久删除所选对话记录，无法撤销。工作目录、生成的文件、分叉对话、共享附件和已发布的云端分享都会保留。' : '进行中的一轮会停止。对话记录会保留。',
-      primaryButton: { value: '取消', action: () => {} },
-      secondaryButton: { value: deleting ? '永久删除' : '归档', fontColor: deleting ? this.colors.danger : this.colors.primary,
+      title: `${deleting ? this.t("永久删除") : this.t("归档")}${noun}？`,
+      message: deleting ? this.t("将从此主机永久删除所选对话记录，无法撤销。工作目录、生成的文件、分叉对话、共享附件和已发布的云端分享都会保留。") : this.t("进行中的一轮会停止。对话记录会保留。"),
+      primaryButton: { value: this.t("取消"), action: () => {} },
+      secondaryButton: { value: deleting ? this.t("永久删除") : this.t("归档"), fontColor: deleting ? this.colors.danger : this.colors.primary,
         action: () => { void this.updateSelection(ids, action, connection) } }
     })
   }
@@ -191,6 +225,11 @@ export struct SessionsPanel {
   }
 
   private chooseWorkspace(id: string): void {
+    const context = this.getUIContext().getHostContext() as common.Context | undefined
+    const generation = this.workspaceGeneration
+    if (context) void changeWorkspaceView(context, this.hostScope, id, 'select').then((view: WorkspaceViewPreferences) => {
+      if (this.active && generation === this.workspaceGeneration) this.workspaceView = view
+    }).catch(() => { if (this.active) this.error = this.t("工作区选择未能保存，下次启动需重新选择。") })
     if (this.working) return
     this.chosen = []
     this.onWorkspaceSelect(id)
@@ -213,26 +252,26 @@ export struct SessionsPanel {
       this.error = ''
       this.onRefresh()
     } catch {
-      if (this.active) this.error = '没能核对删除结果，请刷新对话列表后再操作。'
+      if (this.active) this.error = this.t("没能核对删除结果，请刷新对话列表后再操作。")
     } finally { if (this.active) this.working = false }
   }
 
   @Builder
   private selectionActions() {
     Flex({ wrap: FlexWrap.Wrap }) {
-      Button(this.chosen.length > 0 && this.chosen.length === this.visible().length ? '取消全选' : '全选').fontSize(12)
+      Button(this.chosen.length > 0 && this.chosen.length === this.visible().length ? this.t("取消全选") : this.t("全选")).fontSize(12)
         .backgroundColor(this.colors.surface).fontColor(this.colors.text).enabled(!this.working && this.visible().length > 0)
         .onClick(() => {
           this.chosen = this.chosen.length === this.visible().length ? [] : this.visible().map((item: DshSession) => item.id)
         })
-      Button(this.pinnedSelection() ? '取消置顶' : '置顶').fontSize(12).backgroundColor(this.colors.surface).fontColor(this.colors.primary)
+      Button(this.pinnedSelection() ? this.t("取消置顶") : this.t("置顶")).fontSize(12).backgroundColor(this.colors.surface).fontColor(this.colors.primary)
         .enabled(!this.working && this.chosen.length > 0).onClick(() => {
           void this.updateSelection(this.chosen.slice(), this.pinnedSelection() ? 'unpin' : 'pin', this.client.connectionIdentity())
         })
-      Button('归档').fontSize(12).backgroundColor(this.colors.surface).fontColor(this.colors.primary)
+      Button(this.t("归档")).fontSize(12).backgroundColor(this.colors.surface).fontColor(this.colors.primary)
         .enabled(!this.working && this.chosen.length > 0).onClick(() => this.confirm(this.chosen.slice(), 'archive'))
       if (this.canDelete) {
-        Button('永久删除').fontSize(12).backgroundColor(this.colors.surface).fontColor(this.colors.danger)
+        Button(this.t("永久删除")).fontSize(12).backgroundColor(this.colors.surface).fontColor(this.colors.danger)
           .enabled(!this.working && !this.deletionLocked && this.chosen.length > 0).onClick(() => this.confirm(this.chosen.slice(), 'delete'))
       }
     }.width('100%')
@@ -241,25 +280,25 @@ export struct SessionsPanel {
   @Builder
   private headerActions() {
     if (this.selecting) {
-      Text(`已选 ${this.chosen.length} 个`).fontSize(18).fontColor(this.colors.text).layoutWeight(1)
-      Button('完成').backgroundColor(this.colors.surface).fontColor(this.colors.primary).enabled(!this.working)
+      Text(this.f("已选 {0} 个", [this.chosen.length])).fontSize(18).fontColor(this.colors.text).layoutWeight(1)
+      Button(this.t("完成")).backgroundColor(this.colors.surface).fontColor(this.colors.primary).enabled(!this.working)
         .onClick(() => { this.selecting = false; this.chosen = [] })
     } else {
       Text($r('app.string.app_name')).fontSize(24).fontWeight(FontWeight.Bold).fontColor(this.colors.text).layoutWeight(1)
-      this.roundButton(DshGlyphs.add, '新对话', this.onNew)
+      this.roundButton(DshGlyphs.add, this.t("新对话"), this.onNew)
       Button({ type: ButtonType.Circle }) {
         Text(DshGlyphs.more).fontFamily(DshGlyphs.family).fontSize(21).fontColor(this.colors.text)
-      }.width(44).height(44).backgroundColor(this.colors.surface).accessibilityText('会话管理')
+      }.width(44).height(44).backgroundColor(this.colors.surface).accessibilityText(this.t("会话管理"))
         .enabled(!this.working).bindMenu(this.managementMenu())
-      this.roundButton(DshGlyphs.close, '关闭会话列表', this.onClose)
+      this.roundButton(DshGlyphs.close, this.t("关闭会话列表"), this.onClose)
     }
   }
 
   @Builder
   private managementMenu() {
     Menu() {
-      MenuItem({ content: '选择对话' }).onClick(() => { this.selecting = true; this.chosen = [] })
-      MenuItem({ content: '已归档' }).onClick(() => { this.section = 'archive' })
+      MenuItem({ content: this.t("选择对话") }).onClick(() => { this.selecting = true; this.chosen = [] })
+      MenuItem({ content: this.t("已归档") }).onClick(() => { this.section = 'archive' })
     }
   }
 
@@ -274,30 +313,30 @@ export struct SessionsPanel {
   @Builder
   private actions(item: DshSession) {
     Menu() {
-      MenuItem({ content: item.pinned ? '取消置顶' : '置顶' }).onClick(() => {
+      MenuItem({ content: item.pinned ? this.t("取消置顶") : this.t("置顶") }).onClick(() => {
         void this.updateSelection([item.id], item.pinned ? 'unpin' : 'pin', this.client.connectionIdentity())
       })
-      MenuItem({ content: '重命名' }).onClick(() => {
+      MenuItem({ content: this.t("重命名") }).onClick(() => {
         this.editingId = item.id
         this.editingTitle = item.title
         this.error = ''
         this.editing = true
       })
-      MenuItem({ content: '归档' }).onClick(() => this.confirm([item.id], 'archive'))
-      MenuItem({ content: '选择对话' }).onClick(() => { this.selecting = true; this.chosen = [item.id] })
-      if (this.canDelete) MenuItem({ content: '永久删除' }).enabled(!this.deletionLocked).onClick(() => this.confirm([item.id], 'delete'))
+      MenuItem({ content: this.t("归档") }).onClick(() => this.confirm([item.id], 'archive'))
+      MenuItem({ content: this.t("选择对话") }).onClick(() => { this.selecting = true; this.chosen = [item.id] })
+      if (this.canDelete) MenuItem({ content: this.t("永久删除") }).enabled(!this.deletionLocked).onClick(() => this.confirm([item.id], 'delete'))
     }
   }
 
   @Builder
   private renameSheet() {
     Column({ space: 18 }) {
-      Text('重命名对话').fontSize(20).fontWeight(FontWeight.Medium).fontColor(this.colors.text)
-      TextInput({ text: this.editingTitle, placeholder: '对话名称' })
+      Text(this.t("重命名对话")).fontSize(20).fontWeight(FontWeight.Medium).fontColor(this.colors.text)
+      TextInput({ text: this.editingTitle, placeholder: this.t("对话名称") })
         .fontColor(this.colors.text).backgroundColor(this.colors.surfaceAlt).maxLength(200)
         .onChange((value: string) => this.editingTitle = value)
-      if (this.error) { Text(this.error).fontColor(this.colors.danger).fontSize(14) }
-      Button(this.working ? '保存中…' : '保存').width('100%')
+      if (this.error) { Text(this.t(this.error)).fontColor(this.colors.danger).fontSize(14) }
+      Button(this.working ? this.t("保存中…") : this.t("保存")).width('100%')
         .backgroundColor(this.colors.primary).fontColor(this.colors.onPrimary)
         .enabled(!this.working && this.editingTitle.trim().length > 0)
         .onClick(() => { void this.rename() })
@@ -316,35 +355,35 @@ export struct SessionsPanel {
         Button({ type: ButtonType.Normal }) {
           Row({ space: 10 }) {
             Text(DshGlyphs.search).fontFamily(DshGlyphs.family).fontSize(18).fontColor(this.colors.muted)
-            Text('搜索对话').fontSize(15).fontColor(this.colors.muted)
+            Text(this.t("搜索对话")).fontSize(15).fontColor(this.colors.muted)
             Blank()
           }.padding({ left: 14, right: 14 }).width('100%')
-        }.height(44).width('100%').backgroundColor(this.colors.surface).borderRadius(22).accessibilityText('搜索对话')
+        }.height(44).width('100%').backgroundColor(this.colors.surface).borderRadius(22).accessibilityText(this.t("搜索对话"))
           .enabled(!this.working).onClick(() => { this.section = 'search' })
       }
       Row({ space: 8 }) {
         Select(this.workspaceOptions())
-          .value(this.workspaces.find((item: DshWorkspace) => item.id === this.workspaceId)?.title || '全部对话')
+          .value(this.workspaces.find((item: DshWorkspace) => item.id === this.workspaceId)?.title || this.t("全部对话"))
           .fontColor(this.colors.text).backgroundColor(this.colors.surface).layoutWeight(1)
           .onSelect((index: number) => {
             if (index === 0) this.chooseWorkspace('')
-            else if (this.workspaces[index - 1]) this.chooseWorkspace(this.workspaces[index - 1].id)
+            else if (this.workspaceRows()[index - 1]) this.chooseWorkspace(this.workspaceRows()[index - 1].id)
           })
-        this.roundButton(DshGlyphs.folder, '工作区', this.onManageWorkspaces)
-        this.roundButton(DshGlyphs.refresh, '刷新对话', () => { void this.refresh() })
+        this.roundButton(DshGlyphs.folder, this.t("工作区"), this.onManageWorkspaces)
+        this.roundButton(DshGlyphs.refresh, this.t("刷新对话"), () => { void this.refresh() })
       }.width('100%')
       if (this.error && !this.editing) {
-        Text(this.error).fontColor(this.colors.danger).fontSize(14).width('100%')
+        Text(this.t(this.error)).fontColor(this.colors.danger).fontSize(14).width('100%')
       }
       if (this.working && !this.editing) LoadingProgress().width(24).height(24).color(this.colors.primary)
       List({ space: 4 }) {
         if (this.visible().length === 0) {
           ListItem() {
             Column({ space: 12 }) {
-              Text(this.refreshing ? '正在加载对话…' : '开始你的第一段对话')
+              Text(this.refreshing ? this.t("正在加载对话…") : this.t("开始你的第一段对话"))
                 .fontSize(16).fontColor(this.colors.muted)
               if (!this.refreshing) {
-                Button('新对话').backgroundColor(this.colors.primary).fontColor(this.colors.onPrimary)
+                Button(this.t("新对话")).backgroundColor(this.colors.primary).fontColor(this.colors.onPrimary)
                   .onClick(this.onNew)
               }
             }.width('100%').padding({ top: 56 })
@@ -361,14 +400,14 @@ export struct SessionsPanel {
                 Text(DshGlyphs.pin).fontFamily(DshGlyphs.family).fontSize(16).fontColor(this.colors.primary)
               }
               Column({ space: 6 }) {
-                Text(item.title || '新对话').fontSize(15).fontColor(this.colors.text)
+                Text(item.title || this.t("新对话")).fontSize(15).fontColor(this.colors.text)
                   .maxLines(2).textOverflow({ overflow: TextOverflow.Ellipsis })
                 Text(this.dateLabel(item.updatedAt)).fontSize(12).fontColor(this.colors.muted)
               }.alignItems(HorizontalAlign.Start).layoutWeight(1)
               if (!this.selecting) {
                 Button({ type: ButtonType.Circle }) {
                   Text(DshGlyphs.more).fontFamily(DshGlyphs.family).fontSize(21).fontColor(this.colors.muted)
-                }.width(40).height(44).backgroundColor(Color.Transparent).accessibilityText('对话操作')
+                }.width(40).height(44).backgroundColor(Color.Transparent).accessibilityText(this.t("对话操作"))
                   .enabled(!this.working).bindMenu(this.actions(item))
               }
             }.width('100%').padding({ left: 14, right: 4, top: 10, bottom: 10 }).borderRadius(14)
@@ -390,8 +429,8 @@ export struct SessionsPanel {
             Text('⌄').fontSize(16).fontColor(this.colors.muted)
           }.padding({ left: 12, right: 12 })
         }.height(44).borderRadius(22).backgroundColor(this.colors.surface).layoutWeight(1).onClick(this.onHost)
-        this.roundButton(DshGlyphs.features, '全部功能', this.onFeatures)
-        this.roundButton(DshGlyphs.settings, '设置', this.onSettings)
+        this.roundButton(DshGlyphs.features, this.t("全部功能"), this.onFeatures)
+        this.roundButton(DshGlyphs.settings, this.t("设置"), this.onSettings)
       }.width('100%').padding({ bottom: 8 })
     }.padding({ left: 16, right: 16 }).width('100%').height('100%').backgroundColor(this.colors.background)
       .bindSheet($$this.editing, this.renameSheet(), { height: SheetSize.FIT_CONTENT, showClose: true })
@@ -399,7 +438,7 @@ export struct SessionsPanel {
 
   build() {
     if (this.section) {
-      SessionSearchPanel({ colors: this.colors, client: this.client, host: this.host, archivedOnly: this.section === 'archive',
+      SessionSearchPanel({ excludedIds: this.excludedIds, colors: this.colors, client: this.client, host: this.host, archivedOnly: this.section === 'archive',
         deletionLocked: this.deletionLocked, beginDelete: (connection: number) => this.deletionGate.begin(connection),
         endDelete: (connection: number) => {
           this.deletionGate.end(connection)

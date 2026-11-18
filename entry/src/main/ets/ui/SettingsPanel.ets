@@ -1,9 +1,23 @@
+import { ProfileSharePanel } from './ProfileSharePanel'
+import { SubagentModels } from './settings/SubagentModels'
+import { localizedSettingsText, localizedSettingsFormat, settingsLanguage } from './SettingsLocale'
+import { AppearanceSettings } from './settings/AppearanceSettings';
+import { NotificationSettings } from './settings/NotificationSettings';
+import { PrivacySettings } from './settings/PrivacySettings';
+import { UsageStatsSettings } from './settings/UsageStatsSettings';
+import { AdvancedPreferences } from './AdvancedPreferencesData';
+import { NotificationPreferences } from './NotificationData';
+import { UsageStats } from './UsageStatsData';
+import { SubscriptionsPanel } from './SubscriptionsPanel';
+import { RuntimeMaintenancePanel } from './RuntimeMaintenancePanel';
+import { TransportControl } from '../remote/TransportEndpoint';
+import { MediaSettingsPanel } from './MediaSettingsPanel';
 import { bundleManager, common } from '@kit.AbilityKit';
 import { pasteboard } from '@kit.BasicServicesKit';
 import { DshClient } from '../dsh/DshClient';
 import { hasLocalApiKey, removeLocalApiKey, saveLocalApiKey } from '../local/LocalKeyStore';
 import {
-  DshModelInfo, DshModelSelection, DshProviderGroup, DshReasoningEffort, DshSettingsOp, object, string
+  DshModelInfo, DshModelSelection, DshProviderGroup, DshReasoningEffort, DshSettingsOp, object, string, WireObject
 } from '../dsh/DshWire';
 import { ACCENTS, DshAccent, DshGlyphs, ThemeColors, themeColors } from './DshTheme';
 import {
@@ -11,6 +25,9 @@ import {
 } from './settings/SettingsSchema';
 import { ProviderSettings } from './settings/ProviderSettings';
 import { AccountPanel } from './AccountPanel';
+import { SpeechPanel } from './SpeechPanel';
+import { VoiceScribePanel } from './VoiceScribePanel';
+import { SpeechMode } from '../dsh/SpeechData';
 
 const DEFAULT_MODEL: string = 'agent-default-model';
 const DEEPSEEK_KEY: string = 'DEEPSEEK_API_KEY';
@@ -18,17 +35,38 @@ const UPSTREAM_PROJECT: string = 'https://github.com/ccch1mneyyy/dsh-Go';
 
 @Component
 export struct SettingsPanel {
+  @StorageProp('dshLanguage') @Watch('localeChanged') private localeLanguage: string = 'system'
+  private t(value: string): string { return localizedSettingsText(value, this.localeLanguage) }
+  private rawSettings: WireObject = {}
+  private localeChanged(): void { this.sections = parseSettings(this.rawSettings,settingsLanguage(this.localeLanguage)) }
+  private f(value: string, args: (string | number | boolean | null | undefined)[]): string { return localizedSettingsFormat(value, args, this.localeLanguage) }
+
   @Prop colors: ThemeColors = themeColors();
   @Prop @Watch('connectionChanged') connected: boolean = false;
   @Prop connectionIdentity: number = 0;
   @Prop local: boolean = true;
+  @Prop relay: boolean = false;
   @Prop @Watch('savedLocalKeyChanged') savedLocalKey: boolean = false;
-  @Prop engineStatus: string = '未启动';
+  @Prop engineStatus: string = this.t("未启动");
   @Prop engineRunning: boolean = false;
   @Prop engineBusy: boolean = false;
+  @Prop maintenanceBusy: boolean = false;
+  onMaintenanceWorking: (working: boolean) => void = () => {};
+  onMaintenanceStop?: () => Promise<void>;
+  onMaintenanceRestart?: () => Promise<void>;
   @Prop accentId: string = 'mist';
   @Prop themeMode: string = 'system';
   @Prop fontSize: number = 16;
+  @Prop dark: boolean = false;
+  usage?: UsageStats;
+  onAdvancedChange: (value: AdvancedPreferences) => void = () => {};
+  onNotificationChange: (value: NotificationPreferences) => void = () => {};
+  onOpenShareLinks?: () => void;
+  onShareConfiguration?: () => void;
+  onLocalOcr?: () => void;
+  @Prop speechMode: SpeechMode = 'auto';
+  getLocalControl?: () => Promise<TransportControl>;
+  onSpeechModeChange: (mode: SpeechMode) => Promise<void> = async () => {};
   client: DshClient = new DshClient();
   @Prop initialPage: string = 'home';
   onClose: () => void = () => {};
@@ -38,6 +76,7 @@ export struct SettingsPanel {
   onStartEngine: () => void = () => {};
   onStopEngine: () => void = () => {};
   onRestartEngine?: () => void;
+  onOpenDestination: (id: string) => void = () => {};
   onOpenHosts: () => void = () => {};
   onOpenPlugins?: () => void;
   onLocalKeyStored: (stored: boolean) => void = () => {};
@@ -73,6 +112,7 @@ export struct SettingsPanel {
   private generation: number = 0;
   private catalogDefault?: DshModelSelection;
   private modelsBack?: () => boolean;
+  private childBack?: () => boolean;
   private parents: string[] = [];
 
   aboutToAppear(): void {
@@ -132,6 +172,10 @@ export struct SettingsPanel {
   }
 
   private show(page: string): void {
+    if (/^ns:[A-Za-z0-9._:@/-]{1,80}$/.test(page)) { this.sectionId = page.slice(3); page = 'section'; }
+    if (['cot-translation', 'agent-loop', 'subagent-settings', 'shell-settings'].includes(page)) { this.sectionId = page === 'subagent-settings' ? 'subagent' : page === 'shell-settings' ? 'shell-settings' : page; page = 'section'; }
+    if (['personalization', 'interface', 'theme'].includes(page)) page = 'appearance';
+    if (page === 'general') page = 'home';
     this.page = page;
     this.editField = undefined;
     this.keyInput = '';
@@ -157,8 +201,9 @@ export struct SettingsPanel {
   }
 
   private back(): boolean {
-    if (this.working || (this.page === 'engine' && this.engineBusy)) return true;
+    if (this.maintenanceBusy || this.working || (this.page === 'engine' && this.engineBusy)) return true;
     if (this.page === 'models' && this.modelsBack?.()) return true;
+    if (['voice-scribe', 'media', 'subscriptions', 'share-profile'].includes(this.page) && this.childBack?.()) return true;
     if (this.editField) {
       this.editField = undefined;
       this.editText = '';
@@ -174,18 +219,18 @@ export struct SettingsPanel {
 
   private title(): string {
     if (this.page === 'section') {
-      return this.section(this.sectionId)?.title || '引擎参数';
+      return this.t(this.section(this.sectionId)?.title || '') || this.t("引擎参数");
     }
     const names: Record<string, string> = {
-      'home': '设置', 'models': '模型与服务商', 'engine': '本机引擎', 'parameters': '引擎参数',
-      'appearance': '主题与配色', 'permission': '权限', 'search': '联网搜索', 'about': '关于 Harness Pocket',
-      'diagnostics': '诊断', 'account': 'DeepSeek 账号'
+      'home': this.t("设置"), 'models': this.t("模型与服务商"), 'engine': this.t("本机引擎"), 'parameters': this.t("引擎参数"),
+      'appearance': this.t("主题与配色"), 'permission': this.t("权限"), 'search': this.t("联网搜索"), 'about': this.t("关于 Harness Pocket"),
+      'diagnostics': this.t("诊断"), 'account': this.t("DeepSeek 账号")
     };
-    return names[this.page] || '设置';
+    return names[this.page] || this.t("设置");
   }
 
   private section(id: string): SettingsSection | undefined {
-    return this.sections.find((item: SettingsSection) => item.id === id);
+    return this.sections.find((item: SettingsSection) => item.id === (id === 'shell-settings' ? (this.sections.some((row: SettingsSection) => row.id === 'bash-sandbox') ? 'bash-sandbox' : 'pwsh-sandbox') : id));
   }
 
   private selectSavedModel(): void {
@@ -209,14 +254,15 @@ export struct SettingsPanel {
     try {
       const raw = await this.client.describeSettings();
       if (generation === this.generation) {
-        this.sections = parseSettings(raw);
+        this.rawSettings = raw;
+        this.sections = parseSettings(raw,settingsLanguage(this.localeLanguage));
         if (selectModel) {
           this.selectSavedModel();
         }
       }
     } catch {
       if (generation === this.generation) {
-        this.settingsError = '无法读取当前主机的引擎设置。';
+        this.settingsError = this.t("无法读取当前主机的引擎设置。");
       }
     } finally {
       if (generation === this.generation) {
@@ -244,7 +290,7 @@ export struct SettingsPanel {
       }
     } catch {
       if (generation === this.generation) {
-        this.modelError = '无法读取当前主机的模型目录。';
+        this.modelError = this.t("无法读取当前主机的模型目录。");
       }
     } finally {
       if (generation === this.generation) {
@@ -270,7 +316,7 @@ export struct SettingsPanel {
     } catch {
       if (generation === this.generation) {
         this.credentialWritable = false;
-        this.credentialError = '无法读取 DeepSeek API Key 的状态。';
+        this.credentialError = this.t("无法读取 DeepSeek API Key 的状态。");
       }
     } finally {
       if (generation === this.generation) {
@@ -288,7 +334,7 @@ export struct SettingsPanel {
   }
 
   private effortOptions(): SelectOption[] {
-    const defaults: SelectOption[] = [{ value: '模型默认' }];
+    const defaults: SelectOption[] = [{ value: this.t("模型默认") }];
     return defaults.concat(this.model()?.efforts.map((item: DshReasoningEffort): SelectOption =>
       ({ value: item.name || item.id })) || []);
   }
@@ -316,13 +362,13 @@ export struct SettingsPanel {
     const effort = this.selectedEffort;
     const remember = this.rememberModel;
     if (effort && !model.efforts.some((item: DshReasoningEffort) => item.id === effort)) {
-      this.failed = '所选思考深度当前不可用，请重新选择。';
+      this.failed = this.t("所选思考深度当前不可用，请重新选择。");
       return;
     }
     const inheritedEffort = section.fields.find((field: SettingsField) =>
       field.path.length === 1 && field.path[0] === 'reasoningEffort')?.inherited;
     if (!effort && string(inheritedEffort)) {
-      this.failed = '主机配置继承了思考深度，请选择具体的思考深度。';
+      this.failed = this.t("主机配置继承了思考深度，请选择具体的思考深度。");
       return;
     }
     const ops: DshSettingsOp[] = [
@@ -342,9 +388,9 @@ export struct SettingsPanel {
     if (current['provider'] !== provider || current['model'] !== modelId ||
       string(current['reasoningEffort']) !== effort ||
       (rememberField && !rememberField.disabled && current['rememberLastSelection'] !== remember)) {
-      this.failed = '主机当前生效的模型设置与所选值不同，请查看已读取的设置。';
+      this.failed = this.t("主机当前生效的模型设置与所选值不同，请查看已读取的设置。");
     } else {
-      this.success = '新对话默认模型已保存。';
+      this.success = this.t("新对话默认模型已保存。");
     }
     this.selectSavedModel();
   }
@@ -380,16 +426,16 @@ export struct SettingsPanel {
       await this.loadCredential();
       if (generation === this.generation) {
         if (!this.credentialError && this.credentialConfigured !== clear) {
-          this.success = clear ? 'DeepSeek API Key 已移除。' : remember ? 'DeepSeek API Key 已安全保存。' :
-            local ? 'DeepSeek API Key 已更新，本次引擎运行期间可用。' : 'DeepSeek API Key 已保存。';
+          this.success = clear ? this.t("DeepSeek API Key 已移除。") : remember ? this.t("DeepSeek API Key 已安全保存。") :
+            local ? this.t("DeepSeek API Key 已更新，本次引擎运行期间可用。") : this.t("DeepSeek API Key 已保存。");
         } else {
-          this.failed = '无法确认当前主机的 API Key 状态。';
+          this.failed = this.t("无法确认当前主机的 API Key 状态。");
         }
         void this.loadModels();
       }
     } catch {
       if (generation === this.generation) {
-        this.failed = clear ? '主机未能移除 API Key。' : '主机未能保存 API Key。';
+        this.failed = clear ? this.t("主机未能移除 API Key。") : this.t("主机未能保存 API Key。");
       }
     } finally {
       if (generation === this.generation) {
@@ -405,13 +451,13 @@ export struct SettingsPanel {
       else await removeLocalApiKey();
       const stored = await hasLocalApiKey();
       if (generation !== this.generation) return false;
-      if (stored !== remember) throw new Error('安全存储状态未确认');
+      if (stored !== remember) throw new Error(this.t("安全存储状态未确认"));
       this.onLocalKeyStored(stored);
       return true;
     } catch {
       if (generation === this.generation) {
-        this.failed = clear ? '运行中的 API Key 已移除，安全存储未能确认删除。请解锁手机后重试。' :
-          '运行中的 API Key 已更新，安全存储未能确认更新。请解锁手机后重试。';
+        this.failed = clear ? this.t("运行中的 API Key 已移除，安全存储未能确认删除。请解锁手机后重试。") :
+          this.t("运行中的 API Key 已更新，安全存储未能确认更新。请解锁手机后重试。");
       }
       return false;
     }
@@ -428,7 +474,7 @@ export struct SettingsPanel {
       await this.client.mutateSettings(section.id, ops, section.revision);
     } catch {
       if (generation === this.generation) {
-        this.failed = '主机拒绝修改，设置可能已被其他客户端更新。';
+        this.failed = this.t("主机拒绝修改，设置可能已被其他客户端更新。");
         await this.loadSettings(false);
         this.working = false;
       }
@@ -440,12 +486,13 @@ export struct SettingsPanel {
     try {
       const raw = await this.client.describeSettings();
       if (generation === this.generation) {
-        this.sections = parseSettings(raw);
+        this.rawSettings = raw;
+        this.sections = parseSettings(raw,settingsLanguage(this.localeLanguage));
         return this.section(section.id);
       }
     } catch {
       if (generation === this.generation) {
-        this.failed = '主机已接收请求，无法读取最新设置。';
+        this.failed = this.t("主机已接收请求，无法读取最新设置。");
       }
     } finally {
       if (generation === this.generation) {
@@ -467,12 +514,12 @@ export struct SettingsPanel {
     const actual = updated.fields.find((item: SettingsField) => JSON.stringify(item.path) === path);
     if (actual && (unset ? !actual.overridden : actual.kind === 'secret' ? actual.secretSet :
       JSON.stringify(actual.current) === JSON.stringify(value))) {
-      this.success = unset ? '已恢复继承值。' : '设置已保存。';
+      this.success = unset ? this.t("已恢复继承值。") : this.t("设置已保存。");
       this.editField = undefined;
       this.editText = '';
       this.editError = '';
     } else {
-      this.failed = '主机当前生效的设置与提交值不同，请查看已读取的设置。';
+      this.failed = this.t("主机当前生效的设置与提交值不同，请查看已读取的设置。");
     }
   }
 
@@ -489,9 +536,13 @@ export struct SettingsPanel {
     this.editError = '';
     try {
       const value = fieldInput(field, this.editText);
+      if (section.id === 'cot-translation' && field.path.join('.') === 'targetLanguage' &&
+        (typeof value !== 'string' || (value !== 'auto' && !/^[A-Za-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$/.test(value)))) {
+        throw new Error(this.t("填 auto 或语言代码，如 zh、en、ja"));
+      }
       void this.changeField(section, field, value);
     } catch (error) {
-      this.editError = (error as Error).message || '请输入有效值。';
+      this.editError = (error as Error).message || this.t("请输入有效值。");
     }
   }
 
@@ -500,11 +551,11 @@ export struct SettingsPanel {
   }
 
   private themeModeLabel(): string {
-    return this.themeMode === 'dark' ? '深色' : this.themeMode === 'light' ? '浅色' : '跟随系统';
+    return this.themeMode === 'dark' ? this.t("深色") : this.themeMode === 'light' ? this.t("浅色") : this.t("跟随系统");
   }
 
   private accentName(): string {
-    return ACCENTS.find((item: DshAccent) => item.id === this.accentId)?.name || '雾蓝';
+    return ACCENTS.find((item: DshAccent) => item.id === this.accentId)?.name || this.t("雾蓝");
   }
 
   private visibleSections(): SettingsSection[] {
@@ -529,7 +580,7 @@ export struct SettingsPanel {
       const bundle = await bundleManager.getBundleInfoForSelf(bundleManager.BundleFlag.GET_BUNDLE_INFO_DEFAULT);
       this.version = `${bundle.versionName} (${bundle.versionCode})`;
     } catch {
-      this.version = '版本信息不可用';
+      this.version = this.t("版本信息不可用");
     }
   }
 
@@ -539,23 +590,23 @@ export struct SettingsPanel {
       const context = this.getUIContext().getHostContext() as common.UIAbilityContext;
       await context.openLink(address);
     } catch {
-      this.failed = '无法打开链接。';
+      this.failed = this.t("无法打开链接。");
     }
   }
 
   private async copyDiagnostics(): Promise<void> {
     this.clearFeedback();
     const report = [
-      `Harness Pocket ${this.version}`, '平台 HarmonyOS', `主机 ${this.local ? '本机' : '远程主机'}`,
-      `连接 ${this.connected ? '已连接' : '未连接'}`,
-      `本机引擎 ${this.engineRunning ? '运行中' : this.engineBusy ? '正在处理' : '未运行'}`,
-      `主题 ${this.themeModeLabel()} · ${this.accentName()}`, `对话字号 ${this.fontSize}`
+      `Harness Pocket ${this.version}`, this.t("平台 HarmonyOS"), this.f("主机 {0}", [this.local ? this.t("本机") : this.t("远程主机")]),
+      this.f("连接 {0}", [this.connected ? this.t("已连接") : this.t("未连接")]),
+      this.f("本机引擎 {0}", [this.engineRunning ? this.t("运行中") : this.engineBusy ? this.t("正在处理") : this.t("未运行")]),
+      this.f("主题 {0} · {1}", [this.themeModeLabel(), this.accentName()]), this.f("对话字号 {0}", [this.fontSize])
     ].join('\n');
     try {
       await pasteboard.getSystemPasteboard().setData(pasteboard.createData(pasteboard.MIMETYPE_TEXT_PLAIN, report));
-      this.success = '已复制诊断信息。';
+      this.success = this.t("已复制诊断信息。");
     } catch {
-      this.failed = '无法复制诊断信息。';
+      this.failed = this.t("无法复制诊断信息。");
     }
   }
 
@@ -597,7 +648,7 @@ export struct SettingsPanel {
 
   @Builder
   private bodyText(text: () => string, color?: () => string) {
-    Text(text()).fontSize(14).fontColor(color ? color() : this.colors.muted).lineHeight(21).width('100%');
+    Text(this.t(text())).fontSize(14).fontColor(color ? color() : this.colors.muted).lineHeight(21).width('100%');
   }
 
   @Builder
@@ -615,67 +666,94 @@ export struct SettingsPanel {
   @Builder
   private home() {
     Column({ space: 10 }) {
-      TextInput({ text: this.query, placeholder: '搜索设置' }).fontSize(15).fontColor(this.colors.text)
+      TextInput({ text: this.query, placeholder: this.t("搜索设置") }).fontSize(15).fontColor(this.colors.text)
         .placeholderColor(this.colors.hint).backgroundColor(this.colors.surface).height(46)
         .onChange((value: string) => { this.query = value; });
       if (!this.query.trim()) {
         Row({ space: 12 }) {
           Text(DshGlyphs.host).fontFamily(DshGlyphs.family).fontSize(24).fontColor(this.colors.primary);
           Column({ space: 5 }) {
-            Text(this.local ? '本机' : '远程主机').fontSize(17).fontWeight(FontWeight.Medium).fontColor(this.colors.text);
-            Text(this.local ? this.engineStatus : (this.connected ? '已连接' : '未连接'))
+            Text(this.local ? this.t("本机") : this.t("远程主机")).fontSize(17).fontWeight(FontWeight.Medium).fontColor(this.colors.text);
+            Text(this.local ? this.engineStatus : (this.connected ? this.t("已连接") : this.t("未连接")))
               .fontSize(13).fontColor(this.connected ? this.colors.success : this.colors.muted);
           }.layoutWeight(1).alignItems(HorizontalAlign.Start);
           Text(DshGlyphs.disclosure).fontFamily(DshGlyphs.family).fontSize(15).fontColor(this.colors.hint);
         }.width('100%').padding(16).borderRadius(14).backgroundColor(this.colors.surface)
           .onClick(() => this.local ? this.open('engine') : this.onOpenHosts());
       }
-      if (this.match('模型与服务商 权限 AI api deepseek 新对话 账号 账户 余额 登录')) {
+      if (this.match(this.t("模型与服务商 权限 AI api deepseek 新对话 账号 账户 余额 登录"))) {
         this.groupTitle('AI');
       }
-      if (this.match('模型与服务商 AI api deepseek 新对话 默认模型')) {
-        this.row(DshGlyphs.model, '模型与服务商', '配置 API Key 和新对话默认模型', () => '', () => this.open('models'));
+      if (this.match(this.t("模型与服务商 AI api deepseek 新对话 默认模型"))) {
+        this.row(DshGlyphs.model, this.t("模型与服务商"), this.t("配置 API Key 和新对话默认模型"), () => '', () => this.open('models'));
       }
-      if (this.match('DeepSeek 账号 账户 余额 登录')) {
-        this.row(DshGlyphs.model, 'DeepSeek 账号', '查看当前主机的账号与余额', () => '', () => this.open('account'));
+      if (this.match(this.t("订阅 ChatGPT Claude OAuth 登录"))) {
+        this.row(DshGlyphs.model, this.t("订阅账号"), this.t("ChatGPT、Claude 订阅与模型"), () => '', () => this.open('subscriptions'));
       }
-      if (this.match('权限 AI 安全')) {
-        this.row(DshGlyphs.settings, '权限', '查看和设置主机的默认权限', () => '', () => this.open('permission'));
+      if (this.match(this.t("DeepSeek 账号 账户 余额 登录"))) {
+        this.row(DshGlyphs.model, this.t("DeepSeek 账号"), this.t("查看当前主机的账号与余额"), () => '', () => this.open('account'));
       }
-      if (this.match('能力 联网搜索 网页 插件')) {
-        this.groupTitle('能力');
+      if (this.match(this.t("权限 AI 安全"))) {
+        this.row(DshGlyphs.settings, this.t("权限"), this.t("查看和设置主机的默认权限"), () => '', () => this.open('permission'));
       }
-      if (this.match('能力 联网搜索 网页')) {
-        this.row(DshGlyphs.web, '联网搜索', '查看当前主机的搜索服务设置', () => '', () => this.open('search'));
+      if (this.match(this.t("能力 联网搜索 网页 插件"))) {
+        this.groupTitle(this.t("能力"));
       }
-      if (this.onOpenPlugins && this.match('能力 插件')) {
-        this.row(DshGlyphs.plugin, '插件', '查看当前主机提供的插件', () => '', () => this.onOpenPlugins?.());
+      if (this.match(this.t("能力 联网搜索 网页"))) {
+        this.row(DshGlyphs.web, this.t("联网搜索"), this.t("查看当前主机的搜索服务设置"), () => '', () => this.open('search'));
       }
-      if (this.match('外观 主题 配色 深色 字号 字体')) {
-        this.groupTitle('外观');
-        this.row(DshGlyphs.settings, '主题与配色', '选择界面外观和强调色', () => this.accentName(), () => this.open('appearance'));
+      if (this.onOpenPlugins && this.match(this.t("能力 插件"))) {
+        this.row(DshGlyphs.plugin, this.t("插件"), this.t("查看当前主机提供的插件"), () => '', () => this.onOpenPlugins?.());
+      }
+      if (this.match(this.t("能力 语音 输入 听写 转写 识别"))) {
+        this.row(DshGlyphs.voice, this.t("语音输入"), this.t("选择语音识别方式"), () =>
+          this.speechMode === 'auto' ? this.t("自动") : this.speechMode === 'system' ? this.t("系统") : this.t("引擎"), () => this.open('speech'));
+      }
+      if (this.match(this.t("媒体 图像 视频 生成"))) {
+        this.row(DshGlyphs.add, this.t("图像与视频"), this.t("配置媒体生成服务与模型"), () => '', () => this.open('media'));
+      }
+      if (this.match(this.t("语音速记 转写 润色 热词"))) {
+        this.row(DshGlyphs.voice, this.t("语音速记"), this.t("转写语言、润色与热词"), () => '', () => this.open('voice-scribe'));
+      }
+      if (this.match(this.t("思路 翻译 语言"))) {
+        this.row(DshGlyphs.chat, this.t("思路翻译"), this.t("翻译服务与目标语言"), () => '', () => this.open('cot-translation'));
+      }
+      if (this.match(this.t("外观 主题 配色 深色 字号 字体"))) {
+        this.groupTitle(this.t("外观"));
+        this.row(DshGlyphs.settings, this.t("主题与配色"), this.t("选择界面外观和强调色"), () => this.accentName(), () => this.open('appearance'));
         this.fontControls();
       }
-      if (this.match('主机 引擎 本机 启动 停止 远程 连接 参数')) {
-        this.groupTitle('主机');
+      if (this.match(this.t("通知 提醒 完成 审批"))) {
+        this.row(DshGlyphs.chat, this.t("通知"), this.t("系统权限与对话事件提醒"), () => '', () => this.open('notifications'));
       }
-      if (this.match('主机 引擎 本机 启动 停止')) {
-        this.row(DshGlyphs.host, '本机引擎', '启动、停止和查看引擎状态', () => this.engineStatus, () => this.open('engine'));
+      if (this.match(this.t('性能 动画 模糊 后台 权限'))) {
+        this.row(DshGlyphs.settings, this.t('性能'), this.t('自动、完整效果与轻量模式'), () => '', () => this.onOpenDestination('performance'));
+        this.row(DshGlyphs.settings, this.t('后台运行'), this.t('查看系统限制和后台通知'), () => '', () => this.onOpenDestination('background'));
+        this.row(DshGlyphs.settings, this.t('系统权限'), this.t('麦克风、通知与读取屏幕'), () => '', () => this.onOpenDestination('system-permissions'));
       }
-      if (this.match('主机 远程 连接')) {
-        this.row(DshGlyphs.switchHost, '主机管理', '选择本机或连接远程主机', () => this.local ? '本机' : '远程', this.onOpenHosts);
+      if (this.match(this.t("隐私 分享 统计 数据"))) {
+        this.row(DshGlyphs.settings, this.t("隐私与分享"), this.t("分享链接、匿名统计与主机日志"), () => '', () => this.open('privacy'));
       }
-      if (this.match('主机 引擎 参数')) {
-        this.row(DshGlyphs.settings, '引擎参数', '查看和修改当前主机的配置', () => '', () => this.open('parameters'));
+      if (this.match(this.t("主机 引擎 本机 启动 停止 远程 连接 参数"))) {
+        this.groupTitle(this.t("主机"));
       }
-      if (this.match('帮助与关于 Harness Pocket 诊断')) {
-        this.groupTitle('帮助与关于');
+      if (this.match(this.t("主机 引擎 本机 启动 停止"))) {
+        this.row(DshGlyphs.host, this.t("本机引擎"), this.t("启动、停止和查看引擎状态"), () => this.engineStatus, () => this.open('engine'));
       }
-      if (this.match('帮助与关于 诊断')) {
-        this.row('', '诊断', '查看和复制运行状态', () => '', () => this.open('diagnostics'));
+      if (this.match(this.t("主机 远程 连接"))) {
+        this.row(DshGlyphs.switchHost, this.t("主机管理"), this.t("选择本机或连接远程主机"), () => this.local ? this.t("本机") : this.t("远程"), this.onOpenHosts);
       }
-      if (this.match('帮助与关于 Harness Pocket 版本 开源 致谢')) {
-        this.row('', '关于 Harness Pocket', '', () => this.version, () => this.open('about'));
+      if (this.match(this.t("主机 引擎 参数"))) {
+        this.row(DshGlyphs.settings, this.t("引擎参数"), this.t("查看和修改当前主机的配置"), () => '', () => this.open('parameters'));
+      }
+      if (this.match(this.t("帮助与关于 Harness Pocket 诊断"))) {
+        this.groupTitle(this.t("帮助与关于"));
+      }
+      if (this.match(this.t("帮助与关于 诊断"))) {
+        this.row('', this.t("诊断"), this.t("查看和复制运行状态"), () => '', () => this.open('diagnostics'));
+      }
+      if (this.match(this.t("帮助与关于 Harness Pocket 版本 开源 致谢"))) {
+        this.row('', this.t("关于 Harness Pocket"), '', () => this.version, () => this.open('about'));
       }
     }.width('100%');
   }
@@ -683,10 +761,10 @@ export struct SettingsPanel {
   @Builder
   private fontControls() {
     Column({ space: 10 }) {
-      Text('对话字号').fontSize(16).fontWeight(FontWeight.Medium).fontColor(this.colors.text).width('100%');
+      Text(this.t("对话字号")).fontSize(16).fontWeight(FontWeight.Medium).fontColor(this.colors.text).width('100%');
       Row({ space: 6 }) {
         ForEach([14, 16, 18, 20], (size: number) => {
-          Button(size === 14 ? '小' : size === 16 ? '标准' : size === 18 ? '大' : '特大')
+          Button(size === 14 ? this.t("小") : size === 16 ? this.t("标准") : size === 18 ? this.t("大") : this.t("特大"))
             .fontSize(14).height(38).layoutWeight(1)
             .fontColor(size === this.fontSize ? this.colors.onPrimaryContainer : this.colors.muted)
             .backgroundColor(size === this.fontSize ? this.colors.primaryContainer : this.colors.surfaceAlt)
@@ -699,16 +777,16 @@ export struct SettingsPanel {
   @Builder
   private appearance() {
     Column({ space: 12 }) {
-      this.groupTitle('外观模式');
+      this.groupTitle(this.t("外观模式"));
       Column({ space: 6 }) {
-        this.row('', '跟随系统', '', () => this.themeMode === 'system' ? '已选' : '',
+        this.row('', this.t("跟随系统"), '', () => this.themeMode === 'system' ? this.t("已选") : '',
           () => this.onThemeChange(this.accentId, 'system'));
-        this.row('', '浅色', '', () => this.themeMode === 'light' ? '已选' : '',
+        this.row('', this.t("浅色"), '', () => this.themeMode === 'light' ? this.t("已选") : '',
           () => this.onThemeChange(this.accentId, 'light'));
-        this.row('', '深色', '', () => this.themeMode === 'dark' ? '已选' : '',
+        this.row('', this.t("深色"), '', () => this.themeMode === 'dark' ? this.t("已选") : '',
           () => this.onThemeChange(this.accentId, 'dark'));
       }.width('100%');
-      this.groupTitle('强调色');
+      this.groupTitle(this.t("强调色"));
       Flex({ wrap: FlexWrap.Wrap, justifyContent: FlexAlign.SpaceBetween }) {
         ForEach(ACCENTS, (accent: DshAccent) => {
           Button({ type: ButtonType.Normal }) {
@@ -717,11 +795,11 @@ export struct SettingsPanel {
                 Blank().width(21).height(21).borderRadius(11).backgroundColor(accent.light);
                 Blank().width(21).height(21).borderRadius(11).backgroundColor(accent.dark);
               };
-              Text(accent.name).fontSize(14).fontColor(this.colors.text);
+              Text(this.t(accent.name)).fontSize(14).fontColor(this.colors.text);
             }.padding(8);
           }.width('31%').height(76).margin({ bottom: 8 }).borderRadius(14)
             .backgroundColor(accent.id === this.accentId ? this.colors.primaryContainer : this.colors.surface)
-            .accessibilityText(accent.id === this.accentId ? `${accent.name}，已选` : accent.name)
+            .accessibilityText(accent.id === this.accentId ? this.f("{0}，已选", [accent.name]) : accent.name)
             .onClick(() => this.onThemeChange(accent.id, this.themeMode));
         }, (accent: DshAccent) => accent.id);
       }.width('100%');
@@ -733,19 +811,24 @@ export struct SettingsPanel {
   private engine() {
     Column({ space: 12 }) {
       Column({ space: 10 }) {
-        Text('本机 DeepSeek Harness').fontSize(20).fontWeight(FontWeight.Medium).fontColor(this.colors.text).width('100%');
+        Text(this.t("本机 DeepSeek Harness")).fontSize(20).fontWeight(FontWeight.Medium).fontColor(this.colors.text).width('100%');
         this.bodyText(() => this.engineStatus, () => this.engineRunning ? this.colors.success : this.colors.muted);
         if (this.engineRunning) {
           if (this.onRestartEngine) {
-            this.secondaryButton(() => this.local ? '重启引擎' : '重启并切回本机', () => !this.engineBusy, () => this.onRestartEngine?.());
+            this.secondaryButton(() => this.local ? this.t("重启引擎") : this.t("重启并切回本机"), () => !this.engineBusy, () => this.onRestartEngine?.());
           }
-          this.secondaryButton(() => '停止引擎', () => !this.engineBusy, this.onStopEngine);
+          this.secondaryButton(() => this.t("停止引擎"), () => !this.engineBusy, this.onStopEngine);
         } else {
-          this.filledButton(() => this.engineBusy ? '正在处理…' : this.local ? '启动引擎' : '启动并切回本机', () => !this.engineBusy, this.onStartEngine);
+          this.filledButton(() => this.engineBusy ? this.t("正在处理…") : this.local ? this.t("启动引擎") : this.t("启动并切回本机"), () => !this.engineBusy, this.onStartEngine);
         }
       }.width('100%').padding(16).borderRadius(14).backgroundColor(this.colors.surface);
-      this.row(DshGlyphs.switchHost, '主机管理', '', () => this.local ? '本机' : '远程', this.onOpenHosts);
-      this.row(DshGlyphs.settings, '引擎参数', '', () => '', () => this.open('parameters', 'engine'));
+      if (this.onMaintenanceStop && this.onMaintenanceRestart) {
+        RuntimeMaintenancePanel({ colors: this.colors, running: this.engineRunning, busy: this.engineBusy,
+          getAppContext: () => this.getUIContext().getHostContext() as common.UIAbilityContext,
+          onStop: this.onMaintenanceStop, onRestart: this.onMaintenanceRestart, onWorkingChange: this.onMaintenanceWorking });
+      }
+      this.row(DshGlyphs.switchHost, this.t("主机管理"), '', () => this.local ? this.t("本机") : this.t("远程"), this.onOpenHosts);
+      this.row(DshGlyphs.settings, this.t("引擎参数"), '', () => '', () => this.open('parameters', 'engine'));
     }.width('100%');
   }
 
@@ -753,12 +836,13 @@ export struct SettingsPanel {
   private models() {
     Column({ space: 12 }) {
       if (!this.connected) {
-        this.bodyText(() => '连接主机后可查看模型和服务商。');
+        this.bodyText(() => this.t("连接主机后可查看模型和服务商。"));
       } else {
-        this.groupTitle('新对话默认模型');
+        this.row(DshGlyphs.model, this.t("订阅账号"), this.t("ChatGPT 与 Claude"), () => '', () => this.open('subscriptions', 'models'));
+        this.groupTitle(this.t("新对话默认模型"));
         Column({ space: 10 }) {
           if (this.loadingSettings || this.loadingModels) {
-            this.bodyText(() => '正在读取模型设置…');
+            this.bodyText(() => this.t("正在读取模型设置…"));
           }
           if (this.settingsError) {
             this.bodyText(() => this.settingsError, () => this.colors.danger);
@@ -767,9 +851,9 @@ export struct SettingsPanel {
             this.bodyText(() => this.modelError, () => this.colors.danger);
           }
           if (this.groups.length > 0) {
-            Text('服务商').fontSize(13).fontColor(this.colors.muted).width('100%');
+            Text(this.t("服务商")).fontSize(13).fontColor(this.colors.muted).width('100%');
             Select(this.groups.map((item: DshProviderGroup): SelectOption => ({ value: item.name || item.id })))
-              .value(this.group()?.name || this.selectedProvider || '选择服务商').width('100%')
+              .value(this.group()?.name || this.selectedProvider || this.t("选择服务商")).width('100%')
               .fontColor(this.colors.text).backgroundColor(this.colors.surfaceAlt)
               .enabled(!this.working && this.modelFieldsWritable())
               .onSelect((index: number) => {
@@ -780,9 +864,9 @@ export struct SettingsPanel {
                 this.clearFeedback();
               });
             if ((this.group()?.models.length ?? 0) > 0) {
-              Text('模型').fontSize(13).fontColor(this.colors.muted).width('100%');
+              Text(this.t("模型")).fontSize(13).fontColor(this.colors.muted).width('100%');
               Select(this.group()?.models.map((item: DshModelInfo): SelectOption => ({ value: item.name || item.id })) || [])
-                .value(this.model()?.name || this.selectedModel || '选择模型').width('100%')
+                .value(this.model()?.name || this.selectedModel || this.t("选择模型")).width('100%')
                 .fontColor(this.colors.text).backgroundColor(this.colors.surfaceAlt)
                 .enabled(!this.working && this.modelFieldsWritable())
                 .onSelect((index: number) => {
@@ -792,10 +876,10 @@ export struct SettingsPanel {
                 });
             }
             if ((this.model()?.efforts.length ?? 0) > 0) {
-              Text('思考深度').fontSize(13).fontColor(this.colors.muted).width('100%');
+              Text(this.t("思考深度")).fontSize(13).fontColor(this.colors.muted).width('100%');
               Select(this.effortOptions())
                 .value(this.model()?.efforts.find((item: DshReasoningEffort) => item.id === this.selectedEffort)?.name ||
-                  this.selectedEffort || '模型默认').width('100%')
+                  this.selectedEffort || this.t("模型默认")).width('100%')
                 .fontColor(this.colors.text).backgroundColor(this.colors.surfaceAlt)
                 .enabled(!this.working && this.modelFieldsWritable())
                 .onSelect((index: number) => {
@@ -805,29 +889,29 @@ export struct SettingsPanel {
             }
             if (this.rememberField()) {
               Row({ space: 10 }) {
-                Text('记住上次选择').fontSize(15).fontColor(this.colors.text).layoutWeight(1);
+                Text(this.t("记住上次选择")).fontSize(15).fontColor(this.colors.text).layoutWeight(1);
                 Toggle({ type: ToggleType.Switch, isOn: this.rememberModel }).selectedColor(this.colors.primary)
                   .enabled(!this.working && this.modelFieldsWritable() && !this.rememberField()?.disabled)
                   .onChange((value: boolean) => { this.rememberModel = value; });
               }.width('100%');
             }
             if (!this.loadingSettings && !this.modelFieldsWritable()) {
-              this.bodyText(() => '当前主机未开放修改默认模型。');
+              this.bodyText(() => this.t("当前主机未开放修改默认模型。"));
             } else {
-              this.filledButton(() => '保存默认模型', () => !this.working && !this.loadingSettings &&
+              this.filledButton(() => this.t("保存默认模型"), () => !this.working && !this.loadingSettings &&
                 this.modelFieldsWritable() && this.model() !== undefined, () => { void this.saveDefaultModel(); });
             }
           } else if (!this.loadingModels && !this.modelError) {
-            this.bodyText(() => '当前主机没有返回可选择的模型。');
+            this.bodyText(() => this.t("当前主机没有返回可选择的模型。"));
           }
           if (this.catalogFailures.length > 0) {
-            this.bodyText(() => `以下服务商的模型目录无法读取：${this.catalogFailures.join('、')}`, () => this.colors.warning);
+            this.bodyText(() => this.f("以下服务商的模型目录无法读取：{0}", [this.catalogFailures.join('、')]), () => this.colors.warning);
           }
         }.width('100%').padding(15).borderRadius(14).backgroundColor(this.colors.surface);
-        this.row(DshGlyphs.model, 'DeepSeek 账号', '查看账号授权与余额', () => '', () => this.open('account', 'models'));
-        this.groupTitle('DeepSeek 官方 API');
+        this.row(DshGlyphs.model, this.t("DeepSeek 账号"), this.t("查看账号授权与余额"), () => '', () => this.open('account', 'models'));
+        this.groupTitle(this.t("DeepSeek 官方 API"));
         this.credential();
-        this.groupTitle('自定义渠道');
+        this.groupTitle(this.t("自定义渠道"));
         ProviderSettings({ colors: this.colors, client: this.client, onChange: () => { void this.loadModels(); },
           onBackHandler: (handler: (() => boolean) | undefined) => { this.modelsBack = handler; } });
       }
@@ -838,47 +922,47 @@ export struct SettingsPanel {
   private credential() {
     Column({ space: 10 }) {
       if (this.loadingCredential) {
-        this.bodyText(() => '正在读取凭据状态…');
+        this.bodyText(() => this.t("正在读取凭据状态…"));
       } else if (this.credentialError) {
         this.bodyText(() => this.credentialError, () => this.colors.danger);
       } else {
-        this.bodyText(() => this.credentialConfigured ? 'API Key 已配置' : 'API Key 未配置');
+        this.bodyText(() => this.credentialConfigured ? this.t("API Key 已配置") : this.t("API Key 未配置"));
         if (this.credentialWritable) {
-          TextInput({ text: this.keyInput, placeholder: '输入 DeepSeek API Key' }).type(InputType.Password)
+          TextInput({ text: this.keyInput, placeholder: this.t("输入 DeepSeek API Key") }).type(InputType.Password)
             .fontColor(this.colors.text).placeholderColor(this.colors.hint).backgroundColor(this.colors.surfaceAlt)
             .width('100%').enableAutoFill(false).enabled(!this.working)
             .onChange((value: string) => { this.keyInput = value; });
           if (this.local) {
             Row({ space: 10 }) {
               Column({ space: 4 }) {
-                Text('安全保存 API Key').fontSize(15).fontColor(this.colors.text).width('100%');
-                Text('勾选后加密保存，重启本机引擎时可继续使用。').fontSize(13)
+                Text(this.t("安全保存 API Key")).fontSize(15).fontColor(this.colors.text).width('100%');
+                Text(this.t("勾选后加密保存，重启本机引擎时可继续使用。")).fontSize(13)
                   .fontColor(this.colors.muted).width('100%');
               }.layoutWeight(1);
               Toggle({ type: ToggleType.Switch, isOn: this.rememberLocalKey }).selectedColor(this.colors.primary)
-                .enabled(!this.working).accessibilityText('安全保存 API Key')
+                .enabled(!this.working).accessibilityText(this.t("安全保存 API Key"))
                 .onChange((selected: boolean) => { this.rememberLocalKey = selected; });
             }.width('100%');
-            this.bodyText(() => this.savedLocalKey ? '本机安全存储已保存 Key。' : '本机安全存储未保存 Key。');
+            this.bodyText(() => this.savedLocalKey ? this.t("本机安全存储已保存 Key。") : this.t("本机安全存储未保存 Key。"));
           }
-          this.filledButton(() => '保存 API Key', () => !this.working && this.keyInput.trim().length > 0,
+          this.filledButton(() => this.t("保存 API Key"), () => !this.working && this.keyInput.trim().length > 0,
             () => { void this.saveKey(false); });
           if (this.credentialConfigured || (this.local && this.savedLocalKey)) {
-            this.secondaryButton(() => '移除 API Key', () => !this.working, () => {
+            this.secondaryButton(() => this.t("移除 API Key"), () => !this.working, () => {
               const generation = this.generation;
               this.getUIContext().showAlertDialog({
-                title: '移除 DeepSeek API Key', message: this.local ?
-                  '移除运行中的 Key 和本机安全存储中的 Key。再次使用时需要重新配置。' :
-                  '移除后，使用该凭据的模型请求将需要重新配置 API Key。',
-                primaryButton: { value: '取消', action: () => {} },
-                secondaryButton: { value: '移除', action: () => {
+                title: this.t("移除 DeepSeek API Key"), message: this.local ?
+                  this.t("移除运行中的 Key 和本机安全存储中的 Key。再次使用时需要重新配置。") :
+                  this.t("移除后，使用该凭据的模型请求将需要重新配置 API Key。"),
+                primaryButton: { value: this.t("取消"), action: () => {} },
+                secondaryButton: { value: this.t("移除"), action: () => {
                   if (generation === this.generation) void this.saveKey(true);
                 } }
               });
             });
           }
         } else if (this.credentialConfigured) {
-          this.bodyText(() => '此凭据由主机提供。');
+          this.bodyText(() => this.t("此凭据由主机提供。"));
         }
       }
     }.width('100%').padding(15).borderRadius(14).backgroundColor(this.colors.surface);
@@ -888,19 +972,19 @@ export struct SettingsPanel {
   private parameters() {
     Column({ space: 10 }) {
       if (!this.connected) {
-        this.bodyText(() => '连接主机后可查看此主机的设置。');
+        this.bodyText(() => this.t("连接主机后可查看此主机的设置。"));
       } else if (this.loadingSettings && this.visibleSections().length === 0) {
-        this.bodyText(() => '正在读取引擎参数…');
+        this.bodyText(() => this.t("正在读取引擎参数…"));
       } else if (this.settingsError) {
         this.bodyText(() => this.settingsError, () => this.colors.danger);
       } else if (this.visibleSections().length === 0) {
-        this.bodyText(() => '当前主机未提供此设置。');
+        this.bodyText(() => this.t("当前主机未提供此设置。"));
       } else {
         ForEach(this.visibleSections(), (section: SettingsSection) => {
-          this.row(DshGlyphs.settings, section.title, section.description, () => section.writable ? '' : '只读',
+          this.row(DshGlyphs.settings, this.t(section.title), this.t(section.description), () => section.writable ? '' : this.t("只读"),
             () => this.openSection(section));
         }, (section: SettingsSection) =>
-          JSON.stringify([section.id, section.revision, section.title, section.description, section.writable]));
+          JSON.stringify([section.id, section.revision, this.t(section.title), this.t(section.description), section.writable]));
       }
     }.width('100%');
   }
@@ -910,7 +994,7 @@ export struct SettingsPanel {
     Column({ space: 8 }) {
       Row({ space: 10 }) {
         Column({ space: 4 }) {
-          Text(field.title).fontSize(16).fontColor(this.colors.text).width('100%');
+          Text(this.t(field.title)).fontSize(16).fontColor(this.colors.text).width('100%');
           if (field.description) {
             this.bodyText(() => field.description);
           }
@@ -923,24 +1007,24 @@ export struct SettingsPanel {
       }.width('100%');
       if (field.kind === 'enum') {
         Select(field.choices.map((choice: Object): SelectOption => ({ value: String(choice) })))
-          .value(fieldText(field) || '未设置').width('100%').fontColor(this.colors.text)
+          .value(fieldText(field) || this.t("未设置")).width('100%').fontColor(this.colors.text)
           .backgroundColor(this.colors.surfaceAlt).enabled(section.writable && editableField(field) && !this.working)
           .onSelect((index: number) => { void this.changeField(section, field, field.choices[index]); });
       } else if (field.kind !== 'boolean') {
-        Text(fieldText(field) || '未设置').fontSize(14).fontColor(this.colors.muted).maxLines(5)
+        Text(fieldText(field) || this.t("未设置")).fontSize(14).fontColor(this.colors.muted).maxLines(5)
           .textOverflow({ overflow: TextOverflow.Ellipsis }).width('100%');
         if (section.writable && editableField(field)) {
-          this.secondaryButton(() => field.kind === 'secret' ? '设置凭据' : '编辑', () => !this.working,
+          this.secondaryButton(() => field.kind === 'secret' ? this.t("设置凭据") : this.t("编辑"), () => !this.working,
             () => this.edit(section, field));
         }
       }
       if (section.writable && editableField(field) && field.overridden) {
-        Button('恢复继承值', { type: ButtonType.Normal }).fontSize(13).fontColor(this.colors.primary)
+        Button(this.t("恢复继承值"), { type: ButtonType.Normal }).fontSize(13).fontColor(this.colors.primary)
           .backgroundColor(Color.Transparent).height(34).enabled(!this.working).onClick(() => {
             this.getUIContext().showAlertDialog({
-              title: '恢复继承值', message: `移除「${field.title}」的当前覆盖设置。`,
-              primaryButton: { value: '取消', action: () => {} },
-              secondaryButton: { value: '恢复', action: () => { void this.changeField(section, field, null, true); } }
+              title: this.t("恢复继承值"), message: this.f("移除「{0}」的当前覆盖设置。", [field.title]),
+              primaryButton: { value: this.t("取消"), action: () => {} },
+              secondaryButton: { value: this.t("恢复"), action: () => { void this.changeField(section, field, null, true); } }
             });
           });
       }
@@ -954,10 +1038,10 @@ export struct SettingsPanel {
         this.bodyText(() => section.description);
       }
       if (!section.writable) {
-        this.bodyText(() => '当前主机设置为只读。', () => this.colors.warning);
+        this.bodyText(() => this.t("当前主机设置为只读。"), () => this.colors.warning);
       }
       if (section.fields.length === 0) {
-        this.bodyText(() => '当前主机未提供可显示的设置字段。');
+        this.bodyText(() => this.t("当前主机未提供可显示的设置字段。"));
       }
       ForEach(section.fields, (field: SettingsField) => {
         this.field(section, field);
@@ -973,7 +1057,7 @@ export struct SettingsPanel {
   @Builder
   private editor(section: SettingsSection, field: SettingsField) {
     Column({ space: 12 }) {
-      Text(field.title).fontSize(18).fontWeight(FontWeight.Medium).fontColor(this.colors.text).width('100%');
+      Text(this.t(field.title)).fontSize(18).fontWeight(FontWeight.Medium).fontColor(this.colors.text).width('100%');
       if (field.description) {
         this.bodyText(() => field.description);
       }
@@ -982,7 +1066,7 @@ export struct SettingsPanel {
           .height(160).fontColor(this.colors.text).backgroundColor(this.colors.surfaceAlt)
           .onChange((value: string) => { this.editText = value; });
       } else {
-        TextInput({ text: this.editText, placeholder: field.title })
+        TextInput({ text: this.editText, placeholder: this.t(field.title) })
           .type(field.kind === 'secret' ? InputType.Password : InputType.Normal)
           .fontColor(this.colors.text).backgroundColor(this.colors.surfaceAlt)
           .onChange((value: string) => { this.editText = value; });
@@ -990,8 +1074,8 @@ export struct SettingsPanel {
       if (this.editError) {
         this.bodyText(() => this.editError, () => this.colors.danger);
       }
-      this.filledButton(() => '保存', () => !this.working, () => this.saveEdit(section, field));
-      this.secondaryButton(() => '取消', () => !this.working, () => this.back());
+      this.filledButton(() => this.t("保存"), () => !this.working, () => this.saveEdit(section, field));
+      this.secondaryButton(() => this.t("取消"), () => !this.working, () => this.back());
     }.width('100%').padding(14).borderRadius(14).backgroundColor(this.colors.surface);
   }
 
@@ -1000,16 +1084,16 @@ export struct SettingsPanel {
     Column({ space: 10 }) {
       Column({ space: 8 }) {
         Text($r('app.string.app_name')).fontSize(24).fontWeight(FontWeight.Medium).fontColor(this.colors.text).width('100%');
-        this.bodyText(() => this.version || '正在读取版本…');
-        this.bodyText(() => '以 dsh-Go v1.0.15 为基线的 HarmonyOS 社区移植');
-        this.bodyText(() => '基于 DeepSeek Harness 构建 · 非 DeepSeek 官方应用');
+        this.bodyText(() => this.version || this.t("正在读取版本…"));
+        this.bodyText(() => this.t("以 dsh-Go v1.0.15 为基线的 HarmonyOS 社区移植"));
+        this.bodyText(() => this.t("基于 DeepSeek Harness 构建 · 非 DeepSeek 官方应用"));
       }.width('100%').padding(18).borderRadius(14).backgroundColor(this.colors.surface);
-      this.groupTitle('致谢 · 原版作者 Chimney（ccch1mneyyy）');
-      this.row(DshGlyphs.openExternal, '原项目 dsh-Go', '在 GitHub 查看并支持原项目', () => '',
+      this.groupTitle(this.t("致谢 · 原版作者 Chimney（ccch1mneyyy）"));
+      this.row(DshGlyphs.openExternal, this.t("原项目 dsh-Go"), this.t("在 GitHub 查看并支持原项目"), () => '',
         () => { void this.openExternal(UPSTREAM_PROJECT); });
-      this.row(DshGlyphs.openExternal, '开源许可', 'GNU AGPL v3', () => '',
+      this.row(DshGlyphs.openExternal, this.t("开源许可"), 'GNU AGPL v3', () => '',
         () => { void this.openExternal('https://github.com/wjinxuan/dsh-go-harmony/blob/main/LICENSE'); });
-      this.row(DshGlyphs.openExternal, '第三方许可', '', () => '',
+      this.row(DshGlyphs.openExternal, this.t("第三方许可"), '', () => '',
         () => { void this.openExternal('https://github.com/wjinxuan/dsh-go-harmony/blob/main/THIRD_PARTY_NOTICES.md'); });
       this.row(DshGlyphs.openExternal, 'Bilibili', 'ccchimneyyy', () => '',
         () => { void this.openExternal('https://b23.tv/9WBns6Y'); });
@@ -1023,28 +1107,59 @@ export struct SettingsPanel {
   @Builder
   private diagnostics() {
     Column({ space: 10 }) {
-      this.groupTitle('运行状态');
+      this.groupTitle(this.t("运行状态"));
       Column({ space: 10 }) {
-        this.bodyText(() => `版本 ${this.version || '正在读取…'}`);
-        this.bodyText(() => `主机 ${this.local ? '本机' : '远程主机'}`);
-        this.bodyText(() => `连接 ${this.connected ? '已连接' : '未连接'}`);
-        this.bodyText(() => `本机引擎 ${this.engineRunning ? '运行中' : this.engineBusy ? '正在处理' : '未运行'}`);
+        this.bodyText(() => this.f("版本 {0}", [this.version || this.t("正在读取…")]));
+        this.bodyText(() => this.f("主机 {0}", [this.local ? this.t("本机") : this.t("远程主机")]));
+        this.bodyText(() => this.f("连接 {0}", [this.connected ? this.t("已连接") : this.t("未连接")]));
+        this.bodyText(() => this.f("本机引擎 {0}", [this.engineRunning ? this.t("运行中") : this.engineBusy ? this.t("正在处理") : this.t("未运行")]));
       }.width('100%').padding(16).borderRadius(14).backgroundColor(this.colors.surface);
-      this.secondaryButton(() => '复制诊断信息', () => true, () => { void this.copyDiagnostics(); });
-      this.row(DshGlyphs.settings, '引擎参数', '', () => '', () => this.open('parameters', 'diagnostics'));
+      this.secondaryButton(() => this.t("复制诊断信息"), () => true, () => { void this.copyDiagnostics(); });
+      this.row(DshGlyphs.settings, this.t("引擎参数"), '', () => '', () => this.open('parameters', 'diagnostics'));
     }.width('100%');
   }
 
   build() {
+    if (this.page === 'appearance') {
+      AppearanceSettings({ colors: this.colors, accentId: this.accentId, themeMode: this.themeMode, fontSize: this.fontSize,
+        dark: this.dark, onThemeChange: this.onThemeChange, onFontSizeChange: this.onFontSizeChange,
+        onChange: this.onAdvancedChange, onClose: () => { this.back(); } });
+    } else if (this.page === 'notifications') {
+      NotificationSettings({ colors: this.colors, onChange: this.onNotificationChange, onClose: () => { this.back(); } });
+    } else if (this.page === 'privacy') {
+      PrivacySettings({ colors: this.colors, client: this.client, onHostedLinks: this.onOpenShareLinks,
+        onShareConfiguration: this.onShareConfiguration || (() => { this.open('share-profile', 'privacy'); }), onLocalOcr: this.onLocalOcr,
+        onUsageStats: () => this.open('usage-stats', 'privacy'), onClose: () => { this.back(); } });
+    } else if (this.page === 'usage-stats') {
+      UsageStatsSettings({ colors: this.colors, usage: this.usage, onClose: () => { this.back(); } });
+    } else if (this.page === 'subscriptions') {
+      SubscriptionsPanel({ colors: this.colors, client: this.client, connectionIdentity: this.connectionIdentity,
+        onClose: () => { this.back(); }, onChanged: () => { void this.loadModels(); },
+        onBackHandler: (handler?: () => boolean) => { this.childBack = handler; } });
+    } else if (this.page === 'media') {
+      MediaSettingsPanel({ colors: this.colors, client: this.client, onClose: () => { this.back(); },
+        onBackHandler: (handler?: () => boolean) => { this.childBack = handler; }, onOpenPlugins: this.onOpenPlugins });
+    } else if (this.page === 'share-profile' && this.getLocalControl) {
+      ProfileSharePanel({ colors: this.colors, client: this.client, local: this.local, relay: this.relay, getControl: this.getLocalControl,
+        onClose: () => { this.back(); }, onOpenPlugins: this.onOpenPlugins, onBackHandler: (handler?: () => boolean) => { this.childBack = handler; } });
+    } else if (this.page === 'voice-scribe') {
+      VoiceScribePanel({ colors: this.colors, client: this.client, connected: this.connected, relay: this.relay,
+        scope: `${this.connectionIdentity}/${this.connected}`, onBackHandler: (handler?: () => boolean) => { this.childBack = handler; },
+        onClose: () => { this.back(); } });
+    } else if (this.page === 'speech') {
+      SpeechPanel({ getLocalControl: this.getLocalControl, colors: this.colors, client: this.client, mode: this.speechMode,
+        scope: `${this.connectionIdentity}/${this.connected}`, connected: this.connected, local: this.local,
+        onModeChange: (mode: SpeechMode) => this.onSpeechModeChange(mode), onClose: () => { this.back(); } });
+    } else {
     Column({ space: 12 }) {
       Row({ space: 12 }) {
-        this.iconButton(DshGlyphs.back, () => this.page === 'home' ? '关闭设置' : '返回', () => {
+        this.iconButton(DshGlyphs.back, () => this.page === 'home' ? this.t("关闭设置") : this.t("返回"), () => {
           if (!this.back()) this.onClose();
         });
         Text(this.title()).fontSize(23).fontWeight(FontWeight.Bold).fontColor(this.colors.text).layoutWeight(1)
           .maxLines(1).textOverflow({ overflow: TextOverflow.Ellipsis });
         if (this.connected && ['models', 'parameters', 'search', 'permission', 'section'].includes(this.page)) {
-          this.iconButton(DshGlyphs.refresh, () => '刷新', () => this.refresh(this.page));
+          this.iconButton(DshGlyphs.refresh, () => this.t("刷新"), () => this.refresh(this.page));
         }
       }.width('100%').padding({ top: 8 });
       Scroll() {
@@ -1064,7 +1179,7 @@ export struct SettingsPanel {
           } else if (this.page === 'models') {
             this.models();
           } else if (this.page === 'account') {
-            AccountPanel({ colors: this.colors, client: this.client, connected: this.connected, local: this.local,
+            AccountPanel({ onOpenSubscriptions: () => this.open('subscriptions', 'account'), colors: this.colors, client: this.client, connected: this.connected, local: this.local,
               connectionIdentity: this.connectionIdentity,
               onOpenModels: () => {
                 if (this.parents[this.parents.length - 1] === 'models') this.back();
@@ -1075,6 +1190,10 @@ export struct SettingsPanel {
               this.editor(this.section(this.sectionId)!, this.editField);
             } else {
               this.sectionContent(this.section(this.sectionId)!);
+              if (this.sectionId === 'subagent' && this.section('subagent-model-selection-settings')) {
+                SubagentModels({ colors: this.colors, client: this.client, section: this.section('subagent-model-selection-settings')!, busy: this.working,
+                  onWrite: (ops: DshSettingsOp[]) => this.write(this.section('subagent-model-selection-settings')!, ops), onManageModels: () => this.open('models', 'section') });
+              }
             }
           } else if (this.page === 'about') {
             this.about();
@@ -1086,5 +1205,6 @@ export struct SettingsPanel {
         }.width('100%').padding({ bottom: 24 });
       }.width('100%').layoutWeight(1).scrollBar(BarState.Off).align(Alignment.Top);
     }.width('100%').height('100%').padding({ left: 16, right: 16 }).backgroundColor(this.colors.background);
+    }
   }
 }

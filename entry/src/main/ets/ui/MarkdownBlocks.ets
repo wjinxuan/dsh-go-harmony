@@ -1,3 +1,5 @@
+import { mathBlockSource, mathParts } from './MathData'
+
 export enum BlockKind {
   Paragraph,
   Heading,
@@ -13,7 +15,8 @@ export enum InlineKind {
   Strong,
   Emphasis,
   Code,
-  Link
+  Link,
+  Math
 }
 
 export class InlineRun {
@@ -34,6 +37,7 @@ export class MarkdownBlock {
   level: number = 0
   label: string = ''
   rows: string[][] = []
+  checked?: boolean
 
   constructor(kind: BlockKind, text: string = '') {
     this.kind = kind
@@ -44,6 +48,7 @@ export class MarkdownBlock {
 const FENCE = /^[ ]{0,3}(`{3,}|~{3,})(.*)$/
 const HEADING = /^[ ]{0,3}(#{1,6})[ \t]+(.+)$/
 const LIST_ITEM = /^([ \t]*)([-+*]|\d{1,9}[.)])[ \t]+(.+)$/
+const TASK_MARKER = /^\[([ xX])\] (.*)$/
 const QUOTE = /^[ ]{0,3}>[ \t]?/
 const RULE = /^[ ]{0,3}(?:(?:\*[ \t]*){3,}|(?:-[ \t]*){3,}|(?:_[ \t]*){3,})$/
 const SETEXT = /^[ ]{0,3}(=+|-+)[ \t]*$/
@@ -102,11 +107,11 @@ function tableWidth(lines: string[], index: number): number {
 function startsBlock(lines: string[], index: number): boolean {
   const line = lines[index]
   return !line.trim() || FENCE.test(line) || HEADING.test(line) || RULE.test(line) ||
-    QUOTE.test(line) || LIST_ITEM.test(line) || tableWidth(lines, index) > 0
+    QUOTE.test(line) || LIST_ITEM.test(line) || TASK_MARKER.test(line.trimStart()) || tableWidth(lines, index) > 0
 }
 
-export function parseMarkdown(source: string): MarkdownBlock[] {
-  const lines = source.replace(/\r\n?/g, '\n').split('\n')
+export function parseMarkdown(source: string, streaming: boolean = false): MarkdownBlock[] {
+  const lines = mathBlockSource(source, streaming).replace(/\r\n?/g, '\n').split('\n')
   const blocks: MarkdownBlock[] = []
   let index = 0
   while (index < lines.length) {
@@ -133,7 +138,7 @@ export function parseMarkdown(source: string): MarkdownBlock[] {
     }
     const heading = HEADING.exec(line)
     const setext = index < lines.length && SETEXT.test(lines[index]) &&
-      !QUOTE.test(line) && !LIST_ITEM.test(line) && !RULE.test(line)
+      !QUOTE.test(line) && !LIST_ITEM.test(line) && !TASK_MARKER.test(line.trimStart()) && !RULE.test(line)
     if (heading || setext) {
       const block = new MarkdownBlock(BlockKind.Heading)
       if (heading) {
@@ -180,13 +185,20 @@ export function parseMarkdown(source: string): MarkdownBlock[] {
       continue
     }
     const list = LIST_ITEM.exec(line)
-    if (list) {
-      const block = new MarkdownBlock(BlockKind.ListItem, list[3])
-      block.label = list[2].length === 1 ? '•' : list[2].replace(/\)$/, '.')
-      block.level = Math.min(4, Math.floor(list[1].replace(/\t/g, '  ').length / 2))
-      while (index < lines.length && /^\s+\S/.test(lines[index]) && !startsBlock(lines, index)) {
-        block.text += '\n' + lines[index].trim()
-        index++
+    const body = list ? list[3] : line.trimStart()
+    const task = TASK_MARKER.exec(body)
+    if (list || task) {
+      const block = new MarkdownBlock(BlockKind.ListItem, task ? task[2] : body)
+      if (task) {
+        block.checked = task[1] !== ' '
+      }
+      if (list) {
+        block.label = list[2].length === 1 ? (task ? '' : '•') : list[2].replace(/\)$/, '.')
+        block.level = Math.min(4, Math.floor(list[1].replace(/\t/g, '  ').length / 2))
+        while (index < lines.length && /^\s+\S/.test(lines[index]) && !startsBlock(lines, index)) {
+          block.text += '\n' + lines[index].trim()
+          index++
+        }
       }
       blocks.push(block)
       continue
@@ -210,7 +222,7 @@ export function isMessageLink(url: string): boolean {
   return isWebLink(url) || /^dshgo:\/\/open\/[A-Za-z0-9_-]+$/i.test(url)
 }
 
-export function parseInline(source: string): InlineRun[] {
+function parseInlinePlain(source: string): InlineRun[] {
   const spans: InlineRun[] = []
   // Underscores require a word boundary on the outside and non-space on the inside.
   const token =
@@ -253,4 +265,13 @@ export function parseInline(source: string): InlineRun[] {
     spans.push(new InlineRun(source.substring(offset)))
   }
   return spans
+}
+
+export function parseInline(source: string): InlineRun[] {
+  const result: InlineRun[] = []
+  for (const part of mathParts(source)) {
+    if (part.math) result.push(new InlineRun(part.text, InlineKind.Math))
+    else result.push(...parseInlinePlain(part.text))
+  }
+  return result
 }

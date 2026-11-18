@@ -1,0 +1,7 @@
+{
+  "accessibilityCapabilities": ["retrieve", "gesture"],
+  "accessibilityAbilityTypes": ["generic"],
+  "accessibilityCapabilityRationale": "$string:phone_accessibility_reason",
+  "settingsAbility": "EntryAbility",
+  "isImportant": false
+}

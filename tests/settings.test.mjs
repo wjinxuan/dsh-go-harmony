@@ -88,11 +88,11 @@ test('validates model channel routes and endpoints, preserving first model occur
   assert.deepEqual(providerModelIds(' alpha\r\n\nbeta\nalpha\n gamma '), ['alpha', 'beta', 'gamma']);
 });
 
-test('discovery uses saved credentials only for unchanged endpoint and protocol without a draft key', () => {
+test('discovery always sends the endpoint and protocol, reusing stored credentials only for an unchanged route', () => {
   const address = 'https://example.test/v1';
   const api = 'openai-completions';
   assert.deepEqual(providerDiscoveryArgs(address, api, '', 'gateway', address, api), {
-    settingsNs: 'llm-pi-ai', request: { provider: 'gateway' }
+    settingsNs: 'llm-pi-ai', request: { provider: 'gateway', baseURL: address, api }
   });
   assert.deepEqual(providerDiscoveryArgs('https://new.example.test/v1', api, '', 'gateway', address, api).request, {
     baseURL: 'https://new.example.test/v1', api
@@ -103,4 +103,11 @@ test('discovery uses saved credentials only for unchanged endpoint and protocol 
   assert.deepEqual(providerDiscoveryArgs(address, api, 'synthetic fixture', 'gateway', address, api).request, {
     baseURL: address, api, apiKey: 'synthetic fixture'
   });
+  assert.deepEqual(providerDiscoveryArgs(address, api, '').request, { baseURL: address, api });
+});
+
+
+test('server-provided bilingual schema copy follows the requested language without changing stored values', () => {
+ const raw={writable:true,namespaces:[{ns:'example',schema:{type:'object',meta:{title:{zh_CN:'参数',en:'Parameters'},description:{zh_CN:'说明',en:'Description'}},dict:{name:{type:'string',meta:{title:{zh:'名称',en_US:'Name'},description:{zh:'中文描述',en:'English description'}}}}},value:{name:'用户输入'}}]};
+ const en=parseSettings(raw,'en-US')[0],zh=parseSettings(raw,'zh-CN')[0];assert.equal(en.title,'Parameters');assert.equal(en.description,'Description');assert.equal(en.fields[0].title,'Name');assert.equal(en.fields[0].description,'English description');assert.equal(en.fields[0].current,'用户输入');assert.equal(zh.fields[0].title,'名称');
 });

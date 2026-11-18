@@ -1,0 +1,534 @@
+{
+  "phase": 14,
+  "recorded_at": "2026-11-17T07:27:03.870268+00:00",
+  "status": "media_regressions_device_verified_snapshot",
+  "all_acceptance_complete": false,
+  "snapshot": {
+    "through": "269-media-terminal-result",
+    "scope": "Both media regressions now pass source and generated callback checks plus real phone parameter and completion/cancellation UI verification. Broader application acceptance remains in progress.",
+    "subsequentEvidence": "Current production is unchanged c4392abe HAP with runtime93bd. Historical 250 await is not counted successful."
+  },
+  "previous_record": {
+    "path": "docs/parity/native-build-phase13.json",
+    "sha256": "0addd01f02e73277460437f02f4aff070b342b1e177b598fbc952c19751f42cc"
+  },
+  "baseline": {
+    "version": "dsh-Go 1.0.15",
+    "commit": "a9877420ab9aee121134faf01b6a92a39ce0b05b",
+    "previousInstalledHapSha256": "ae02a6c3ca0e2c1c5980d42ac2b2f61ed8558ff35cb685517682fbf06747242b",
+    "previousInstalledHapBytes": 197390313,
+    "runtimeSha256": "93bd20716200d852353999568f4898f9fca2f69846fac5bfc4d0ce85d0ebcf27"
+  },
+  "artifact": {
+    "hap": "entry/build/default/outputs/default/entry-default-signed.hap",
+    "hapSha256": "c4392abe410f188692dfd21dd80c2b6a72d5d72eeb1daf7422ec4388d651355a",
+    "hapBytes": 197398329,
+    "runtimeSha256": "93bd20716200d852353999568f4898f9fca2f69846fac5bfc4d0ce85d0ebcf27",
+    "changedArchiveEntries": [
+      "ets/modules.abc",
+      ".pages.info",
+      "ets/sourceMaps.map"
+    ],
+    "nativeLibrariesUnchanged": [
+      "libs/arm64-v8a/libc++_shared.so",
+      "libs/arm64-v8a/libdshlocal.so",
+      "libs/arm64-v8a/libnode.so",
+      "libs/arm64-v8a/libonnxruntime.so",
+      "libs/arm64-v8a/libsherpa-onnx-c-api.so"
+    ],
+    "zipCRC": "PASS",
+    "verificationEvidence": {
+      "path": "/tmp/dsh-device-20261117/241-media-artifact.json",
+      "sha256": "5df51576346aa1e76512e55e00102b394c316ee9fbae84cf8c412be3b8a7dc76",
+      "bytes": 681
+    },
+    "artifactRecordOriginallyInstalled": false,
+    "installed": true,
+    "installationProvenance": "ROOT confirmed exact c4392abe HAP installation; 242 install success and 243 launch success. 241 describes the earlier pre-install state.",
+    "nativeComparison": "Five native libraries and packaged runtime are unchanged from installed phase12 ae02a6; changed ZIP entries are limited to the three listed ArkUI outputs."
+  },
+  "fixes": [
+    {
+      "id": "media-parameter-builder-reactivity",
+      "problem": "The retained choices builder captured initial image option arrays and selection values. Switching to video or a different model left image ratios or stale selected styling on screen.",
+      "change": "MediaGeneratePanel choices builder now takes label and field, reads choiceValues(field) and choiceSelected(field) inside current observe callbacks, and updates option lists and selection from current params/catalogue.",
+      "files": [
+        {
+          "path": "entry/src/main/ets/ui/MediaGeneratePanel.ets",
+          "sha256": "9a0354acbbf853006a389602f0a6c5f730ec4597859893b152ee440d7b8245b4"
+        },
+        {
+          "path": "tests/media-parameter-reactivity.test.mjs",
+          "sha256": "348be892185790a2fabe83d70459247b19235957313ac5fcd11863dc3d797f4c"
+        }
+      ],
+      "boundaries": [
+        "MediaData and media header protocol unchanged.",
+        "Video 1:1 serialization was already correct; no schema or catalogue broadening."
+      ],
+      "red": {
+        "name": "parameter-source-and-old-generated-red",
+        "exitCode": 1,
+        "exitCodeProvenance": "media_parity actual test completion; log records four failures",
+        "counts": {
+          "tests": 5,
+          "pass": 1,
+          "fail": 4,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "evidence": {
+          "path": "/tmp/dsh-device-20261117/media-parameters-before.log",
+          "sha256": "f6c53ba9d76b4506001526217cb68ccce574affc2f8e0730ff4838f9ccc2f47d",
+          "bytes": 4696
+        }
+      },
+      "green": [
+        {
+          "name": "parameter-and-media-default-source-green",
+          "exitCode": 0,
+          "exitCodeProvenance": "media_parity confirmed actual default entry completion",
+          "counts": {
+            "tests": 12,
+            "pass": 12,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "evidence": {
+            "path": "/tmp/dsh-device-20261117/media-default-after.log",
+            "sha256": "74799e730e527f4ef33ff295e3872812123402b834c69916622a750f82ee9b8b",
+            "bytes": 1418
+          }
+        },
+        {
+          "name": "parameter-new-generated-green",
+          "exitCode": 0,
+          "exitCodeProvenance": "235 structured result and ROOT confirmed actual completion",
+          "counts": {
+            "tests": 5,
+            "pass": 5,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "evidence": {
+            "path": "/tmp/dsh-device-20261117/235-media-parameter-reactivity.log",
+            "sha256": "2643f4e85c9b0452bb21f3df234c84197b466281a1a0782fc38e5ebead07fc2f",
+            "bytes": 787
+          },
+          "command": [
+            "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+            "tests/media-parameter-reactivity.test.mjs",
+            "entry/build/default/cache/default/default@CompileArkTS/esmodule/debug/entry/src/main/ets/ui/MediaGeneratePanel.ts"
+          ],
+          "commandProvenance": "ROOT confirmed exact invocation"
+        }
+      ],
+      "device": {
+        "status": "PASS_PARAMETER_SELECTION_AND_HEADER",
+        "scope": "Only parameter candidates, selection styling, and serialized prompt header; not video completion.",
+        "observations": [
+          "247: video options are 16:9 / 9:16 / 1:1.",
+          "248: 9:16 and 10 seconds are selected in blue.",
+          "249: generated user-message header contains 9:16 and 10."
+        ],
+        "provenance": "ROOT actual phone UI verification confirmed through agent message; screenshots/trees retained below.",
+        "evidence": [
+          {
+            "path": "/tmp/dsh-device-20261117/247-media-video-fixed.json",
+            "sha256": "d4de9366b793777a4e06bb90ddca3a1b3225c397224fb3a1267b06eb661601e3",
+            "bytes": 26409
+          },
+          {
+            "path": "/tmp/dsh-device-20261117/247-media-video-fixed.png",
+            "sha256": "3917f7c6274dc692b9abb3f6ff227d533be6e8f2fb9a060793ac1acd9cf85d32",
+            "bytes": 3345251
+          },
+          {
+            "path": "/tmp/dsh-device-20261117/248-media-video-916-selected.json",
+            "sha256": "ab6d466e3d32a5a28945ced41931af64686147bb6df110f6a777056e06f67d6a",
+            "bytes": 26409
+          },
+          {
+            "path": "/tmp/dsh-device-20261117/248-media-video-916-selected.png",
+            "sha256": "5bbdab60863f817a952659bff3e8f4986c96bef8e179e632594650b0aacd2273",
+            "bytes": 3345251
+          },
+          {
+            "path": "/tmp/dsh-device-20261117/249-media-video-916-approval.json",
+            "sha256": "52b15f483d24dff1060b35d9d605eb720b37761201c838c9c61271aeda32dc8b",
+            "bytes": 48841
+          },
+          {
+            "path": "/tmp/dsh-device-20261117/249-media-video-916-approval.png",
+            "sha256": "b9602e166f88c333508d5c0a75825a43cc5cd3a60d33f853291eabd8d109e274",
+            "bytes": 3345251
+          }
+        ]
+      }
+    },
+    {
+      "id": "media-result-job-terminal-state",
+      "problem": "Historical running media metadata remained immutable while watchJobs updated only progress. The old card still showed a spinner and Cancel after the same job completed or was killed. A separate final media card did not retire the old action.",
+      "historicalRecordSemantics": "Keeping the initial generate_video and later get_media_result tool records is intentional. This fix follows the real known job status without rewriting historical media metadata or creating result items.",
+      "upstreamReview": {
+        "commit": "a9877420ab9aee121134faf01b6a92a39ce0b05b",
+        "references": [
+          "app/lib/ui/chat/media/media_card.dart (progress subscription and _StateBox)",
+          "docs/design/media-generation.md (job.status determines state)",
+          "runtime/vendor/dsh-media/src/index.js (initial generate_video and later get_media_result records)"
+        ],
+        "finding": "Fixed Flutter baseline subscribes to progress but its _StateBox has no cancel action. The native cancel action must follow the actual live job status."
+      },
+      "change": [
+        "Reuse existing jobLive/jobStatus parsing and localized labels.",
+        "Known completed/killed/failed stops the spinner, clears stale progress, hides cancel, and closes the subscription.",
+        "Missing or unknown jobs do not synthesize completion or result items.",
+        "Cancellation acknowledgement enters stopping; delayed running snapshots cannot reverse that acknowledgement.",
+        "Late stream, subscription, cancel success/error/finally callbacks are fenced by generation, connection, session and job identity.",
+        "Already-finished kill response uses a generic ended state without claiming a successful media result."
+      ],
+      "files": [
+        {
+          "path": "entry/src/main/ets/ui/MediaResultCard.ets",
+          "sha256": "c6bd92da14664f6df84d60cf2e89939716a519525dfc0c50cf93428787b6cbfd"
+        },
+        {
+          "path": "tests/media-result-state.test.mjs",
+          "sha256": "2350e52514884599605afefcaf07270e180d613c6396648e58c8724927e8f162"
+        }
+      ],
+      "verification": {
+        "path": "/tmp/dsh-device-20261117/media-result-state-verification.json",
+        "sha256": "3b3e19bb18d4174e230d127069bfbfc707ef7291d7677a73ec3e18ea113f6f26",
+        "bytes": 6114
+      },
+      "red": [
+        {
+          "name": "source-old-red",
+          "exitCode": 1,
+          "exitCodeProvenance": "actual exec_command completion retained in verification record",
+          "counts": {
+            "tests": 8,
+            "pass": 1,
+            "fail": 7,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "evidence": {
+            "path": "/tmp/dsh-device-20261117/media-result-state-red.log",
+            "sha256": "ffc52725c2bf5c5d04655797b71441f8bc58dd2a52dd89a49479fefe4ef77c9c",
+            "bytes": 7296
+          }
+        },
+        {
+          "name": "old-generated-red",
+          "exitCode": 1,
+          "exitCodeProvenance": "actual exec_command completion retained in verification record",
+          "counts": {
+            "tests": 12,
+            "pass": 10,
+            "fail": 2,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "evidence": {
+            "path": "/tmp/dsh-device-20261117/media-result-state-generated-red.log",
+            "sha256": "df47bbac5388308fa75d22aab2ce0895fbc7b2f4cd63b27489c108c89ddde548",
+            "bytes": 2992
+          }
+        },
+        {
+          "name": "acknowledged-stop-race-red",
+          "exitCode": 1,
+          "exitCodeProvenance": "actual exec_command completion retained in verification record",
+          "counts": {
+            "tests": 11,
+            "pass": 10,
+            "fail": 1,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "evidence": {
+            "path": "/tmp/dsh-device-20261117/media-result-stop-race-red.log",
+            "sha256": "921cde9b2cafbad99d031bb43d0094eac52f82b13881c0d964ac6c5307f89b7a",
+            "bytes": 2180
+          }
+        }
+      ],
+      "green": [
+        {
+          "name": "source-final-green",
+          "exitCode": 0,
+          "exitCodeProvenance": "actual exec_command completion retained in verification record",
+          "counts": {
+            "tests": 11,
+            "pass": 11,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "evidence": {
+            "path": "/tmp/dsh-device-20261117/media-result-state-final-green.log",
+            "sha256": "2e7c5eecc26a9c3301e092f7f4b7a4a11d05d266b629e88f77ebb5f61bbb3878",
+            "bytes": 1413
+          }
+        },
+        {
+          "name": "locale-green",
+          "exitCode": 0,
+          "exitCodeProvenance": "actual exec_command completion retained in verification record",
+          "counts": {
+            "tests": 4,
+            "pass": 4,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "evidence": {
+            "path": "/tmp/dsh-device-20261117/media-result-locale-green.log",
+            "sha256": "4fb15a6b14ca2b17d2419ea527b09ecc69d4a06a3b18afcb5bb3b220b480ecea",
+            "bytes": 554
+          }
+        },
+        {
+          "name": "new-generated-green",
+          "exitCode": 0,
+          "exitCodeProvenance": "235 structured result and ROOT confirmed actual completion",
+          "counts": {
+            "tests": 13,
+            "pass": 13,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "evidence": {
+            "path": "/tmp/dsh-device-20261117/235-media-result-state.log",
+            "sha256": "a2c8e1952d4e5b1b804f6d41fcb020780994fc7d7bdda5c8b9c5f405a01f8091",
+            "bytes": 1636
+          },
+          "command": [
+            "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+            "tests/media-result-state.test.mjs",
+            "entry/build/default/cache/default/default@CompileArkTS/esmodule/debug/entry/src/main/ets/ui/MediaResultCard.ts"
+          ],
+          "commandProvenance": "ROOT confirmed exact invocation"
+        }
+      ],
+      "peerReview": "media_parity read-only review found no new blocker after the acknowledged-stop ordering regression was fixed.",
+      "oldDeviceDefectEvidence": [
+        {
+          "path": "/tmp/dsh-device-20261117/219-video-started.json",
+          "sha256": "7ee4a1f632cbcc2bd6062124fcf3b6a4e7c8cc15d8691991212f21bfdf9a2ef0",
+          "bytes": 41517
+        },
+        {
+          "path": "/tmp/dsh-device-20261117/220-video-complete.json",
+          "sha256": "bd1271f67ac4b053b2cc512728100c7c9a758cc5ee58f1e8b993a6eb890db89f",
+          "bytes": 48797
+        },
+        {
+          "path": "/tmp/dsh-device-20261117/230-video-cancel-outcome.json",
+          "sha256": "7c706dac39feb781ab19c96ea72790e08f65ae12aaf899ed089a330061088ae6",
+          "bytes": 49452
+        }
+      ],
+      "device": {
+        "status": "PASS_COMPLETION_AND_CANCELLATION",
+        "verification": {
+          "path": "/tmp/dsh-device-20261117/269-media-terminal-result.json",
+          "sha256": "981b638668d8abefc46519a03ca182d98d2a5a0fa9b8ad9273ca5262c1a4c3cd",
+          "bytes": 11146
+        },
+        "caseIds": [
+          "completed-job-retires-historical-running-actions",
+          "cancelled-job-retires-historical-running-actions"
+        ],
+        "providerTaskIds": [
+          "synthetic-video-135",
+          "synthetic-video-151"
+        ],
+        "historicalExcludedAttempt": {
+          "evidence": {
+            "path": "/tmp/dsh-device-20261117/250-media-video-916-await.json",
+            "sha256": "52b15f483d24dff1060b35d9d605eb720b37761201c838c9c61271aeda32dc8b",
+            "bytes": 48841
+          },
+          "reason": "Earlier await did not demonstrate completion; fresh owned completion/cancellation sequences supersede it."
+        }
+      }
+    }
+  ],
+  "build": {
+    "command": [
+      "/Applications/DevEco-Studio.app/Contents/tools/hvigor/bin/hvigorw",
+      "--mode",
+      "module",
+      "-p",
+      "module=entry@default",
+      "-p",
+      "product=default",
+      "-p",
+      "buildMode=debug",
+      "assembleHap",
+      "--no-daemon"
+    ],
+    "exitCode": 0,
+    "durationSeconds": 9.217,
+    "hvigorReportedDuration": "8 s 796 ms",
+    "tasks": {
+      "total": 33,
+      "executed": 17,
+      "upToDate": 16
+    },
+    "evidence": [
+      {
+        "path": "/tmp/dsh-device-20261117/232-media-build-result.json",
+        "sha256": "8bfdfa88a3e14123ef708b159bdf62b585c58f874480c4e8efcf804c8fa43850",
+        "bytes": 411
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/232-media-build.log",
+        "sha256": "3e4b18710ca072ad7c111a2de73fc05901a325a6e3c337bca2428ec1a3cc8a31",
+        "bytes": 92594
+      }
+    ],
+    "warnings": "Build succeeded with existing ArkTS warnings; this is not a warning-free claim."
+  },
+  "generated_tests": {
+    "resultEvidence": {
+      "path": "/tmp/dsh-device-20261117/235-media-generated-results.json",
+      "sha256": "b12cdcd7624440c50bd0c2f75d97bfc1ba9a6f7ef71ea906646eac7b59d42492",
+      "bytes": 315
+    },
+    "parameter": {
+      "tests": 5,
+      "pass": 5,
+      "fail": 0,
+      "skipped": 0
+    },
+    "resultCard": {
+      "tests": 13,
+      "pass": 13,
+      "fail": 0,
+      "skipped": 0
+    },
+    "artifactFiles": [
+      {
+        "path": "entry/build/default/cache/default/default@CompileArkTS/esmodule/debug/entry/src/main/ets/ui/MediaGeneratePanel.ts",
+        "sha256": "3ecd8215483899a86046a41c02ffac0a2ac71070bf857c99cba47fc311e473f8"
+      },
+      {
+        "path": "entry/build/default/cache/default/default@CompileArkTS/esmodule/debug/entry/src/main/ets/ui/MediaResultCard.ts",
+        "sha256": "4c1d1810788f863e13c0a73bac8031ba3186752199fd45330330b1fdea6c2c74"
+      }
+    ],
+    "boundary": "Actual CompileArkTS output was evaluated through the retained callback test harness; these are not device UI runs."
+  },
+  "signature": {
+    "status": "PASS",
+    "exitCode": 0,
+    "exitCodeProvenance": "ROOT confirmed actual 240 tool completion",
+    "command": null,
+    "commandProvenance": "Exact full argv not retained in this evidence file; official hap-sign-tool verify-app was used.",
+    "evidence": {
+      "path": "/tmp/dsh-device-20261117/240-media-signature.log",
+      "sha256": "c4fc043a6e8d8500f0a56b01949d7625fca173b2c25d6b9ebe45894fd1f729b6",
+      "bytes": 3285
+    },
+    "observations": [
+      "Digest verify result true, SHA-256",
+      "permission signature success",
+      "certificate chain written",
+      "verify-app success"
+    ],
+    "supersededAttempt": {
+      "evidence": {
+        "path": "/tmp/dsh-device-20261117/239-media-signature.log",
+        "sha256": "d2dc650fa462dd193b9eb2d0067c2304055d3253f4472f2f11084c114f2591a9",
+        "bytes": 150
+      },
+      "status": "COMMAND_PARAMETER_ERROR",
+      "exitCode": null,
+      "reason": "ROOT confirmed -outCertchain had incorrect case; corrected to -outCertChain. This was a CLI parameter failure, not evidence of an invalid HAP signature."
+    }
+  },
+  "device_installation": {
+    "status": "PASS",
+    "install": {
+      "exitCode": 0,
+      "exitCodeProvenance": "ROOT confirmed actual completion",
+      "evidence": {
+        "path": "/tmp/dsh-device-20261117/242-media-install.log",
+        "sha256": "9ed9b6d76b5a09c3b3c13dbf265f3febc86fce9d44419041234e67e7b07cafce",
+        "bytes": 175
+      }
+    },
+    "launch": {
+      "exitCode": 0,
+      "exitCodeProvenance": "ROOT confirmed actual completion",
+      "evidence": {
+        "path": "/tmp/dsh-device-20261117/243-media-launch.log",
+        "sha256": "4765cf6e38f61be3ce9fa13fdcf53077b79f3da39c947a2123d1facd6c0e3962",
+        "bytes": 28
+      }
+    },
+    "localEngine": {
+      "status": "PASS_FRESH_START",
+      "runtimeVersion": "93bd20716200d852353999568f4898f9fca2f69846fac5bfc4d0ce85d0ebcf27",
+      "evidence": [
+        {
+          "path": "/tmp/dsh-device-20261117/253-ready-summary.json",
+          "sha256": "a2c29fd3776a7f02dda45c7df59f382f5b80456b5ee8c137b66d94f38d241691",
+          "bytes": 135
+        },
+        {
+          "path": "/tmp/dsh-device-20261117/254-local-ready-ui.json",
+          "sha256": "36c9242d7c05991ca620efadcd0df161a4594a01af7c1fea4ac9ed1118173e01",
+          "bytes": 30746
+        },
+        {
+          "path": "/tmp/dsh-device-20261117/254-local-ready-ui.png",
+          "sha256": "f6f01b97ec412e5c0b69770fc0991b4e4d883f9ae786137fae52710cc8a331e4",
+          "bytes": 3345251
+        }
+      ],
+      "provenance": "Sanitized fresh-ready summary plus ROOT observed local-ready UI; private ready JSON and credentials are excluded."
+    }
+  },
+  "counting": {
+    "rule": "Do not add repeated red/source/generated/default-entry runs as independent acceptance cases. Only the final successful state of each regression is green.",
+    "defaultEntry": "media-default-after.log actually ran 12/12. check-media.sh later added the 11 result-state source tests and passed sh -n; the resulting full 23-test default command was not rerun. The 11 result-state source tests and new 13-test generated command were independently executed.",
+    "fullAcceptanceTotal": null
+  },
+  "limits": [
+    "The two media UI fixes do not change runtime, native libraries, model providers, or media transport.",
+    "Both media UI regressions are reverified on the installed c4392abe HAP with an isolated synthetic provider; this is not paid commercial media validation.",
+    "Previous phase13 SenseVoice network/WAV and TURN evidence is not rerun or recounted here.",
+    "Physical microphone recognition remains user-deferred from phase13 and is not counted passed.",
+    "No commercial model request, user account material, private ready file, or user historical conversation is included in this record.",
+    "This snapshot does not claim completion of all eight groups or all phone acceptance."
+  ],
+  "authoring": {
+    "agent": "sensevoice_native",
+    "mode": "read-only evidence audit plus this new JSON and the owned /tmp result verification update",
+    "productionChangesDuringEvidenceTask": false,
+    "phoneOrHdcOperationsByAuthor": 0,
+    "buildOrInstallOperationsByAuthor": 0
+  },
+  "device_media_terminal": {
+    "path": "/tmp/dsh-device-20261117/269-media-terminal-result.json",
+    "sha256": "981b638668d8abefc46519a03ca182d98d2a5a0fa9b8ad9273ca5262c1a4c3cd",
+    "bytes": 11146
+  }
+}

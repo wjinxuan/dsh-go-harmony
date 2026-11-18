@@ -1,0 +1,33 @@
+{
+  "source_reference": "dsh-Go v1.0.15 a9877420ab9aee121134faf01b6a92a39ce0b05b",
+  "relay_reference": "ds-harness-remote 04edf424e08909f2929f74c23abaa8ad86670a7d",
+  "built_at": "2026-11-13T20:20:52+08:00",
+  "build": "DevEco Studio 26.0.0.851 debug signed, HarmonyOS API 26",
+  "bundle": "com.dshgo.harmony",
+  "hap": "entry/build/default/outputs/default/entry-default-signed.hap",
+  "hap_sha256": "860c60dfa376491d8fe5c660c159b67f895d9b768136070461081e379423c61a",
+  "hap_size_bytes": 163392999,
+  "runtime_sha256": "67e78e5bce66361abf17d2421e5139620fed4868a38eee4ab29efedba9f818ef",
+  "checks": {
+    "signed_hap_build_and_verification": true,
+    "embedded_runtime_digest_and_terminal_assets_match": true,
+    "dsh_client_live_assertions": 105,
+    "chat_and_remote_owner_tests": 33,
+    "remote_profile_tests": 5,
+    "arkui_generated_reactivity_tests": 5,
+    "wire_tests": "passed",
+    "ssh_isolated_openssh_and_password_fixture": "passed with encrypted key, host key confirmation and mismatch, DSH HTTP and WebSocket, process reuse and cleanup",
+    "relay_original_noise_vectors_and_responder": "passed with actual DshClient RPC, fragmented follow, replay refusal, browser and pairing fixtures, and pinned self-hosted server sign-in, registration and revocation",
+    "terminal_stock_mac_pty_and_chromium_tests": 5,
+    "attachments_embedded_runtime": "passed with denied hardlink fallback fixture, image delivery and history, text model fallback, session-scoped document reads and cross-session denial",
+    "native_publication_linux_arm64_node_24_22_1": "passed for attachments, workspace and session files, including no-replace, invalid paths and symlink refusal",
+    "embedded_account_oauth_regression": "passed against isolated synthetic Platform"
+  },
+  "acceptance_limits": [
+    "No HarmonyOS device was connected. Installation, picker and camera UI, ScanKit, ArkWeb and native filesystem fallback on the phone remain unverified.",
+    "The live tests used isolated hosts and synthetic model providers. Hosted relay login and PTY over a real encrypted relay deployment remain unverified.",
+    "SSH requires a POSIX host with dsh web and TCP forwarding. Passwords and private keys are entered per connection.",
+    "The relay transport supports image attachments. LAN, WebRTC and TURN are outside this implementation. There is no local system shell.",
+    "The embedded model file tool reads UTF-8 documents attached to its own session. Inline images are capped at 12 MiB per send after conversion. Attachment gallery thumbnails and queued attachment recovery remain incomplete."
+  ]
+}

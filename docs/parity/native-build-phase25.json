@@ -1,0 +1,216 @@
+{
+  "phase": 25,
+  "recordedAt": "2026-11-18T05:23:05.892458+00:00",
+  "status": "installed-bundled-bot-enable-restart-ready-verified-complete-bot-flow-pending",
+  "allAcceptanceComplete": false,
+  "scope": "Fix the missing bundled DSBot enable control caused by reentering the local engine busy guard. Bot creation/edit/group/message/cleanup acceptance is not complete.",
+  "originalFailure": {
+    "sequences": [
+      1066,
+      1067
+    ],
+    "finding": "Native enable row missing although the read-only control returned HTTP200/enabledfalse.",
+    "evidence": {
+      "path": "/tmp/dsh-device-20261118/1067-dsbot-control-state.json",
+      "bytes": 143,
+      "sha256": "351c2d40ce21e21926581344dae19e144dc6b68b988aad713aef6e5c73e9e37b"
+    },
+    "preserved": true
+  },
+  "implementation": {
+    "change": "Reuse current local start endpoint.transportControl for bundled Bot state and enable; retire on connect/disconnect/disposal and reject stale continuation/read/set outcomes by connectionVersion and control identity.",
+    "sourceVerification": {
+      "path": "/tmp/dsh-device-20261118/bundled-bot-lifecycle/verification.json",
+      "bytes": 4486,
+      "sha256": "01bded352654a2c52b44d2137c22e3b82e1b23808c3c48e340d7e2920eda2ee4"
+    },
+    "peerReview": {
+      "path": "/tmp/dsh-device-20261118/bundled-bot-lifecycle/peer-review-final.json",
+      "bytes": 4268,
+      "sha256": "3d6229189a7a5e96643fce17f2ad3694e4e55c363035605cb61b577035eef2d6"
+    },
+    "peerStatus": "NO_BLOCKING_FINDINGS_FINAL",
+    "initialRed": {
+      "sourceCases": 7,
+      "sourcePass": 1,
+      "sourceFail": 6,
+      "oldGeneratedCases": 7,
+      "oldGeneratedPass": 1,
+      "oldGeneratedFail": 6,
+      "exitCode": 1
+    },
+    "peerEpochRed": {
+      "cases": 9,
+      "pass": 7,
+      "fail": 2,
+      "exitCode": 1
+    }
+  },
+  "build": {
+    "exitCode": 0,
+    "elapsedSeconds": 7.454,
+    "reported": "7 s 454 ms",
+    "hapSha256": "ef47c8aa3b45ebb822656ab292927137f7e97674948123edcb3c1a0e870a573b",
+    "hapBytes": 197451531,
+    "evidence": {
+      "path": "/tmp/dsh-device-20261118/phase25/build.log",
+      "bytes": 92857,
+      "sha256": "cdf0815ac46e0c97a29e7752603be5442b064c39a57f791649605ae3843fa320"
+    }
+  },
+  "tests": {
+    "sourceCases": 9,
+    "generatedCases": 9,
+    "uniqueLifecycleCases": 9,
+    "executions": 18,
+    "passed": 18,
+    "failed": 0,
+    "skipped": 0,
+    "exitCode": 0,
+    "evidence": {
+      "path": "/tmp/dsh-device-20261118/phase25/generated-tests.log",
+      "bytes": 2215,
+      "sha256": "28c37cfcdc46b700589dea83232e46673e5bbc5db332a5a34879f586dcba70ba"
+    },
+    "counting": "Same nine production-method semantics execute once from source and once from actual CompileArkTS output; not eighteen distinct behaviors.",
+    "defaultEntry": {
+      "command": "PATH=/Applications/DevEco-Studio.app/Contents/tools/node/bin:$PATH sh tests/check-dsbot.sh",
+      "newLifecycle": 9,
+      "existingNativeProtocol": 10,
+      "existingSchedules": 6,
+      "fail": 0,
+      "skip": 0,
+      "exitCode": 0
+    }
+  },
+  "integrity": {
+    "status": "PASS_ARKTS_ONLY_HAP_CHANGE",
+    "hapSha256": "ef47c8aa3b45ebb822656ab292927137f7e97674948123edcb3c1a0e870a573b",
+    "hapBytes": 197451531,
+    "changed": [
+      "ets/modules.abc",
+      "ets/sourceMaps.map"
+    ],
+    "nativeLibrariesUnchanged": [
+      "libs/arm64-v8a/libc++_shared.so",
+      "libs/arm64-v8a/libdshlocal.so",
+      "libs/arm64-v8a/libnode.so",
+      "libs/arm64-v8a/libonnxruntime.so",
+      "libs/arm64-v8a/libsherpa-onnx-c-api.so"
+    ],
+    "runtimeSha256": "48ae9d052ca3e90416d36fcf28adc930ffc158323b3a550c38c9e08e12a29754",
+    "crcPassed": true,
+    "buildExitCode": 0,
+    "buildReported": "7 s 454 ms",
+    "signatureExitCode": 0,
+    "generatedCases": 9,
+    "sourceCases": 9,
+    "uniqueLifecycleCases": 9,
+    "generatedTestsExitCode": 0,
+    "evidence": {
+      "path": "/tmp/dsh-device-20261118/phase25/hap-integrity.json",
+      "bytes": 744,
+      "sha256": "5f288551bc41049ed0fa0a1b5bd2caf924e554b6cf069d66cac23c9788e8a1aa"
+    },
+    "signatureLog": {
+      "path": "/tmp/dsh-device-20261118/phase25/signature.log",
+      "bytes": 3285,
+      "sha256": "47aa5cfe7499ba177528c41a464ae7a0300be63b779d30a1ac9d505ff45ecd25"
+    }
+  },
+  "installation": {
+    "installed": true,
+    "successReported": true,
+    "exitCode": null,
+    "exitCodeNote": "Successful installation is explicit in ROOT report and install log; no separate install exit-code JSON supplied here.",
+    "evidence": {
+      "path": "/tmp/dsh-device-20261118/phase25/install.log",
+      "bytes": 175,
+      "sha256": "9ed9b6d76b5a09c3b3c13dbf265f3febc86fce9d44419041234e67e7b07cafce"
+    },
+    "initialReadyEvidence": {
+      "path": "/tmp/dsh-device-20261118/phase25/1072-process.json",
+      "bytes": 157,
+      "sha256": "ec50510879566846f11887f93e6cf48adbfa26baf4df3bc5036251a5e24c0bfd"
+    }
+  },
+  "phoneEnableFlow": {
+    "status": "PASS_ENABLE_CONFIRM_SAVE_RESTART_TEAM_READY",
+    "scope": "Only built-in enable visibility, confirmation, persistence/restart requirement, and team availability after engine restart.",
+    "steps": [
+      1075,
+      1076,
+      1077,
+      1078,
+      1079
+    ],
+    "beforeRestart": {
+      "httpStatus": 200,
+      "controlPort": 33175,
+      "state": {
+        "enabled": true,
+        "activeAtStart": false,
+        "version": "0.2.3",
+        "sourceCommit": "4a7b55069ad300eae8be42a74f31bc170b40ead7",
+        "mobileCommit": "6f3e1b3e8603abd84820b334a7f99985236dbbdf",
+        "restartRequired": true
+      },
+      "mutation": false
+    },
+    "afterRestart": {
+      "port": 34371,
+      "runtimeVersion": "48ae9d052ca3e90416d36fcf28adc930ffc158323b3a550c38c9e08e12a29754",
+      "phase": "running",
+      "failurePresent": false
+    },
+    "ui": {
+      "1075": "Built-in DSBot and Enable action visible.",
+      "1076": "Confirmation states restart is needed and existing team data is retained.",
+      "1077": "UI says saved/restart required; backend enabledtrue/activeAtStartfalse/restartRequiredtrue. Pre-restart404/unavailable is not team-ready success.",
+      "1078": "ROOT restarted the local engine.",
+      "1079": "New running endpoint and native team list with Chief/Chief of Staff visible."
+    },
+    "controlEvidence": {
+      "path": "/tmp/dsh-device-20261118/phase25/1077-control-state.json",
+      "bytes": 316,
+      "sha256": "e107fd43d4704df2d48953fbc55b5223f6e3a27f2106ca3aaf2e28485f052c67"
+    },
+    "processEvidence": {
+      "path": "/tmp/dsh-device-20261118/phase25/1079-process.json",
+      "bytes": 157,
+      "sha256": "37c3eafc1745c9deb01a423c45df687689e153d3698e10f459afc5a1b310265f"
+    },
+    "uiEvidence": [
+      {
+        "path": "/tmp/dsh-device-20261117/1075-dsbot-enable-visible.json",
+        "bytes": 14747,
+        "sha256": "559db31f486dbb8f2088a258c87b6fba5571d375f2a86e3995a1891455afe35a"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/1076-dsbot-enable-confirm.json",
+        "bytes": 24685,
+        "sha256": "3c94eb39a1bfbf9913a344c5a114371f3e77a0f76ad6a834c6761708b448f0d8"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/1077-dsbot-enabled-restart-needed.json",
+        "bytes": 16160,
+        "sha256": "4230926386484944bea7694d1bae376581ae0914d65a21b8328306e6d4f0cfed"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/1078-dsbot-restart.json",
+        "bytes": 12644,
+        "sha256": "457f667023797e4d3bd956714a76d1882f00b09c5027ca444876a3e72df41ecc"
+      },
+      {
+        "path": "/tmp/dsh-device-20261117/1079-dsbot-team-ready.json",
+        "bytes": 17278,
+        "sha256": "1edfe6556de8ec654713b9aee4d2347e9fed0f5bdd6718e71e93e5db50746e60"
+      }
+    ]
+  },
+  "pending": [
+    "Owned Bot creation/edit/copy/group/message and cleanup require the later complete verification aggregate; interim creation UI is not a completed flow.",
+    "Bot/Web schedule phone actions remain pending.",
+    "Other seventeen-row acceptance and final SCREEN/timeout restoration remain partial."
+  ]
+}

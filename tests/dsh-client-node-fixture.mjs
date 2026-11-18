@@ -10,18 +10,30 @@ export async function loadDshClient(clientPath, dshBin, temp, fixtures = {}) {
   const { WebSocket } = createRequire(dshBin)('ws');
   const testDir = pathToFileURL(temp + '/');
   await writeFile(new URL('./DshWire.ts', testDir), await readFile(join(dirname(clientPath), 'DshWire.ets')));
+  await writeFile(new URL('./SpeechData.ts', testDir), (await readFile(join(dirname(clientPath), 'SpeechData.ets'), 'utf8'))
+    .replace("'./DshWire'", "'./DshWire.ts'"));
+  await writeFile(new URL('./DshBinaryResponse.ts', testDir), (await readFile(join(dirname(clientPath), 'DshBinaryResponse.ets'), 'utf8'))
+    .replace(', WireObject', '').replace("'./DshWire'", "'./DshWire.ts'"));
+  await writeFile(new URL('./DsBotProtocol.ts', testDir), (await readFile(join(dirname(clientPath), 'DsBotProtocol.ets'), 'utf8'))
+    .replace(', WireObject', '').replace("'./DshWire'", "'./DshWire.ts'"));
+  await writeFile(new URL('./CompanionSignalProtocol.ts', testDir), (await readFile(join(dirname(clientPath), 'CompanionSignalProtocol.ets'), 'utf8'))
+    .replace(', WireObject', '').replace("'./DshWire'", "'./DshWire.ts'"));
   const modules = new Map([
     ['@kit.ArkTS', 'url,util'], ['@kit.NetworkKit', 'webSocket'], ['@kit.RemoteCommunicationKit', 'rcp'],
     ['@kit.CoreFileKit', 'fileIo'], ['@kit.BasicServicesKit', 'deviceInfo']
   ]);
   const mockFiles = new Map();
+  class UploadFromFile { constructor(path) { this.path = path; } }
   const deviceInfo = fixtures.deviceInfo ?? { sdkApiVersion: 26 };
   globalThis.dshLiveFixtureKits = {
     deviceInfo,
     url: { URL: { parseURL(text) { const value = new URL(text); value.params = value.searchParams; return value; } } },
-    util: { generateRandomUUID: randomUUID, TextDecoder: { create() {
+    util: { generateRandomUUID: randomUUID, Base64Helper: class {
+      encodeToString(bytes) { return Buffer.from(bytes).toString('base64'); }
+      async decode(text) { return Buffer.from(text, 'base64'); }
+    }, TextDecoder: { create() {
       const decoder = new TextDecoder('utf-8');
-      return { decodeToString: bytes => decoder.decode(bytes) };
+      return { decodeToString: bytes => decoder.decode(bytes), decodeWithStream: (bytes, options) => decoder.decode(bytes, options) };
     } } },
     fileIo: {
       OpenMode: { READ_ONLY: 0 },
@@ -52,15 +64,23 @@ export async function loadDshClient(clientPath, dshBin, temp, fixtures = {}) {
       };
     } },
     rcp: {
+      UploadFromFile,
       Request: class { constructor(uri, method, headers, body) { Object.assign(this, { uri, method, headers, body }); } },
       createSession: ({ requestConfiguration }) => ({ close() {}, cancel(request) { request.cancelled?.abort(); }, async fetch(request) {
         const { uri, method, headers, body, configuration, destination } = request;
         fixtures.proxyOptions?.push(configuration?.proxy ?? requestConfiguration.proxy);
         request.cancelled = new AbortController();
         if (destination && fixtures.exportRequest) return fixtures.exportRequest(request);
-        const response = await fetch(uri, { method, body, redirect: 'manual',
+        const response = await fetch(uri, { method, body: body instanceof UploadFromFile ? await readFile(body.path) : body, redirect: 'manual',
           headers: Object.fromEntries(Object.entries(headers).filter(([, value]) => value !== undefined)),
           signal: AbortSignal.any([request.cancelled.signal, AbortSignal.timeout(configuration?.transfer.timeout.transferMs ?? 20000)]) });
+        const events = configuration?.tracing?.httpEventsHandler;
+        if (events?.onDataReceive) {
+          events.onStatusCodeReceive?.(response.status);
+          events.onHeaderReceive?.({ 'content-type': response.headers.get('content-type') ?? undefined });
+          for await (const chunk of response.body || []) await events.onDataReceive(chunk.buffer.slice(chunk.byteOffset, chunk.byteOffset + chunk.byteLength));
+          return { statusCode: response.status, headers: {}, body: undefined };
+        }
         if (destination?.kind === 'file' && response.body) {
           await pipeline(response.body, createWriteStream(destination.file), { signal: request.cancelled.signal });
         }
@@ -71,8 +91,8 @@ export async function loadDshClient(clientPath, dshBin, temp, fixtures = {}) {
     }
   };
 
-  const source = (await readFile(clientPath, 'utf8'))
-    .replace(/import \{[^}]+\} from '\.\/DshWire';/, `import { approvalFromEvent, array, createMuxOpen,
+  const source = (await readFile(clientPath, 'utf8')).replace(', DsBotEvent', '')
+    .replace(/import \{[^}]+\} from '\.\/DshWire';/, `import { approvalFromEvent, array, commandCatalog, commandResult, createMuxOpen,
       createRpcRequest, DshRpcError, DshTranscript, goalRef, goalView, localSessionError, modelCatalog, modelSelection,
       modelSelectionResult, normalizeProviderKey, number, object, parseRpcResponse, permissionCatalog, questionFromEvent,
       sessionPage, sessionProjections, string, strings, turnTraces, wireError, workspaceListing, workspaceText } from './DshWire';`)
@@ -85,6 +105,18 @@ export async function loadDshClient(clientPath, dshBin, temp, fixtures = {}) {
     }
     if (specifier === './DshWire' && context.parentURL === nativeClient.href) {
       return { url: new URL('./DshWire.ts', testDir).href, shortCircuit: true };
+    }
+    if (specifier === './CompanionSignalProtocol' && context.parentURL === nativeClient.href) {
+      return { url: new URL('./CompanionSignalProtocol.ts', testDir).href, shortCircuit: true };
+    }
+    if (specifier === './DsBotProtocol' && context.parentURL === nativeClient.href) {
+      return { url: new URL('./DsBotProtocol.ts', testDir).href, shortCircuit: true };
+    }
+    if (specifier === './SpeechData' && context.parentURL === nativeClient.href) {
+      return { url: new URL('./SpeechData.ts', testDir).href, shortCircuit: true };
+    }
+    if (specifier === './DshBinaryResponse' && context.parentURL === nativeClient.href) {
+      return { url: new URL('./DshBinaryResponse.ts', testDir).href, shortCircuit: true };
     }
     return next(specifier, context);
   } });

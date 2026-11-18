@@ -1,0 +1,416 @@
+{
+  "recordedAt": "2026-11-17T09:02:32.169777+00:00",
+  "phase": 16,
+  "snapshotThrough": 487,
+  "status": "PARTIAL_PASS_WITH_REPRODUCED_UI_FAILURES",
+  "allAcceptanceComplete": false,
+  "hapSha256": "d677c58ef79eef4f9580c820667a50e30ce9df2123c8f73bf8146a59c4a9cda4",
+  "runtimeSha256": "93bd20716200d852353999568f4898f9fca2f69846fac5bfc4d0ce85d0ebcf27",
+  "observer": "ROOT operated the phone and confirmed the listed visual results. scribe_translation independently read the UI trees and isolated fixture events; it did not operate HDC, change models or invoke phone actions.",
+  "scope": "Actual phone native plugin UI connected to an isolated official Mac DSH host. The plugin and its data are synthetic; actual save/action service handlers executed.",
+  "newFixBuildPassed": false,
+  "newFixPhoneRecheckPassed": false,
+  "checks": [
+    {
+      "id": "form-service-actions",
+      "steps": [
+        447,
+        448,
+        449,
+        450,
+        451,
+        452,
+        453,
+        454,
+        455
+      ],
+      "status": "PASS_SERVICE_ACTIONS_ONLY",
+      "events": [
+        {
+          "time": "2026-11-17T08:45:55.608Z",
+          "action": "save",
+          "value": {
+            "data.name": "PHONE_UI_20261117",
+            "data.amount": 7,
+            "data.enabled": true,
+            "data.level": 60,
+            "data.choice": "B"
+          }
+        },
+        {
+          "time": "2026-11-17T08:46:26.354Z",
+          "action": "increment",
+          "value": {
+            "count": 2
+          }
+        },
+        {
+          "time": "2026-11-17T08:47:05.887Z",
+          "action": "reset",
+          "value": {}
+        }
+      ],
+      "excludedHostPreflightEvents": 4
+    },
+    {
+      "id": "reactive-status-and-fields",
+      "steps": [
+        453,
+        455
+      ],
+      "status": "FAIL",
+      "actual": "Settled UI still shows 等待真实手机提交 and 服务端事件 0. Reset leaves PHONE_UI_20261117 / 7 / 60 and old fields visible.",
+      "expected": "Render service-returned status/count and reset values; service success alone is not UI success."
+    },
+    {
+      "id": "selection",
+      "steps": [
+        449,
+        450,
+        456
+      ],
+      "status": "FAIL",
+      "actual": "ROOT observed options A/B/C all blue; selected B cannot be distinguished. Tree text alone cannot prove selection color."
+    },
+    {
+      "id": "charts",
+      "steps": [
+        457,
+        458,
+        459
+      ],
+      "status": "PASS_LISTED_VISUAL_ACTIONS",
+      "actual": "457 immediate tree was not useful but PNG rendered. 458 settled negative bar and ring total 100. 459 left sector shows 丙 50 while other sectors dim.",
+      "notClaimed": "Other chart types or arbitrary data."
+    },
+    {
+      "id": "image-and-gestures",
+      "steps": [
+        460,
+        463,
+        464
+      ],
+      "status": "PASS",
+      "actual": "Image loads, actual double-tap zoom works, Back returns."
+    },
+    {
+      "id": "image-fullscreen-safe-area",
+      "steps": [
+        461,
+        462
+      ],
+      "status": "FAIL",
+      "actual": "Settled fullscreen header is covered by system status/capsule area.",
+      "backBounds": [
+        39,
+        127,
+        248,
+        169
+      ],
+      "visibleBackHeightPx": 42,
+      "titleBounds": [
+        248,
+        127,
+        1012,
+        135
+      ],
+      "visibleTitleHeightPx": 8
+    }
+  ],
+  "fixStatus": {
+    "image": "Minimal NativePluginImage source change and 4 production-method tests plus 1 existing Mermaid test pass; readonly peer review found no blocker. Not built, installed or phone-rechecked at this snapshot.",
+    "controls": "Reactive state and selection fixes are separate work in progress; no new build/device pass asserted."
+  },
+  "limits": [
+    "No full plugin acceptance pass. Cancel/stream/stale-host response/install/persistence branches remain separate.",
+    "457 transient tree is not counted as a chart failure.",
+    "No commercial services or production accounts were used."
+  ],
+  "evidence": [
+    {
+      "path": "/tmp/dsh-device-20261117/447-plugins-entry.json",
+      "bytes": 37718,
+      "sha256": "ea0aca80d09750ce177eb87a1da526b5ef0517514b4dcbe6a86cd381086de2ed"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/447-plugins-entry.log",
+      "bytes": 5665,
+      "sha256": "013043240c685e9550f426078293b233dc80e52a49edcc85ac40bbe4fa98818b"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/447-plugins-entry.png",
+      "bytes": 3345251,
+      "sha256": "9a1780595fe36fa21f2d3b1100790b214fea17cefe698017c1cae0cacb2eaa54"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/448-native-plugin-entry.json",
+      "bytes": 14133,
+      "sha256": "88f726683681d9c73fb631cd5917b0223ed4f65d1a12baeabfb15eec17932fba"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/448-native-plugin-entry.log",
+      "bytes": 1487,
+      "sha256": "7f535a079909913d038fdf4de623c4a612bbd42faf2b655190f7e5fff5e6b2ab"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/448-native-plugin-entry.png",
+      "bytes": 3345251,
+      "sha256": "63d9655f7fb54cc31237c8813da46ef2c3c35fca08f57256b1fcc02360dfa1c5"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/449-plugin-controls.json",
+      "bytes": 29332,
+      "sha256": "4150b6389356a424e8daf0851190cecfa9dd45607141f30c76ee1478098577bf"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/449-plugin-controls.log",
+      "bytes": 3188,
+      "sha256": "35041fb8a9c33c009342d225a8d880050f9a345cf0bb01798e63230ed05dde05"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/449-plugin-controls.png",
+      "bytes": 3345251,
+      "sha256": "9212ae7601bb7c19d705b64ca2b3d75687c11725f1f363e365b5636841e2cb7c"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/450-plugin-fields.json",
+      "bytes": 29339,
+      "sha256": "c2b02931abc4b90e60a56e7e47729b282bd68dc7921d9724f268944176841965"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/450-plugin-fields.log",
+      "bytes": 3317,
+      "sha256": "ffc203f65c0d2bcea51c6a0e72db5eadeafdde3bec7d5d7ca501150467185e6d"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/450-plugin-fields.png",
+      "bytes": 3345251,
+      "sha256": "7ea8004806417e0a760bbe75e2c6e3b338d8223d2bf8aa9f7381b0a810f4d021"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/451-plugin-submit.json",
+      "bytes": 29339,
+      "sha256": "c2b02931abc4b90e60a56e7e47729b282bd68dc7921d9724f268944176841965"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/451-plugin-submit.log",
+      "bytes": 3191,
+      "sha256": "2890eee6f25c07b5bf122dc2f3cc6a8ec77965cd72b471b7daa6d6871afd17b7"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/451-plugin-submit.png",
+      "bytes": 3345251,
+      "sha256": "7ea8004806417e0a760bbe75e2c6e3b338d8223d2bf8aa9f7381b0a810f4d021"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/452-plugin-increment.json",
+      "bytes": 29339,
+      "sha256": "c2b02931abc4b90e60a56e7e47729b282bd68dc7921d9724f268944176841965"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/452-plugin-increment.log",
+      "bytes": 3191,
+      "sha256": "2890eee6f25c07b5bf122dc2f3cc6a8ec77965cd72b471b7daa6d6871afd17b7"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/452-plugin-increment.png",
+      "bytes": 3345251,
+      "sha256": "1e2a596b865ef40a083461e7ca650f8af846f1071a1ff8ef8a31900713b99830"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/453-plugin-state-settled.json",
+      "bytes": 29339,
+      "sha256": "c2b02931abc4b90e60a56e7e47729b282bd68dc7921d9724f268944176841965"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/453-plugin-state-settled.log",
+      "bytes": 3182,
+      "sha256": "387f9e38619d49bd5bf37df5d580359a13e8f1ea505663890ff18c477720de29"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/453-plugin-state-settled.png",
+      "bytes": 3345251,
+      "sha256": "7fa145e5465b4b7db992f06caefc873fc9bed62e13d30bd2a4eb9610ad779e0a"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/454-plugin-reset.json",
+      "bytes": 29339,
+      "sha256": "c2b02931abc4b90e60a56e7e47729b282bd68dc7921d9724f268944176841965"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/454-plugin-reset.log",
+      "bytes": 3191,
+      "sha256": "2890eee6f25c07b5bf122dc2f3cc6a8ec77965cd72b471b7daa6d6871afd17b7"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/454-plugin-reset.png",
+      "bytes": 3345251,
+      "sha256": "8b01539ec2a5bd7b8ceaace0f9f4ae608d9d889378370963db62aa47873c9005"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/455-plugin-reset-settled.json",
+      "bytes": 29339,
+      "sha256": "c2b02931abc4b90e60a56e7e47729b282bd68dc7921d9724f268944176841965"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/455-plugin-reset-settled.log",
+      "bytes": 4669,
+      "sha256": "c8a03522275d452b68cb1de3197f30089c6b46e0e6d52f376f328776dfd9d58a"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/455-plugin-reset-settled.png",
+      "bytes": 3345251,
+      "sha256": "8b01539ec2a5bd7b8ceaace0f9f4ae608d9d889378370963db62aa47873c9005"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/456-plugin-picker.json",
+      "bytes": 14133,
+      "sha256": "4cb5382f0be58939fcd68bd785014f3e0983f7a4ff4b06006fe1c0e52d9c52d4"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/456-plugin-picker.png",
+      "bytes": 3345251,
+      "sha256": "e56cf94c9bde1643b0a7e3eecd27e2a622b9a62afbc3aa3ed730b41364b7b29c"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/457-plugin-charts.json",
+      "bytes": 13423,
+      "sha256": "ace21c88a52cc3a3202240e24114dbeefc6e013f7e4050caca8bb9ecb7b5b1a3"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/457-plugin-charts.log",
+      "bytes": 1072,
+      "sha256": "e00e8c2113f4a4e30863864ec256b69213042b3cc4b3f422da90a6fd46146ff0"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/457-plugin-charts.png",
+      "bytes": 3345251,
+      "sha256": "3a335b7197a60d38df5ea7823757bdb399267eb4f2a4357e758708db84546848"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/458-plugin-ring.json",
+      "bytes": 25828,
+      "sha256": "e814df474fc23aa2381248828e5295ae13d84466123831b539de125557d11c8d"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/458-plugin-ring.log",
+      "bytes": 2361,
+      "sha256": "d423f11907a2f77387acebe3ac4c7a0a7088f38d130ba4011e0af61d1147a608"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/458-plugin-ring.png",
+      "bytes": 3345251,
+      "sha256": "fd33dfa3d9e4c46c15b3623fdcdbae2a0319964026e0c743a2cf8dcacaebec16"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/459-plugin-ring-selected.json",
+      "bytes": 25828,
+      "sha256": "21595b8cd23222cfc48732d225f3f4df5062612df1a3f63800a9eda0c4154981"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/459-plugin-ring-selected.log",
+      "bytes": 2361,
+      "sha256": "d423f11907a2f77387acebe3ac4c7a0a7088f38d130ba4011e0af61d1147a608"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/459-plugin-ring-selected.png",
+      "bytes": 3345251,
+      "sha256": "6a7547c8fc38c32d02a12a1488ce5c90b8887b6b85f332bac3a34604e19e1a51"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/460-plugin-image.json",
+      "bytes": 13423,
+      "sha256": "7894003d530c674b434003895e24fb5ee41aefcc45753d6a0cc4ab351a80702f"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/460-plugin-image.log",
+      "bytes": 1081,
+      "sha256": "2411052b60684a1715a589cf46c3fc0e6e0c4315e3a848879c5d60b50006babc"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/460-plugin-image.png",
+      "bytes": 3345251,
+      "sha256": "3454a76b7fc89b966e3d53f65b001f0909b6964d7aa1910eb1e3185f092e1fe3"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/461-plugin-image-fullscreen.json",
+      "bytes": 18021,
+      "sha256": "3e7b0aec7125b04d37797c7d9888369084cbb3fcd647ac61a1348d398a6138d6"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/461-plugin-image-fullscreen.log",
+      "bytes": 1517,
+      "sha256": "de9a7897fa18ce17325e7fdcb94e4d9ed6b85bbafd364be18aa7c8df66ec3a95"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/461-plugin-image-fullscreen.png",
+      "bytes": 3345251,
+      "sha256": "0f2ddd306b89057772c1ad4b5e41454fcef8af822f8dc118ec5348b304826a37"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/462-plugin-image-fullscreen-settled.json",
+      "bytes": 18021,
+      "sha256": "3e7b0aec7125b04d37797c7d9888369084cbb3fcd647ac61a1348d398a6138d6"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/462-plugin-image-fullscreen-settled.log",
+      "bytes": 1508,
+      "sha256": "d385e0910ecc8aa94225a46303c39ebc306fd88aef387b3a300eb52ac0b40807"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/462-plugin-image-fullscreen-settled.png",
+      "bytes": 3345251,
+      "sha256": "9f871023c1bd962491051e915b020c355556e782cbde233e4a376aefe94b501b"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/463-plugin-image-zoom.json",
+      "bytes": 18025,
+      "sha256": "3d05eaf6eeb44e7e9785497eaa26e5929fd44d49665590d45699db96628619f5"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/463-plugin-image-zoom.log",
+      "bytes": 2628,
+      "sha256": "6cffd5ca7ea2180d6722c33509cead7cebc6d6d23f9633b4f3ee47c340dccc29"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/463-plugin-image-zoom.png",
+      "bytes": 3345251,
+      "sha256": "14cc97b8c38ba3a546c825788fe175ad5a1935fc3a905bcd676b9b3bad6f200a"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/464-plugin-image-return.json",
+      "bytes": 12894,
+      "sha256": "fb8b915dc7cd5a62e767452101bc5e874907a4dd407520aabb0ac1f86f3321e0"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/464-plugin-image-return.png",
+      "bytes": 3345251,
+      "sha256": "4ae27cccfd9777befe895dded7a715fe6467076f59ebca0a07d27b5bb8b91673"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/native-plugin-ui-4/plugin/events.jsonl",
+      "bytes": 786,
+      "sha256": "ed0aeda0a5130a68c2fa8ca9c4b119a4d5758c1a07353dc23826bbf3178e1c83"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/native-plugin-ui-4/plugin/index.js",
+      "bytes": 1597,
+      "sha256": "938a7c879cf95b331fa76b4bc8c8a5663cc45406d572aecb6a5c255066f62a05"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/native-plugin-ui-4.log",
+      "bytes": 194,
+      "sha256": "229abe97cd5c2ba9fe4d35c168592da5f6fcc61277a059e8585303450b052a5e"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/native-plugin-image-safe-area-red.log",
+      "bytes": 4852,
+      "sha256": "be0253d289282de6c70b4c06c85bca025ca652a3e85728afcc8600111053193c"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/native-plugin-image-safe-area-green.log",
+      "bytes": 1098,
+      "sha256": "e3ad0e585c47890bc600b8af8c62f130588c3c3250651999edf6f48310599c31"
+    }
+  ]
+}

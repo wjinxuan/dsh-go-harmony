@@ -1,0 +1,13 @@
+export const common={};
+export const state={permission:0,captures:0,ocrFails:false,events:[],tree:{id:'after',bundle:'fixture.app',nodes:[],truncated:false}};
+export const deviceInfo={deviceType:'phone',sdkApiVersion:21};
+export const display={getDefaultDisplay:async()=>({width:1080,height:2400})};
+export const abilityAccessCtrl={createAtManager:()=>({requestPermissionsFromUser:async()=>({authResults:[state.permission]})})};
+const pixel=name=>{let width=1080,height=2400;return{getImageInfo:async()=>({size:{width,height}}),async scale(x,y){width=Math.round(width*x);height=Math.round(height*y)},release:async()=>{state.events.push(name+':release')}}};
+export const screenshot={capture:async()=>{state.captures++;return pixel('source')}};
+export const image={PixelMapFormat:{RGBA_8888:1},createImagePacker:()=>({packing:async()=>new ArrayBuffer(4),release:async()=>{state.events.push('packer:release')}}),createImageSource:()=>({createPixelMap:async()=>pixel('result'),release:async()=>{state.events.push('decoder:release')}})};
+export const textRecognition={recognizeText:async()=>{if(state.ocrFails)throw Error('OCR failed');return {value:'真实 fixture 文本'}}};
+export const preferences={};
+export const fileIo={};export const phoneBridgeRoot=()=>'';export const phoneReadFile=()=>{};export const phoneWriteFile=()=>{};
+export const util={Base64Helper:class{encodeToStringSync(bytes){return Buffer.from(bytes).toString('base64')}}};
+export const phoneAccessibilityCall=async()=>state.tree;

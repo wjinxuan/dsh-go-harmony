@@ -1,0 +1,155 @@
+{
+  "phase": 26,
+  "recordedAt": "2026-11-18T06:59:17.300896+00:00",
+  "status": "installed-dsbot-composer-pinned-and-keyboard-resize-verified-schedule-stall-open",
+  "allAcceptanceComplete": false,
+  "scope": "Pin the DS Bot chat composer outside the message scroller and let the DS Bot route use resize keyboard avoidance. Bot-session scheduling still stalls without a visible approval card or task.",
+  "originalFindings": {
+    "composerOffscreen": {
+      "sequence": [
+        1134,
+        1136
+      ],
+      "finding": "After typing and dismissing the IME the send row fell below the viewport; sending required manually scrolling the message list.",
+      "preserved": true
+    },
+    "realtimeFeed": {
+      "sequence": [
+        1109,
+        1131
+      ],
+      "finding": "Panel showed realtime connect timeout/failure while HTTP polling stayed 200; websocket closed about once per second.",
+      "followUp": "After enabling DS Bot and a normal engine restart the feed stayed connected; the earlier flap was tied to a running engine without the plugin loaded (HTTP 404 on dsBot/feed)."
+    },
+    "scheduleStall": {
+      "sequence": [
+        1142
+      ],
+      "finding": "schedule_create executed but the per-session automation list stayed at 0."
+    }
+  },
+  "implementation": {
+    "change": "DSBotPanel splits chatPage into chatMessages (inside a bound Scroll) and chatComposer (pinned column); send scrolls the message list to the newest item. Index.updateKeyboardAvoidance now applies KeyboardAvoidMode.RESIZE to the dsBot route as well.",
+    "source": [
+      "entry/src/main/ets/ui/DSBotPanel.ets",
+      "entry/src/main/ets/pages/Index.ets"
+    ],
+    "tests": [
+      "tests/dsbot-chat-layout.test.mjs",
+      "tests/page-keyboard-layout.test.mjs",
+      "tests/check-dsbot.sh"
+    ]
+  },
+  "build": {
+    "exitCode": 0,
+    "elapsedSeconds": 6.83,
+    "reported": "6 s 830 ms",
+    "hapSha256": "c80e6c41f1c899c2c2fa5f0515c55b9f60f0e10713182ee6bea985b168d383cd",
+    "hapBytes": 197455115,
+    "interimBuild": {
+      "note": "First build pinned the composer only, installed for a device check.",
+      "hapSha256": "8416d0dd6eb14f1bb8da4c3e3afb59476afba5739e7208417d4d61b06d65b4dd",
+      "hapBytes": 197455156
+    },
+    "signedPath": "entry/build/default/outputs/default/entry-default-signed.hap"
+  },
+  "tests": {
+    "dsbotChatLayout": {
+      "sourceCases": 3,
+      "compiledCases": 1,
+      "pass": 4,
+      "fail": 0
+    },
+    "pageKeyboardLayout": {
+      "cases": 8,
+      "pass": 8,
+      "fail": 0,
+      "new": "dsBot route keeps RESIZE and restores the baseline on leave"
+    },
+    "defaultEntry": {
+      "command": "PATH=/Applications/DevEco-Studio.app/Contents/tools/node/bin:$PATH sh tests/check-dsbot.sh",
+      "fail": 0,
+      "skip": 0,
+      "exitCode": 0
+    }
+  },
+  "installation": {
+    "installed": true,
+    "successReported": true,
+    "method": "hdc install -r",
+    "installs": 2
+  },
+  "phoneVerification": {
+    "composerWithKeyboard": {
+      "evidence": {
+        "path": "/tmp/dsh-device-20261118/1155-keyboard-resize.png",
+        "bytes": 3741150,
+        "sha256": "dd0957dd18470142898fdcdf5e40a13168633ddf4c5396d4e94bc36f4f2dcb8d"
+      },
+      "sendBounds": "[526,1592][735,1722]",
+      "result": "Send row visible and enabled above the IME; sending from that state cleared the draft."
+    },
+    "composerLongListDismissed": {
+      "evidence": {
+        "path": "/tmp/dsh-device-20261118/1156-long-list-pinned.png",
+        "bytes": 3741150,
+        "sha256": "0473e5feaca8f02c7659ca443a547888cd03d3a0bc750ad717fab83e16e4f901"
+      },
+      "sendBounds": "[526,2448][735,2578]",
+      "result": "With nine persisted messages the composer and send row stayed inside the viewport without scrolling."
+    },
+    "realtimeAfterProperRestart": {
+      "result": "No timeout/failure text after enabling DS Bot and restarting the engine; lws reason-10 count stayed at 7 for the buffer instead of repeating."
+    },
+    "scheduleRetest": {
+      "evidence": {
+        "path": "/tmp/dsh-device-20261118/1157-schedule-stall.json",
+        "bytes": 58215,
+        "sha256": "0f1263cfba45ae0d6b1c86f9e27ee2b542704ec5fe2fc820d459742585cff49a"
+      },
+      "tool": "schedule_create",
+      "requests": 16,
+      "result": "Tool call issued; no bot reply item, no completed tool row, no approval card within 18 s, automation list not reachable for this session before cleanup. Not a pass."
+    },
+    "cleanup": {
+      "evidence": {
+        "path": "/tmp/dsh-device-20261118/1158-layout-bot-deleted.json",
+        "bytes": 34849,
+        "sha256": "cf345a1c68ebf2b523ae378f4163270caebbfccc5ba31dcba49a46d54f9c05a6"
+      },
+      "steps": [
+        "deleted DSH-BOT-LAYOUT-1118",
+        "disabled built-in DS Bot",
+        "restarted local engine",
+        "DS Bot panel shows the enable button only"
+      ]
+    },
+    "finalState": {
+      "evidence": {
+        "path": "/tmp/dsh-device-20261118/1160-dsbot-disabled-phase26.json",
+        "bytes": 24229,
+        "sha256": "e9699d03b3019439ffa0fff7a16597b8e88d6fd0e939f89456711fb95c4db050"
+      },
+      "dsBot": "disabled",
+      "team": "Chief only",
+      "screenOffTimeout": "30000ms",
+      "runningLocks": 0,
+      "forwardRules": "none"
+    }
+  },
+  "fixture": {
+    "providerId": "device_fixture_976c9a5c40054f1cb81bee3a4744bbc4",
+    "port": 64114,
+    "log": {
+      "path": "/tmp/dsh-device-20261118/1152-1157-fixture-phase26.log",
+      "bytes": 21527,
+      "sha256": "b4dd3a0bf459ccd3f5392c1e4c070225b2dbf7c33e9cf8b35bc987955f8f5fd3"
+    },
+    "credential": "reused existing phone credential; server stopped after verification"
+  },
+  "pending": [
+    "Bot/room native scheduling ownership and visibility remain unproven; a silent stall without an approval card is the current reproducible behaviour.",
+    "Group relay/memory and single-chat reply attribution remain as recorded in the 1109-1151 handoff round.",
+    "Other seventeen-row acceptance items and visual parity remain partial."
+  ]
+}

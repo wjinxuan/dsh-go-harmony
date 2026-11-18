@@ -1,3 +1,4 @@
+import { localizedSettingsText } from './SettingsLocale'
 import { common } from '@kit.AbilityKit'
 import { util } from '@kit.ArkTS'
 import { fileIo, fileUri, picker } from '@kit.CoreFileKit'
@@ -41,6 +42,9 @@ async function writeArchive(sourcePath: string, targetUri: string): Promise<void
 
 @Component
 export struct SessionExportPanel {
+  @StorageProp('dshLanguage') private localeLanguage: string = 'system'
+  private t(value: string): string { return localizedSettingsText(value, this.localeLanguage) }
+
   @Prop colors: ThemeColors = themeColors()
   @Prop sessionId: string = ''
   client: DshClient = new DshClient()
@@ -79,7 +83,7 @@ export struct SessionExportPanel {
       this.cancelled = true
       this.cancelling = true
       this.cancelDownload?.()
-      this.notice = '正在取消导出…'
+      this.notice = this.t("正在取消导出…")
       return true
     }
     return !!this.action
@@ -101,19 +105,19 @@ export struct SessionExportPanel {
 
   private errorText(error: Object): string {
     const message = error instanceof Error ? error.message : ''
-    if (/HTTP 404|session-export\/http-404|找不到这个对话/.test(message)) return '找不到这个对话了'
-    if (/找不到会话或导出服务/.test(message)) return '主机上找不到对话或导出服务'
-    if (/HTTP 401|HTTP 403/.test(message)) return '主机拒绝导出此对话'
-    if (this.stage === 'save') return '没能写入所选文件，请检查文件位置后再试。'
-    if (this.stage === 'share') return '没能打开系统分享面板。'
-    if (this.stage === 'picker') return '没能打开文件保存窗口。'
-    return '没能导出，请检查与当前主机的连接后再试。'
+    if (/HTTP 404|session-export\/http-404|找不到这个对话/.test(message)) return this.t("找不到这个对话了")
+    if (/找不到会话或导出服务/.test(message)) return this.t("主机上找不到对话或导出服务")
+    if (/HTTP 401|HTTP 403/.test(message)) return this.t("主机拒绝导出此对话")
+    if (this.stage === 'save') return this.t("没能写入所选文件，请检查文件位置后再试。")
+    if (this.stage === 'share') return this.t("没能打开系统分享面板。")
+    if (this.stage === 'picker') return this.t("没能打开文件保存窗口。")
+    return this.t("没能导出，请检查与当前主机的连接后再试。")
   }
 
   private async begin(action: string): Promise<void> {
     if (!this.active || this.action || !this.sessionId) return
     const context = this.getUIContext().getHostContext() as common.UIAbilityContext | undefined
-    if (!context) { this.error = '当前窗口无法导出对话'; return }
+    if (!context) { this.error = this.t("当前窗口无法导出对话"); return }
     const sessionId = this.sessionId
     const connection = this.client.connectionIdentity()
     const cache = `${context.cacheDir}/session-exports`
@@ -147,7 +151,7 @@ export struct SessionExportPanel {
       if (owned && !handedOff) await clearExportFolder(folder)
       this.cancelDownload = undefined
       if (this.active) {
-        if (this.cancelled) this.notice = '已取消导出'
+        if (this.cancelled) this.notice = this.t("已取消导出")
         this.action = ''
         this.stage = ''
         this.cancelling = false
@@ -160,13 +164,13 @@ export struct SessionExportPanel {
     const options: picker.DocumentSaveOptions = { newFileNames: [name] }
     const destinations = await new picker.DocumentViewPicker(context).save(options)
     if (!destinations.length || !destinations[0]) {
-      if (this.active) this.notice = '已取消保存'
+      if (this.active) this.notice = this.t("已取消保存")
       return
     }
     if (!this.active) return
     this.stage = 'save'
     await writeArchive(path, destinations[0])
-    if (this.active) this.notice = '已保存对话日志'
+    if (this.active) this.notice = this.t("已保存对话日志")
   }
 
   private async share(context: common.UIAbilityContext, path: string, name: string): Promise<boolean> {
@@ -178,24 +182,24 @@ export struct SessionExportPanel {
     this.shareController = controller
     this.completed = (_result: systemShare.ShareOperationResult): void => {
       completed = true
-      if (this.active && this.shareController === controller) this.notice = '系统已确认分享完成'
+      if (this.active && this.shareController === controller) this.notice = this.t("系统已确认分享完成")
     }
     this.dismissed = (): void => {
       dismissed = true
-      if (this.active && this.shareController === controller && !completed) this.notice = '分享面板已关闭'
+      if (this.active && this.shareController === controller && !completed) this.notice = this.t("分享面板已关闭")
     }
     try { controller.on('shareCompleted', this.completed) } catch { /* Completion is optional on older devices. */ }
     try { controller.on('dismiss', this.dismissed) } catch { /* Opening still works without dismiss events. */ }
     try {
       await controller.show(context, { selectionMode: systemShare.SelectionMode.SINGLE, previewMode: systemShare.SharePreviewMode.DEFAULT })
-      if (this.active && !completed && !dismissed) this.notice = '已打开系统分享面板'
+      if (this.active && !completed && !dismissed) this.notice = this.t("已打开系统分享面板")
       // A receiver can still be opening the URI after dismiss/shareCompleted.
       // Keep handed-off archives in private cache until the next expiry sweep.
       return true
     } catch {
       if (completed || dismissed) return true
       this.releaseShareListeners()
-      throw new Error('系统未能打开分享面板')
+      throw new Error(this.t("系统未能打开分享面板"))
     }
   }
 
@@ -218,27 +222,27 @@ export struct SessionExportPanel {
       Row({ space: 12 }) {
         Button({ type: ButtonType.Circle }) {
           Text(DshGlyphs.back).fontFamily(DshGlyphs.family).fontSize(20).fontColor(this.colors.text)
-        }.width(44).height(44).backgroundColor(this.colors.surface).accessibilityText('返回')
+        }.width(44).height(44).backgroundColor(this.colors.surface).accessibilityText(this.t("返回"))
           .enabled(!this.action || this.stage === 'download').onClick(() => { if (!this.back()) this.onClose() })
-        Text('导出对话日志').fontSize(22).fontWeight(FontWeight.Medium).fontColor(this.colors.text).layoutWeight(1)
+        Text(this.t("导出对话日志")).fontSize(22).fontWeight(FontWeight.Medium).fontColor(this.colors.text).layoutWeight(1)
       }.width('100%')
-      Text('打包成一个 ZIP，用于反馈或备份').fontSize(14).fontColor(this.colors.muted).width('100%')
+      Text(this.t("打包成一个 ZIP，用于反馈或备份")).fontSize(14).fontColor(this.colors.muted).width('100%')
       if (!this.sessionId) {
-        Text('请先打开一个对话').fontSize(15).fontColor(this.colors.muted).width('100%').padding(16)
+        Text(this.t("请先打开一个对话")).fontSize(15).fontColor(this.colors.muted).width('100%').padding(16)
       } else {
         Column() {
-          this.item(DshGlyphs.openExternal, '分享', '附在问题反馈里，或发给自己', 'share')
+          this.item(DshGlyphs.openExternal, this.t("分享"), this.t("附在问题反馈里，或发给自己"), 'share')
           Divider().color(this.colors.border)
-          this.item(DshGlyphs.file, '保存到文件', '选择保存 ZIP 的位置', 'save')
+          this.item(DshGlyphs.file, this.t("保存到文件"), this.t("选择保存 ZIP 的位置"), 'save')
         }.width('100%').backgroundColor(this.colors.surface).borderRadius(14)
-        Text('含这个对话和子代理的全部记录与附件').fontSize(13).fontColor(this.colors.muted).width('100%')
+        Text(this.t("含这个对话和子代理的全部记录与附件")).fontSize(13).fontColor(this.colors.muted).width('100%')
       }
       if (this.stage === 'download' && this.action) {
-        Button(this.cancelling ? '正在取消…' : '取消导出').fontColor(this.colors.primary)
+        Button(this.cancelling ? this.t("正在取消…") : this.t("取消导出")).fontColor(this.colors.primary)
           .backgroundColor(this.colors.surface).enabled(!this.cancelling).onClick(() => { this.back() })
       }
       if (this.notice) Text(this.notice).fontSize(14).fontColor(this.colors.muted).width('100%')
-      if (this.error) Text(this.error).fontSize(14).fontColor(this.colors.danger).width('100%')
+      if (this.error) Text(this.t(this.error)).fontSize(14).fontColor(this.colors.danger).width('100%')
     }.width('100%').height('100%').padding(16).backgroundColor(this.colors.background)
   }
 }

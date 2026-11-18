@@ -1,0 +1,238 @@
+{
+  "phase": 21,
+  "recordedAt": "2026-11-18T03:07:17.446816+00:00",
+  "status": "installed-verified-stale-failure-cleared-on-phone",
+  "allAcceptanceComplete": false,
+  "scope": "Clear stale historical failure on actual engine ready; preserve strikes, safe state/reason, log history, stop behavior and existing data.",
+  "phoneFinding": {
+    "step": 746,
+    "status": "CONFIRMED_STALE_FAILURE_NOT_NEW_STOP_FAILURE",
+    "phase": "stopped",
+    "strikes": 0,
+    "failureBeforeStartedAt": true,
+    "evidence": {
+      "path": "/tmp/dsh-device-20261118/746-runtime-state-redacted.json",
+      "bytes": 298,
+      "sha256": "b1f29433b624ded3b33cb211f486303432538f4c4c2d3e8fdbb420caa643ccc5"
+    }
+  },
+  "package": {
+    "previousSha256": "5f1fbe2833694628f86f0c4e6fc1c167e99abb8f66fad6b2b59a5771863826a2",
+    "sha256": "e87517f2c5326458eecbe2907db5ed7ceb2765738a1292e6ef5acf6b3a2d09e3",
+    "bytes": 46625349,
+    "entries": 18394,
+    "changedEntries": [
+      "engine-lifecycle.mjs"
+    ],
+    "crc": "PASS",
+    "otherContentsUnchanged": true
+  },
+  "packageEvidence": {
+    "path": "/tmp/dsh-device-20261118/769-phase21-runtime-package.json",
+    "bytes": 317,
+    "sha256": "4a7ae299a44d0d5d20e906671c1b6ebc9a684c5351c9f995feaa40133ab33c1a"
+  },
+  "build": {
+    "exitCode": 0,
+    "elapsedSeconds": 12.465,
+    "bytes": 197434651,
+    "sha256": "fa0657e449e22b9bf8449b0f2238b0726d94d2515437183cd72eb4c0ee558551"
+  },
+  "buildEvidence": {
+    "path": "/tmp/dsh-device-20261118/775-phase21-build-result.json",
+    "bytes": 150,
+    "sha256": "86dec2cc9bad7675972a63d6f94a2e9b0b55c6cb92b64e86bf9a30b857b0755c"
+  },
+  "buildLog": {
+    "path": "/tmp/dsh-device-20261118/775-phase21-build.log",
+    "bytes": 93488,
+    "sha256": "f10683bf814146b83f14f227b348f74b86eaa9ec42e7a4a2e30c817514477eef"
+  },
+  "tests": {
+    "attempts": [
+      {
+        "name": "maintenance",
+        "exitCode": 0,
+        "command": [
+          "sh",
+          "tests/check-engine-maintenance.sh"
+        ],
+        "log": "/tmp/dsh-device-20261118/779-phase21-maintenance.log"
+      },
+      {
+        "name": "packaged-recovery",
+        "exitCode": 0,
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/engine-recovery-live.mjs",
+          "/tmp/dsh-device-20261118/phase21-packaged-runtime",
+          "tests/local-flock-fixture.cjs"
+        ],
+        "log": "/tmp/dsh-device-20261118/779-phase21-packaged-recovery.log"
+      }
+    ],
+    "evidence": {
+      "path": "/tmp/dsh-device-20261118/779-phase21-tests.json",
+      "bytes": 566,
+      "sha256": "0b7d2d5f433d2d77d803f4d430acffa5eb1344c48ae59af76d782da0daeb7590"
+    },
+    "maintenance": {
+      "exitCode": 0,
+      "pass": 18,
+      "fail": 0,
+      "skip": 0,
+      "breakdown": {
+        "startup": 3,
+        "lifecycleLogReset": 15
+      },
+      "log": {
+        "path": "/tmp/dsh-device-20261118/779-phase21-maintenance.log",
+        "bytes": 1957,
+        "sha256": "38533aade1865b39b94617c416dcd8c82e25d33f06fc0184e64de5f21924dc20"
+      }
+    },
+    "packagedRecovery": {
+      "exitCode": 0,
+      "runtimeExtractedFromActualHap": true,
+      "realBrokenProfileBoots": true,
+      "nativeFlockIsHostFixture": true,
+      "log": {
+        "path": "/tmp/dsh-device-20261118/779-phase21-packaged-recovery.log",
+        "bytes": 206,
+        "sha256": "a786b46bfddbaaf4826d7bc4aaa0fe3209bbd632ea28158d053258a7bb0d5a80"
+      }
+    },
+    "counting": "Do not add repeated source red/green or recovery runs as extra unique cases."
+  },
+  "integrity": {
+    "signatureExitCode": 0,
+    "crc": "PASS",
+    "nativeLibrariesUnchanged": 5,
+    "runtimeSha256": "e87517f2c5326458eecbe2907db5ed7ceb2765738a1292e6ef5acf6b3a2d09e3",
+    "hapSha256": "fa0657e449e22b9bf8449b0f2238b0726d94d2515437183cd72eb4c0ee558551",
+    "changedHapEntries": [
+      "resources/rawfile/dsh-runtime-version.txt",
+      "resources/rawfile/dsh-runtime.zip"
+    ]
+  },
+  "integrityEvidence": {
+    "path": "/tmp/dsh-device-20261118/783-phase21-integrity.json",
+    "bytes": 368,
+    "sha256": "d9480e67a53fa3dd695fdfc74bfdceced6f31bf5312dc77d6f3c7b6ee2088ffa"
+  },
+  "signatureLog": {
+    "path": "/tmp/dsh-device-20261118/783-phase21-signature.log",
+    "bytes": 3285,
+    "sha256": "d8540c1f33bc52b2fc44dfc939e3a3b563025d1d629fe21e772fbb2fa67140f2"
+  },
+  "source": {
+    "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/runtime/engine-lifecycle.mjs",
+    "bytes": 6147,
+    "sha256": "dff26098f62e3d622d1c7f2a22ccd32b371a782fd7dd76576c2837cb74407c37"
+  },
+  "testSources": [
+    {
+      "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/engine-lifecycle.test.mjs",
+      "bytes": 6455,
+      "sha256": "e7ef2f7595dc837ca7b5a301c800bb71491a264ba4c694f49f0bd5a4dfa1efa2"
+    },
+    {
+      "path": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/engine-recovery-live.mjs",
+      "bytes": 2660,
+      "sha256": "ec2b91d006d5ff609def213255c0502cab7c50606e42623c1d0769ed35902cf2"
+    }
+  ],
+  "sourceRedGreenEvidence": {
+    "path": "/tmp/dsh-device-20261118/runtime-failure-ready-verification.json",
+    "bytes": 5093,
+    "sha256": "9833f92a6cdc9b77f4a3d414ec60a77c098d2bb2bdad9a2c6a9b77d46076d0a6"
+  },
+  "installation": {
+    "installed": true,
+    "result": {
+      "exitCode": 0,
+      "elapsedSeconds": 10.654,
+      "hapSha256": "fa0657e449e22b9bf8449b0f2238b0726d94d2515437183cd72eb4c0ee558551"
+    },
+    "evidence": {
+      "path": "/tmp/dsh-device-20261118/791-phase21-install-result.json",
+      "bytes": 131,
+      "sha256": "5dd29a13f79ab88999d2fe299b7a83d7d86261254952ea7ba1cce2b1278a0f62"
+    },
+    "log": {
+      "path": "/tmp/dsh-device-20261118/791-phase21-install.log",
+      "bytes": 175,
+      "sha256": "9ed9b6d76b5a09c3b3c13dbf265f3febc86fce9d44419041234e67e7b07cafce"
+    },
+    "process": {
+      "pid": "23397",
+      "previousPid": "14169",
+      "runtimeVersion": "e87517f2c5326458eecbe2907db5ed7ceb2765738a1292e6ef5acf6b3a2d09e3",
+      "port": 38227
+    },
+    "processEvidence": {
+      "path": "/tmp/dsh-device-20261118/795-phase21-process.json",
+      "bytes": 152,
+      "sha256": "a29a00e1794fd3aeb98e15e40feb1b4326b84319844d6de4ec7bae481a8ab845"
+    },
+    "phoneStaleFailureClearVerified": true,
+    "runtimeState": {
+      "phase": "running",
+      "startedAt": 1794970773670,
+      "healthyAt": 1794970184671,
+      "strikes": 0,
+      "failurePresent": false
+    },
+    "runtimeStateEvidence": {
+      "path": "/tmp/dsh-device-20261118/795-runtime-state-redacted.json",
+      "bytes": 128,
+      "sha256": "4fd8d0e674aca13598429e684d6b09e454d0854365f7eb841f5585509eec39c4"
+    },
+    "uiStep": 796,
+    "uiStaleFailurePresent": false,
+    "uiEvidence": [
+      {
+        "path": "/tmp/dsh-device-20261117/796-phase21-engine-clean.json",
+        "bytes": 32115,
+        "sha256": "ebfa63f395e0a22ca32912b2cefcbd6bc52fdee148b72815d2e49600f1dc42d2"
+      },
+      {
+        "path": "/tmp/dsh-device-20261118/796-phase21-engine-clean.log",
+        "bytes": 4049,
+        "sha256": "fb9e3a242856420dcbb3e07efe0883ca26fcd5ddc61682237239e6405c1e582a"
+      }
+    ]
+  },
+  "remaining": [
+    "Background notification delivery failed to be observed during Frozen/background state; supported fix/retest pending",
+    "Final own skill cleanup absence verification pending; backups retained",
+    "Other acceptance cases and notification/SCREEN/timeout restoration remain partial"
+  ],
+  "preInstallSnapshot": {
+    "status": "built-verified-not-installed",
+    "recordedAt": "2026-11-18T02:59:31.234010+00:00",
+    "installation": {
+      "installed": false,
+      "phoneStaleFailureClearVerified": false
+    }
+  },
+  "laterPhoneBoundaries": {
+    "throughStep": 850,
+    "backgroundNotificationPassed": false,
+    "evidence": {
+      "path": "/tmp/dsh-device-20261118/synthetic-openai-24gorhxs/phase21-short-notify-recovery-verification.json",
+      "bytes": 5456,
+      "sha256": "eaca21de51c1a11ed8f78c7d68e50f419651fa75c83650a27c1c762d3adaa5c8"
+    },
+    "foregroundSearchAndRouteEvidence": {
+      "path": "/tmp/dsh-device-20261118/fulltext-foreground-notification-phone-verification.json",
+      "bytes": 11264,
+      "sha256": "044f2adbcf3c5d3afc59c848db533ac7b54a532227a8de7c18795625874fef5f"
+    },
+    "skillImportEvidence": {
+      "path": "/tmp/dsh-device-20261118/profile-share-ui-prepared/skill-phone-ui-complete-verification.json",
+      "bytes": 17183,
+      "sha256": "f11999c32f9ff7ef5320d67e49ad4f1e66f8b981dfd268331bf115b2174098af"
+    }
+  }
+}

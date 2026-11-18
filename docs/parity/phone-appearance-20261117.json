@@ -1,0 +1,264 @@
+{
+  "recordedAt": "2026-11-17T09:02:32.222370+00:00",
+  "phase": 16,
+  "snapshotThrough": 487,
+  "status": "PERSISTENCE_PASS_WITH_IMMEDIATE_LANGUAGE_REFRESH_FAILURE",
+  "allAcceptanceComplete": false,
+  "hapSha256": "d677c58ef79eef4f9580c820667a50e30ce9df2123c8f73bf8146a59c4a9cda4",
+  "runtimeSha256": "93bd20716200d852353999568f4898f9fca2f69846fac5bfc4d0ce85d0ebcf27",
+  "observer": "ROOT operated the phone and confirmed the listed visual results. scribe_translation independently read the UI trees and isolated fixture events; it did not operate HDC, change models or invoke phone actions.",
+  "scope": "Actual phone appearance preferences, reopening and immediate language refresh; no external service.",
+  "newFixBuildPassed": false,
+  "newFixPhoneRecheckPassed": false,
+  "baseline": {
+    "step": 465,
+    "theme": "system",
+    "accent": "mist",
+    "fontSize": 16,
+    "language": "system",
+    "glass": true
+  },
+  "checks": [
+    {
+      "id": "theme-font-persistence",
+      "steps": [
+        466,
+        469
+      ],
+      "status": "PASS",
+      "actual": "Dark theme and font size 20 remain after leaving and reopening."
+    },
+    {
+      "id": "language-immediate-refresh",
+      "steps": [
+        467,
+        468
+      ],
+      "status": "FAIL",
+      "actual": "Title is Theme and interface but existing toggle labels remain Chinese."
+    },
+    {
+      "id": "language-reopen",
+      "steps": [
+        469
+      ],
+      "status": "PASS",
+      "actual": "Recreated page labels are English; this does not fix immediate refresh."
+    },
+    {
+      "id": "glass-off-persistence",
+      "steps": [
+        470,
+        471,
+        474
+      ],
+      "status": "PASS",
+      "actual": "Explicit thumb click sets glass false; reopen retains false."
+    },
+    {
+      "id": "restore-preferences",
+      "steps": [
+        472,
+        473,
+        474,
+        475,
+        476
+      ],
+      "status": "PASS_LISTED_BASELINE",
+      "actual": "473 language System; 474 System theme, font16 and Chinese labels. Thumb click at 1117,1990 in 475 restores glass true, confirmed settled476.",
+      "restored": {
+        "theme": "system",
+        "fontSize": 16,
+        "language": "system",
+        "glass": true
+      }
+    }
+  ],
+  "fixStatus": "Immediate language supplier refresh is being fixed separately. No new build or device recheck claimed.",
+  "limits": [
+    "No full settings acceptance pass; wallpaper/custom color/wide screen/OAuth/notifications and other forms are not covered.",
+    "Only listed settings were changed/restored; no claim of an exhaustive preference-file byte comparison."
+  ],
+  "evidence": [
+    {
+      "path": "/tmp/dsh-device-20261117/465-appearance-baseline.json",
+      "bytes": 34336,
+      "sha256": "bb2da188f0d93b7c328ad947e64279fbcc3a0f80cedecbf09c0a7bb0962d26e8"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/465-appearance-baseline.log",
+      "bytes": 4254,
+      "sha256": "d4cb0ab2b981fd7c766f14515a0df81c0995e0a1b25a32853bc3938da8937463"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/465-appearance-baseline.png",
+      "bytes": 3345251,
+      "sha256": "91057c9e04b2bf18f1094de2e04fd9f0c3bf77313899598c444691682b9908af"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/466-appearance-dark20.json",
+      "bytes": 31752,
+      "sha256": "21c6c7c5764c7df19f254659eacbbae75e6414b236d73f4ee6183eb5598a9d0c"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/466-appearance-dark20.log",
+      "bytes": 3881,
+      "sha256": "ec820ade5e959936872eb350f6d0f0444f7058911b6414eab5880c70430da596"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/466-appearance-dark20.png",
+      "bytes": 3345251,
+      "sha256": "f60f81b4b50b8cd78b4fd6589ae3dd992c04e9359ef5e18608dda80f2cec783b"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/467-appearance-language.json",
+      "bytes": 24457,
+      "sha256": "58b09e59a8a56b3d6019d57abd937758a057eef9e466a06ce76489bd72857e96"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/467-appearance-language.log",
+      "bytes": 2418,
+      "sha256": "5e34767ae2ff363a5135b2330b3de672ab987bfc6f9c3cb44908d235316d1360"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/467-appearance-language.png",
+      "bytes": 3345251,
+      "sha256": "54f97a4ffc8f4e4770b15a06555f0a2ef1be406ae845f07858abd9234477f5c7"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/468-appearance-english.json",
+      "bytes": 24463,
+      "sha256": "97b1a61a83da4815c8c85ead06e3c29c36824a4d6de77b279297d1bc7a341360"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/468-appearance-english.log",
+      "bytes": 2430,
+      "sha256": "2ca60b6bcdc1598c131554cc68aea0b342f52ccbe0337dcbeb6a1cafa1ca6f8f"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/468-appearance-english.png",
+      "bytes": 3345251,
+      "sha256": "a38cd92937a84cb0269b3a09daa584b216119c74ec2abb78641895d57766419e"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/469-appearance-reopened.json",
+      "bytes": 34418,
+      "sha256": "afd4fedea77da55f365bd623df49a83a66253a58f482c7f4ad768b40a26350f1"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/469-appearance-reopened.log",
+      "bytes": 4258,
+      "sha256": "5c25afb44ebad45d95194adefecd0295dd4778e74f5ce7d7b5ae00d5d4cdcc07"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/469-appearance-reopened.png",
+      "bytes": 3345251,
+      "sha256": "16b4a96c744b14dfe05da40e7bcd7bffff16a87cc987b9c7cdd155788650da15"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/470-appearance-glass-toggle.json",
+      "bytes": 34419,
+      "sha256": "11d311c84c6d6040c34fd41710c405f0820f4158747befa958fc0466311c5bb3"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/470-appearance-glass-toggle.log",
+      "bytes": 4231,
+      "sha256": "a2b58e87c90a25e4c3064029f8f88f857617b68dae3d2e3dfdedeafcf0613ada"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/470-appearance-glass-toggle.png",
+      "bytes": 3345251,
+      "sha256": "07efca959bfbd4b365fcca70df0ca53fc11b3bce36da5ef68a873b71a9893025"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/471-appearance-glass-settled.json",
+      "bytes": 34419,
+      "sha256": "11d311c84c6d6040c34fd41710c405f0820f4158747befa958fc0466311c5bb3"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/471-appearance-glass-settled.log",
+      "bytes": 4222,
+      "sha256": "8242db6e599bcb61e5ff73462f98978b0fd48123fe93eb3a65e1bdef3e61090c"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/471-appearance-glass-settled.png",
+      "bytes": 3345251,
+      "sha256": "6702280f17765a01654f1f1e8dee3ef440fbccdd1e89b31f7c3d49016959e019"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/472-appearance-restoring.json",
+      "bytes": 24528,
+      "sha256": "a784f385e87222575442b7b50a1f18cd455b51744be3c5898aae70bf3050234a"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/472-appearance-restoring.log",
+      "bytes": 2441,
+      "sha256": "7033bcb7e773983def5b1e8610a7f8fc4ba4aa69566be077a8715a91803bba69"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/472-appearance-restoring.png",
+      "bytes": 3345251,
+      "sha256": "f79de9aa14d9db02e50407630f939d462d5ace50b1dbe2122a5131d32ef1e735"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/473-appearance-restore-language.json",
+      "bytes": 24522,
+      "sha256": "b83bd88edc6c4ef0b960864a26f330b76f13e76977c0aa6c0703cb8bfa9a3c8e"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/473-appearance-restore-language.log",
+      "bytes": 2429,
+      "sha256": "37b860ab277571b1e0cd472ff8a9b9e7e62fa44a9c249da430fea8be906a15c3"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/473-appearance-restore-language.png",
+      "bytes": 3345251,
+      "sha256": "603c0612c449d0b0cf90d46d4cb5672dc1fca6f00e0c6d941ea7553050645ff9"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/474-appearance-restored.json",
+      "bytes": 34429,
+      "sha256": "439ad181c90d1abe0a2eaf3c5ab6b43fb09e93ffc61d3504b13d1e223bb9dd45"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/474-appearance-restored.log",
+      "bytes": 4264,
+      "sha256": "350bd1813d9699d87b3c92a4755c38e1112ab2bc19a4ef475be4bba219fc32fa"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/474-appearance-restored.png",
+      "bytes": 3345251,
+      "sha256": "964a938ecbb90fc0dfe1a6cedbd77f6322829a5ee0ae15c2451019710ffa8db6"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/475-glass-restore.json",
+      "bytes": 34428,
+      "sha256": "a4ac6fc3be5c6345a174992c2db9b065e3063d70af74f620c3bbb04b91041c07"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/475-glass-restore.log",
+      "bytes": 4235,
+      "sha256": "9938d9963cccebd48fd908ae2dbb76e2439c4e9ee787090be6634a4565dc2d2c"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/475-glass-restore.png",
+      "bytes": 3345251,
+      "sha256": "76041c08aaa5aa414c40f0f459d895fb4d13219d8fb3f17f5ae063f778dd3ad7"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/476-glass-restored-settled.json",
+      "bytes": 34428,
+      "sha256": "a4ac6fc3be5c6345a174992c2db9b065e3063d70af74f620c3bbb04b91041c07"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/476-glass-restored-settled.log",
+      "bytes": 10438,
+      "sha256": "e022d3d4dfa392816e1f484940bc073349b7fae8ce6c83ac79ba1678d9121b52"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/476-glass-restored-settled.png",
+      "bytes": 3345251,
+      "sha256": "2e6f92c53e6a77601d29da17a3e0632a80582c84d154b768e0e10e34f4e06196"
+    }
+  ]
+}

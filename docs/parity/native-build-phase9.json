@@ -1,0 +1,3743 @@
+{
+  "source_reference": "dsh-Go v1.0.15 a9877420ab9aee121134faf01b6a92a39ce0b05b",
+  "verified_at": "2026-11-17T11:00:59.371960+08:00",
+  "bundle": "com.dshgo.harmony",
+  "version_name": "1.0.1",
+  "version_code": 1000001,
+  "status": "All inventoried runnable development checks passed; zero unresolved failures and zero skipped cases in latest effective runs. Device functional/visual and external service acceptance pending.",
+  "artifact": {
+    "hap": "entry/build/default/outputs/default/entry-default-signed.hap",
+    "hap_sha256": "2dd0dab30719cda0fee13a09c71c555288459bc5321d6508b15f7e0f53fef16a",
+    "hap_size_bytes": 196715820,
+    "runtime_sha256": "751480d93025e54d1bac6ad71a18d4fa21654fcd6284ec5d03d4e843763cd451",
+    "zip_crc": true,
+    "embedded_runtime_digest": true,
+    "native_libraries": [
+      "libs/arm64-v8a/libc++_shared.so",
+      "libs/arm64-v8a/libdshlocal.so",
+      "libs/arm64-v8a/libnode.so",
+      "libs/arm64-v8a/libonnxruntime.so",
+      "libs/arm64-v8a/libsherpa-onnx-c-api.so"
+    ],
+    "elf_arm64": true
+  },
+  "production_source_check": {
+    "files": 451,
+    "changed_files": [],
+    "baseline_sha256": "b89bfb252bb9b49fae678ed85b65c46f961854c0d9a66785d659bdc645f6d376"
+  },
+  "build": {
+    "command": "hvigorw --mode module -p module=entry@default -p product=default -p buildMode=debug assembleHap --no-daemon",
+    "exit_code": 0,
+    "log": "/tmp/dsh-20261117-build.log",
+    "mode": "incremental; 14 tasks executed, 19 up-to-date; production sources and signed artifact unchanged",
+    "duration_seconds": 2.976,
+    "independent_signature_verification": {
+      "exit_code": 0,
+      "log": "/tmp/dsh-20261117-signature.log",
+      "digest": true,
+      "permission_signature": true
+    }
+  },
+  "summary": {
+    "unit_ui_browser_commands": 76,
+    "unit_ui_browser_reported_tests": 612,
+    "unit_ui_browser_assertion_only_commands": 3,
+    "runtime_native_remote_commands": 38,
+    "generated_arkui_tests": 10,
+    "rtc_turn_tests": 5,
+    "unresolved_failures": 0,
+    "skipped": 0,
+    "counting_note": "Command counts and individual assertions are different units. Supplemental/root runs and overlapping wrapper assertions are not added to a fabricated unique grand total."
+  },
+  "unit_ui_browser": {
+    "environment": {
+      "DSH_RECALL_RUNTIME": "/tmp/dsh-release-runtime",
+      "DSH_SIGNAL_RUNTIME": "/tmp/dsh-release4-runtime",
+      "DSH_DELETION_RUNTIME": "/tmp/dsh-release-runtime",
+      "DSH_SCHEDULE_PATCH_SOURCE": "/tmp/dsh-release4-runtime",
+      "DSH_RUNTIME_MODULES": "/tmp/dsh-release4-runtime/node_modules",
+      "DSH_RENDER_PLAYWRIGHT": "/Users/wangzhaojin/work/dsh/ai-ppt-generator/node_modules/playwright",
+      "DSH_TERMINAL_PLAYWRIGHT": "/Users/wangzhaojin/work/dsh/ai-ppt-generator/node_modules/playwright",
+      "DSH_RENDER_BROWSER": "/Users/wangzhaojin/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell",
+      "DSH_TERMINAL_BROWSER": "/Users/wangzhaojin/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell"
+    },
+    "summary": {
+      "commands": 76,
+      "passed_commands": 76,
+      "nonzero": 0,
+      "reported_counts": {
+        "tests": 612,
+        "pass": 612,
+        "fail": 0,
+        "skipped": 0
+      },
+      "assertion_only_commands": 3,
+      "prior_failed_attempts": 2,
+      "prior_failed_tests": 8,
+      "repository_test_files": 89,
+      "repository_test_files_run_here": 82,
+      "repository_test_files_delegated": 7
+    },
+    "commands": [
+      {
+        "id": "check-account",
+        "argv": [
+          "sh",
+          "tests/check-account.sh"
+        ],
+        "covered_files": [
+          "account.test.mjs"
+        ],
+        "kind": "pure-wrapper",
+        "command": "sh tests/check-account.sh",
+        "log": "/tmp/dsh-20261117-unit-check-account.log",
+        "started_at": "2026-11-17T10:47:54+0800",
+        "exit_code": 0,
+        "counts": {},
+        "summary_sections": 0,
+        "duration_seconds": 0.302,
+        "pass_lines": [],
+        "status": "passed",
+        "count_note": "This assertion script reports no node:test case totals; no count is invented.",
+        "log_sha256": "6b7e02b1ccd50f08ff903d141a4b6b000fe71e228a0815bc1015530b14ad9777"
+      },
+      {
+        "id": "check-appearance-notifications",
+        "argv": [
+          "sh",
+          "tests/check-appearance-notifications.sh"
+        ],
+        "covered_files": [
+          "appearance-notifications.test.mjs"
+        ],
+        "kind": "pure-wrapper",
+        "command": "sh tests/check-appearance-notifications.sh",
+        "log": "/tmp/dsh-20261117-unit-check-appearance-notifications.log",
+        "started_at": "2026-11-17T10:47:54+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 5,
+          "suites": 0,
+          "pass": 5,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.348,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "94602fbe676006d1e4f42019668994ff48e25650a55d5e3de26d2f95029b103d"
+      },
+      {
+        "id": "check-companion-contracts",
+        "argv": [
+          "sh",
+          "tests/check-companion-contracts.sh"
+        ],
+        "covered_files": [
+          "companion-contracts.test.mjs",
+          "companion-recall-patch.test.mjs"
+        ],
+        "kind": "pure-wrapper",
+        "command": "sh tests/check-companion-contracts.sh",
+        "log": "/tmp/dsh-20261117-unit-check-companion-contracts.log",
+        "started_at": "2026-11-17T10:47:54+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 27,
+          "suites": 0,
+          "pass": 27,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.358,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "acc1434932e9f645e6adc9bf4e08a8bfc280ccbc55a6524c931965044f32c6ab"
+      },
+      {
+        "id": "check-dsh-wire",
+        "argv": [
+          "sh",
+          "tests/check-dsh-wire.sh"
+        ],
+        "covered_files": [
+          "dsh-wire.test.mjs"
+        ],
+        "kind": "pure-wrapper",
+        "command": "sh tests/check-dsh-wire.sh",
+        "log": "/tmp/dsh-20261117-unit-check-dsh-wire.log",
+        "started_at": "2026-11-17T10:47:54+0800",
+        "exit_code": 0,
+        "counts": {},
+        "summary_sections": 0,
+        "duration_seconds": 0.238,
+        "pass_lines": [],
+        "status": "passed",
+        "count_note": "This assertion script reports no node:test case totals; no count is invented.",
+        "log_sha256": "24b6f70bac7ea4449b0a14943caadd099f9c0503d058c28fb51cf403143db558"
+      },
+      {
+        "id": "check-cot-scribe",
+        "argv": [
+          "sh",
+          "tests/check-cot-scribe.sh"
+        ],
+        "covered_files": [
+          "cot-scribe.test.mjs"
+        ],
+        "kind": "pure-wrapper",
+        "command": "sh tests/check-cot-scribe.sh",
+        "log": "/tmp/dsh-20261117-unit-check-cot-scribe.log",
+        "started_at": "2026-11-17T10:47:54+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 12,
+          "suites": 0,
+          "pass": 12,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.401,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "cf4743f86eb805184ad1f0d630b153cfa56ae3580bbb541f43fa240ffdd52086"
+      },
+      {
+        "id": "check-dsbot",
+        "argv": [
+          "sh",
+          "tests/check-dsbot.sh"
+        ],
+        "covered_files": [
+          "dsbot-schedules.test.mjs",
+          "dsbot.test.mjs"
+        ],
+        "kind": "pure-wrapper",
+        "command": "sh tests/check-dsbot.sh",
+        "log": "/tmp/dsh-20261117-unit-check-dsbot.log",
+        "started_at": "2026-11-17T10:47:54+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 16,
+          "suites": 0,
+          "pass": 16,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 2,
+        "duration_seconds": 0.467,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "8f70e76fa58c44eb63866009f6c17e5eef2afba820247014060244e0c7575a0f"
+      },
+      {
+        "id": "check-engine-features",
+        "argv": [
+          "sh",
+          "tests/check-engine-features.sh"
+        ],
+        "covered_files": [
+          "engine-features.test.mjs"
+        ],
+        "kind": "pure-wrapper",
+        "command": "sh tests/check-engine-features.sh",
+        "log": "/tmp/dsh-20261117-unit-check-engine-features.log",
+        "started_at": "2026-11-17T10:47:54+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 4,
+          "suites": 0,
+          "pass": 4,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.261,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "60dc042dee71877801a887c01699fa2d1ce9a8d36d92ba338874cb90f5e69c11"
+      },
+      {
+        "id": "check-forum",
+        "argv": [
+          "sh",
+          "tests/check-forum.sh"
+        ],
+        "covered_files": [
+          "forum-data.test.mjs"
+        ],
+        "kind": "pure-wrapper",
+        "command": "sh tests/check-forum.sh",
+        "log": "/tmp/dsh-20261117-unit-check-forum.log",
+        "started_at": "2026-11-17T10:47:55+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 5,
+          "suites": 0,
+          "pass": 5,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.31,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "7f1a7e9fd49af14df4062d3a9ec923122934d3db96a92b97a3cb588151547c1a"
+      },
+      {
+        "id": "check-engine-maintenance",
+        "argv": [
+          "sh",
+          "tests/check-engine-maintenance.sh"
+        ],
+        "covered_files": [
+          "engine-lifecycle.test.mjs",
+          "engine-log.test.mjs",
+          "engine-reset.test.mjs",
+          "startup.test.mjs"
+        ],
+        "kind": "pure-wrapper",
+        "command": "sh tests/check-engine-maintenance.sh",
+        "log": "/tmp/dsh-20261117-unit-check-engine-maintenance.log",
+        "started_at": "2026-11-17T10:47:54+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 15,
+          "suites": 0,
+          "pass": 15,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 2,
+        "duration_seconds": 0.576,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "3bd68d5ce82ffcb8efe4ddce567587f50c11cf0b0a89136990928af50d669669"
+      },
+      {
+        "id": "check-markdown",
+        "argv": [
+          "sh",
+          "tests/check-markdown.sh"
+        ],
+        "covered_files": [
+          "markdown.test.mjs"
+        ],
+        "kind": "pure-wrapper",
+        "command": "sh tests/check-markdown.sh",
+        "log": "/tmp/dsh-20261117-unit-check-markdown.log",
+        "started_at": "2026-11-17T10:47:55+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 8,
+          "suites": 0,
+          "pass": 8,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.25,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "2115b9e65e8c70e5d67308a87b235b4d32da0f9fdfe757f5978184f1d957da3d"
+      },
+      {
+        "id": "check-media",
+        "argv": [
+          "sh",
+          "tests/check-media.sh"
+        ],
+        "covered_files": [
+          "media.test.mjs"
+        ],
+        "kind": "pure-wrapper",
+        "command": "sh tests/check-media.sh",
+        "log": "/tmp/dsh-20261117-unit-check-media.log",
+        "started_at": "2026-11-17T10:47:55+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 8,
+          "suites": 0,
+          "pass": 8,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.252,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "4538ad1397aeaab37e376bf174d2cea37efdb51b2a6c1358f41f677f452aa0b2"
+      },
+      {
+        "id": "check-model-panel",
+        "argv": [
+          "sh",
+          "tests/check-model-panel.sh"
+        ],
+        "covered_files": [
+          "model-panel.test.mjs"
+        ],
+        "kind": "pure-wrapper",
+        "command": "sh tests/check-model-panel.sh",
+        "log": "/tmp/dsh-20261117-unit-check-model-panel.log",
+        "started_at": "2026-11-17T10:47:55+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 7,
+          "suites": 0,
+          "pass": 7,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.262,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "536a6b28526790e07a0f805dce6168ef0c656b616fd6312b4095de50c0c92163"
+      },
+      {
+        "id": "check-notifications",
+        "argv": [
+          "sh",
+          "tests/check-notifications.sh"
+        ],
+        "covered_files": [
+          "notifications.test.mjs"
+        ],
+        "kind": "pure-wrapper",
+        "command": "sh tests/check-notifications.sh",
+        "log": "/tmp/dsh-20261117-unit-check-notifications.log",
+        "started_at": "2026-11-17T10:47:55+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 4,
+          "suites": 0,
+          "pass": 4,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.295,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "319a3272b1b4bc02855bf06cd52c29724d91d04531e787c323a62051a99b1e66"
+      },
+      {
+        "id": "check-locale",
+        "argv": [
+          "sh",
+          "tests/check-locale.sh"
+        ],
+        "covered_files": [
+          "locale.test.mjs"
+        ],
+        "kind": "pure-wrapper",
+        "command": "sh tests/check-locale.sh",
+        "log": "/tmp/dsh-20261117-unit-check-locale.log",
+        "started_at": "2026-11-17T10:47:55+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 4,
+          "suites": 0,
+          "pass": 4,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 1.239,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "ef9077f7105b0107cf1c80d77c04ce0c2ebf3f4d1802e761eb9d1c02ab9553f0"
+      },
+      {
+        "id": "check-onboarding",
+        "argv": [
+          "sh",
+          "tests/check-onboarding.sh"
+        ],
+        "covered_files": [
+          "onboarding.test.mjs"
+        ],
+        "kind": "pure-wrapper",
+        "command": "sh tests/check-onboarding.sh",
+        "log": "/tmp/dsh-20261117-unit-check-onboarding.log",
+        "started_at": "2026-11-17T10:47:56+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 3,
+          "suites": 0,
+          "pass": 3,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.258,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "fb010943acbe3e8c6f6d09135209709debf6c13b8d96b1e1bf0de7c430b2333f"
+      },
+      {
+        "id": "check-profile-share",
+        "argv": [
+          "sh",
+          "tests/check-profile-share.sh"
+        ],
+        "covered_files": [
+          "profile-share-controller.test.mjs",
+          "profile-share.test.mjs"
+        ],
+        "kind": "pure-wrapper",
+        "command": "sh tests/check-profile-share.sh",
+        "log": "/tmp/dsh-20261117-unit-check-profile-share.log",
+        "started_at": "2026-11-17T10:47:56+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 12,
+          "suites": 0,
+          "pass": 12,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.446,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "52b152ad8e040d23079054e271cc1785cf746cb6a9a8c2b2127313e02a592792"
+      },
+      {
+        "id": "check-question-drafts",
+        "argv": [
+          "sh",
+          "tests/check-question-drafts.sh"
+        ],
+        "covered_files": [
+          "question-drafts.test.mjs"
+        ],
+        "kind": "pure-wrapper",
+        "command": "sh tests/check-question-drafts.sh",
+        "log": "/tmp/dsh-20261117-unit-check-question-drafts.log",
+        "started_at": "2026-11-17T10:47:56+0800",
+        "exit_code": 0,
+        "counts": {},
+        "summary_sections": 0,
+        "duration_seconds": 0.245,
+        "pass_lines": [
+          "PASS single choice, invalid input and session-isolated immutable drafts",
+          "PASS multi-choice, freeform completeness and settled/host cleanup",
+          "PASS timed-to-continued answer and cross-session composer recovery",
+          "PASS live todo summary and goal headline"
+        ],
+        "status": "passed",
+        "count_note": "This assertion script reports no node:test case totals; no count is invented.",
+        "log_sha256": "6c050fc2732060aa68189755227ec7053ff3d7a17efe4e11bf7c034410198a71"
+      },
+      {
+        "id": "check-remote-hosts",
+        "argv": [
+          "sh",
+          "tests/check-remote-hosts.sh"
+        ],
+        "covered_files": [
+          "remote-hosts.test.mjs"
+        ],
+        "kind": "pure-wrapper",
+        "command": "sh tests/check-remote-hosts.sh",
+        "log": "/tmp/dsh-20261117-unit-check-remote-hosts.log",
+        "started_at": "2026-11-17T10:47:57+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 5,
+          "suites": 0,
+          "pass": 5,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.233,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "7679fca6052bed5f831418b0994ab0ccf1dce63746f1925e67f06579273f70fa"
+      },
+      {
+        "id": "check-mentions",
+        "argv": [
+          "sh",
+          "tests/check-mentions.sh"
+        ],
+        "covered_files": [
+          "mentions.test.mjs"
+        ],
+        "kind": "pure-wrapper",
+        "command": "sh tests/check-mentions.sh",
+        "log": "/tmp/dsh-20261117-unit-check-mentions.log",
+        "started_at": "2026-11-17T10:47:55+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 11,
+          "suites": 0,
+          "pass": 11,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 1.97,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "2ecba80217b937dfbcf195b40d44d3ffd7fc513ee044733b90887338e44b0c46"
+      },
+      {
+        "id": "check-session-detail",
+        "argv": [
+          "sh",
+          "tests/check-session-detail.sh"
+        ],
+        "covered_files": [
+          "session-detail.test.mjs"
+        ],
+        "kind": "pure-wrapper",
+        "command": "sh tests/check-session-detail.sh",
+        "log": "/tmp/dsh-20261117-unit-check-session-detail.log",
+        "started_at": "2026-11-17T10:47:57+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 5,
+          "suites": 0,
+          "pass": 5,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.24,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "7fc125f1a009b0783f9677a4603ad717586830e03432654f56cbd2ee818ac392"
+      },
+      {
+        "id": "check-sensevoice",
+        "argv": [
+          "sh",
+          "tests/check-sensevoice.sh"
+        ],
+        "covered_files": [
+          "sensevoice.test.mjs"
+        ],
+        "kind": "pure-wrapper",
+        "command": "sh tests/check-sensevoice.sh",
+        "log": "/tmp/dsh-20261117-unit-check-sensevoice.log",
+        "started_at": "2026-11-17T10:47:57+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 15,
+          "suites": 0,
+          "pass": 15,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.454,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "a57e4c646661b338bdb7cad4de5b1bd015cc0fa1712ff3d40d6dda11646b13e3"
+      },
+      {
+        "id": "check-session-export",
+        "argv": [
+          "sh",
+          "tests/check-session-export.sh"
+        ],
+        "covered_files": [
+          "session-export.test.mjs"
+        ],
+        "kind": "pure-wrapper",
+        "command": "sh tests/check-session-export.sh",
+        "log": "/tmp/dsh-20261117-unit-check-session-export.log",
+        "started_at": "2026-11-17T10:47:57+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 2,
+          "suites": 0,
+          "pass": 2,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.202,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "93ffda5f6a922bf88bb5dafd212b395d22cbb111e3b22e87e384894abceb2ba3"
+      },
+      {
+        "id": "check-session-options",
+        "argv": [
+          "sh",
+          "tests/check-session-options.sh"
+        ],
+        "covered_files": [
+          "session-options.test.mjs"
+        ],
+        "kind": "pure-wrapper",
+        "command": "sh tests/check-session-options.sh",
+        "log": "/tmp/dsh-20261117-unit-check-session-options.log",
+        "started_at": "2026-11-17T10:47:57+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 2,
+          "suites": 0,
+          "pass": 2,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.24,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "0255d8b7e93ccf9d4ed633d9d26370d86bc30a1da8d997104d3454c7fc1e8d6a"
+      },
+      {
+        "id": "check-session-management",
+        "argv": [
+          "sh",
+          "tests/check-session-management.sh"
+        ],
+        "covered_files": [
+          "session-management.test.mjs"
+        ],
+        "kind": "pure-wrapper",
+        "command": "sh tests/check-session-management.sh",
+        "log": "/tmp/dsh-20261117-unit-check-session-management.log",
+        "started_at": "2026-11-17T10:47:57+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 6,
+          "suites": 0,
+          "pass": 6,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.368,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "20a190a50b6510184599ff754da09c128c41e453dfc2b1a107413c161af2eb6c"
+      },
+      {
+        "id": "check-settings",
+        "argv": [
+          "sh",
+          "tests/check-settings.sh"
+        ],
+        "covered_files": [
+          "settings.test.mjs"
+        ],
+        "kind": "pure-wrapper",
+        "command": "sh tests/check-settings.sh",
+        "log": "/tmp/dsh-20261117-unit-check-settings.log",
+        "started_at": "2026-11-17T10:47:58+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 6,
+          "suites": 0,
+          "pass": 6,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.258,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "7806f686771782b4ad152ffe9a3e9b3a630b0ed5d8af21a5f6d0c8d41c724997"
+      },
+      {
+        "id": "check-speech",
+        "argv": [
+          "sh",
+          "tests/check-speech.sh"
+        ],
+        "covered_files": [
+          "speech.test.mjs"
+        ],
+        "kind": "pure-wrapper",
+        "command": "sh tests/check-speech.sh",
+        "log": "/tmp/dsh-20261117-unit-check-speech.log",
+        "started_at": "2026-11-17T10:47:58+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 9,
+          "suites": 0,
+          "pass": 9,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.301,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "6d7da386fc0f0a7408cd13e3126c2622fe7ffc657682cdfd0248276ea1525a97"
+      },
+      {
+        "id": "check-subscriptions",
+        "argv": [
+          "sh",
+          "tests/check-subscriptions.sh"
+        ],
+        "covered_files": [
+          "subscriptions.test.mjs"
+        ],
+        "kind": "pure-wrapper",
+        "command": "sh tests/check-subscriptions.sh",
+        "log": "/tmp/dsh-20261117-unit-check-subscriptions.log",
+        "started_at": "2026-11-17T10:47:58+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 7,
+          "suites": 0,
+          "pass": 7,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.303,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "756bd747c3e5c3fd6295904239e9931aaf4d78dc28b45ef50104222a771e190b"
+      },
+      {
+        "id": "check-usage-stats",
+        "argv": [
+          "sh",
+          "tests/check-usage-stats.sh"
+        ],
+        "covered_files": [
+          "usage-stats.test.mjs"
+        ],
+        "kind": "pure-wrapper",
+        "command": "sh tests/check-usage-stats.sh",
+        "log": "/tmp/dsh-20261117-unit-check-usage-stats.log",
+        "started_at": "2026-11-17T10:47:58+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 5,
+          "suites": 0,
+          "pass": 5,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.307,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "14677addbaef164f4a624ce4d263b8afb0c1ba7d87baf954dc9150f324ee3822"
+      },
+      {
+        "id": "check-voice",
+        "argv": [
+          "sh",
+          "tests/check-voice.sh"
+        ],
+        "covered_files": [
+          "voice.test.mjs"
+        ],
+        "kind": "pure-wrapper",
+        "command": "sh tests/check-voice.sh",
+        "log": "/tmp/dsh-20261117-unit-check-voice.log",
+        "started_at": "2026-11-17T10:47:58+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 14,
+          "suites": 0,
+          "pass": 14,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.467,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "94d5db6ddee045a9629860c2af874a7868e76235f4d594604556d612c23b2b9f"
+      },
+      {
+        "id": "check-workspace-shell",
+        "argv": [
+          "sh",
+          "tests/check-workspace-shell.sh"
+        ],
+        "covered_files": [
+          "workspace-shell.test.mjs"
+        ],
+        "kind": "pure-wrapper",
+        "command": "sh tests/check-workspace-shell.sh",
+        "log": "/tmp/dsh-20261117-unit-check-workspace-shell.log",
+        "started_at": "2026-11-17T10:47:58+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 11,
+          "suites": 0,
+          "pass": 11,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.401,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "8e20098b6c90fd33f24fb8cf1641639719b4d81ce601ed7a77a90a86fae1df02"
+      },
+      {
+        "id": "ansi",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/ansi.test.mjs"
+        ],
+        "covered_files": [
+          "ansi.test.mjs"
+        ],
+        "kind": "pure-direct",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/ansi.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-ansi.log",
+        "started_at": "2026-11-17T10:47:59+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 3,
+          "suites": 0,
+          "pass": 3,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.241,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "15d7467fc6178cddffffd2d44ea2a3afb856c28a0b0dd19d9f6710242ccb58c0"
+      },
+      {
+        "id": "attachment-gallery",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/attachment-gallery.test.mjs"
+        ],
+        "covered_files": [
+          "attachment-gallery.test.mjs"
+        ],
+        "kind": "pure-direct",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/attachment-gallery.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-attachment-gallery.log",
+        "started_at": "2026-11-17T10:47:59+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 2,
+          "suites": 0,
+          "pass": 2,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.243,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "ba2efdce3b850b02da6079aec010e18337a2b687086efc8d8d86cd24c31943c2"
+      },
+      {
+        "id": "chat-artifacts",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/chat-artifacts.test.mjs"
+        ],
+        "covered_files": [
+          "chat-artifacts.test.mjs"
+        ],
+        "kind": "pure-direct",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/chat-artifacts.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-chat-artifacts.log",
+        "started_at": "2026-11-17T10:47:59+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 5,
+          "suites": 0,
+          "pass": 5,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.251,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "925ce67458a712426306f73338607954796415d2e2958a6aad7afbedbc4f532b"
+      },
+      {
+        "id": "bot-bundle",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/bot-bundle.test.mjs"
+        ],
+        "covered_files": [
+          "bot-bundle.test.mjs"
+        ],
+        "kind": "pure-direct",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/bot-bundle.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-bot-bundle.log",
+        "started_at": "2026-11-17T10:47:59+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 1,
+          "suites": 0,
+          "pass": 1,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.309,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "16e190500c3070ef47865f761f265ad13b79e4d81b80f252a6116b3be15cd2c7"
+      },
+      {
+        "id": "chat-interactions",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/chat-interactions.test.mjs"
+        ],
+        "covered_files": [
+          "chat-interactions.test.mjs"
+        ],
+        "kind": "pure-direct",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/chat-interactions.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-chat-interactions.log",
+        "started_at": "2026-11-17T10:47:59+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 43,
+          "suites": 0,
+          "pass": 43,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.361,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "fabae22ed1f78f2b2ef51b55fa7e8629b9cfccf20f997fda80d6a1695117d31b"
+      },
+      {
+        "id": "companion-session",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/companion-session.test.mjs"
+        ],
+        "covered_files": [
+          "companion-session.test.mjs"
+        ],
+        "kind": "pure-direct",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/companion-session.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-companion-session.log",
+        "started_at": "2026-11-17T10:47:59+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 8,
+          "suites": 0,
+          "pass": 8,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.374,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "7492dffca410e420d0f0f31334473c53a8a641c40c9f8288635ddc2e53fcbdb7"
+      },
+      {
+        "id": "companion-signals-patch",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/companion-signals-patch.test.mjs"
+        ],
+        "covered_files": [
+          "companion-signals-patch.test.mjs"
+        ],
+        "kind": "pure-direct",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/companion-signals-patch.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-companion-signals-patch.log",
+        "started_at": "2026-11-17T10:48:00+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 2,
+          "suites": 0,
+          "pass": 2,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.248,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "36484bb1a8bbe9c0d2629145ce0bcb57d503941d3f5ca916b22e27c5e47b96ca"
+      },
+      {
+        "id": "companion-signals",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/companion-signals.test.mjs"
+        ],
+        "covered_files": [
+          "companion-signals.test.mjs"
+        ],
+        "kind": "pure-direct",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/companion-signals.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-companion-signals.log",
+        "started_at": "2026-11-17T10:48:00+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 10,
+          "suites": 0,
+          "pass": 10,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.26,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "edf5aa68977bc0cb3328ddc2648d16198100972dc4a2522e511298289bcfc597"
+      },
+      {
+        "id": "companion-voice",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/companion-voice.test.mjs"
+        ],
+        "covered_files": [
+          "companion-voice.test.mjs"
+        ],
+        "kind": "pure-direct",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/companion-voice.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-companion-voice.log",
+        "started_at": "2026-11-17T10:48:00+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 4,
+          "suites": 0,
+          "pass": 4,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.301,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "3c247cf436739257df6b27cfba7389ad51fa503f6d4249323cbb1db9afc50273"
+      },
+      {
+        "id": "companion-voice-http",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/companion-voice-http.test.mjs"
+        ],
+        "covered_files": [
+          "companion-voice-http.test.mjs"
+        ],
+        "kind": "pure-direct",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/companion-voice-http.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-companion-voice-http.log",
+        "started_at": "2026-11-17T10:48:00+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 1,
+          "suites": 0,
+          "pass": 1,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.409,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "eab70513e6fd6d6435ced9f804a80da79c57f44845d6fc36e65088c340e21c1c"
+      },
+      {
+        "id": "companion-widget",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/companion-widget.test.mjs"
+        ],
+        "covered_files": [
+          "companion-widget.test.mjs"
+        ],
+        "kind": "pure-direct",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/companion-widget.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-companion-widget.log",
+        "started_at": "2026-11-17T10:48:00+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 1,
+          "suites": 0,
+          "pass": 1,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.238,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "9fd4121ea1ee069525a0ffea39d851fd31582c2e96c6d31ff8002cec1f682c5a"
+      },
+      {
+        "id": "companion",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/companion.test.mjs"
+        ],
+        "covered_files": [
+          "companion.test.mjs"
+        ],
+        "kind": "pure-direct",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/companion.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-companion.log",
+        "started_at": "2026-11-17T10:48:00+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 4,
+          "suites": 0,
+          "pass": 4,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.294,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "e00b0451c4bc0f5178d2ad71ec09a47263375ee6714ec1742e20f1df3329f97b"
+      },
+      {
+        "id": "launch-routing",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/launch-routing.test.mjs"
+        ],
+        "covered_files": [
+          "launch-routing.test.mjs"
+        ],
+        "kind": "pure-direct",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/launch-routing.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-launch-routing.log",
+        "started_at": "2026-11-17T10:48:01+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 9,
+          "suites": 0,
+          "pass": 9,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.241,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "a97d1af7811280bcd552f35ee18bb5637cd7cf268f194300047d397daedf47d4"
+      },
+      {
+        "id": "mention-editor",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/mention-editor.test.mjs"
+        ],
+        "covered_files": [
+          "mention-editor.test.mjs"
+        ],
+        "kind": "pure-direct",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/mention-editor.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-mention-editor.log",
+        "started_at": "2026-11-17T10:48:01+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 8,
+          "suites": 0,
+          "pass": 8,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.238,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "742d52bff516f5649afea9e71d0085fa5720303d8d250bdf3003e20fd0f14e37"
+      },
+      {
+        "id": "mention-message",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/mention-message.test.mjs"
+        ],
+        "covered_files": [
+          "mention-message.test.mjs"
+        ],
+        "kind": "pure-direct",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/mention-message.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-mention-message.log",
+        "started_at": "2026-11-17T10:48:01+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 4,
+          "suites": 0,
+          "pass": 4,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.3,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "855f9af340363da2bea3a09db82e26a7fa9e99bb9d7285f856790f4848bde2f7"
+      },
+      {
+        "id": "message-regeneration",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/message-regeneration.test.mjs"
+        ],
+        "covered_files": [
+          "message-regeneration.test.mjs"
+        ],
+        "kind": "pure-direct",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/message-regeneration.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-message-regeneration.log",
+        "started_at": "2026-11-17T10:48:01+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 9,
+          "suites": 0,
+          "pass": 9,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.242,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "2615f52b904f86d9a8fbe5809bf64ebb88eda34107b6de88e0fd2558c9761f52"
+      },
+      {
+        "id": "model-ui-owner",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/model-ui-owner.test.mjs"
+        ],
+        "covered_files": [
+          "model-ui-owner.test.mjs"
+        ],
+        "kind": "pure-direct",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/model-ui-owner.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-model-ui-owner.log",
+        "started_at": "2026-11-17T10:48:02+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 3,
+          "suites": 0,
+          "pass": 3,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.195,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "9bfd02c331b3980bdb492b4e152a67c328c27b3a9b899e63c8587b6fc7480704"
+      },
+      {
+        "id": "mutable-bundled-plugins",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/mutable-bundled-plugins.test.mjs"
+        ],
+        "covered_files": [
+          "mutable-bundled-plugins.test.mjs"
+        ],
+        "kind": "pure-direct",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/mutable-bundled-plugins.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-mutable-bundled-plugins.log",
+        "started_at": "2026-11-17T10:48:02+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 1,
+          "suites": 0,
+          "pass": 1,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.235,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "02e9909e6e89ad90310a86499c81782a2d623f657ad166f2e344dd9b141f66cb"
+      },
+      {
+        "id": "native-plugin",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/native-plugin.test.mjs"
+        ],
+        "covered_files": [
+          "native-plugin.test.mjs"
+        ],
+        "kind": "pure-direct",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/native-plugin.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-native-plugin.log",
+        "started_at": "2026-11-17T10:48:02+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 11,
+          "suites": 0,
+          "pass": 11,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.964,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "35246c2f5c544e874b23dcecc2e9d2acf2d051dc6f2c811264bd0eb664e3643d"
+      },
+      {
+        "id": "island-browser",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/island-browser.test.mjs"
+        ],
+        "covered_files": [
+          "island-browser.test.mjs"
+        ],
+        "kind": "browser",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/island-browser.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-island-browser.log",
+        "started_at": "2026-11-17T10:48:00+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 1,
+          "suites": 0,
+          "pass": 1,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 2.75,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "15c204b271b9b16593cb86ceaa85564efad6b87667850fae8d56e05fad6f0122"
+      },
+      {
+        "id": "performance",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/performance.test.mjs"
+        ],
+        "covered_files": [
+          "performance.test.mjs"
+        ],
+        "kind": "pure-direct",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/performance.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-performance.log",
+        "started_at": "2026-11-17T10:48:03+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 3,
+          "suites": 0,
+          "pass": 3,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.243,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "ffa4a38aed1f20d71e05f978194ca583be735158b0097b1825280795d46430f6"
+      },
+      {
+        "id": "phone-service",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/phone-service.test.mjs"
+        ],
+        "covered_files": [
+          "phone-service.test.mjs"
+        ],
+        "kind": "pure-direct",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/phone-service.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-phone-service.log",
+        "started_at": "2026-11-17T10:48:03+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 2,
+          "suites": 0,
+          "pass": 2,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.291,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "cfc62f9ac09862c78f70fb2cd2954b2355ceffe012a0177e49d7d694c8dbe76f"
+      },
+      {
+        "id": "pets",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/pets.test.mjs"
+        ],
+        "covered_files": [
+          "pets.test.mjs"
+        ],
+        "kind": "pure-direct",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/pets.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-pets.log",
+        "started_at": "2026-11-17T10:48:03+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 9,
+          "suites": 0,
+          "pass": 9,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.4,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "c94f69920f623e193299016ce96292f4783d40e5ca00e87e2a13deedeb095222"
+      },
+      {
+        "id": "plugin-asset",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/plugin-asset.test.mjs"
+        ],
+        "covered_files": [
+          "plugin-asset.test.mjs"
+        ],
+        "kind": "pure-direct",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/plugin-asset.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-plugin-asset.log",
+        "started_at": "2026-11-17T10:48:04+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 3,
+          "suites": 0,
+          "pass": 3,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.236,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "ea4a819bfbf4276477dd397efa78e0bb4c6cbaf5776cd1148847f2e1e06376de"
+      },
+      {
+        "id": "plugin-chart",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/plugin-chart.test.mjs"
+        ],
+        "covered_files": [
+          "plugin-chart.test.mjs"
+        ],
+        "kind": "pure-direct",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/plugin-chart.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-plugin-chart.log",
+        "started_at": "2026-11-17T10:48:04+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 3,
+          "suites": 0,
+          "pass": 3,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.242,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "9dc4d567c8ff3740e0ec997a7ba3c18b1f307a6601401c1d8943e44dd8a20975"
+      },
+      {
+        "id": "plugin-clipboard",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/plugin-clipboard.test.mjs"
+        ],
+        "covered_files": [
+          "plugin-clipboard.test.mjs"
+        ],
+        "kind": "pure-direct",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/plugin-clipboard.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-plugin-clipboard.log",
+        "started_at": "2026-11-17T10:48:04+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 1,
+          "suites": 0,
+          "pass": 1,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.197,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "0463f9aa56527a4fff909e3f257f0e45716c210242e6a6a25b56853060a84a6c"
+      },
+      {
+        "id": "plugin-seats",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/plugin-seats.test.mjs"
+        ],
+        "covered_files": [
+          "plugin-seats.test.mjs"
+        ],
+        "kind": "pure-direct",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/plugin-seats.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-plugin-seats.log",
+        "started_at": "2026-11-17T10:48:04+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 4,
+          "suites": 0,
+          "pass": 4,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.237,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "b4131e38a022857ac1d8c7e4730c328a8c8d1d5d1b020b316060d73a8bb6bcad"
+      },
+      {
+        "id": "queue-now",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/queue-now.test.mjs"
+        ],
+        "covered_files": [
+          "queue-now.test.mjs"
+        ],
+        "kind": "pure-direct",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/queue-now.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-queue-now.log",
+        "started_at": "2026-11-17T10:48:04+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 13,
+          "suites": 0,
+          "pass": 13,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.194,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "2b235bbe29e00224a74390460bab8c21a2420f4906256ffd9a9d1880168b2cf8"
+      },
+      {
+        "id": "regeneration-attachments",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/regeneration-attachments.test.mjs"
+        ],
+        "covered_files": [
+          "regeneration-attachments.test.mjs"
+        ],
+        "kind": "pure-direct",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/regeneration-attachments.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-regeneration-attachments.log",
+        "started_at": "2026-11-17T10:48:04+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 4,
+          "suites": 0,
+          "pass": 4,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.187,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "19fea18ba8cf8e33c8a3dd307e15075fe3591d64586dbb1a9b651cb638dfa26c"
+      },
+      {
+        "id": "remote-switch",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/remote-switch.test.mjs"
+        ],
+        "covered_files": [
+          "remote-switch.test.mjs"
+        ],
+        "kind": "pure-direct",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/remote-switch.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-remote-switch.log",
+        "started_at": "2026-11-17T10:48:04+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 12,
+          "suites": 0,
+          "pass": 12,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.233,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "c50d0b271cad8de7f9aa5547ab3251d5551a070c4a536028a76a94613ea6f7a0"
+      },
+      {
+        "id": "schedule-authorization-patch",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/schedule-authorization-patch.test.mjs"
+        ],
+        "covered_files": [
+          "schedule-authorization-patch.test.mjs"
+        ],
+        "kind": "pure-direct",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/schedule-authorization-patch.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-schedule-authorization-patch.log",
+        "started_at": "2026-11-17T10:48:04+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 4,
+          "suites": 0,
+          "pass": 4,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.205,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "9facea6406171332e7bac8e490cada668f97e4e8280ae694bced60322f91f966"
+      },
+      {
+        "id": "session-deletion-core",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/session-deletion-core.test.mjs"
+        ],
+        "covered_files": [
+          "session-deletion-core.test.mjs"
+        ],
+        "kind": "pure-direct",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/session-deletion-core.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-session-deletion-core.log",
+        "started_at": "2026-11-17T10:48:05+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 12,
+          "suites": 0,
+          "pass": 12,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.533,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "7c953183fe01bd917791d8ae6b0ec0f1ef4cb9c756b7cb59753604d11077c73e"
+      },
+      {
+        "id": "session-deletion-patch",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/session-deletion-patch.test.mjs"
+        ],
+        "covered_files": [
+          "session-deletion-patch.test.mjs"
+        ],
+        "kind": "pure-direct",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/session-deletion-patch.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-session-deletion-patch.log",
+        "started_at": "2026-11-17T10:48:05+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 2,
+          "suites": 0,
+          "pass": 2,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.239,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "ac3e6ca2fe07c7432b75cbbe031ca03460c6bb930363534a8e21bfa43ee89614"
+      },
+      {
+        "id": "settings-native",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/settings-native.test.mjs"
+        ],
+        "covered_files": [
+          "settings-native.test.mjs"
+        ],
+        "kind": "pure-direct",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/settings-native.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-settings-native.log",
+        "started_at": "2026-11-17T10:48:05+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 12,
+          "suites": 0,
+          "pass": 12,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.287,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "2bbc2971fabf5c706a4e4548d5e35a3157432fa6830de76a64d390c05ecd8cb7"
+      },
+      {
+        "id": "share-browser",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/share-browser.test.mjs"
+        ],
+        "covered_files": [
+          "share-browser.test.mjs"
+        ],
+        "kind": "browser",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/share-browser.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-share-browser.log",
+        "started_at": "2026-11-17T10:48:06+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 1,
+          "suites": 0,
+          "pass": 1,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 1.507,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "5b1f84f0dcb03db910677a06be281d5b2e2949ebfe788da3164ba6cfadd8127b"
+      },
+      {
+        "id": "render-browser",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/render-browser.test.mjs"
+        ],
+        "covered_files": [
+          "render-browser.test.mjs"
+        ],
+        "kind": "browser",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/render-browser.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-render-browser.log",
+        "started_at": "2026-11-17T10:48:04+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 1,
+          "suites": 0,
+          "pass": 1,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 2.913,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "55c04dc8ff6467681e21563340c1986ab18cd766f4e5a401fb740b938d173965"
+      },
+      {
+        "id": "share-cache",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/share-cache.test.mjs"
+        ],
+        "covered_files": [
+          "share-cache.test.mjs"
+        ],
+        "kind": "pure-direct",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/share-cache.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-share-cache.log",
+        "started_at": "2026-11-17T10:48:07+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 2,
+          "suites": 0,
+          "pass": 2,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.181,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "dc7ab26f2570757589b11e64987ea7b3e9924514c02352dcde0e80dc2d9d0836"
+      },
+      {
+        "id": "share",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/share.test.mjs"
+        ],
+        "covered_files": [
+          "share.test.mjs"
+        ],
+        "kind": "pure-direct",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/share.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-share.log",
+        "started_at": "2026-11-17T10:48:07+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 8,
+          "suites": 0,
+          "pass": 8,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.701,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "58d38322659cd7635f1acfe0acad56f547afc2f314e8418bf56bdad3b410b8b2"
+      },
+      {
+        "id": "turn-fold",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/turn-fold.test.mjs"
+        ],
+        "covered_files": [
+          "turn-fold.test.mjs"
+        ],
+        "kind": "pure-direct",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/turn-fold.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-turn-fold.log",
+        "started_at": "2026-11-17T10:48:08+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 3,
+          "suites": 0,
+          "pass": 3,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.242,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "fc46927ac598fb3513472d6b335802bf80c06a8dd3f589cd373cbd0dd534bea7"
+      },
+      {
+        "id": "terminal-browser",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/terminal-browser.test.mjs"
+        ],
+        "covered_files": [
+          "terminal-browser.test.mjs"
+        ],
+        "kind": "browser",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/terminal-browser.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-terminal-browser.log",
+        "started_at": "2026-11-17T10:48:07+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 1,
+          "suites": 0,
+          "pass": 1,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.958,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "567b0ae524bdee44c194382aab769ddc068ceeb318e6f145a251db24ab5d2c93"
+      },
+      {
+        "id": "voice-index",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/voice-index.test.mjs"
+        ],
+        "covered_files": [
+          "voice-index.test.mjs"
+        ],
+        "kind": "pure-direct",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/voice-index.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-voice-index-repaired.log",
+        "started_at": "2026-11-17T10:48:08+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 7,
+          "suites": 0,
+          "pass": 7,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.244,
+        "pass_lines": [],
+        "status": "passed",
+        "prior_attempts": [
+          {
+            "id": "voice-index",
+            "argv": [
+              "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+              "--disable-warning=ExperimentalWarning",
+              "--test",
+              "--test-concurrency=1",
+              "tests/voice-index.test.mjs"
+            ],
+            "covered_files": [
+              "voice-index.test.mjs"
+            ],
+            "kind": "pure-direct",
+            "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/voice-index.test.mjs",
+            "log": "/tmp/dsh-20261117-unit-voice-index.log",
+            "started_at": "2026-11-17T10:48:08+0800",
+            "exit_code": 1,
+            "counts": {
+              "tests": 7,
+              "suites": 0,
+              "pass": 0,
+              "fail": 7,
+              "cancelled": 0,
+              "skipped": 0,
+              "todo": 0
+            },
+            "summary_sections": 1,
+            "duration_seconds": 0.244,
+            "pass_lines": [],
+            "status": "needs-review"
+          }
+        ],
+        "fixture_fix": "Added newly required PerformanceMonitor fixture and real recordUsage callback with count fixture; kept all original assertions and added final voice count assertion.",
+        "diff": "/tmp/dsh-20261117-voice-index-fixture.diff",
+        "log_sha256": "b8c5e43d9f57f7c7506ffe884f226285433c7d126bcef4155d186b029f1ec74c"
+      },
+      {
+        "id": "workspace-file-viewer",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--disable-warning=ExperimentalWarning",
+          "--test",
+          "--test-concurrency=1",
+          "tests/workspace-file-viewer.test.mjs"
+        ],
+        "covered_files": [
+          "workspace-file-viewer.test.mjs"
+        ],
+        "kind": "pure-direct",
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --disable-warning=ExperimentalWarning --test --test-concurrency=1 tests/workspace-file-viewer.test.mjs",
+        "log": "/tmp/dsh-20261117-unit-workspace-file-viewer.log",
+        "started_at": "2026-11-17T10:48:08+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 2,
+          "suites": 0,
+          "pass": 2,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 1,
+        "duration_seconds": 0.227,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "a05445d3db4a35bd5dbfb06eae535b693634de949b167dacedbf66407ec2a2a2"
+      },
+      {
+        "id": "check-phone",
+        "argv": [
+          "sh",
+          "tests/check-phone.sh"
+        ],
+        "covered_files": [
+          "phone-accessibility.test.mjs",
+          "phone-intent.test.mjs",
+          "phone-screen-image.test.mjs",
+          "phone.test.mjs"
+        ],
+        "kind": "pure-wrapper",
+        "command": "sh tests/check-phone.sh",
+        "log": "/tmp/dsh-20261117-unit-check-phone.log",
+        "started_at": "2026-11-17T10:47:56+0800",
+        "exit_code": 0,
+        "counts": {
+          "tests": 10,
+          "suites": 0,
+          "pass": 10,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary_sections": 4,
+        "duration_seconds": 13.348,
+        "pass_lines": [],
+        "status": "passed",
+        "log_sha256": "afac1cc93349510a51591d90fb72500643d6867c34a6d40275f01b88fd586dc8"
+      },
+      {
+        "id": "bot-upstream-mobile",
+        "kind": "upstream-current-vendor",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--import",
+          "./test/harness-resolve.mjs",
+          "--test",
+          "--test-concurrency=1",
+          "test/mobile.test.js",
+          "test/remote.test.js"
+        ],
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --import ./test/harness-resolve.mjs --test --test-concurrency=1 test/mobile.test.js test/remote.test.js",
+        "cwd": "/tmp/dsh-20261117-bot-current-tests",
+        "environment": {
+          "DSH_HARNESS": "/tmp/dsh-release4-runtime"
+        },
+        "log": "/tmp/dsh-20261117-unit-bot-upstream-mobile.log",
+        "exit_code": 0,
+        "counts": {
+          "tests": 11,
+          "suites": 0,
+          "pass": 11,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "duration_seconds": 1.874,
+        "covered_files": [
+          "upstream-ds-bot/test/mobile.test.js",
+          "upstream-ds-bot/test/remote.test.js"
+        ],
+        "status": "passed",
+        "log_sha256": "a1e4ae53c74b97b8962abbc74241ca9001850d6f98b6786a9e6bbb6756fdf29a"
+      },
+      {
+        "id": "bot-upstream-core",
+        "kind": "upstream-current-vendor",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--import",
+          "./test/harness-resolve.mjs",
+          "--test",
+          "--test-concurrency=1",
+          "test/request-id.test.js",
+          "test/handoff-results.test.js",
+          "test/memory-pending.test.js",
+          "test/memory.test.js",
+          "test/feed.test.js",
+          "test/schedules.test.js"
+        ],
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --import ./test/harness-resolve.mjs --test --test-concurrency=1 test/request-id.test.js test/handoff-results.test.js test/memory-pending.test.js test/memory.test.js test/feed.test.js test/schedules.test.js",
+        "cwd": "/tmp/dsh-20261117-bot-current-tests",
+        "environment": {
+          "DSH_HARNESS": "/tmp/dsh-release4-runtime"
+        },
+        "log": "/tmp/dsh-20261117-unit-bot-upstream-core-complete-fixture.log",
+        "exit_code": 0,
+        "counts": {
+          "tests": 114,
+          "suites": 0,
+          "pass": 114,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "duration_seconds": 4.104,
+        "covered_files": [
+          "upstream-ds-bot/test/request-id.test.js",
+          "upstream-ds-bot/test/handoff-results.test.js",
+          "upstream-ds-bot/test/memory-pending.test.js",
+          "upstream-ds-bot/test/memory.test.js",
+          "upstream-ds-bot/test/feed.test.js",
+          "upstream-ds-bot/test/schedules.test.js"
+        ],
+        "status": "passed",
+        "prior_attempts": [
+          {
+            "id": "bot-upstream-core",
+            "kind": "upstream-current-vendor",
+            "argv": [
+              "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+              "--import",
+              "./test/harness-resolve.mjs",
+              "--test",
+              "--test-concurrency=1",
+              "test/request-id.test.js",
+              "test/handoff-results.test.js",
+              "test/memory-pending.test.js",
+              "test/memory.test.js",
+              "test/feed.test.js",
+              "test/schedules.test.js"
+            ],
+            "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --import ./test/harness-resolve.mjs --test --test-concurrency=1 test/request-id.test.js test/handoff-results.test.js test/memory-pending.test.js test/memory.test.js test/feed.test.js test/schedules.test.js",
+            "cwd": "/tmp/dsh-20261117-bot-current-tests",
+            "environment": {
+              "DSH_HARNESS": "/tmp/dsh-release4-runtime"
+            },
+            "log": "/tmp/dsh-20261117-unit-bot-upstream-core.log",
+            "exit_code": 1,
+            "counts": {
+              "tests": 54,
+              "suites": 0,
+              "pass": 53,
+              "fail": 1,
+              "cancelled": 0,
+              "skipped": 0,
+              "todo": 0
+            },
+            "duration_seconds": 4.104,
+            "covered_files": [
+              "upstream-ds-bot/test/request-id.test.js",
+              "upstream-ds-bot/test/handoff-results.test.js",
+              "upstream-ds-bot/test/memory-pending.test.js",
+              "upstream-ds-bot/test/memory.test.js",
+              "upstream-ds-bot/test/feed.test.js",
+              "upstream-ds-bot/test/schedules.test.js"
+            ],
+            "status": "needs-review"
+          }
+        ],
+        "fixture_fix": "Original npm package files omit dev src/client; memory.test.js imports src/client/text.js. Restored original fixed src/client only into /tmp test stage, verified shipped client.js byte-identical to the fixed source checkout. No production code change.",
+        "production_client_sha256": "cef1e2808ef4767defd97d18641750f8f0523c34b5a42b65dc8f59fcbe996fed",
+        "log_sha256": "d0f4ae836afbd9cf86ec74032063b34ef6c71fb18e71f01e1d165706d69934b6"
+      },
+      {
+        "id": "bot-upstream-part-recovery",
+        "kind": "upstream-current-vendor",
+        "argv": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--import",
+          "./test/harness-resolve.mjs",
+          "--test",
+          "--test-concurrency=1",
+          "test/switch-keeps-input.test.js"
+        ],
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node --import ./test/harness-resolve.mjs --test --test-concurrency=1 test/switch-keeps-input.test.js",
+        "cwd": "/tmp/dsh-20261117-bot-current-tests",
+        "environment": {
+          "DSH_HARNESS": "/tmp/dsh-release4-runtime"
+        },
+        "log": "/tmp/dsh-20261117-unit-bot-upstream-part-recovery.log",
+        "exit_code": 0,
+        "counts": {
+          "tests": 10,
+          "suites": 0,
+          "pass": 10,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "duration_seconds": 1.861,
+        "covered_files": [
+          "upstream-ds-bot/test/switch-keeps-input.test.js"
+        ],
+        "status": "passed",
+        "log_sha256": "36ed085c4b9a15be6a13cd3050b4007a1d0833fd85ea875a19d4de916e4a754b"
+      }
+    ],
+    "fixture_boundaries": [
+      "UI tests execute real source/controller methods with platform kits replaced; they do not prove actual phone permissions, recording, TTS, GPU rendering, or touch behavior.",
+      "Browser tests launch real Chromium against bundled offline assets; they do not claim ArkWeb on-device parity.",
+      "Hash tests use exact expected runtime stages and private temporary copies; no production runtime is modified.",
+      "Upstream DS Bot tests use current shipped host/shared sources and fixed original tests plus dev client source in /tmp only; adapter and preserved official behavior are tested without invoking a user Bot."
+    ]
+  },
+  "runtime_native_remote": {
+    "date": "2026-11-17",
+    "node": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+    "node_version": "v24.14.1",
+    "runtime": "/tmp/dsh-release4-runtime",
+    "archive": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/resources/rawfile/dsh-runtime.zip",
+    "archive_sha256": "751480d93025e54d1bac6ad71a18d4fa21654fcd6284ec5d03d4e843763cd451",
+    "max_parallel": 3,
+    "results": [
+      {
+        "name": "schedule-authorization",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/schedule-authorization-live.mjs",
+          "/tmp/dsh-release4-runtime"
+        ],
+        "environment": {},
+        "log": "/tmp/dsh-20261117-schedule-authorization.log",
+        "started_at": "2026-11-17T02:48:34Z",
+        "status": "passed",
+        "exit_code": 0,
+        "duration_seconds": 130.17,
+        "counts": {
+          "entrypoints": 1,
+          "passed_entrypoints": 1,
+          "skipped": 0,
+          "individual_assertions": "not emitted by this standalone assertion script"
+        },
+        "summary": [
+          "PASS cancel: no task write",
+          "PASS custom answer: no task write",
+          "PASS authorize once: one actual durable task",
+          "PASS edit reject: complete task requires fresh authorization",
+          "PASS edit race: authorization does not overwrite newer committed task",
+          "PASS edit authorize: same task updated only after a new question",
+          "PASS timeout: no additional task write",
+          "PASS: original schedule authorization on actual packaged model tools, strict answer, cancel, real timeout, durable one-shot permission, edit reauthorization and concurrent edit protection. Synthetic model only; no paid model or task execution."
+        ],
+        "notes": [],
+        "log_sha256": "c7b615c039f627efb77ddca7615851ef99fdd99962809c020413f783ca306edb"
+      },
+      {
+        "name": "deletion",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/session-deletion-live.mjs",
+          "/tmp/dsh-release4-runtime"
+        ],
+        "environment": {},
+        "log": "/tmp/dsh-20261117-deletion.log",
+        "started_at": "2026-11-17T02:48:34Z",
+        "status": "passed",
+        "exit_code": 0,
+        "duration_seconds": 11.223,
+        "counts": {
+          "entrypoints": 1,
+          "passed_entrypoints": 1,
+          "skipped": 0,
+          "individual_assertions": "not emitted by this standalone assertion script"
+        },
+        "summary": [
+          "PASS actual packed safe deletion: capability, permanent tombstones, archive/pin/list cleanup, idempotent retry, sibling/workspace preservation, active turn/goal/reminder refusal, forced hardlink-denial native callback, and restart fencing. Only external model HTTP and native platform lock/publication are synthetic."
+        ],
+        "notes": [],
+        "log_sha256": "c2368d39d05326cf1da57adc6fdc6d8177748de2a65aa215dad09404d9a3853a"
+      },
+      {
+        "name": "recall",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/companion-recall-live.mjs",
+          "/tmp/dsh-release4-runtime"
+        ],
+        "environment": {},
+        "log": "/tmp/dsh-20261117-recall.log",
+        "started_at": "2026-11-17T02:48:45Z",
+        "status": "passed",
+        "exit_code": 0,
+        "duration_seconds": 13.516,
+        "counts": {
+          "entrypoints": 1,
+          "passed_entrypoints": 1,
+          "skipped": 0,
+          "individual_assertions": "not emitted by this standalone assertion script"
+        },
+        "summary": [
+          "PASS actual packed recall gates/full preset; real manual-memory write, clean full-session bind/status, confirmed-memory model injection and isolation, refusal without consent/wrong preset, revoke, persisted retired-session rejection, and restart while ON with durable stale-binding retirement and newly consented clean-session rebind. Only model HTTP, platform preferences backing and native file lock are synthetic."
+        ],
+        "notes": [],
+        "log_sha256": "deeb013b54eadd49d2e59c7ad7b132b2966387649195460826f7dcdea706e646"
+      },
+      {
+        "name": "profile",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/profile-share-live.mjs",
+          "/tmp/dsh-release4-runtime"
+        ],
+        "environment": {},
+        "log": "/tmp/dsh-20261117-profile.log",
+        "started_at": "2026-11-17T02:48:59Z",
+        "status": "passed",
+        "exit_code": 0,
+        "duration_seconds": 9.224,
+        "counts": {
+          "entrypoints": 1,
+          "passed_entrypoints": 1,
+          "skipped": 0,
+          "individual_assertions": "not emitted by this standalone assertion script"
+        },
+        "summary": [
+          "PASS actual packed profile source/prepare/decode/plan/confirm/apply, revisioned real settings RPC, private backup, skill discovery and imported AGENTS in actual model request; local package mutations rejected. Only model HTTP and native file lock are synthetic."
+        ],
+        "notes": [],
+        "log_sha256": "7596403cbdabc3b19f252382c89223a730ff4c464027eaa1baf80de088e3f597"
+      },
+      {
+        "name": "phone",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/phone-live.mjs",
+          "/tmp/dsh-release4-runtime"
+        ],
+        "environment": {},
+        "log": "/tmp/dsh-20261117-phone.log",
+        "started_at": "2026-11-17T02:49:08Z",
+        "status": "passed",
+        "exit_code": 0,
+        "duration_seconds": 8.605,
+        "counts": {
+          "entrypoints": 1,
+          "passed_entrypoints": 1,
+          "skipped": 0,
+          "individual_assertions": "not emitted by this standalone assertion script"
+        },
+        "summary": [
+          "PASS actual DSH model→13 fixed phone tools→authenticated native confirmation queue→result→model continuation; no native screen is claimed by this synthetic approval fixture. Native extension/file bridge is separately tested by check-phone.sh."
+        ],
+        "notes": [],
+        "log_sha256": "eacb7deec3902ba2ecc5678e21bab296e0b92d5baaf5f3988687c84c15b90316"
+      },
+      {
+        "name": "bot",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/dsbot-live.mjs",
+          "/tmp/dsh-release4-runtime"
+        ],
+        "environment": {},
+        "log": "/tmp/dsh-20261117-bot.log",
+        "started_at": "2026-11-17T02:49:17Z",
+        "status": "passed",
+        "exit_code": 0,
+        "duration_seconds": 9.625,
+        "counts": {
+          "entrypoints": 1,
+          "passed_entrypoints": 1,
+          "skipped": 0,
+          "individual_assertions": "not emitted by this standalone assertion script"
+        },
+        "summary": [
+          "PASS real packed DS Bot mobilePr: native DshClient auth HTTP/SSE, hello, state, create/update/model/chat/send/live reply, duplicate history isolation, room config/null reset, memory add/edit/forget, usage/folders/avatar/notices, delete, feed cancellation. Only model provider and native lock are synthetic; no external model/network call."
+        ],
+        "notes": [],
+        "log_sha256": "88b15b1b7142ed47d11ed7a50dd8faaf5a37869ccc2b0d75b4dc9253e1251f9c"
+      },
+      {
+        "name": "signals-http",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/companion-signals-http.mjs",
+          "/tmp/dsh-release4-runtime"
+        ],
+        "environment": {},
+        "log": "/tmp/dsh-20261117-signals-http.log",
+        "started_at": "2026-11-17T02:49:26Z",
+        "status": "passed",
+        "exit_code": 0,
+        "duration_seconds": 0.965,
+        "counts": {
+          "entrypoints": 1,
+          "passed_entrypoints": 1,
+          "skipped": 0,
+          "individual_assertions": "not emitted by this standalone assertion script"
+        },
+        "summary": [
+          "PASS native DshClient real HTTP signal protocol: bounded capabilities, authenticated prefix/no redirects, owner capability binding, split UTF8 SSE ready/generation/SHA id, errors, cancellation, denied/reentrant mux retirement; no replay/reconnect."
+        ],
+        "notes": [],
+        "log_sha256": "2a0368b37b92721711a1148cdd05a39d09a599416cdd36335953b3763f9631f6"
+      },
+      {
+        "name": "signals-live",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/companion-signals-live.mjs",
+          "/tmp/dsh-release4-runtime"
+        ],
+        "environment": {},
+        "log": "/tmp/dsh-20261117-signals-live.log",
+        "started_at": "2026-11-17T02:49:27Z",
+        "status": "passed",
+        "exit_code": 0,
+        "duration_seconds": 10.019,
+        "counts": {
+          "entrypoints": 1,
+          "passed_entrypoints": 1,
+          "skipped": 0,
+          "individual_assertions": "not emitted by this standalone assertion script"
+        },
+        "summary": [
+          "PASS production Harmony honestly reports producer-unavailable; test-only host composition executes actual original bash node --test → patched committed pipeline → authenticated bridge SSE → native DshClient SHA validation. Test counts unknown, stdout excluded, cancel/mux invalidation and no replay verified. Only model HTTP/native flock are synthetic; production shell policy is unchanged."
+        ],
+        "notes": [],
+        "log_sha256": "a60b26d60febf93590fff3c03e5b5a7fe72f38a116e9e045bb1b1e3fcd960e35"
+      },
+      {
+        "name": "bot-schedules",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/dsbot-schedules-live.mjs",
+          "/tmp/dsh-release4-runtime"
+        ],
+        "environment": {},
+        "log": "/tmp/dsh-20261117-bot-schedules.log",
+        "started_at": "2026-11-17T02:49:37Z",
+        "status": "passed",
+        "exit_code": 0,
+        "duration_seconds": 12.069,
+        "counts": {
+          "entrypoints": 1,
+          "passed_entrypoints": 1,
+          "skipped": 0,
+          "individual_assertions": "not emitted by this standalone assertion script"
+        },
+        "summary": [
+          "PASS official DS Bot 0.2.3 + mobile on actual DSH: authenticated Web schedule create/list/delete, Bot/group ownership, outsider and cross-Bot refusal, pause and restart persistence; internal part migration uses real userQuestions rejection/approval and same-ID target edits preserving pause/timing/history, with unrelated tasks unchanged, and a new task created after migration preventing old-part archive and surviving restart. Only native flock and the test-only reachability route are fixtures; schedule service and authorization are real."
+        ],
+        "notes": [],
+        "log_sha256": "ef0e9d4b1325e0b4d3b97f801fb9133ff91cfc0085b11820ca035faed40eac91"
+      },
+      {
+        "name": "client",
+        "command": [
+          "sh",
+          "tests/check-dsh-client-live.sh",
+          "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/resources/rawfile/dsh-runtime.zip"
+        ],
+        "environment": {},
+        "log": "/tmp/dsh-20261117-client.log",
+        "started_at": "2026-11-17T02:49:49Z",
+        "status": "passed",
+        "exit_code": 0,
+        "duration_seconds": 16.378,
+        "counts": {
+          "entrypoints": 1,
+          "passed_entrypoints": 1,
+          "skipped": 0,
+          "individual_assertions": "not emitted by this standalone assertion script",
+          "assertions": 129
+        },
+        "summary": [
+          "129 native client assertions passed against local DSH"
+        ],
+        "notes": [],
+        "log_sha256": "f778ba61656e47aa8ee08d6e584164f5072aae7523b3b197ccaacd31b032b5f8"
+      },
+      {
+        "name": "speech",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/speech-live.mjs",
+          "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/ets/dsh/DshClient.ets",
+          "/tmp/dsh-release4-runtime",
+          "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/local-flock-fixture.cjs"
+        ],
+        "environment": {},
+        "log": "/tmp/dsh-20261117-speech.log",
+        "started_at": "2026-11-17T02:50:06Z",
+        "status": "passed",
+        "exit_code": 0,
+        "duration_seconds": 2.347,
+        "counts": {
+          "entrypoints": 1,
+          "passed_entrypoints": 1,
+          "skipped": 0,
+          "individual_assertions": "not emitted by this standalone assertion script"
+        },
+        "summary": [
+          "Speech live: packaged engine reports SenseVoice unprepared until native loading; real HTTP catalog/configure/prepare/cancel/transcribe, WAV validation, 403/404 and cancellation passed with a synthetic speech service."
+        ],
+        "notes": [],
+        "log_sha256": "0899e0a3ef1ca948c0548e64f16017762ec6e2a2d21e28c599f7277a61281b89"
+      },
+      {
+        "name": "plugins",
+        "command": [
+          "sh",
+          "tests/check-native-plugins-live.sh",
+          "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/resources/rawfile/dsh-runtime.zip"
+        ],
+        "environment": {},
+        "log": "/tmp/dsh-20261117-plugins.log",
+        "started_at": "2026-11-17T02:50:08Z",
+        "status": "passed",
+        "exit_code": 0,
+        "duration_seconds": 27.222,
+        "counts": {
+          "entrypoints": 1,
+          "passed_entrypoints": 1,
+          "skipped": 0,
+          "individual_assertions": "not emitted by this standalone assertion script"
+        },
+        "summary": [
+          "PASS: actual authenticated binary asset + text-only boot graph, packaged bridge contribution/view/invoke, native stream snapshot/update/deferred completion/cancel, editable config save + stale revision rejection, unauthenticated 401, companion state/memory optimistic writes + isolated child client closure, media namespace and disabled local package scripts (synthetic plugin only)."
+        ],
+        "notes": [],
+        "log_sha256": "2b147ba0e8e57d4b8e4d10b3724193c4cd60001462f853c3e8cecee4c971e760"
+      },
+      {
+        "name": "media-generation",
+        "command": [
+          "sh",
+          "tests/check-media-generation-live.sh",
+          "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/resources/rawfile/dsh-runtime.zip"
+        ],
+        "environment": {},
+        "log": "/tmp/dsh-20261117-media-generation.log",
+        "started_at": "2026-11-17T02:50:35Z",
+        "status": "passed",
+        "exit_code": 0,
+        "duration_seconds": 24.486,
+        "counts": {
+          "entrypoints": 1,
+          "passed_entrypoints": 1,
+          "skipped": 0,
+          "individual_assertions": "not emitted by this standalone assertion script"
+        },
+        "summary": [
+          "PASS: actual packaged generate_image tool -> explicit budget approval -> synthetic provider -> atomic image publication; generate_video -> real background job/get_media_result -> bounded MP4 download/container validation/publication; authenticated image/video bytes; actual session cancellation aborts in-flight media transport. No paid generation."
+        ],
+        "notes": [],
+        "log_sha256": "2a525566c32a1240600e4d3d1feb809993dfe21864f6af07745e957ab96da72f"
+      },
+      {
+        "name": "media",
+        "command": [
+          "sh",
+          "tests/check-media-live.sh",
+          "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/resources/rawfile/dsh-runtime.zip"
+        ],
+        "environment": {},
+        "log": "/tmp/dsh-20261117-media.log",
+        "started_at": "2026-11-17T02:50:44Z",
+        "status": "passed",
+        "exit_code": 0,
+        "duration_seconds": 21.798,
+        "counts": {
+          "entrypoints": 1,
+          "passed_entrypoints": 1,
+          "skipped": 0,
+          "individual_assertions": "not emitted by this standalone assertion script"
+        },
+        "summary": [
+          "PASS: packaged DSH authenticated media bytes, size limit, private-path denial and generation-header prompt round-trip (synthetic provider; no paid media generation)."
+        ],
+        "notes": [],
+        "log_sha256": "f322bb3013c36772ec4652e1f079bb1c131683256532ddaaf97e0fa94df966d2"
+      },
+      {
+        "name": "mentions",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/mentions-live.mjs",
+          "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/ets/dsh/DshClient.ets",
+          "/tmp/dsh-release4-runtime",
+          "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/local-flock-fixture.cjs"
+        ],
+        "environment": {},
+        "log": "/tmp/dsh-20261117-mentions.log",
+        "started_at": "2026-11-17T02:51:00Z",
+        "status": "superseded_fixture_invocation",
+        "exit_code": 1,
+        "duration_seconds": 0.13,
+        "counts": {
+          "entrypoints": 1,
+          "passed_entrypoints": 0,
+          "skipped": 0,
+          "individual_assertions": "not emitted by this standalone assertion script"
+        },
+        "summary": [],
+        "resolved_by": "mentions-live",
+        "classification": "Direct invocation omitted the wrapper-generated MentionData.ts; no production failure.",
+        "notes": [],
+        "log_sha256": "663a42d8f28de17f6c76f4eb43cf2a377441c3fb9e771cf33de7418ffd6e0b52"
+      },
+      {
+        "name": "recovery",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/engine-recovery-live.mjs",
+          "/tmp/dsh-release4-runtime",
+          "/Users/wangzhaojin/work/dsh/dsh-go-harmony/tests/local-flock-fixture.cjs"
+        ],
+        "environment": {},
+        "log": "/tmp/dsh-20261117-recovery.log",
+        "started_at": "2026-11-17T02:51:00Z",
+        "status": "passed",
+        "exit_code": 0,
+        "duration_seconds": 3.784,
+        "counts": {
+          "entrypoints": 1,
+          "passed_entrypoints": 1,
+          "skipped": 0,
+          "individual_assertions": "not emitted by this standalone assertion script"
+        },
+        "summary": [
+          "Engine recovery: two actual broken-profile boots recover with a clean safe profile; original settings/account/workspace preserved."
+        ],
+        "notes": [],
+        "log_sha256": "2a4490ea4a6347cb7c45e4c398f6e149eef24b76903733e1b4c99219840adfe2"
+      },
+      {
+        "name": "web",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/web-proxy.mjs",
+          "/tmp/dsh-release4-runtime"
+        ],
+        "environment": {},
+        "log": "/tmp/dsh-20261117-web.log",
+        "started_at": "2026-11-17T02:51:04Z",
+        "status": "passed",
+        "exit_code": 0,
+        "duration_seconds": 0.231,
+        "counts": {
+          "entrypoints": 1,
+          "passed_entrypoints": 1,
+          "skipped": 0,
+          "individual_assertions": "not emitted by this standalone assertion script"
+        },
+        "summary": [
+          "web proxy passed: same-origin HTTP/POST/WS, credential isolation, redirect rejection, one-use launch and scoped cleanup"
+        ],
+        "notes": [],
+        "log_sha256": "a2e64609df7da1d9ddae666436b581b51655fd57875fc22f518d8480e6bbb647"
+      },
+      {
+        "name": "forum-service",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/forum-service.mjs",
+          "/tmp/dsh-release4-runtime"
+        ],
+        "environment": {},
+        "log": "/tmp/dsh-20261117-forum-service.log",
+        "started_at": "2026-11-17T02:51:04Z",
+        "status": "passed",
+        "exit_code": 0,
+        "duration_seconds": 0.4,
+        "counts": {
+          "entrypoints": 1,
+          "passed_entrypoints": 1,
+          "skipped": 0,
+          "individual_assertions": "not emitted by this standalone assertion script"
+        },
+        "summary": [
+          "Forum service passed: encrypted vault, cold-start RSA-OAEP callback/nonce/replay protection, authenticated protocol, paging, compose, likes/bookmarks/upload, stale-base guards and expired-key removal"
+        ],
+        "notes": [],
+        "log_sha256": "6029e3765921ed89cb1f4eb48f65fc97e181a7ac2ec6d6f981ff6aaed1dfd9f2"
+      },
+      {
+        "name": "forum-http",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/forum-http.mjs",
+          "/tmp/dsh-release4-runtime"
+        ],
+        "environment": {},
+        "log": "/tmp/dsh-20261117-forum-http.log",
+        "started_at": "2026-11-17T02:51:04Z",
+        "status": "passed",
+        "exit_code": 0,
+        "duration_seconds": 0.503,
+        "counts": {
+          "entrypoints": 1,
+          "passed_entrypoints": 1,
+          "skipped": 0,
+          "individual_assertions": "not emitted by this standalone assertion script"
+        },
+        "summary": [
+          "Forum HTTP passed: actual authenticated loopback control, real Discourse HTTP/form/multipart, key headers, redirect refusal, malformed JSON, sanitized errors and revoked-key expiry"
+        ],
+        "notes": [],
+        "log_sha256": "de6ddd4d30de771a53a1c5aa2ffcb6fd12da59c903e06ab9f17206ef51e6cdfa"
+      },
+      {
+        "name": "subscriptions",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/subscription-live.mjs",
+          "/tmp/dsh-release4-runtime"
+        ],
+        "environment": {},
+        "log": "/tmp/dsh-20261117-subscriptions.log",
+        "started_at": "2026-11-17T02:51:05Z",
+        "status": "passed",
+        "exit_code": 0,
+        "duration_seconds": 13.349,
+        "counts": {
+          "entrypoints": 1,
+          "passed_entrypoints": 1,
+          "skipped": 0,
+          "individual_assertions": "not emitted by this standalone assertion script"
+        },
+        "summary": [
+          "PASS: packaged appAuth RPC both providers cancel/denial/answer/commit/list/restart/signOut/restart. External OAuth runner is synthetic; no real provider login."
+        ],
+        "notes": [],
+        "log_sha256": "eb37c365ce323c553767927b5f1cccc8dd0bd150b099075ec36820576880d52c"
+      },
+      {
+        "name": "sensevoice",
+        "command": [
+          "sh",
+          "tests/check-sensevoice-native.sh",
+          "/tmp/sensevoice-models",
+          "/tmp/sensevoice-zh.wav",
+          "/tmp/sherpa-onnx-v1.13.8-osx-arm64-shared-no-tts-lib/lib"
+        ],
+        "environment": {},
+        "log": "/tmp/dsh-20261117-sensevoice.log",
+        "started_at": "2026-11-17T02:51:06Z",
+        "status": "passed",
+        "exit_code": 0,
+        "duration_seconds": 10.186,
+        "counts": {
+          "entrypoints": 1,
+          "passed_entrypoints": 1,
+          "skipped": 0,
+          "individual_assertions": "not emitted by this standalone assertion script"
+        },
+        "summary": [
+          "SenseVoice native bridge passed: 开饭时间早上9点至下午5点。"
+        ],
+        "notes": [],
+        "log_sha256": "96f269e8f91ec63c477847401391f5c9a2353fe591a3ca94f8de795275199158"
+      },
+      {
+        "name": "node-budget",
+        "command": [
+          "sh",
+          "tests/check-node-budget.sh"
+        ],
+        "environment": {},
+        "log": "/tmp/dsh-20261117-node-budget.log",
+        "started_at": "2026-11-17T02:51:16Z",
+        "status": "passed",
+        "exit_code": 0,
+        "duration_seconds": 2.033,
+        "counts": {
+          "entrypoints": 1,
+          "passed_entrypoints": 1,
+          "skipped": 0,
+          "individual_assertions": "not emitted by this standalone assertion script"
+        },
+        "summary": [
+          "PASS fixed C++ physical-memory boundaries and actual jitless Node old-space startup: 512, 768, 1152, 1280, 2048 MiB"
+        ],
+        "notes": [],
+        "log_sha256": "77fc1d5d1d90c88042fe69c19facd29f51883c4288bf575a8d53bf40d57c75f3"
+      },
+      {
+        "name": "deletion-marker",
+        "command": [
+          "sh",
+          "tests/check-deletion-marker.sh"
+        ],
+        "environment": {},
+        "log": "/tmp/dsh-20261117-deletion-marker.log",
+        "started_at": "2026-11-17T02:51:18Z",
+        "status": "passed",
+        "exit_code": 0,
+        "duration_seconds": 1.829,
+        "counts": {
+          "entrypoints": 1,
+          "passed_entrypoints": 1,
+          "skipped": 0,
+          "individual_assertions": "not emitted by this standalone assertion script"
+        },
+        "summary": [
+          "PASS native deletion tombstone: atomic no-overwrite, staged regular file, bounded private path, and directory/symlink refusal"
+        ],
+        "notes": [],
+        "log_sha256": "c498f4203e1ba116bf02b067d3f0a3dff0d45021ac068078b6852ff382e09d70"
+      },
+      {
+        "name": "mentions-live",
+        "command": [
+          "sh",
+          "tests/check-mentions.sh",
+          "--live"
+        ],
+        "environment": {},
+        "log": "/tmp/dsh-20261117-mentions-live.log",
+        "started_at": "2026-11-17T02:53:20Z",
+        "status": "passed",
+        "exit_code": 0,
+        "duration_seconds": 16.9,
+        "counts": {
+          "tests": 11,
+          "suites": 0,
+          "pass": 11,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary": [
+          "Mention live: fuzzy files, folder drill, canonical session URI, real file/session context expansion and stored readable references passed"
+        ],
+        "notes": [],
+        "log_sha256": "0abfac3339018e48805a16260e8e19c9033775389678416f38ed97f41a44ae94"
+      },
+      {
+        "name": "account-live",
+        "command": [
+          "sh",
+          "tests/check-account.sh",
+          "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/resources/rawfile/dsh-runtime.zip"
+        ],
+        "environment": {},
+        "log": "/tmp/dsh-20261117-account-live.log",
+        "started_at": "2026-11-17T02:53:20Z",
+        "status": "passed",
+        "exit_code": 0,
+        "duration_seconds": 20.858,
+        "counts": {
+          "entrypoints": 1,
+          "passed_entrypoints": 1,
+          "skipped": 0,
+          "individual_assertions": "not emitted by this standalone assertion script"
+        },
+        "summary": [
+          "账号状态、余额精度和连接切换检查通过",
+          "账号授权跨重启、并行写入、退出和损坏文件检查通过",
+          "隔离 DSH 原版账号 RPC 已验证取消、回调状态校验、登录、默认账号模型、重启保留与退出撤销"
+        ],
+        "notes": [],
+        "log_sha256": "6b4d7dacaa8c8a55ae9f6e901f2016261569237d957bf95c70f6e64f0c4e6c56"
+      },
+      {
+        "name": "dsbot-http",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/dsbot-http.mjs",
+          "/tmp/dsh-release4-runtime"
+        ],
+        "environment": {},
+        "log": "/tmp/dsh-20261117-dsbot-http.log",
+        "started_at": "2026-11-17T02:53:37Z",
+        "status": "passed",
+        "exit_code": 0,
+        "duration_seconds": 0.394,
+        "counts": {
+          "entrypoints": 1,
+          "passed_entrypoints": 1,
+          "skipped": 0,
+          "individual_assertions": "not emitted by this standalone assertion script"
+        },
+        "summary": [
+          "PASS DS Bot native HTTP boundaries: real loopback requests/auth/proxy/no redirects, allowlist and limits before I/O, 404/302/wrong type/malformed/oversize/refused envelopes, split UTF-8 SSE, cancellation silence, feed status rejection, host-generation retirement. Only platform RCP is represented by Node fetch."
+        ],
+        "notes": [],
+        "log_sha256": "0ee9433dafa9fcaa09a34b5e85aa6cba1fd06764e536ca3ca1a629be20c45a40"
+      },
+      {
+        "name": "subscription-credentials",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/subscription-credentials.mjs",
+          "/tmp/dsh-release4-runtime"
+        ],
+        "environment": {},
+        "log": "/tmp/dsh-20261117-subscription-credentials.log",
+        "started_at": "2026-11-17T02:53:37Z",
+        "status": "passed",
+        "exit_code": 0,
+        "duration_seconds": 0.179,
+        "counts": {
+          "entrypoints": 1,
+          "passed_entrypoints": 1,
+          "skipped": 0,
+          "individual_assertions": "not emitted by this standalone assertion script"
+        },
+        "summary": [
+          "Subscription credentials: independent 0600 persistence, concurrent refresh, restart, sign-out and corrupt-file refusal passed."
+        ],
+        "notes": [],
+        "log_sha256": "a4b2fabf650b581191cfb38f506f2ce1092ade8381615720049cad13e5642199"
+      },
+      {
+        "name": "voice-scribe-transport",
+        "command": [
+          "sh",
+          "tests/check-voice-scribe-transport.sh"
+        ],
+        "environment": {},
+        "log": "/tmp/dsh-20261117-voice-scribe-transport.log",
+        "started_at": "2026-11-17T02:53:37Z",
+        "status": "passed",
+        "exit_code": 0,
+        "duration_seconds": 10.511,
+        "counts": {
+          "entrypoints": 1,
+          "passed_entrypoints": 1,
+          "skipped": 0,
+          "individual_assertions": "not emitted by this standalone assertion script",
+          "assertions": 23
+        },
+        "summary": [
+          "Voice scribe authenticated REST: 23 assertions passed"
+        ],
+        "notes": [],
+        "log_sha256": "d18367af945897f708117b729188ffcc476fe28ec344061978a682233fb070e9"
+      },
+      {
+        "name": "deletion-native-persistence",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--test",
+          "tests/session-deletion-durability.test.mjs",
+          "tests/session-deletion-inbox.test.mjs"
+        ],
+        "environment": {
+          "DSH_PREFIX": "/tmp/dsh-20261117-native-persistence-runtime"
+        },
+        "log": "/tmp/dsh-20261117-deletion-native-persistence.log",
+        "started_at": "2026-11-17T02:53:41Z",
+        "status": "passed",
+        "exit_code": 0,
+        "duration_seconds": 1.145,
+        "counts": {
+          "tests": 7,
+          "suites": 0,
+          "pass": 7,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary": [
+          "ℹ skipped 0",
+          "ℹ todo 0",
+          "ℹ duration_ms 1004.833625"
+        ],
+        "notes": [
+          "Isolated copy of release4 patched persistence; restored official node-addon-system 0.1.2 flock.js and Darwin ARM64 system.node. No synthetic lock preload; production archive unchanged."
+        ],
+        "log_sha256": "d364690ac847e8aadefda7babbe89fdb1edca4bf4bc9d7fb6eef1f2d04faac13"
+      },
+      {
+        "name": "local-smoke-openai",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/local-engine-smoke.mjs",
+          "/tmp/dsh-release4-runtime"
+        ],
+        "environment": {},
+        "log": "/tmp/dsh-20261117-local-smoke-openai.log",
+        "started_at": "2026-11-17T02:53:42Z",
+        "status": "passed",
+        "exit_code": 0,
+        "duration_seconds": 4.666,
+        "counts": {
+          "entrypoints": 1,
+          "passed_entrypoints": 1,
+          "skipped": 0,
+          "individual_assertions": "not emitted by this standalone assertion script"
+        },
+        "summary": [
+          "DSH local engine verified under --jitless: boot, credentials in memory, one streamed turn, stop (OpenAI-compatible route), simulated host flock/publication hooks"
+        ],
+        "notes": [
+          "Default host protocol path uses simulated hooks; separate native-publish-linux entry executes unchanged production C++ embedder and real POSIX locks."
+        ],
+        "log_sha256": "a76d737cb321b63ba91315d40a97046f08f9e9afdf79018c1f15f614451601b0"
+      },
+      {
+        "name": "local-smoke-deepseek",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/local-engine-smoke.mjs",
+          "/tmp/dsh-release4-runtime",
+          "--deepseek",
+          "--deny-session-link",
+          "--tools",
+          "--danger-full-access",
+          "--compact"
+        ],
+        "environment": {},
+        "log": "/tmp/dsh-20261117-local-smoke-deepseek.log",
+        "started_at": "2026-11-17T02:53:47Z",
+        "status": "passed",
+        "exit_code": 0,
+        "duration_seconds": 5.146,
+        "counts": {
+          "entrypoints": 1,
+          "passed_entrypoints": 1,
+          "skipped": 0,
+          "individual_assertions": "not emitted by this standalone assertion script"
+        },
+        "summary": [
+          "DSH local engine verified under --jitless: boot, credentials in memory, one streamed turn, stop (default DeepSeek route), confined read/write/edit, skill load, spawn and fork, confinement under danger-full-access, successful /compact with recorded summary, simulated host flock/publication hooks"
+        ],
+        "notes": [
+          "Default host protocol path uses simulated hooks; separate native-publish-linux entry executes unchanged production C++ embedder and real POSIX locks."
+        ],
+        "log_sha256": "8c29952023b979c62b4e49e54a0faf7eb68a3d43e70ac8256f5ad19b5f82c8b2"
+      },
+      {
+        "name": "remote-mac-dsh",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/remote-dsh-live.mjs",
+          "/tmp/dsh-remote-reference-host/node_modules/@deepseek-ai/dsh/lib/bin.js"
+        ],
+        "environment": {},
+        "log": "/tmp/dsh-20261117-remote-mac-dsh.log",
+        "started_at": "2026-11-17T02:53:48Z",
+        "status": "passed",
+        "exit_code": 0,
+        "duration_seconds": 6.689,
+        "counts": {
+          "entrypoints": 1,
+          "passed_entrypoints": 1,
+          "skipped": 0,
+          "individual_assertions": "not emitted by this standalone assertion script"
+        },
+        "summary": [
+          "PASS: official Mac DSH authentication, file write/read/error, shell, background job, rejected approval and /compact"
+        ],
+        "notes": [],
+        "log_sha256": "31981cdfda0756b6dfffcec3d13c232a2c1a26050d0ccf22d9604684f26fc9e0"
+      },
+      {
+        "name": "remote-ssh",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "tests/ssh-bridge-live.mjs",
+          "/tmp/dsh-remote-reference-host/node_modules/@deepseek-ai/dsh/lib/bin.js"
+        ],
+        "environment": {},
+        "log": "/tmp/dsh-20261117-remote-ssh.log",
+        "started_at": "2026-11-17T02:53:52Z",
+        "status": "passed",
+        "exit_code": 0,
+        "duration_seconds": 14.53,
+        "counts": {
+          "entrypoints": 1,
+          "passed_entrypoints": 1,
+          "skipped": 0,
+          "individual_assertions": "not emitted by this standalone assertion script"
+        },
+        "summary": [
+          "PASS: isolated OpenSSH, encrypted private key, password auth, host fingerprint checks, DSH HTTP/WSS, reuse and cleanup"
+        ],
+        "notes": [],
+        "log_sha256": "b6f761a049d03326af80568d6d1961d3cffdfc7b319f063da9cf5c9591d995cc"
+      },
+      {
+        "name": "remote-pty",
+        "command": [
+          "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node",
+          "--test",
+          "tests/terminal.test.mjs"
+        ],
+        "environment": {
+          "DSH_TERMINAL_TEST_BIN": "/tmp/dsh-remote-reference-host/node_modules/@deepseek-ai/dsh/lib/bin.js"
+        },
+        "log": "/tmp/dsh-20261117-remote-pty.log",
+        "started_at": "2026-11-17T02:53:55Z",
+        "status": "passed",
+        "exit_code": 0,
+        "duration_seconds": 3.371,
+        "counts": {
+          "tests": 4,
+          "suites": 0,
+          "pass": 4,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary": [
+          "ℹ skipped 0",
+          "ℹ todo 0",
+          "ℹ duration_ms 3284.445833"
+        ],
+        "notes": [],
+        "log_sha256": "3ef9293bd97cd07a68621606cdcef171ae0c4ac5acc1a1b9c14a27c53975868a"
+      },
+      {
+        "name": "remote-original-relay",
+        "command": [
+          "sh",
+          "tests/check-dsh-remote.sh",
+          "/tmp/dsh-remote-final-reference",
+          "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/src/main/resources/rawfile/dsh-runtime.zip"
+        ],
+        "environment": {},
+        "log": "/tmp/dsh-20261117-remote-original-relay.log",
+        "started_at": "2026-11-17T02:53:58Z",
+        "status": "passed",
+        "exit_code": 0,
+        "duration_seconds": 28.379,
+        "counts": {
+          "tests": 2,
+          "suites": 0,
+          "pass": 2,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "summary": [
+          "DSH Remote pairing, browser login, pin persistence, upstream LAN, fresh TURN/relay fallback, encrypted HTTP/mux and replay rejection passed",
+          "Pinned self-hosted server password login, device registration, LAN authorization/signaling and revocation passed"
+        ],
+        "notes": [],
+        "log_sha256": "a45ba51652465e11a614abddb3b92349320c26343c5b1ce5a9c4de3e3f6dac31"
+      },
+      {
+        "name": "official-wire-python",
+        "command": [
+          "python3",
+          "/tmp/dsh-20261117-official-wire.py"
+        ],
+        "environment": {},
+        "log": "/tmp/dsh-20261117-official-wire-python.log",
+        "started_at": "2026-11-17T02:54:06Z",
+        "status": "passed",
+        "exit_code": 0,
+        "duration_seconds": 3.311,
+        "counts": {
+          "entrypoints": 1,
+          "passed_entrypoints": 1,
+          "skipped": 0,
+          "individual_assertions": "not emitted by this standalone assertion script"
+        },
+        "summary": [
+          "Real DSH host verified: login cookie, event stream, workspace baseline, list, create, follow, cancel"
+        ],
+        "notes": [],
+        "log_sha256": "6dd935823df38b8522e9b8e10933ed3fc0954a171b6c380790eabdc742ac0091"
+      },
+      {
+        "name": "native-shell-probe",
+        "command": [
+          "sh",
+          "/tmp/dsh-20261117-extra-native.sh",
+          "shell"
+        ],
+        "environment": {},
+        "log": "/tmp/dsh-20261117-native-shell-probe.log",
+        "started_at": "2026-11-17T02:55:08Z",
+        "status": "passed",
+        "exit_code": 0,
+        "duration_seconds": 2.064,
+        "counts": {
+          "entrypoints": 1,
+          "passed_entrypoints": 1,
+          "skipped": 0,
+          "individual_assertions": "not emitted by this standalone assertion script"
+        },
+        "summary": [
+          "{\"ptyError\":0,\"spawnError\":0,\"exitCode\":0,\"timedOut\":false,\"handshake\":true}",
+          "{\"ptyError\":0,\"spawnError\":2,\"exitCode\":-1,\"timedOut\":false,\"handshake\":false}"
+        ],
+        "notes": [],
+        "log_sha256": "e457fe2c7ec8ccd38847a9d2795a36110545293bd3d74fc68dcf0a8011d7c18b"
+      },
+      {
+        "name": "native-sensevoice-standalone",
+        "command": [
+          "sh",
+          "/tmp/dsh-20261117-extra-native.sh",
+          "sensevoice"
+        ],
+        "environment": {},
+        "log": "/tmp/dsh-20261117-native-sensevoice-standalone.log",
+        "started_at": "2026-11-17T02:55:08Z",
+        "status": "passed",
+        "exit_code": 0,
+        "duration_seconds": 3.315,
+        "counts": {
+          "entrypoints": 1,
+          "passed_entrypoints": 1,
+          "skipped": 0,
+          "individual_assertions": "not emitted by this standalone assertion script"
+        },
+        "summary": [
+          "开饭时间早上9点至下午5点。"
+        ],
+        "notes": [],
+        "log_sha256": "d0a5d2de9a1eaf0a234755073f08f10b3a9e5b2c53f7c8aa41274ee03cac7244"
+      },
+      {
+        "name": "native-publish-linux",
+        "command": [
+          "docker",
+          "run",
+          "--rm",
+          "--cpus=2",
+          "--memory=2g",
+          "--name",
+          "dsh-native-publish-20261117",
+          "-v",
+          "/Users/wangzhaojin/work/dsh/dsh-go-harmony:/work:ro",
+          "-w",
+          "/work",
+          "-e",
+          "DSH_NATIVE_TEST_RUNTIME=/tmp/runtime",
+          "codex/dsh-native-tests:20261117",
+          "sh",
+          "-c",
+          "unzip -q entry/src/main/resources/rawfile/dsh-runtime.zip -d /tmp/runtime && node --version && dpkg-query -W libnode137 libnode-dev libuv1-dev && sh tests/check-native-publish.sh /usr/include/node /usr/lib/aarch64-linux-gnu/libnode.so.137"
+        ],
+        "exit_code": 0,
+        "status": "passed",
+        "duration_seconds": 137.253,
+        "counts": {
+          "entrypoints": 5,
+          "passed_entrypoints": 5,
+          "skipped": 0
+        },
+        "log": "/tmp/dsh-20261117-native-publish-linux.log",
+        "native_environment": {
+          "os": "Debian sid Linux arm64 in disposable Docker container",
+          "node": "24.22.2",
+          "libnode": "137 / 24.22.2",
+          "headers": "24.22.2",
+          "libuv": "1.53.0",
+          "production_runtime_changed": false
+        },
+        "summary": [
+          "Native workspace publish: atomic create, collision, path confinement and symlink refusal passed",
+          "Native session publish (Node 24.22.2): atomic create, collision, errno and paths passed",
+          "Native attachment publication path and no-replace checks passed.",
+          "Native file lock: real POSIX contention, release/reacquire and invalid descriptor refusal passed",
+          "DSH local engine verified under --jitless: boot, credentials in memory, one streamed turn, stop (default DeepSeek route), confined read/write/edit, skill load, spawn and fork, confinement under danger-full-access, successful /compact with recorded summary, production C++ embedder with real POSIX flock/publication hooks"
+        ],
+        "notes": [],
+        "log_sha256": "326917ab704eaad2033367e7b6a26a6f4b0ad43c6a740222ee5982b99848f8dc"
+      }
+    ],
+    "archive_verified_against_unpacked_runtime": {
+      "sha256": "751480d93025e54d1bac6ad71a18d4fa21654fcd6284ec5d03d4e843763cd451",
+      "entry_mismatches": []
+    },
+    "environment_setup": {
+      "docker_image": "codex/dsh-native-tests:20261117",
+      "docker_build_log": "/tmp/dsh-20261117-native-image-build.log",
+      "docker_build_exit_code": 0,
+      "docker_probe_log": "/tmp/dsh-20261117-native-env-probe.log",
+      "docker_probe_exit_code": 0
+    },
+    "summary": {
+      "successful_commands": 38,
+      "superseded_fixture_invocations": 1,
+      "unresolved_failures": 0,
+      "skipped": 0,
+      "test_source_changes_only": [
+        "tests/local-engine-smoke.mjs",
+        "tests/check-native-publish.sh",
+        "tests/native/file-lock.cjs"
+      ],
+      "production_source_changes": []
+    }
+  },
+  "independent_checks": [
+    {
+      "name": "generated-arkui",
+      "command": "PATH=/Applications/DevEco-Studio.app/Contents/tools/node/bin:$PATH sh tests/check-arkui-reactivity.sh",
+      "exit_code": 0,
+      "log": "/tmp/dsh-20261117-arkui.log",
+      "log_sha256": "775e8a5f7932be55091402ba4ebc937925ac1ab149ba8c257a8bc16dcf69b6a2",
+      "counts": {
+        "tests": 10,
+        "passed": 10,
+        "failed": 0,
+        "skipped": 0
+      },
+      "output": "✔ onboarding save reads current form and engine state inside its Button observer (6.009792ms)\n✔ settings buttons and text evaluate state inside the generated control observers (7.450459ms)\n✔ settings body text resolves its default color inside the component observer (1.538375ms)\n✔ session detail actions and context values keep their state dependencies (5.324791ms)\n✔ account wallet observers re-read balance after the async response (2.015583ms)\n✔ mention results and retained rows observe the revision after asynchronous updates (1.01775ms)\n✔ retained voice waveform bars read their current state in the generated observer (4.925375ms)\n✔ pet roaming pauses on current editor focus and list scroll state (5.15975ms)\n✔ companion signal switches read asynchronously loaded consent inside each Toggle observer (1.523666ms)\n✔ companion owners remount when host, connection generation or readiness changes (3.272208ms)\nℹ tests 10\nℹ suites 0\nℹ pass 10\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 46.771417\n"
+    },
+    {
+      "name": "real-rtc-turn",
+      "command": "PATH=/Applications/DevEco-Studio.app/Contents/tools/node/bin:$PATH sh tests/check-turn-local.sh entry/src/main/resources/rawfile/dsh-runtime.zip",
+      "exit_code": 0,
+      "log": "/tmp/dsh-20261117-root-turn.log",
+      "log_sha256": "7e33b3acf5f85ea095c3f4a24236f208b71d382f8b42fdccf3875506081dee95",
+      "counts": {
+        "tests": 5,
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0
+      },
+      "output": "Building hash-pinned coturn 4.19.0 in a temporary directory…\nReal coturn UDP-only at 127.0.0.1:58725; other control transport disabled.\nReal coturn TCP-only at 127.0.0.1:58728; other control transport disabled.\n✔ RTCH wire layout, round trip and malformed/replayed chunks (2.005917ms)\n✔ ICE credentials are scoped by connection and redirects are refused (32.453667ms)\n✔ real ICE, DTLS, SCTP and binary DataChannel (441.344709ms)\n✔ forced TURN UDP allocation with real bidirectional 50kB DataChannel (5209.377ms)\nℹ {\"transport\":\"udp\",\"selected\":\"turn\",\"candidates\":[\"candidate:ba04efb4b632c146cfc811f40 1 udp 16777215 127.0.0.1 51019 typ relay raddr 127.0.0.1 rport 51582 generation 0 ufrag 6864\"],\"sentBytes\":50000,\"receivedBytes\":50000}\n✔ forced TURN TCP allocation with real bidirectional 50kB DataChannel (5228.986958ms)\nℹ {\"transport\":\"tcp\",\"selected\":\"turn\",\"candidates\":[\"candidate:ba04efb4b632c146cfc811f40 1 udp 16777215 127.0.0.1 53301 typ relay raddr 127.0.0.1 rport 58780 generation 0 ufrag c1b2\"],\"sentBytes\":50000,\"receivedBytes\":50000}\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 11163.859458\nPASS: real UDP-only and TCP-only TURN, relay-only local candidates, 50000 bytes each direction; no skipped cases.\n"
+    },
+    {
+      "name": "voice-index-independent",
+      "command": "PATH=/Applications/DevEco-Studio.app/Contents/tools/node/bin:$PATH node --test tests/voice-index.test.mjs",
+      "exit_code": 0,
+      "log": "/tmp/dsh-20261117-root-voice-index.log",
+      "log_sha256": "1ec68e0aa68731f2eb4efc9e9c7a111c3b6ebce47230857101671b78d3cf5322",
+      "counts": {
+        "tests": 7,
+        "passed": 7,
+        "failed": 0,
+        "skipped": 0
+      },
+      "output": "(node:47820) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n✔ voice start waits for the persisted mode before choosing any capture service (15.865875ms)\n✔ failed preference loading blocks capture until a replacement mode is saved successfully (17.59ms)\n✔ saving a new mode waits for startup loading so an old stored mode cannot overwrite it (20.600458ms)\n✔ automatic model preference follows the current local connection, not a remote provider label (5.329208ms)\n✔ dictation and cancellation keep page text, mention wire tokens, selection and provisional spans in sync (5.91925ms)\n✔ page and foreground callbacks cancel provisional speech and reject stale results (1.841541ms)\n✔ page start action observes composer operation guards and binds the active session (3.657959ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 408.272708\n"
+    }
+  ],
+  "turn": {
+    "implementation": "real coturn 4.19.0, no production change",
+    "source": "https://github.com/coturn/coturn/archive/refs/tags/4.19.0.tar.gz",
+    "source_sha256": "988b0090f6f30782a7e19c974a9d85cbd70cc1cd4788d21c4361bc2603dbc13d",
+    "control_transports": [
+      "UDP-only",
+      "TCP-only"
+    ],
+    "relay_only": true,
+    "bytes_each_direction_per_transport": 50000,
+    "independent_default_runner_passes": 2,
+    "coturn_log": "/tmp/dsh-20261117-root-coturn.log",
+    "leftover_turnserver_processes": 0,
+    "temporary_build_and_fixture_directories_cleaned": true,
+    "no_system_service_installed": true,
+    "development_dependency_added": "pkgconf 3.0.10; libevent and OpenSSL 3 already installed",
+    "limit": "Isolated loopback relay with actual ICE/DTLS/SCTP/DataChannel, not a public NAT/carrier-network or TURN TLS test."
+  },
+  "test_changes": {
+    "tests/check-turn-local.sh": "7a39887fe022e3ea2cbcd8d62f531c0a19cb009e7e4fbaeec858278e655b5bd1",
+    "tests/local-turn-fixture.mjs": "b2af3bb4de25506658ec76bb9e47d4a12618d822e1b1adf054a422ce9110d57c",
+    "tests/dsh-remote-rtc.test.mjs": "321230403632fa39ae5ead6467ccdc70eaafb261321332d0941b4253f89cf25c",
+    "tests/voice-index.test.mjs": "122f139463006d03a76d835cb968dc59a7e97268c52cb5c98868ca1bd84e48c1",
+    "tests/check-native-publish.sh": "d37598850377643cbe1d0d9fdd87917ae6c134cdf042204aaaa972273f6dea0d",
+    "tests/local-engine-smoke.mjs": "623c688b108df49d93e0b062f631c55c47dc3b707d17db6ac1c60cd0ecd2fcc8",
+    "tests/native/file-lock.cjs": "75a31de347cc45f4802633730bb4cb558a042267fdee40d45bbc0ad44c338df0"
+  },
+  "resolved_test_setup_issues": [
+    "voice-index fixture lacked existing PerformanceMonitor/usage dependencies; added service stand-ins and real recordUsage extraction, preserved old assertions and asserted one voice usage event; 7/7 independently rerun.",
+    "Upstream DS Bot test needed fixed original dev src/client/text.js omitted from npm package; restored in isolated /tmp test stage after verifying shipped client identity, 114/114 passed.",
+    "Direct mentions invocation lacked wrapper-generated MentionData.ts; correct check-mentions.sh --live wrapper passed."
+  ],
+  "acceptance_limits": [
+    "Actual device microphone/ASR/TTS, permissions, ArkWeb/GPU/touch, foreground/background and system panels require phone acceptance.",
+    "Commercial models, OAuth accounts, Discourse, media providers and Bot messaging use local synthetic test services where stated; no paid call or user message sent.",
+    "Normal HAP system subprocess/PTY/npm scripts, root/Shizuku/private virtual displays, external floating pets and dynamic pinned shortcuts retain documented platform differences.",
+    "Fixed intermediate stages are used only for exact hash/reverse-patch tests; final runtime live tests and embedded archive digest match.",
+    "Host Node 24.14.1; Linux native harness Node/libnode/headers 24.22.2 ABI 137. Phone embedded Node remains 24.22.1."
+  ],
+  "device_install": {
+    "status": "installed_and_version_verified",
+    "model": "ALN-AL10",
+    "api": 26,
+    "previous_version": "1.0.0",
+    "previous_version_code": 1000000,
+    "preserve_data": true,
+    "installed_at": "2026-11-17T11:02:02.850435+08:00",
+    "version_name": "1.0.1",
+    "version_code": 1000001,
+    "install_exit_code": 0,
+    "install_output": "install bundle successfully. AppMod finish",
+    "mode": "hdc install -r; no uninstall or data clear",
+    "launch": {
+      "attempted": true,
+      "status": "blocked_by_locked_screen",
+      "error_code": 10106102,
+      "message": "The device screen is locked during the application launch; user must unlock and open the app.",
+      "not_a_development_test_failure": true
+    },
+    "functional_acceptance": "pending_user_test"
+  },
+  "knowledge_sync": {
+    "status": "passed",
+    "project_count": 1,
+    "last_successful_sync": "2026-11-17T11:02:28.500842+08:00",
+    "errors": []
+  },
+  "coverage_cross_check": {
+    "at": "2026-11-17T11:00:44+0800",
+    "test_files": 89,
+    "test_files_with_final_pass": 89,
+    "standalone_assertion_entrypoints": 29,
+    "standalone_with_final_pass": 29,
+    "optional_live_branches": 5,
+    "optional_live_branches_with_final_pass": 5,
+    "unit_final_commands": 76,
+    "live_final_commands": 38,
+    "arkui_tests": 10,
+    "rtc_tests": 5,
+    "unresolved_failures": [],
+    "unresolved_skips": [],
+    "missing_entrypoints": [],
+    "notes": [
+      "Only final successful attempts count; two unit fixture setup attempts and one live missing-wrapper invocation remain recorded as resolved history.",
+      "No test rerun during cross-check; no production or repository documentation edits.",
+      "All final command logs were read and checked for nonzero fail/skip summaries; root ArkUI and real UDP/TCP TURN logs independently checked."
+    ]
+  },
+  "final_review": {
+    "git_diff_check": "passed",
+    "test_file_hashes": "7 unchanged from tested versions",
+    "artifact_hashes": "unchanged and verified after installation",
+    "documentation_links": "verified",
+    "coverage_cross_check": "89 test files, 29 standalone scripts, 5 optional live branches; all have final pass evidence"
+  }
+}

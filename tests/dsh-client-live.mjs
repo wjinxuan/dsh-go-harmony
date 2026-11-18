@@ -1,9 +1,10 @@
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { once } from 'node:events';
 import { mkdtemp, readFile, realpath, rm, writeFile } from 'node:fs/promises';
 import { createServer } from 'node:http';
-import { createRequire } from 'node:module';
+import { createRequire, stripTypeScriptTypes } from 'node:module';
 import { join, resolve } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -12,35 +13,48 @@ import { loadDshClient } from './dsh-client-node-fixture.mjs';
 const [clientPath, runtime, lockFixture] = process.argv.slice(2).map(path => resolve(path));
 const runtimeRequire = createRequire(join(runtime, 'main.cjs'));
 const { unzipSync, strFromU8 } = runtimeRequire('fflate');
+const { PNG } = createRequire(join(runtime, 'harmony-deps/package.json'))('pngjs');
 const testDir = new URL('.', import.meta.url);
 const deviceInfo = { sdkApiVersion: 26 };
 const socketOptions = [];
 const proxyOptions = [];
 const fixtures = { deviceInfo, socketOptions, proxyOptions };
 const DshClient = await loadDshClient(clientPath, join(runtime, 'main.cjs'), fileURLToPath(testDir), fixtures);
+const regenerationCode = (await readFile(resolve(clientPath, '../../ui/MessageRegeneration.ets'), 'utf8'))
+  .replace(/^import type .*\n/gm, '').replace("'../dsh/DshWire'", JSON.stringify(new URL('./DshWire.ts', testDir).href));
+const { forkBeforePrompt, regenerablePrompt } = await import('data:text/javascript,' + encodeURIComponent(stripTypeScriptTypes(regenerationCode)));
 
 const home = await mkdtemp('/tmp/dsh-client-live-');
 const child = spawn(process.execPath, ['--jitless', '--no-addons', '--expose-internals', '--require', lockFixture,
   join(runtime, 'main.cjs'), home],
-  { stdio: 'ignore' });
+  { stdio: 'ignore', env: { ...process.env, DSH_HARMONY_TEST_ATTACHMENT_LINK: '1' } });
 const client = new DshClient();
 let heldRequest = Promise.withResolvers();
 let releaseRequest = Promise.withResolvers();
+const releaseCompaction = Promise.withResolvers();
 const toolAttempts = new Set();
 let toolNames = new Set();
 let timedAsk = false;
+let imageReachedProvider = false;
+let attachmentHostPath = '';
 const privateProviderError = 'fixture-private-provider-error with a local path';
 const provider = createServer(async (request, response) => {
   if (request.url === '/models') {
     response.setHeader('content-type', 'application/json');
-    response.end(JSON.stringify({ data: [{ id: 'deepseek-flash', name: 'Fixture model' }] }));
+    response.end(JSON.stringify({ data: [{ id: 'deepseek-flash', name: 'Fixture model' },
+      { id: 'deepseek-v4-pro', name: 'Fixture text model' }] }));
     return;
   }
   let body = '';
   for await (const chunk of request) body += chunk;
+  if (request.url === '/v1/files' && request.method === 'POST') {
+    response.writeHead(404, { 'content-type': 'application/json' });
+    response.end(JSON.stringify({ error: { code: 'not_found', message: 'No Files API in this fixture' } }));
+    return;
+  }
   const payload = JSON.parse(body);
-  toolNames = new Set(payload.tools.map(tool => tool.name));
-  timedAsk = !!payload.tools.find(tool => tool.name === 'ask_user_question')?.input_schema.properties.timeout;
+  toolNames = new Set(payload.tools?.map(tool => tool.name));
+  timedAsk = !!payload.tools?.find(tool => tool.name === 'ask_user_question')?.input_schema.properties.timeout;
   if (body.includes('hold-first-turn') && heldRequest) {
     heldRequest.resolve();
     heldRequest = undefined;
@@ -49,6 +63,10 @@ const provider = createServer(async (request, response) => {
   const lastUser = payload.messages.findLast(message => message.role === 'user');
   const prompt = typeof lastUser?.content === 'string' ? lastUser.content :
     lastUser?.content.find(part => part.type === 'text')?.text;
+  if (Array.isArray(lastUser?.content) && lastUser.content.some(part => part.type === 'image')) imageReachedProvider = true;
+  if (body.includes('You are now acting as a compaction engine')) {
+    await releaseCompaction.promise;
+  }
   const failurePrompt = payload.messages.filter(message => message.role === 'user').flatMap(message =>
     typeof message.content === 'string' ? [message.content] :
       message.content.filter(part => part.type === 'text').map(part => part.text))
@@ -62,7 +80,15 @@ const provider = createServer(async (request, response) => {
     return;
   }
   let tool;
-  if (prompt === 'fixture-todo' && toolNames.has('todo_write')) {
+  if (prompt === 'fixture-read-attachment') {
+    const match = body.replaceAll('\\\\', '/').match(/\/[^"\\\s]*\/attachments\/v1\/files\/[a-f0-9]{2}\/[a-f0-9]{64}\/fixture-attachment\.txt/);
+    if (match) attachmentHostPath = match[0];
+    if (attachmentHostPath) {
+      tool = { name: 'read', args: { file_path: attachmentHostPath } };
+    }
+  } else if (prompt === 'fixture-read-other-session' && attachmentHostPath) {
+    tool = { name: 'read', args: { file_path: attachmentHostPath } };
+  } else if (prompt === 'fixture-todo' && toolNames.has('todo_write')) {
     tool = { name: 'todo_write', args: { todos: [{ content: 'fixture todo item', status: 'in_progress' }] } };
   } else if (['fixture-ask-answer', 'fixture-ask-reject', 'fixture-ask-timeout'].includes(prompt) &&
     toolNames.has('ask_user_question')) {
@@ -123,12 +149,13 @@ try {
   }
   deviceInfo.sdkApiVersion = 25;
   await client.connect(ready.url, undefined, true);
+  ok(/^http:\/\/127\.0\.0\.1:\d+$/.test(client.localAccountCallbackOrigin()));
   equal(socketOptions.at(-1).supportOriginPort, undefined);
   equal(socketOptions.at(-1).proxy, 'no-proxy');
   deviceInfo.sdkApiVersion = 26;
   ok(client.connectionIdentity() > 0);
-  equal(await client.sessionDeletionAvailable(), false);
-  await assert.rejects(client.deleteSessionPermanently('isolated-nonexistent-session'), /不支持永久删除/);
+  equal(await client.sessionDeletionAvailable(), true);
+  await assert.rejects(client.deleteSessionPermanently('isolated-nonexistent-session'), /not-found/);
   checks++;
   await client.watchWorkspaces(() => {});
   await writeFile(join(workspacePath, 'proof.txt'), 'hello\nworld\n');
@@ -267,6 +294,7 @@ try {
   await client.prompt(session, 'withdraw this');
   await eventually(() => chat?.queue?.length === 3, 'queued prompts');
   const [first, second, withdrawn] = chat.queue;
+  equal(first.hasAttachments, false);
   await client.updateQueue(session, withdrawn.id, 'remove');
   await client.updateQueue(session, first.id, 'edit', 'edited queued');
   await eventually(() => chat?.queue?.some(item => item.text === 'edited queued') && chat.queue.length === 2, 'edit and remove');
@@ -335,6 +363,147 @@ try {
   ok(failedChat.notices.every(item => !item.actionable));
   equal(failedChat.sessionError, undefined);
 
+  const compactSession = await client.createSession(workspace.id);
+  await client.setModel(compactSession, model.provider, model.id, model.defaultEffort);
+  const commands = await client.listCommands(compactSession);
+  equal(commands.find(command => command.name === 'compact')?.label, '压缩');
+  let commandChat;
+  await client.watchSession(compactSession, update => { commandChat = update; });
+  equal((await client.executeCommand(compactSession, '/compact')).text, '暂无可压缩的对话内容');
+  equal((await client.executeCommand(compactSession, '/compact extra')).success, false);
+  equal((await client.executeCommand(compactSession, '/missing-fixture-command')).id, undefined);
+  ok(commandChat.commands.some(command => command.name === 'missing-fixture-command' && command.seq === undefined));
+  await client.prompt(compactSession, 'Build a fixture with meaningful history. '.repeat(300));
+  await eventually(() => !commandChat.running && commandChat.messages.at(-1)?.role === 'assistant', 'history for compaction');
+  const compaction = client.executeCommand(compactSession, '/compact');
+  try {
+    await Promise.race([eventually(() => commandChat.compacting && commandChat.commands.some(command =>
+      command.name === 'compact' && !command.done), 'live compaction'), compaction.then(result => {
+      throw new Error(`Compaction completed before streaming: ${result.text}`);
+    })]);
+  } finally {
+    releaseCompaction.resolve();
+  }
+  const compactResult = await compaction;
+  ok(compactResult.success && /^已压缩 \d+ 条历史记录/.test(compactResult.text));
+  await eventually(() => !commandChat.compacting && commandChat.commands.some(command =>
+    command.id === compactResult.id && command.done && command.seq !== undefined), 'durable command result');
+  equal(commandChat.commands.filter(command => command.id === compactResult.id).length, 1);
+  const commandPage = await client.sessionPage(compactSession);
+  ok(commandPage.records.some(event => event.type === 'compaction/summary' &&
+    event.data.sourceCommandId === compactResult.id && event.data.shadowedSeqs.length > 0));
+  await client.watchSession(compactSession, update => { commandChat = update; });
+  ok(commandChat.commands.some(command => command.id === compactResult.id && command.done && command.success));
+
+  const attachmentSession = await client.createSession(workspace.id);
+  await client.setModel(attachmentSession, model.provider, model.id, model.defaultEffort);
+  let attachmentChat;
+  await client.watchSession(attachmentSession, update => { attachmentChat = update; });
+  const attachmentText = 'document line verified by the model tool';
+  const documentPath = join(home, 'selected-document');
+  await writeFile(documentPath, attachmentText);
+  const document = { id: 'document', path: documentPath, name: 'fixture-attachment.txt', size: Buffer.byteLength(attachmentText) };
+  const documentPrompt = 'fixture-read-attachment';
+  const documentRequest = 'fixture-attachment-1';
+  heldRequest = Promise.withResolvers();
+  releaseRequest = Promise.withResolvers();
+  await client.prompt(attachmentSession, 'hold-first-turn');
+  await eventually(() => !heldRequest && attachmentChat.running, 'attachment session turn held');
+  equal(await client.promptWithAttachments(attachmentSession, documentPrompt, [document], documentRequest, () => true, true), false);
+  await eventually(() => attachmentChat.queue?.some(item => item.text === documentPrompt), 'attachment enters queue');
+  const queuedDocument = attachmentChat.queue.find(item => item.text === documentPrompt);
+  equal(queuedDocument.requestId, documentRequest);
+  equal(queuedDocument.hasAttachments, true);
+  await client.updateQueue(attachmentSession, queuedDocument.id, 'remove');
+  await eventually(() => !attachmentChat.queue.some(item => item.id === queuedDocument.id), 'attachment leaves queue');
+  ok(!attachmentChat.messages.some(item => item.text === documentPrompt));
+  equal(await client.promptWithAttachments(attachmentSession, documentPrompt, [document], documentRequest, () => true, true), false);
+  await eventually(() => attachmentChat.queue?.some(item => item.requestId === documentRequest && item.id !== queuedDocument.id),
+    'restaged attachment enters queue');
+  releaseRequest.resolve();
+  await eventually(() => !attachmentChat.running && attachmentChat.tools.some(tool => tool.result?.includes(attachmentText)),
+    'model reads the restaged document and completes its turn');
+  const committedDocuments = attachmentChat.messages.filter(message => message.role === 'user' && message.text === documentPrompt);
+  equal(committedDocuments.map(message => message.requestId), [documentRequest]);
+  const documentPart = committedDocuments[0].content.find(part => part.type === 'file');
+  equal(documentPart.attachment.name, document.name);
+  equal(documentPart.attachment.bytes, document.size);
+  equal(documentPart.attachment.attachmentId, `sha256:${createHash('sha256').update(attachmentText).digest('hex')}`);
+  equal(await readFile(attachmentHostPath, 'utf8'), attachmentText);
+  heldRequest = Promise.withResolvers();
+  releaseRequest = Promise.withResolvers();
+  await client.prompt(attachmentSession, 'hold-first-turn');
+  await eventually(() => !heldRequest && attachmentChat.running, 'hold for immediate attachment send');
+  const immediateRequest = 'fixture-attachment-now';
+  await client.promptWithAttachments(attachmentSession, documentPrompt, [document], immediateRequest, () => true, true);
+  await client.prompt(attachmentSession, 'after immediate attachment');
+  await eventually(() => attachmentChat.queue?.length === 2, 'attachment followed by text queued');
+  const immediate = attachmentChat.queue.find(item => item.requestId === immediateRequest);
+  const immediateResult = await client.sendQueuedNow(attachmentSession, immediate.id,
+    requestId => requestId === immediateRequest ? [document] : []);
+  equal(immediateResult, { sent: true, recoverable: [] });
+  releaseRequest.resolve();
+  await eventually(() => !attachmentChat.running && attachmentChat.messages.some(message =>
+    message.role === 'user' && message.text === 'after immediate attachment'), 'immediate attachment and follower complete');
+  const immediateMessages = attachmentChat.messages.filter(message => message.role === 'user');
+  equal(immediateMessages.filter(message => message.requestId === immediateRequest).length, 1);
+  const immediateIndex = immediateMessages.findIndex(message => message.requestId === immediateRequest);
+  ok(immediateIndex < immediateMessages.findIndex(message => message.text === 'after immediate attachment'));
+  equal(immediateMessages[immediateIndex].content.find(part => part.type === 'file').attachment.attachmentId,
+    documentPart.attachment.attachmentId);
+  const imagePath = join(home, 'selected-image');
+  const pixel = PNG.sync.write({ width: 1, height: 1, data: Buffer.from([237, 42, 39, 220]) });
+  await writeFile(imagePath, pixel);
+  const picture = { id: 'image', path: imagePath, name: 'fixture-image.png', size: pixel.length, mediaType: 'image/png' };
+  equal(await client.promptWithAttachments(attachmentSession, '', [picture], 'fixture-attachment-2', () => true, true), false);
+  await eventually(() => !attachmentChat.running && imageReachedProvider, 'vision provider receives attachment-only prompt');
+  await client.watchSession(attachmentSession, update => { attachmentChat = update; });
+  equal(attachmentChat.messages.find(message => message.text === documentPrompt)?.requestId, documentRequest);
+  const imagePart = attachmentChat.messages.find(message => message.content?.some(part => part.type === 'image'))?.content
+    .find(part => part.type === 'image');
+  equal([...PNG.sync.read(Buffer.from(await client.readSessionImage(attachmentSession, imagePart.attachment))).data], [237, 42, 39, 220]);
+  await assert.rejects(client.readSessionImage(attachmentSession, imagePart.attachment, cancel => cancel()), /通信失败/);
+  checks++;
+  let requestedWhileHidden = false;
+  await assert.rejects(client.readSessionImage(attachmentSession, imagePart.attachment,
+    () => { requestedWhileHidden = true; }, () => false), /取消/);
+  equal(requestedWhileHidden, false);
+
+  const originalReply = attachmentChat.messages.at(-1);
+  const originalImagePrompt = regenerablePrompt(attachmentChat.messages, attachmentChat.records, originalReply, false, 0);
+  ok(originalImagePrompt?.content.some(part => part.type === 'image'));
+  const regenerated = await forkBeforePrompt(client, attachmentSession, originalImagePrompt.seq,
+    attachmentChat.records, 'fixture attachment', () => true);
+  ok(regenerated?.sessionId && regenerated.sessionId !== attachmentSession);
+  let regeneratedChat;
+  await client.watchSession(regenerated.sessionId, update => { regeneratedChat = update; });
+  ok(!regeneratedChat.messages.some(message => message.id === originalImagePrompt.id || message.id === originalReply.id));
+  ok(regeneratedChat.messages.some(message => message.text === documentPrompt));
+  equal(regeneratedChat.queue.length, 0);
+  imageReachedProvider = false;
+  equal(await client.promptWithAttachments(regenerated.sessionId, originalImagePrompt.text,
+    [picture], 'fixture-regenerated-image', () => true, true), false);
+  await eventually(() => !regeneratedChat.running && imageReachedProvider && regeneratedChat.messages.some(message =>
+    message.role === 'assistant'), 'regenerated branch receives original image-only prompt');
+  equal(regeneratedChat.messages.filter(message => message.requestId === 'fixture-regenerated-image').length, 1);
+  await client.watchSession(attachmentSession, update => { attachmentChat = update; });
+  equal(attachmentChat.messages.at(-1).id, originalReply.id);
+
+  const otherAttachmentSession = await client.createSession(workspace.id);
+  await assert.rejects(client.readSessionImage(otherAttachmentSession, imagePart.attachment), /session\/attachment-invalid/);
+  checks++;
+  await client.setModel(otherAttachmentSession, model.provider, model.id, model.defaultEffort);
+  await client.watchSession(otherAttachmentSession, update => { attachmentChat = update; });
+  await client.prompt(otherAttachmentSession, 'fixture-read-other-session');
+  await eventually(() => !attachmentChat.running && attachmentChat.tools.some(tool => tool.isError), 'unowned attachment denied');
+  ok(!attachmentChat.tools.some(tool => tool.result?.includes(attachmentText)));
+  const textModel = catalog.groups.find(group => group.id === 'deepseek-official')?.models.find(item => item.id === 'deepseek-v4-pro');
+  ok(textModel);
+  await client.setModel(otherAttachmentSession, textModel.provider, textModel.id, textModel.defaultEffort);
+  equal(await client.promptWithAttachments(otherAttachmentSession, '', [picture], 'fixture-image-fallback', () => true, true), true);
+  await eventually(() => attachmentChat.messages.some(message => message.content?.some(part =>
+    part.type === 'file' && part.attachment?.name === picture.name)), 'image fallback becomes a durable file attachment');
+
   const fork = await client.forkSession(session);
   ok(fork !== session);
   ok((await client.listSessions(true)).some(item => item.id === fork));
@@ -382,6 +551,7 @@ try {
   console.log(`${checks} native client assertions passed against local DSH`);
 } finally {
   releaseRequest.resolve();
+  releaseCompaction.resolve();
   client.close();
   provider.closeAllConnections();
   provider.close();

@@ -1,0 +1,4 @@
+Unmodified dsh-Go v1.0.15 assets, commit a9877420ab9aee121134faf01b6a92a39ce0b05b.
+https://github.com/ccch1mneyyy/dsh-Go
+Original paths: app/assets/islands/{island.js,island.css,recipes.json}, app/assets/web/dsh_web_open.js.
+License: AGPL-3.0; see LICENSE.txt.

@@ -1,3 +1,4 @@
+import { localizedSettingsText, localizedSettingsFormat } from './SettingsLocale'
 import { DshClient } from '../dsh/DshClient';
 import { DshQuestion, DshQuestionRequest, DshQuestionOption } from '../dsh/DshWire';
 import { QuestionDraft, QuestionDrafts, toggleQuestion, questionAnswers } from './QuestionDrafts';
@@ -5,6 +6,10 @@ import { ThemeColors, themeColors } from './DshTheme';
 
 @Component
 export struct QuestionCard {
+  @StorageProp('dshLanguage') private localeLanguage: string = 'system'
+  private t(value: string): string { return localizedSettingsText(value, this.localeLanguage) }
+  private f(value: string, args: (string | number | boolean | null | undefined)[]): string { return localizedSettingsFormat(value, args, this.localeLanguage) }
+
   @Prop colors: ThemeColors = themeColors();
   @Prop request: DshQuestionRequest;
   client: DshClient = new DshClient();
@@ -49,7 +54,7 @@ export struct QuestionCard {
       this.draftStore.remove(this.request);
       if (this.active) this.settled = true;
     } catch {
-      if (this.active) this.error = '提交未能确认，请检查连接。已填写的答案仍保留。';
+      if (this.active) this.error = this.t("提交未能确认，请检查连接。已填写的答案仍保留。");
     } finally { if (this.active) this.busy = false; }
   }
 
@@ -70,7 +75,7 @@ export struct QuestionCard {
           .enabled(!this.busy).onClick(() => this.update(toggleQuestion(this.draft(question), question, option.label)));
       }, (option: DshQuestionOption) => option.label);
       if (question.options.length) {
-        Button('自己填写').fontColor(this.colors.primary).backgroundColor(Color.Transparent).enabled(!this.busy)
+        Button(this.t("自己填写")).fontColor(this.colors.primary).backgroundColor(Color.Transparent).enabled(!this.busy)
           .onClick(() => {
             const draft = this.draft(question);
             this.update({ id: draft.id, selected: question.multiSelect ? draft.selected : [],
@@ -78,7 +83,7 @@ export struct QuestionCard {
           });
       }
       if (this.draft(question).customOpen) {
-        TextArea({ text: this.draft(question).custom, placeholder: '输入你的回答…' })
+        TextArea({ text: this.draft(question).custom, placeholder: this.t("输入你的回答…") })
           .height(80).fontSize(15).fontColor(this.colors.text).backgroundColor(this.colors.surfaceAlt)
           .enabled(!this.busy).onChange((value: string) => {
             const draft = this.draft(question);
@@ -90,22 +95,22 @@ export struct QuestionCard {
 
   build() {
     Column({ space: 16 }) {
-      Text(this.request.questions.length > 1 ? `有 ${this.request.questions.length} 个问题想问你` : '有个问题想问你')
+      Text(this.request.questions.length > 1 ? this.f("有 {0} 个问题想问你", [this.request.questions.length]) : this.t("有个问题想问你"))
         .fontSize(16).fontWeight(FontWeight.Medium).fontColor(this.colors.primary);
-      if (this.settled) Text('已提交').fontColor(this.colors.muted);
+      if (this.settled) Text(this.t("已提交")).fontColor(this.colors.muted);
       else {
-        if (this.request.continued) Text('任务已继续，你仍可以补充回答。').fontSize(12).fontColor(this.colors.muted);
-        else if (this.request.timed) Text(this.remaining > 0 ? `${this.remaining} 秒后继续任务` : '正在继续任务…')
+        if (this.request.continued) Text(this.t("任务已继续，你仍可以补充回答。")).fontSize(12).fontColor(this.colors.muted);
+        else if (this.request.timed) Text(this.remaining > 0 ? this.f("{0} 秒后继续任务", [this.remaining]) : this.t("正在继续任务…"))
           .fontSize(12).fontColor(this.colors.muted);
         ForEach(this.request.questions, (question: DshQuestion) => { this.questionBlock(question); },
           (question: DshQuestion) => question.id);
-        if (this.error) Text(this.error).fontSize(13).fontColor(this.colors.danger);
+        if (this.error) Text(this.t(this.error)).fontSize(13).fontColor(this.colors.danger);
         Row({ space: 12 }) {
           if (!this.request.continued) {
-            Button('不回答').layoutWeight(1).height(44).fontColor(this.colors.primary).backgroundColor(this.colors.surfaceAlt)
+            Button(this.t("不回答")).layoutWeight(1).height(44).fontColor(this.colors.primary).backgroundColor(this.colors.surfaceAlt)
               .enabled(!this.busy).onClick(() => { void this.respond(true); });
           }
-          Button(this.busy ? '提交中…' : '提交').layoutWeight(1).height(44).fontColor(this.colors.onPrimary)
+          Button(this.busy ? this.t("提交中…") : this.t("提交")).layoutWeight(1).height(44).fontColor(this.colors.onPrimary)
             .backgroundColor(this.colors.primary).enabled(!this.busy && !!questionAnswers(this.request, this.drafts))
             .onClick(() => { void this.respond(false); });
         }.width('100%');

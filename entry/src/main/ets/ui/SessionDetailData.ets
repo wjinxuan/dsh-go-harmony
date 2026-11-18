@@ -3,6 +3,8 @@ import { array, DshSessionRecord, DshTokenUsage, DshTurnTrace, number, object, s
 export interface SessionDiffLine {
   marker: string;
   text: string;
+  oldLine?: number;
+  newLine?: number;
 }
 
 export interface SessionFileChange {
@@ -25,7 +27,7 @@ function lines(text: string): string[] {
   return normalized ? normalized.replace(/\n$/, '').split('\n') : [];
 }
 
-function diff(before: string, after: string): SessionDiffLine[] {
+export function sessionTextDiff(before: string, after: string, oldStart: number = 1, newStart: number = 1): SessionDiffLine[] {
   const oldLines = lines(before);
   const newLines = lines(after);
   const result: SessionDiffLine[] = [];
@@ -70,6 +72,11 @@ function diff(before: string, after: string): SessionDiffLine[] {
   for (let index = oldTail; index < oldLines.length; index++) {
     result.push({ marker: ' ', text: oldLines[index] });
   }
+  let oldLine = oldStart; let newLine = newStart;
+  for (const line of result) {
+    if (line.marker !== '+') line.oldLine = oldLine++;
+    if (line.marker !== '-') line.newLine = newLine++;
+  }
   return result;
 }
 
@@ -79,7 +86,8 @@ function resultDiff(tool: FileTool, meta: WireObject): SessionDiffLine[] {
     const block = object(raw);
     if (typeof block['newText'] === 'string') {
       if (result.length) result.push({ marker: '@', text: '下一处变更' });
-      for (const line of diff(string(block['oldText']), string(block['newText']))) result.push(line);
+      for (const line of sessionTextDiff(string(block['oldText']), string(block['newText']),
+        number(block['oldStartLine'], 1), number(block['newStartLine'], 1))) result.push(line);
     }
   }
   if (result.length) return result;
@@ -88,11 +96,34 @@ function resultDiff(tool: FileTool, meta: WireObject): SessionDiffLine[] {
   const replacement = tool.args[tool.name === 'edit' ? 'new_string' : 'new_str'];
   if ((tool.name === 'edit' || command === 'str_replace') &&
     typeof previous === 'string' && typeof replacement === 'string') {
-    return diff(previous, replacement);
+    return sessionTextDiff(previous, replacement);
   }
-  if (command === 'insert') return diff('', string(replacement));
-  if (tool.name === 'write' && meta['operation'] === 'create') return diff('', string(tool.args['content']));
-  if (command === 'create') return diff('', string(tool.args['file_text']));
+  if (command === 'insert') return sessionTextDiff('', string(replacement));
+  if (tool.name === 'write' && meta['operation'] === 'create') return sessionTextDiff('', string(tool.args['content']));
+  if (command === 'create') return sessionTextDiff('', string(tool.args['file_text']));
+  return result;
+}
+
+export function toolDiffLines(name: string, argumentsJson: string, resultText: string,
+  meta: Object | null | undefined): SessionDiffLine[] {
+  let args: WireObject = {};
+  try { args = object(JSON.parse(argumentsJson)); } catch { /* Streaming arguments may be incomplete. */ }
+  if (['edit', 'write', 'str_replace_editor'].includes(name)) {
+    const structured = resultDiff({ name: name, args: args }, object(meta));
+    if (structured.length) return structured;
+  }
+  if (!/^@@ -\d/m.test(resultText) && !(/^(---|\+\+\+) /m.test(resultText) && /^[+-](?![+-])/m.test(resultText))) return [];
+  const result: SessionDiffLine[] = [];
+  let oldLine: number | undefined = undefined; let newLine: number | undefined = undefined;
+  for (const text of resultText.replace(/\r\n/g, '\n').replace(/\n$/, '').split('\n')) {
+    const hunk = /^@@ -(\d+)(?:,\d+)? \+(\d+)(?:,\d+)? @@/.exec(text);
+    if (hunk) { oldLine = Number(hunk[1]); newLine = Number(hunk[2]); result.push({ marker: '@', text: text }); }
+    else if (/^(---|\+\+\+|diff |index |\\)/.test(text)) result.push({ marker: '@', text: text });
+    else if (text.startsWith('+')) result.push({ marker: '+', text: text.slice(1), newLine: newLine === undefined ? undefined : newLine++ });
+    else if (text.startsWith('-')) result.push({ marker: '-', text: text.slice(1), oldLine: oldLine === undefined ? undefined : oldLine++ });
+    else result.push({ marker: ' ', text: text.startsWith(' ') ? text.slice(1) : text,
+      oldLine: oldLine === undefined ? undefined : oldLine++, newLine: newLine === undefined ? undefined : newLine++ });
+  }
   return result;
 }
 

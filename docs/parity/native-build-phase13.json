@@ -1,0 +1,498 @@
+{
+  "phase": 13,
+  "recorded_at": "2026-11-17T14:50:30.433256+08:00",
+  "status": "device_acceptance_in_progress_snapshot",
+  "snapshot": true,
+  "all_acceptance_complete": false,
+  "previous_record": "native-build-phase12.json",
+  "baseline": {
+    "version": "dsh-Go 1.0.15",
+    "commit": "a9877420ab9aee121134faf01b6a92a39ce0b05b"
+  },
+  "artifact": {
+    "hap": "entry/build/default/outputs/default/entry-default-signed.hap",
+    "hapSha256": "ae02a6c3ca0e2c1c5980d42ac2b2f61ed8558ff35cb685517682fbf06747242b",
+    "hapBytes": 197390313,
+    "runtimeSha256": "93bd20716200d852353999568f4898f9fca2f69846fac5bfc4d0ce85d0ebcf27",
+    "nativeLibrarySha256": "68f7933cb36f2ab6dc7303913efb4aa58ba52268cc002642464dec7b6cb39819",
+    "installed": true,
+    "installationEvidence": {
+      "path": "/tmp/dsh-device-20261117/175-recall-install.log",
+      "sha256": "9ed9b6d76b5a09c3b3c13dbf265f3febc86fce9d44419041234e67e7b07cafce"
+    },
+    "artifactIdentityProvenance": "Frozen phase12 artifact record and ROOT confirmed installation of that exact HAP; phone protocol independently confirms runtime version."
+  },
+  "capture_boundary": "Snapshot through ROOT evidence 192 and completed TURN4/SenseVoice protocol results. ROOT is continuing UI acceptance; this is not an exhaustive final checklist.",
+  "device_startup": {
+    "status": "PASS",
+    "reconnection": {
+      "reportedBy": "ROOT",
+      "evidence": "173-reconnected.json/png",
+      "scope": "User reconnected the device; visible app UI captured. Raw HDC connected command is not duplicated here."
+    },
+    "preinstall_speech_observation": {
+      "at": "2026-11-17T14:37:33.087729+08:00",
+      "runtimeVersion": "b6fb84990d6fd9de64702453c4a76be79f29b45661269749f6c2029726dd46a0",
+      "status": "OBSERVATION_TIMEOUT",
+      "timeoutMs": 10000,
+      "downloadState": "unknown",
+      "mutations": 0
+    },
+    "installation": {
+      "status": "PASS",
+      "command": null,
+      "exitCode": null,
+      "exitCodeProvenance": "Raw tool exit code was not present in retained log; success string and ROOT installation report observed",
+      "successLog": "install bundle successfully",
+      "evidence": "175-recall-install.log"
+    },
+    "launch": {
+      "status": "PASS",
+      "command": null,
+      "exitCode": null,
+      "exitCodeProvenance": "Retained log confirms ability startup; raw tool exit code not separately recorded",
+      "successLog": "start ability successfully.",
+      "evidence": "176-launch.log"
+    },
+    "local_connection": {
+      "status": "PASS",
+      "uiText": "本机",
+      "evidence": "178-phase12-local.json/png",
+      "runtimeVersionVerifiedByPhoneProtocol": "93bd20716200d852353999568f4898f9fca2f69846fac5bfc4d0ce85d0ebcf27"
+    },
+    "screen_timeout_override": {
+      "temporaryMilliseconds": 7200000,
+      "evidence": "176-screen-timeout.log",
+      "restorePending": true,
+      "doesNotUnlockDevice": true
+    }
+  },
+  "phone_turn4": {
+    "status": "PASS",
+    "exitCode": 0,
+    "exitCodeProvenance": "verification.json and media agent actual runner completion",
+    "transport": "TURN TCP via USB forwarding",
+    "scope": "Actual installed phone Node; USB TCP forwarding to loopback-only Mac signaling and coturn. TURN TCP control/data, Mac-local UDP relay leg. Not phone TURN UDP, cellular, WAN or commercial service.",
+    "sentBytes": 50000,
+    "receivedBytes": 50000,
+    "independentPayloads": true,
+    "sentSha256": "84ba9b2c9ddd82d3d26179835430a122eacee8f0dc65646a8e3335a0c939ec27",
+    "receivedSha256": "06128a362e205c7530680ed6e22a8a442685614501b7b0d4045b03f30943126b",
+    "selectedTransport": [
+      "turn"
+    ],
+    "phoneRelayCandidateObserved": true,
+    "cleanup": {
+      "phoneDisconnectAcknowledged": true,
+      "fixtureOriginLogoutAcknowledged": true,
+      "macSignalPortClosed": true,
+      "macCoturnPortClosed": true,
+      "mediaFixture55762Retained": true
+    },
+    "forwardCleanup": {
+      "reportedBy": "media agent, quoting ROOT actions",
+      "removedReversePorts": [
+        60559,
+        60560
+      ],
+      "removedForwardPorts": [
+        46107
+      ]
+    },
+    "verification": {
+      "path": "/tmp/dsh-device-20261117/phone-turn-4/verification.json",
+      "sha256": "1d9128ea785d1681eae73ae8075fd089a89c500cf2b663fc278c7fa05df49319"
+    },
+    "runner": {
+      "path": "/tmp/dsh-device-20261117/phone-turn-4.log",
+      "sha256": "b7cb75b36c51e4067811d2e0e67b51cb1d1b887f39365f44daf192486b83b8f2"
+    },
+    "hostPreflightTap": {
+      "tests": 2,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "note": "Two host protocol-vector tests precede the separate actual phone TURN assertion flow; do not count them as two phone data-channel cases."
+    }
+  },
+  "sensevoice_network_and_wav": {
+    "status": "PASS",
+    "runtimeVersion": "93bd20716200d852353999568f4898f9fca2f69846fac5bfc4d0ce85d0ebcf27",
+    "networkDownloadPassed": true,
+    "usbPreseedReused": false,
+    "priorPartialBytes": 168622877,
+    "productionPrepareCallsThisContinuation": 1,
+    "deleteCallsThisContinuation": 0,
+    "modelSelectionMutations": false,
+    "prepareWallMs": 16637,
+    "firstObservedDownloading": {
+      "elapsedMs": 544,
+      "completedBytes": 168703361
+    },
+    "observedProgressReset": false,
+    "wireResponseStatus": "Not exposed by production API; no independent 206/200 response-header claim. Client Range/resume support verified in source; observed progress continued above previous partial.",
+    "hashVerificationMethod": "Production downloadAsset verifies exact length/SHA before rename; runDownload repeats all pinned hashes before actual native.load. No HDC or independent shell-exported device hash was performed by this agent.",
+    "assets": [
+      {
+        "path": "sensevoice-onnx/model.int8.onnx",
+        "bytes": 239233841,
+        "pinnedSha256": "c71f0ce00bec95b07744e116345e33d8cbbe08cef896382cf907bf4b51a2cd51"
+      },
+      {
+        "path": "sensevoice-onnx/tokens.txt",
+        "bytes": 315894,
+        "pinnedSha256": "f449eb28dc567533d7fa59be34e2abca8784f771850c78a47fb731a31429a1dc"
+      },
+      {
+        "path": "silero/silero_vad.onnx",
+        "bytes": 1807522,
+        "pinnedSha256": "a35ebf52fd3ce5f1469b2a36158dba761bc47b973ea3382b3186ca15b1f5af28"
+      }
+    ],
+    "finalState": {
+      "phase": "ready",
+      "completedBytes": 241357257,
+      "totalBytes": 241357257,
+      "wanted": false,
+      "nativeAvailable": true,
+      "loaded": true
+    },
+    "wav": {
+      "bytes": 178988,
+      "sha256": "b77f1794fe374a0ba1ee1dc458bfaf9349496cbbfc32780c50ba3c5a7ad8e373"
+    },
+    "transcription": {
+      "text": "开饭时间早上9点至下午5点。",
+      "audioSeconds": 5.592
+    },
+    "transcriptionWallMs": 588,
+    "runs": [
+      {
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node /tmp/dsh-device-20261117/phase12-sensevoice-network-resume.mjs",
+        "exitCode": 1,
+        "exitCodeProvenance": "actual exec_command/write_stdin completion",
+        "status": "NOT_READY",
+        "evidence": [
+          {
+            "path": "/tmp/dsh-device-20261117/phase12-sensevoice-network-resume.mjs",
+            "sha256": "74d8942de38cda774755320f33d2b5ecd9a943a54b16e3cb660059a77e00d432"
+          },
+          {
+            "path": "/tmp/dsh-device-20261117/phase12-sensevoice-network-resume.log",
+            "sha256": "e56f24b3bc997f28b388634766bd6ad084cdeb7ca85fb63734cd1ae3e57b73cb"
+          },
+          {
+            "path": "/tmp/dsh-device-20261117/phase12-sensevoice-network-resume-result.json",
+            "sha256": "2d6e5d3f9f97b9cb13c38e3dde43d6c782b806ae94d1e1924a271a187c43b16d"
+          }
+        ]
+      },
+      {
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node /tmp/dsh-device-20261117/phase12-sensevoice-network-prepare.mjs",
+        "exitCode": 0,
+        "exitCodeProvenance": "actual exec_command/write_stdin completion",
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "/tmp/dsh-device-20261117/phase12-sensevoice-network-prepare.mjs",
+            "sha256": "01237378109dc8f62ff4915790ea85e498d666edde638d33aab0628e746dbb2c"
+          },
+          {
+            "path": "/tmp/dsh-device-20261117/phase12-sensevoice-network-prepare.log",
+            "sha256": "ef2f9553c1ff1e0a06e3a9be3f1cb4ed0e2557a5c94aefe54be2e40a51df7900"
+          },
+          {
+            "path": "/tmp/dsh-device-20261117/phase12-sensevoice-network-prepare-result.json",
+            "sha256": "caab901e98a33cf4b353934e2beccaab80e3abfc9df963e2e09aecd137f2b481"
+          }
+        ]
+      },
+      {
+        "command": "/Applications/DevEco-Studio.app/Contents/tools/node/bin/node /tmp/dsh-device-20261117/phase12-sensevoice-network-inference.mjs",
+        "exitCode": 0,
+        "exitCodeProvenance": "actual exec_command/write_stdin completion",
+        "status": "PASS",
+        "evidence": [
+          {
+            "path": "/tmp/dsh-device-20261117/phase12-sensevoice-network-inference.mjs",
+            "sha256": "d5d57019d9bc92091a34ad2b91b16f90f27db5d2762bc41fb86833129784f826"
+          },
+          {
+            "path": "/tmp/dsh-device-20261117/phase12-sensevoice-network-inference.log",
+            "sha256": "f763581b1f50d5c71e9a7783055a45fded5d8afa8bc681e40e324fe62445e875"
+          },
+          {
+            "path": "/tmp/dsh-device-20261117/phase12-sensevoice-network-inference-result.json",
+            "sha256": "5af0144ed2af5b2d1c0ff9b86a5717c25d1908aefb6422091b869af7cbd4b231"
+          }
+        ]
+      }
+    ],
+    "verification": {
+      "path": "/tmp/dsh-device-20261117/phase12-sensevoice-network-verification.json",
+      "sha256": "f08435a8e900ba5b0b439b4051b68d60db0dbe3d53c29a22f4d5c45effbd176e"
+    },
+    "boundaries": [
+      "Initial read-only continuation was NOT_READY and remains recorded, followed by exactly one separately authorized prepare.",
+      "Prior empty-cache network start, interrupted partial transfer and USB-preseeded historical inference records are preserved; no current USB-preseed reuse.",
+      "WAV uses actual phone native SenseVoice through protocol; it is distinct from physical microphone/UI acceptance."
+    ]
+  },
+  "companion_memory_edit_ui": {
+    "status": "PASS",
+    "scope": "Immediate memory-list refresh and fresh re-edit of one uniquely owned test memory; does not establish automatic Recall prompt injection",
+    "before": "DSH-DEVICE-MEMORY-1117 ADSH-DEVICE-MEMORY-1117 B",
+    "editedText": "DSH-DEVICE-MEMORY-1117 ADSH-DEVICE-ME CMORY-1117 B",
+    "immediateSavedText": "DSH-DEVICE-MEMORY-1117 ADSH-DEVICE-ME CMORY-1117 B",
+    "freshReeditText": "DSH-DEVICE-MEMORY-1117 ADSH-DEVICE-ME CMORY-1117 B",
+    "exactTextEquality": true,
+    "edit": {
+      "kind": "insert",
+      "beforeStart": 37,
+      "beforeEnd": 37,
+      "afterStart": 37,
+      "afterEnd": 39,
+      "insertedText": " C"
+    },
+    "editInterpretation": "Inserted space+C inside existing text at zero-based character offset 37; it was not appended to the end.",
+    "evidenceRange": "180–183",
+    "cleanup": {
+      "status": "OWN_TEST_MARKER_ABSENT_FROM_UI",
+      "confirmationEvidence": "184-memory-delete.json/png",
+      "finalEvidence": "192-memory-cleanup.json/png",
+      "scope": "Only the uniquely owned DSH-DEVICE-MEMORY-1117 test record; no claim of deleting or inspecting other user memories."
+    }
+  },
+  "sensevoice_physical_microphone": {
+    "status": "USER_DEFERRED",
+    "passed": false,
+    "deferralAuthority": "User explicitly requested not to continue microphone testing, relayed by ROOT",
+    "observedSteps": {
+      "engineModeSelected": {
+        "evidence": "187-engine-voice-mode.json/png",
+        "provenance": "ROOT action report and UI capture"
+      },
+      "recordingStarted": {
+        "uiText": "正在听…",
+        "evidence": "188-sensevoice-mic-listening.json/png"
+      },
+      "acousticPlayback": {
+        "at": "2026-11-17T14:44:35.999706+08:00",
+        "source": "Mac loudspeaker /tmp/sensevoice-zh.wav captured by actual phone microphone; engine mode selected; no audio file injected into phone",
+        "originalMacVolume": 15,
+        "originalMacMuted": "true",
+        "testMacVolume": 35,
+        "playbackExitCode": 0,
+        "restoredMacAudio": true
+      },
+      "stopAttempt": {
+        "completed": false,
+        "reason": "USB disconnected; stop command failed",
+        "provenance": "ROOT task report; raw stop command/exit code not separately retained in this snapshot"
+      },
+      "afterward": {
+        "recordingIdle": true,
+        "uiError": "没能转写这段语音",
+        "evidence": "190-after-mic-skip.json/png"
+      },
+      "preferenceRestoration": {
+        "mode": "Auto",
+        "restored": true,
+        "provenance": "ROOT action report plus UI capture",
+        "evidence": "191-voice-auto-restored.json/png"
+      }
+    },
+    "noTranscriptionSuccessClaim": true,
+    "resumeOnlyOnUserRequest": true
+  },
+  "remaining_snapshot": [
+    "ROOT continues other UI acceptance; unrecorded steps are not implicitly passed.",
+    "Actual phone Companion Recall consent/bind/injection/isolation/revoke/restart acceptance remains separate from the memory edit UI PASS in this snapshot.",
+    "Physical microphone acceptance is user-deferred; do not retry unless the user reopens it.",
+    "Restore the temporary screen-off override and finish only uniquely owned fixture cleanup after acceptance.",
+    "Live2D materials remain user-deferred under the earlier task scope."
+  ],
+  "limits": [
+    "No blanket 100% parity or all-device-tests-passed claim.",
+    "TURN4 proves actual phone Node over USB TCP forwarding to Mac loopback coturn; it does not prove phone UDP, cellular/WAN or commercial relay service.",
+    "Pinned SHA verification was performed by production download/load gates; no independent HDC-exported model hashes were added by this subagent.",
+    "Where raw commands or exit codes were not retained, they remain null instead of inferred as zero.",
+    "Repeated attempts, screenshots and overlapping protocol runs are not added into a synthetic independent-case total.",
+    "No authentication URLs, keys, tokens or raw ready-file contents are copied."
+  ],
+  "evidence": [
+    {
+      "path": "/tmp/dsh-device-20261117/173-reconnected.json",
+      "sha256": "574ab0c9c3a45321424e5f6d93041bc7b5ee779d4d10bc27f2f3d732ee973f0e"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/173-reconnected.png",
+      "sha256": "c0a755e12652797c4b9478508e9d4439cee5641c81983b66e3b261325f5f1e54"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/173-tree.log",
+      "sha256": "7e5a52e2bc58494fa1a834c819765b5da2517a6af7daa655de0649d6d066d9c0"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/174-sensevoice-before-install.json",
+      "sha256": "2e08e26d7b970536fa408713626e4a46658249ada428cfbf317c62727b8c92be"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/175-recall-install.log",
+      "sha256": "9ed9b6d76b5a09c3b3c13dbf265f3febc86fce9d44419041234e67e7b07cafce"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/176-launch.log",
+      "sha256": "4765cf6e38f61be3ce9fa13fdcf53077b79f3da39c947a2123d1facd6c0e3962"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/176-screen-timeout.log",
+      "sha256": "08bed81f6bea68073f55c8ef98812e4cfb4811bb334feae9b5f09427a1e3c0bf"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/177-phase12-remote.json",
+      "sha256": "cc628f3d449165f09037e1aa7e40241cf750084315374f5ffc52ec753483edaa"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/177-phase12-remote.png",
+      "sha256": "4c151f7054b46fcd171420885e7e861325b6da505e7fb475d1df5add3d9ccd16"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/178-phase12-local.json",
+      "sha256": "2101423d89312a8f9d3588fd320c2e60d637b95dd64b2fea52b8880b7e6a93d8"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/178-phase12-local.png",
+      "sha256": "2b088b7ce73a4eff93e298f20640e917e9257a017eeacd8f5dccf23055edebb2"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/178-tree.log",
+      "sha256": "7e5a52e2bc58494fa1a834c819765b5da2517a6af7daa655de0649d6d066d9c0"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/180-memory-before.json",
+      "sha256": "e4294eda815b0f6f7c7b5a3cdf9b8eb7ab58198611f29e75d142c485875da2cf"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/180-memory-before.png",
+      "sha256": "d1767d5497da5907839795942161466e4480b63b8c0be27970c308c273536f83"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/181-memory-edit-c.json",
+      "sha256": "2c6b5045bfae3d8d3cce84570eaed7cec008473bae9495c68bda1c3f9686b676"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/181-memory-edit-c.png",
+      "sha256": "ab579810ff2c87ed1979b6bd35d94c670856e1ecd275f2b2f93a647698036e89"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/182-memory-saved-immediate.json",
+      "sha256": "0370c8fed85e3223584c46e6080a1e1fd2973106f77e5e83a879b2a61b4b7516"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/182-memory-saved-immediate.png",
+      "sha256": "c30d45c054ccbfd467a98a645204abb84fc1ad678dff31f3d1b48ebf0d51e23e"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/183-memory-reedit.json",
+      "sha256": "c793df250b1ce5f913e67e40be4e39f8d78419bac0b3997c554f3f8851e18a10"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/183-memory-reedit.png",
+      "sha256": "f055e9a033342bb00da120facb5fb8dfd83796bf30dc5eb80521c959ca2d5e94"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/184-memory-delete.json",
+      "sha256": "7d8a88972f4a259fb43e0f6a3e48f96647df13d903eefd43224c742aa84e8bc9"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/184-memory-delete.png",
+      "sha256": "d12e4c3c16e1fa103720ab3058c393d628fe9ce924aa5e3fe9d5228440e646f6"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/187-engine-voice-mode.json",
+      "sha256": "d13ba18459ff0d95a5e6108ab804f25d5bcf0e3f5a6ef008390f13c146063304"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/187-engine-voice-mode.png",
+      "sha256": "ef70ba5afbcfb73f46d73a37705e592f53efae15a3f66efa139a533ef6d77a6e"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/188-sensevoice-acoustic-action.json",
+      "sha256": "0b33773d5357df75fa6792a8bbf7b9a29780fd971e9a64c7887f3a688aeee43d"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/188-sensevoice-mic-listening.json",
+      "sha256": "20d851d449f4671f694c900e99ce7e35b140b21e31f9d9e0b7ddbb481519c441"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/188-sensevoice-mic-listening.png",
+      "sha256": "6498f529295ce7625ea3428a23859d56d20a5960d65f9560e00d320df71dd027"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/189-tree.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/190-after-mic-skip.json",
+      "sha256": "aad53559dad6614eb071472027871b4ed3d8c21a1241a9cc87490d71e71761be"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/190-after-mic-skip.png",
+      "sha256": "bb19226061a4e1107c09add064517d1f01e16c472441cdf2e3d1f75e3446ecf1"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/191-voice-auto-restored.json",
+      "sha256": "ac17d48bb1b295fb6bd4291166acea166aa97a0fc6fa0b011571726f269b49f7"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/191-voice-auto-restored.png",
+      "sha256": "d0b1bf0a877a0e154455822eb0fa1f40f6d50b42d47cd2e7db120627040ba38e"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/192-memory-cleanup.json",
+      "sha256": "05e1acce49d5a703f5ad4b7d0c890f82c8f759a468f5417b5bf8307d156b07ec"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/192-memory-cleanup.png",
+      "sha256": "5ebd20b2fd5a813d94d037201e53c9bd38875d425f5b5bfe6eb3dccfc2e02f28"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/phone-turn-4/verification.json",
+      "sha256": "1d9128ea785d1681eae73ae8075fd089a89c500cf2b663fc278c7fa05df49319"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/phone-turn-4/proof.json",
+      "sha256": "ac7d57c633d39adaddd9ce2abcb81edd9cf741be0daa09418bd85a54f917c534"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/phone-turn-4.log",
+      "sha256": "b7cb75b36c51e4067811d2e0e67b51cb1d1b887f39365f44daf192486b83b8f2"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/phone-turn-4/coturn.log",
+      "sha256": "5088483d31e1e1442986583a7a45254e7d988495018330b7b9d4d40c2520d0a6"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/phase12-sensevoice-network-verification.json",
+      "sha256": "f08435a8e900ba5b0b439b4051b68d60db0dbe3d53c29a22f4d5c45effbd176e"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/phase12-sensevoice-readonly-run.json",
+      "sha256": "d4a7d8946687d1cb4a4c022db6e1ad39f82af078ef3cbe3164bd16945b4dde8f"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/phase12-sensevoice-network-prepare-result.json",
+      "sha256": "caab901e98a33cf4b353934e2beccaab80e3abfc9df963e2e09aecd137f2b481"
+    },
+    {
+      "path": "/tmp/dsh-device-20261117/phase12-sensevoice-network-inference-result.json",
+      "sha256": "5af0144ed2af5b2d1c0ff9b86a5717c25d1908aefb6422091b869af7cbd4b231"
+    }
+  ],
+  "authoring": {
+    "method": "Read-only audit of existing local artifacts and ROOT/media reports; exact UI text compared from captured trees",
+    "deviceOperationsByThisAuthoringTask": 0,
+    "otherDocsModified": false
+  }
+}

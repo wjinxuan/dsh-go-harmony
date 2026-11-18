@@ -10,17 +10,27 @@ import { setTimeout as delay } from 'node:timers/promises';
 import { randomUUID } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
+import { unlockTestCredentials } from './unlock-test-credentials.mjs';
 
 const runtime = resolve(process.argv[2]);
 const useDefaultProvider = process.argv.includes('--deepseek');
 const denySessionLink = process.argv.includes('--deny-session-link');
 const exerciseTools = process.argv.includes('--tools');
 const exerciseFullPermission = process.argv.includes('--danger-full-access');
+const exerciseCompaction = process.argv.includes('--compact');
+// A compiled tests/native/runner.cpp starts the unchanged production embedder,
+// including its POSIX flock and publication callbacks. The default host-Node
+// path deliberately retains the isolated fixture for ordinary protocol checks.
+const nativeRunner = process.env.DSH_LOCAL_ENGINE_TEST_RUNNER
+  ? resolve(process.env.DSH_LOCAL_ENGINE_TEST_RUNNER) : undefined;
 assert.ok(!exerciseTools || useDefaultProvider, '--tools requires the DeepSeek Messages fixture');
 assert.ok(!exerciseFullPermission || exerciseTools, '--danger-full-access requires --tools');
+assert.ok(!nativeRunner || !denySessionLink, '--deny-session-link is only available with the simulated publication fixture');
 const { WebSocket } = createRequire(join(runtime, 'main.cjs'))('ws');
 const data = await mkdtemp(join(tmpdir(), 'dsh-harmony-local-smoke-'));
-const child = spawn(process.execPath, ['--jitless', '--no-addons', '--expose-internals',
+const child = spawn(nativeRunner ?? process.execPath, nativeRunner
+  ? [join(runtime, 'main.cjs'), data]
+  : ['--jitless', '--no-addons', '--expose-internals',
   '--require', fileURLToPath(new URL('./local-flock-fixture.cjs', import.meta.url)),
   join(runtime, 'main.cjs'), data], {
   stdio: ['ignore', 'pipe', 'pipe'],
@@ -43,6 +53,7 @@ try {
   assert.equal(address.hostname, '127.0.0.1');
   assert.ok(address.searchParams.get('token'));
   assert.equal(ready.workspaceDir, join(data, 'workspace'));
+  await unlockTestCredentials(ready);
   if (exerciseTools) {
     await writeFile(join(ready.workspaceDir, 'proof.txt'), 'workspace content');
     await writeFile(join(data, 'outside.txt'), 'forbidden fixture content');
@@ -102,8 +113,10 @@ try {
   follow('events', '$events', {});
   assert.equal((await next('events')).type, 'ready');
   const reply = 'Harmony local fixture';
+  const summary = 'Fixture compaction summary.';
   let providerRequests = 0;
   let parentRequests = 0;
+  let summaryRequests = 0;
   const delegatedPrompts = new Set();
   server = createServer(async (request, response) => {
     if (request.method !== 'POST') {
@@ -119,9 +132,11 @@ try {
     const promptTexts = modelRequest.messages.filter(message => message.role === 'user').map(message =>
       Array.isArray(message.content) ? message.content.filter(part => part.type === 'text').map(part => part.text).join(' ')
         : String(message.content));
+    const compacting = promptTexts.at(-1)?.includes('You are now acting as a compaction engine');
     const childPrompt = ['subagent fixture task', 'fork fixture task'].find(prompt =>
       promptTexts.some(text => text.includes(prompt)));
-    if (childPrompt) delegatedPrompts.add(childPrompt);
+    if (compacting) summaryRequests++;
+    else if (childPrompt) delegatedPrompts.add(childPrompt);
     else {
       assert.ok(modelRequest.messages.some(message => JSON.stringify(message.content).includes('First local turn')));
       parentRequests++;
@@ -132,9 +147,10 @@ try {
       for (const name of ['read', 'write', 'edit', 'skill', 'subagent', 'subagent_fork']) assert.ok(toolNames.includes(name), name);
     }
     providerRequests++;
+    const responseText = compacting ? summary : reply;
     response.writeHead(200, { 'Content-Type': 'text/event-stream' });
     if (useDefaultProvider) {
-      const calls = exerciseTools && !childPrompt && parentRequests === 1 ? [
+      const calls = exerciseTools && !compacting && !childPrompt && parentRequests === 1 ? [
         ['read-in', 'read', { file_path: 'proof.txt' }],
         ['write-in', 'write', { file_path: 'created.txt', content: 'created' }],
         ['skill-load', 'skill', { name: 'sample' }],
@@ -148,7 +164,7 @@ try {
         ['write-absolute', 'write', { file_path: join(data, 'outside.txt'), content: 'must not write' }],
         ['write-staging', 'write', { file_path: 'missing/.secret.txt.123.8eca91a0-dead-beef-cafe-75832da6ce31.tmpdir/secret.txt.tmp', content: 'must not write' }],
         ['write-symlink', 'write', { file_path: 'escape.txt', content: 'must not write' }]
-      ] : (exerciseTools && !childPrompt && parentRequests === 2 ? [
+      ] : (exerciseTools && !compacting && !childPrompt && parentRequests === 2 ? [
         ['edit-in', 'edit', { file_path: 'created.txt', old_string: 'created', new_string: 'edited' }]
       ] : []);
       const blocks = calls.length ? calls.flatMap(([id, name, input], index) => [
@@ -157,7 +173,7 @@ try {
         { type: 'content_block_stop', index }
       ]) : [
         { type: 'content_block_start', index: 0, content_block: { type: 'text', text: '' } },
-        { type: 'content_block_delta', index: 0, delta: { type: 'text_delta', text: reply } },
+        { type: 'content_block_delta', index: 0, delta: { type: 'text_delta', text: responseText } },
         { type: 'content_block_stop', index: 0 }
       ];
       for (const event of [
@@ -170,7 +186,7 @@ try {
       response.end();
       return;
     }
-    for (const [delta, finish_reason] of [[{ role: 'assistant', content: reply }, null], [{}, 'stop']]) {
+    for (const [delta, finish_reason] of [[{ role: 'assistant', content: responseText }, null], [{}, 'stop']]) {
       response.write(`data: ${JSON.stringify({ id: 'fixture', object: 'chat.completion.chunk', created: 0,
         model: 'fixture', choices: [{ index: 0, delta, finish_reason }] })}\n\n`);
     }
@@ -193,6 +209,10 @@ try {
   }
   const { sessionId } = await rpc('session/create', { request: { cwd: ready.workspaceDir } });
   assert.ok((await rpc('session/list', { _request: {} })).items.some(item => item.sessionId === sessionId));
+  if (exerciseCompaction) {
+    const commands = await rpc('commands/list', { agentId: sessionId });
+    assert.ok(commands.some(command => command.name === 'compact'), 'Local session must advertise /compact');
+  }
   if (exerciseFullPermission) {
     const result = await rpc('commands/execute', { agentId: sessionId, line: '/permission danger-full-access', submittedAttachments: [] });
     assert.equal(result.result.kind, 'success');
@@ -238,8 +258,9 @@ try {
   }
   follow('chat', 'session/follow', { request: { address: { kind: 'session', sessionId }, assistantStream: true } });
   assert.equal((await next('chat')).type, 'snapshot');
+  const historyText = exerciseCompaction ? ' Build a fixture with meaningful history.'.repeat(300) : '';
   await rpc('session/prompt', { request: { requestId: randomUUID(), sessionId, mode: 'queue',
-    content: [{ type: 'text', text: 'First local turn' }] } });
+    content: [{ type: 'text', text: 'First local turn' + historyText }] } });
   let streamed = false;
   let committed = false;
   const toolResults = new Map();
@@ -280,16 +301,42 @@ try {
   } else {
     assert.equal(providerRequests, 1);
   }
+  if (exerciseCompaction) {
+    const { commandId, result } = await rpc('commands/execute', { agentId: sessionId,
+      line: '/compact', submittedAttachments: [] });
+    assert.equal(result.kind, 'success', result.text);
+    assert.match(result.text, /^Compacted [1-9]\d* history items/);
+    assert.equal(summaryRequests, 1);
+    const page = await rpc('session/page', { request: { address: { kind: 'session', sessionId }, maxMessages: 50 } });
+    const events = page.records.map(record => record.event);
+    assert.ok(events.some(event => event.type === 'compaction/summary' && event.data.sourceCommandId === commandId &&
+      event.data.summary.some(part => part.type === 'text' && part.text === summary)));
+    assert.ok(events.some(event => event.type === 'compaction/end' && event.data.sourceCommandId === commandId &&
+      !event.data.error));
+  }
   assert.equal(await readFile(join(data, '.credentials.yaml'), 'utf8').then(() => true, () => false), false);
+  const encryptedKeys = await readFile(join(data, '.harmony-provider-credentials.json'), 'utf8').catch(error => {
+    if (error.code === 'ENOENT') return undefined;
+    throw error;
+  });
+  if (useDefaultProvider) assert.equal(encryptedKeys, undefined, 'Default DeepSeek remember preference remains native-owned');
+  else {
+    assert.equal(JSON.parse(encryptedKeys).version, 1);
+    assert.equal(encryptedKeys.includes('synthetic-local-key'), false);
+    assert.equal(encryptedKeys.includes(ref), false);
+  }
   ws.close();
   await writeFile(join(data, 'stop'), '');
   const [exit] = await Promise.race([once(child, 'exit'), delay(8000, undefined, { ref: false }).then(() => { throw new Error('Engine did not stop'); })]);
   assert.equal(exit, 0, diagnostics);
   assert.equal(await readFile(join(data, 'ready.json'), 'utf8').then(() => true, () => false), false);
-  console.log('DSH local engine verified under --jitless: boot, credentials in memory, one streamed turn, stop' +
+  console.log('DSH local engine verified under --jitless: boot, ' +
+    (useDefaultProvider ? 'explicit session-only default key' : 'encrypted generic credentials') + ', one streamed turn, stop' +
     (useDefaultProvider ? ' (default DeepSeek route)' : ' (OpenAI-compatible route)') +
     (exerciseTools ? ', confined read/write/edit, skill load, spawn and fork' : '') +
-    (exerciseFullPermission ? ', confinement under danger-full-access' : ''));
+    (exerciseFullPermission ? ', confinement under danger-full-access' : '') +
+    (exerciseCompaction ? ', successful /compact with recorded summary' : '') +
+    (nativeRunner ? ', production C++ embedder with real POSIX flock/publication hooks' : ', simulated host flock/publication hooks'));
 } finally {
   ws?.terminate();
   server?.closeAllConnections();

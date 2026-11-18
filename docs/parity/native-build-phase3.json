@@ -1,0 +1,30 @@
+{
+  "source_reference": "dsh-Go v1.0.15 a9877420ab9aee121134faf01b6a92a39ce0b05b",
+  "built_at": "2026-11-13T17:48:53.612773+08:00",
+  "build": "DevEco Studio 26.0.0.851 debug signed, HarmonyOS API 26",
+  "bundle": "com.dshgo.harmony",
+  "hap": "/Users/wangzhaojin/work/dsh/dsh-go-harmony/entry/build/default/outputs/default/entry-default-signed.hap",
+  "hap_sha256": "949484e00ff65469f7a31460a3aed759118c48f898af04980f80e9326d165a42",
+  "runtime_sha256": "fe0cd55a1b3fbe9357d705e1cf58cca778aa81ea4d6ffb34b2fcd48ed8ced641",
+  "scope": "Native account overview, session-aware model picker, durable failure/retry notices, explicit turn recovery, draft and connection race fixes",
+  "checks": {
+    "signed_hap_build": true,
+    "arkui_generated_reactivity_tests": 5,
+    "chat_and_remote_owner_tests": 25,
+    "model_picker_tests": 7,
+    "settings_tests": 5,
+    "dsh_client_live_assertions": 87,
+    "wire_tests": "passed",
+    "account_synthetic_states_precision_stale_reads": "passed",
+    "account_isolated_stock_runtime_signed_out_rpc": "passed",
+    "official_mac_auth_files_shell_jobs_rejected_approval": "passed",
+    "final_generated_source_bindings": "verified"
+  },
+  "acceptance_limits": [
+    "Build only per user request. Not installed on phone; new screens and interactions need device acceptance.",
+    "Authenticated profile and balance scenarios verified with synthetic data; no live user account query made in this iteration.",
+    "Mac execution tests use a deterministic local model; existing public test service and tunnel were left untouched.",
+    "Account sign-in/out, general slash commands, SSH, encrypted relay, terminal, media/attachments and remaining upstream pages are incomplete."
+  ],
+  "previous_verified_phone_build": "native-build.json"
+}
